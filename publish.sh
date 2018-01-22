@@ -39,7 +39,7 @@ else
     npm run build
     npm run test
     cp package.json .npmignore README.md LICENSE CHANGELOG.md build/
-    cd build && npm i && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
+    cd build && ls && npm i && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
 
     echo "Tagging git commit with ${GIT_TAG} ..."
     git tag ${GIT_TAG}
