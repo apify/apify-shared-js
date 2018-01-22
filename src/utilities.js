@@ -8,9 +8,7 @@
  */
 
 const _ = require('underscore');
-const os = require('os');
 const crypto = require('crypto');
-const Url = require('url');
 const Promise = require('bluebird');
 const request = require('request');
 const utilsClient = require('./utilities.client');
@@ -18,16 +16,6 @@ const log = require('./log');
 const consts = require('./consts');
 
 _.extend(exports, utilsClient);
-
-const utils = exports;
-
-/**
- * Indicates whether DEBUG mode is enabled. In this mode, logDebug() will print stuff to console.
- */
-exports.isDebugMode = false;
-
-// if running from Meteor development mode, automatically enable debug logging
-if (global.Meteor && global.Meteor.isDevelopment) { exports.isDebugMode = true; }
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -243,7 +231,7 @@ exports.requestPromised = function (opts) {
  * Creates regexp query object for full text search in Mongo DB
  */
 exports.createRegexpQuery = function (searchString) {
-    searchString = utils.escapeRegExp(searchString);
+    searchString = exports.escapeRegExp(searchString);
     return {
         $regex: `.*${searchString.replace(/ /g, '.*')}.*`,
         $options: 'i',
