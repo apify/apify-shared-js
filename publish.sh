@@ -36,6 +36,8 @@ if [ "${BRANCH}" = "master" ]; then
 # Any other branch gets published as BETA and we don't allow to override tag of existing version.
 else
     echo "Publishing version ${PACKAGE_VERSION} with tag \"beta\" ..."
+    npm run build
+    npm run test
     cp package.json .npmignore build/
     cd build && npm i && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
 
