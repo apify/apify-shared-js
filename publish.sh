@@ -37,7 +37,7 @@ if [ "${BRANCH}" = "master" ]; then
 else
     echo "Publishing version ${PACKAGE_VERSION} with tag \"beta\" ..."
     cp package.json .npmignore build/
-    cd build && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
+    cd build && npm i && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
 
     echo "Tagging git commit with ${GIT_TAG} ..."
     git tag ${GIT_TAG}
