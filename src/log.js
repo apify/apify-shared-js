@@ -56,13 +56,9 @@ const limitDepth = function (record, depth) {
 };
 
 /**
- * Logs given object as JSON to standart output.
+ * Prepare internal log line
  */
-const logInternal = function (message, data, level) {
-    if (!level) level = LOG_LEVELS.INFO;
-
-    if (!module.exports.isDebugMode && level === LOG_LEVELS.DEBUG) return;
-
+const prepareInternalLogLine = function (message, data, level) {
     data = limitDepth(data, MAX_DEPTH);
 
     // Use short names to save log space.
@@ -77,7 +73,20 @@ const logInternal = function (message, data, level) {
 
     Object.assign(rec, data);
 
-    console.log(JSON.stringify(rec));
+    return JSON.stringify(rec);
+};
+
+/**
+ * Logs given object as JSON to standart output.
+ */
+const logInternal = function (message, data, level) {
+    if (!level) level = LOG_LEVELS.INFO;
+
+    if (!module.exports.isDebugMode && level === LOG_LEVELS.DEBUG) return;
+
+    const line = prepareInternalLogLine(message, data, level);
+
+    console.log(line);
 };
 
 const logWarning = function (message, data) { logInternal(message, data, LOG_LEVELS.WARNING); };
@@ -132,6 +141,7 @@ module.exports = {
     // Core functions
     LEVELS: LOG_LEVELS,
     internal: logInternal,
+    prepareInternalLogLine: prepareInternalLogLine,
 
     // Indicates whether DEBUG messages will be printed or not
     isDebugMode: false,
