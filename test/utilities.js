@@ -1,27 +1,6 @@
-import { assert } from 'chai';
-import crypto from 'crypto';
+import { assert, expect } from 'chai';
+import _ from 'underscore';
 import utils from '../build/utilities';
-
-const NON_STRINGS = [
-    null, undefined, 0, -123, 999, {}, new Date(), 123.123, NaN, Infinity, -Infinity,
-];
-const NON_IP_STRINGS = [
-    '', 'dummy', 'localhost', '123', '123.123.123', '123.123.123.', '.123.123.123',
-    '256.256.256.256', ' 1.1.1.1', ' 1.1.1.1 ', '1.1.1.1 ', '1 .2.3.4',
-];
-const PUBLIC_IP_ADDRESSES = [
-    '1.2.3.4', '0.0.1.0', '0.1.0.0', '1.0.0.0', '01.02.03.04', '88.208.91.78',
-    '001.002.003.004', '100.200.233.244', '255.255.255.255',
-];
-const PRIVATE_IP_ADDRESSES = [
-    '0.0.0.0', '00.00.00.00', '000.000.000.000',
-    '10.0.0.0', '010.0.0.0', '10.0.0.128', '10.255.255.255', '010.020.030.040',
-    '44.128.0.0', '044.128.0.0', '44.128.255.255', '044.128.255.255',
-    '127.0.0.0', '127.0.0.1', '127.00.00.1', '127.000.000.1', '127.255.255.255',
-    '169.254.0.0', '169.254.255.255', '169.254.169.254', '169.254.255.255',
-    '172.16.0.0', '172.016.0.0', '172.16.255.255', '172.25.0.0', '172.025.0.0', '172.25.255.255', '172.31.0.0', '172.031.0.0', '172.31.255.255',
-    '192.168.0.0', '192.168.1.1', '192.168.1.20', '192.168.255.255',
-];
 
 describe('utilities', () => {
     describe('#cryptoRandomObjectId()', () => {
@@ -183,5 +162,18 @@ describe('utilities', () => {
             assert(!utils.isForbiddenUsername('01234.56789'));
             assert(!utils.isForbiddenUsername('1aaaaa5'));
         });
+    });
+
+    it('sequentializePromises()', () => {
+        const range = _.range(21, 33);
+        const promises = range.map((index) => {
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(index), Math.round(Math.random() * 100));
+            });
+        });
+
+        return utils
+            .sequentializePromises(promises)
+            .then(data => expect(data).to.be.eql(range));
     });
 });

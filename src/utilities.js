@@ -374,3 +374,28 @@ exports.createTextSearchQuery = function (searchString) {
         $search: wordsInString.length > 1 ? wordsInString.map((word) => { return String(word); }).join(' ') : searchString,
     };
 };
+
+/**
+ * Executes array of promises in sequence and then returns array where Nth item is result of Nth promise.
+ */
+exports.sequentializePromises = (promises) => {
+    const results = [];
+
+    if (!promises.length) return Promise.resolve([]);
+
+    const firstPromise = promises.shift();
+
+    return promises
+        .reduce((prev, next) => {
+            return prev.then((data) => {
+                results.push(data);
+
+                return next.then ? next : next();
+            });
+        }, firstPromise.then ? firstPromise : firstPromise())
+        .then((data) => {
+            results.push(data);
+
+            return results;
+        });
+};
