@@ -215,27 +215,21 @@ exports.weightedAverage = function (val1, weight1, val2, weight2) {
 
 /**
  * Promised version of request() library.
- * @param opts
+ * @param opts Options object for request() function.
+ * @param failOnHttpError If true-ish, the function rejects the promise
+ * if HTTP status is in the range 4XX or 5XX.
  * @return
  */
-exports.requestPromised = function (opts) {
+exports.requestPromised = function (opts, failOnHttpError) {
     return new Promise(((resolve, reject) => {
         request(opts, (error, response, body) => {
             if (error) return reject(error);
+            if (failOnHttpError && response.statusCode >= 400 && response.statusCode <= 599) {
+                return reject(new Error('Received HTTP error response status ' + response.statusCode));
+            }
             resolve({ body, response });
         });
     }));
-};
-
-/**
- * Creates regexp query object for full text search in Mongo DB
- */
-exports.createRegexpQuery = function (searchString) {
-    searchString = exports.escapeRegExp(searchString);
-    return {
-        $regex: `.*${searchString.replace(/ /g, '.*')}.*`,
-        $options: 'i',
-    };
 };
 
 /**
@@ -362,17 +356,6 @@ const FORBIDDEN_REGEXP = new RegExp(`^(${consts.ANONYMOUS_USERNAME}|${FORBIDDEN_
  */
 exports.isForbiddenUsername = function (username) {
     return !!username.match(FORBIDDEN_REGEXP);
-};
-
-/**
- * Creates mongoDB query for full text search on collection with text index
- * If string contains multiple words, query uses logical AND between words
- */
-exports.createTextSearchQuery = function (searchString) {
-    const wordsInString = searchString.match(/\w+/g);
-    return {
-        $search: wordsInString.length > 1 ? wordsInString.map((word) => { return String(word); }).join(' ') : searchString,
-    };
 };
 
 /**
