@@ -212,6 +212,37 @@ describe('list_dictionary', () => {
         });
     });
 
+    describe('#getLast() #removeLast()', () => {
+        it('just works', () => {
+            const ld = new ListDictionary();
+            const array = [];
+            assertSame(ld, array);
+
+            assert.equal(ld.getLast(), null);
+            assertSame(ld, array);
+
+            for (let i = 0; i < 10; i++) {
+                assert(ld.add(`key${i}`, `val${i}`));
+                array.push({ key: `key${i}`, value: `val${i}` });
+                assertSame(ld, array);
+            }
+
+            while (ld.length() > 0) {
+                assert.equal(ld.getLast(), array[array.length - 1].value);
+                assertSame(ld, array);
+
+                assert.equal(ld.removeLast(), array.pop().value);
+                assertSame(ld, array);
+            }
+
+            assert.equal(ld.getLast(), null);
+            assertSame(ld, array);
+
+            assert.equal(ld.removeLast(), null);
+            assertSame(ld, array);
+        });
+    });
+
     describe('#moveFirstToEnd()', () => {
         it('just works', () => {
             const ld = new ListDictionary();

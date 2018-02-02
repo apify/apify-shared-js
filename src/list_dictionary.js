@@ -41,19 +41,28 @@ export default class ListDictionary {
     }
 
     /**
-     * Gets the first page request from the queue. The function
-     * returns the Request object or null if the queue is empty.
+     * Gets the first item in the list. The function returns null if the list is empty.
      */
     getFirst() {
         const head = this.linkedList.head;
-        if (head) { return head.data; }
+        if (head) return head.data;
 
         return null;
     }
 
     /**
-     * Gets the first page request from the queue and moves it to the end of the queue.
-     * The function returns the Request object or null if the queue is empty.
+     * Gets the last item in the list. The function returns null if the list is empty.
+     */
+    getLast() {
+        const tail = this.linkedList.tail;
+        if (tail) return tail.data;
+
+        return null;
+    }
+
+    /**
+     * Gets the first item from the list and moves it to the end of the list.
+     * The function returns null if the queue is empty.
      */
     moveFirstToEnd() {
         const node = this.linkedList.head;
@@ -67,8 +76,8 @@ export default class ListDictionary {
     }
 
     /**
-     * Removes the first item from the list. The function
-     * returns the item object or null if the list is empty.
+     * Removes the first item from the list.
+     * The function returns the item or null if the list is empty.
      */
     removeFirst() {
         const head = this.linkedList.head;
@@ -79,6 +88,21 @@ export default class ListDictionary {
         delete this.dictionary[head.dictKey];
 
         return head.data;
+    }
+
+    /**
+     * Removes the last item from the list.
+     * The function returns the item or null if the list is empty.
+     */
+    removeLast() {
+        const tail = this.linkedList.tail;
+
+        if (!tail) return null;
+
+        this.linkedList.removeNode(tail);
+        delete this.dictionary[tail.dictKey];
+
+        return tail.data;
     }
 
     /**
