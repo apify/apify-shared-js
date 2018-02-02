@@ -1,3 +1,7 @@
+0.0.11 / 2018-02-02
+===================
+- Added getLast() and removeLast() methods to ListDictionary, added unit tests.
+
 0.0.10 / 2018-02-01
 ===================
 - Added failOnHttpError param to requestPromised()
