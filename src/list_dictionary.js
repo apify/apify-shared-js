@@ -2,8 +2,8 @@
  * This module defines the ListDictionary class, a data structure
  * that combines a linked list and a dictionary.
  *
- * Author: Jan Curn (jan@apifier.com)
- * Copyright(c) 2015 Apifier. All rights reserved.
+ * Author: Jan Curn (jan@apify.com)
+ * Copyright(c) 2015 Apify. All rights reserved.
  *
  */
 
