@@ -21,12 +21,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apifier/apify-shared-js"
+    "url": "git+https://github.com/apifytech/apify-shared-js"
   },
   "bugs": {
-    "url": "https://github.com/apifier/apify-shared-js/issues"
+    "url": "https://github.com/apifytech/apify-shared-js/issues"
   },
-  "homepage": "https://github.com/apifier/apify-shared-js",
+  "homepage": "https://github.com/apifytech/apify-shared-js",
   "scripts": {
     "build": "babel src --out-dir build",
     "build-doc": "npm run clean && npm run build && node ./node_modules/jsdoc/jsdoc.js --package ./package.json -c ./jsdoc/conf.json -d docs",
@@ -62,7 +62,7 @@
     "isparta": "^4.0.0",
     "jsdoc": "^3.4.3",
     "jsdoc-export-default-interop": "^0.3.1",
-    "apify-jsdoc-template": "github:Apifier/apify-jsdoc-template",
+    "apify-jsdoc-template": "github:apifytech/apify-jsdoc-template",
     "mocha": "^4.0.1",
     "sinon": "^4.1.2"
   }

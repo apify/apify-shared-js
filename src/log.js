@@ -5,10 +5,10 @@ import { truncate } from './utilities.client';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const LOG_LEVELS = {
-    // For unexpected errors in Apifier system
+    // For unexpected errors in Apify system
     ERROR: 'ERROR',
     // For situations where error is caused by user (e.g. Meteor.Error), i.e. when the error is not
-    // caused by Apifier system, avoid the word "ERROR" to simplify searching in log
+    // caused by Apify system, avoid the word "ERROR" to simplify searching in log
     SOFT_FAIL: 'SOFT_FAIL',
     WARNING: 'WARNING',
     INFO: 'INFO',

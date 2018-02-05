@@ -1,8 +1,8 @@
 /*!
  * This module defines the LinkedList class, which represents a doubly-linked list data structure.
  *
- * Author: Jan Curn (jan@apifier.com)
- * Copyright(c) 2014 Apifier. All rights reserved.
+ * Author: Jan Curn (jan@apify.com)
+ * Copyright(c) 2014 Apify. All rights reserved.
  *
  */
 

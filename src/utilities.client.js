@@ -1,8 +1,8 @@
 /*!
  * This module contains various client-side utility and helper functions.
  *
- * Author: Jan Curn (jan@apifier.com)
- * Copyright(c) 2016 Apifier. All rights reserved.
+ * Author: Jan Curn (jan@apify.com)
+ * Copyright(c) 2016 Apify. All rights reserved.
  *
  */
 
