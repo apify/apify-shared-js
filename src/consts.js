@@ -19,7 +19,7 @@ export const ACT_SOURCE_TYPES = {
     GITHUB_GIST: 'GITHUB_GIST',
 };
 
-export const ACTOR_EVENTS = {
+export const ACTOR_EVENT_NAMES = {
     CPU_INFO: 'CPU_INFO',
 };
 
