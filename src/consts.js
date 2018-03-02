@@ -19,6 +19,10 @@ export const ACT_SOURCE_TYPES = {
     GITHUB_GIST: 'GITHUB_GIST',
 };
 
+export const ACTOR_EVENTS = {
+    CPU_INFO: 'CPU_INFO',
+};
+
 /**
  * Dictionary of possible values for 'status' field of act2Builds or act2Runs collections.
  */
