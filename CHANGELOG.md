@@ -1,3 +1,7 @@
+0.0.13 / 2018-02-10
+===================
+- Renamed ParseJsonStream to ParseJsonlStream and fixed its functionality to support JSONL
+
 0.0.11 / 2018-02-02
 ===================
 - Added getLast() and removeLast() methods to ListDictionary, added unit tests.

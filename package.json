@@ -1,13 +1,10 @@
 {
   "name": "apify-shared",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "description": "Tools and constants shared across Apify projects.",
   "main": "build/index.js",
   "keywords": [
-    "apify",
-    "apifier",
-    "crawler",
-    "scraper"
+    "apify"
   ],
   "author": {
     "name": "Apify",
@@ -28,10 +25,10 @@
   },
   "homepage": "https://github.com/apifytech/apify-shared-js",
   "scripts": {
-    "build": "babel src --out-dir build",
+    "build": "rm -rf ./build && babel src --out-dir build",
     "build-doc": "npm run clean && npm run build && node ./node_modules/jsdoc/jsdoc.js --package ./package.json -c ./jsdoc/conf.json -d docs",
     "test": "npm run build && mocha --timeout 5000 --compilers js:babel-core/register --recursive",
-    "test-cov": "npm run build && babel-node node_modules/isparta/bin/isparta cover --report html --report text node_modules/.bin/_mocha",
+    "test-cov": "npm run build && babel-node node_modules/isparta/bin/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- --reporter dot",
     "prepublishOnly": "test $RUNNING_FROM_SCRIPT || (echo \"You must use publish.sh instead of 'npm publish' directly!\"; exit 1)",
     "clean": "rm -rf build && rm -rf docs",
     "lint": "npm run build && eslint src test"
@@ -59,11 +56,12 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.4.0",
+    "istanbul": "0.4.4",
     "isparta": "^4.0.0",
     "jsdoc": "^3.4.3",
     "jsdoc-export-default-interop": "^0.3.1",
     "apify-jsdoc-template": "github:apifytech/apify-jsdoc-template",
-    "mocha": "^4.0.1",
+    "mocha": "^5.0.0",
     "sinon": "^4.1.2"
   }
 }
