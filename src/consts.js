@@ -20,7 +20,7 @@ export const ACT_SOURCE_TYPES = {
 };
 
 export const ACTOR_EVENT_NAMES = {
-    CPU_INFO: 'CPU_INFO',
+    CPU_INFO: 'cpuInfo',
 };
 
 /**
