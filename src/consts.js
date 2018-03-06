@@ -167,6 +167,9 @@ export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
     BUILD_DEFAULT_MEMORY_MBYTES: 1024,
 
+    // Maximum duration of build in seconds.
+    BUILD_TIMEOUT_SECS: 600,
+
     // For each build or run container, set disk quota based on memory size
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
 
@@ -175,4 +178,8 @@ export const ACTOR_LIMITS = {
 
     // The default limit of memory for all running Actor tasks for paid accounts.
     PAID_ACCOUNT_MAX_MEMORY_MBYTES: 16384,
+
+    // Minimum and maximum memory for a single act run.
+    MIN_RUN_MEMORY_MBYTES: 256,
+    MAX_RUN_MEMORY_MBYTES: 16384,
 };
