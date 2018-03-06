@@ -1,3 +1,7 @@
+0.0.18 / 2018-03-06
+===================
+- Added new Actor constants
+
 0.0.13 / 2018-02-10
 ===================
 - Renamed ParseJsonStream to ParseJsonlStream and fixed its functionality to support JSONL
