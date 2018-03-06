@@ -159,3 +159,24 @@ export const ACT_RESTART_ON_ERROR = {
  */
 export const COMPUTE_UNIT_MB = 1024;
 export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
+
+
+/**
+ * Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
+ */
+export const ACT_BUILD_DEFAULT_MEMORY_MBYTES = 1024;
+
+/**
+ * For each build or run container, set disk quota based on memory size
+ */
+export const ACT_DISK_TO_MEMORY_SIZE_COEFF = 2;
+
+/**
+ * The default limit of memory for all running Actor tasks for free accounts.
+ */
+export const ACTOR_FREE_ACCOUNT_MEMORY_LIMIT_MBYTES = 2048;
+
+/**
+ * The default limit of memory for all running Actor tasks for paid accounts.
+ */
+export const ACTOR_PAID_ACCOUNT_MEMORY_LIMIT_MBYTES = 16384;
