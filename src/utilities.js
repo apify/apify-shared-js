@@ -257,9 +257,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'app', 'schedules', 'community', 'storage', 'storages', 'account', 'node_modules', 'bower_components',
     'video', 'knowledgebase', 'forum', 'customers', 'blog', 'health-check', 'health', 'anim',
     'forum_topics.json', 'forum_categories.json', 'me', 'you', 'him', 'she', 'it', 'external',
-    'actor', 'crawler', 'scheduler', 'storage', 'api', 'sdk', 'puppeteer', 'webdriver',
+    'actor', 'crawler', 'scheduler', 'api', 'sdk', 'puppeteer', 'webdriver',
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
-    'welcome.action', 'echo',
+    'welcome.action', 'echo', 'proxy', 'super-proxy',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
