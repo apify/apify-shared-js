@@ -79,7 +79,8 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     },
     {
         name: 'apify/actor-node-chrome',
-        displayName: 'Node.js 7 + Chrome on Debian',
+        displayName: 'Node.js 8 + Chrome on Debian',
+        copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
@@ -93,7 +94,8 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     },
     {
         name: 'apify/actor-node-chrome:beta',
-        displayName: 'BETA: Node.js 7 + Chrome on Debian',
+        displayName: 'BETA: Node.js 8 + Chrome on Debian',
+        copyChown: 'myuser:myuser',
     },
 ];
 
