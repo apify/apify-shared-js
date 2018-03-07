@@ -1,3 +1,7 @@
+0.0.20 / 2018-03-08
+===================
+- Updated settings for apify/actor-node-chrome Docker image
+
 0.0.19 / 2018-03-06
 ===================
 - Added new Actor constants
