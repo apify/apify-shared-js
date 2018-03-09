@@ -97,7 +97,7 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     },
     {
         name: 'apify/actor-node-chrome-xvfb:beta',
-        displayName: 'BETA: Node.js 8 + Chrome + Xvfb on Debian',
+        displayName: 'BETA: Node.js 8 + Chrome + Puppeteer + Xvfb on Debian',
         copyChown: 'myuser:myuser',
     },
 
