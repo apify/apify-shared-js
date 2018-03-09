@@ -66,36 +66,53 @@ export const META_ORIGINS = {
  * See https://www.apify.com/docs/actor#base-images
  */
 export const ACTOR_BASE_DOCKER_IMAGES = [
+    // Latest:
     {
         name: 'apify/actor-node-basic',
         displayName: 'Node.js 8 on Alpine Linux',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-puppeteer',
-        displayName: 'Node.js 8 + Puppeteer on Debian',
-        copyChown: 'node:node',
-        prePull: true,
-    },
-    {
         name: 'apify/actor-node-chrome',
-        displayName: 'Node.js 8 + Chrome on Debian',
+        displayName: 'Node.js 8 + Chrome + Puppeteer on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
+    {
+        name: 'apify/actor-node-chrome-xvfb',
+        displayName: 'Node.js 8 + Chrome + Puppeteer + Xvfb on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+
+    // Beta:
     {
         name: 'apify/actor-node-basic:beta',
         displayName: 'BETA: Node.js 8 on Alpine Linux',
     },
     {
-        name: 'apify/actor-node-puppeteer:beta',
-        displayName: 'BETA: Node.js 8 + Puppeteer on Debian',
-        copyChown: 'node:node',
+        name: 'apify/actor-node-chrome:beta',
+        displayName: 'BETA: Node.js 8 + Chrome + Puppeteer on Debian',
+        copyChown: 'myuser:myuser',
     },
     {
-        name: 'apify/actor-node-chrome:beta',
-        displayName: 'BETA: Node.js 8 + Chrome on Debian',
+        name: 'apify/actor-node-chrome-xvfb:beta',
+        displayName: 'BETA: Node.js 8 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
+    },
+
+    // Deprecated:
+    // TODO: Keep the for some time and then migrate acts to recommended images.
+    {
+        name: 'apify/actor-node-puppeteer',
+        displayName: 'Node.js 8 + Puppeteer on Debian (DEPRECATED, use apify/actor-node-chrome)',
+        copyChown: 'node:node',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-puppeteer:beta',
+        displayName: 'BETA: Node.js 8 + Puppeteer on Debian (DEPRECATED, use apify/actor-node-chrome:beta)',
+        copyChown: 'node:node',
     },
 ];
 
