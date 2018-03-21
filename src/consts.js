@@ -202,3 +202,8 @@ export const ACTOR_LIMITS = {
     MIN_RUN_MEMORY_MBYTES: 256,
     MAX_RUN_MEMORY_MBYTES: 16384,
 };
+
+/**
+ * Use as username for returning user own info from API v2/users/username
+ */
+export const ME_USER_NAME_PLACEHOLDER = 'me';
