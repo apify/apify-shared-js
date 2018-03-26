@@ -259,7 +259,8 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'forum_topics.json', 'forum_categories.json', 'me', 'you', 'him', 'she', 'it', 'external',
     'actor', 'crawler', 'scheduler', 'api', 'sdk', 'puppeteer', 'webdriver',
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
-    'welcome.action', 'echo', 'proxy', 'super-proxy',
+    'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
+    'kb',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
