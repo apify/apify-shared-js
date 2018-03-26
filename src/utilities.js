@@ -260,7 +260,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'actor', 'crawler', 'scheduler', 'api', 'sdk', 'puppeteer', 'webdriver',
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
     'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
-    'kb',
+    'kb', 'cookies', 'cookie-policy', 'cookies-policy',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
