@@ -56,14 +56,16 @@ exports.parseDateFromJson = function (date) {
 
 /**
  * Returns a Promise object that will wait a specific number of milliseconds.
- * @param millis
- * @returns {*|exports|module.exports}
+ * @param millis Time to wait. If the value is not larger than zero, the promise resolves immediatelly.
+ * @returns Promise
  */
 exports.delayPromise = function (millis) {
     return new Promise(((resolve) => {
-        setTimeout(() => {
+        if (millis > 0) {
+            setTimeout(() => resolve(), millis);
+        } else {
             resolve();
-        }, millis);
+        }
     }));
 };
 
@@ -259,7 +261,8 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'forum_topics.json', 'forum_categories.json', 'me', 'you', 'him', 'she', 'it', 'external',
     'actor', 'crawler', 'scheduler', 'api', 'sdk', 'puppeteer', 'webdriver',
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
-    'welcome.action', 'echo', 'proxy', 'super-proxy',
+    'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
+    'kb', 'cookies', 'cookie-policy', 'cookies-policy',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',

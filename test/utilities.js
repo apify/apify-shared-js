@@ -176,4 +176,26 @@ describe('utilities', () => {
             .sequentializePromises(promises)
             .then(data => expect(data).to.be.eql(range));
     });
+
+    it('delayPromise()', () => {
+        let timeBefore;
+        return Promise.resolve()
+            .then(() => {
+                return utils.delayPromise(0);
+            })
+            .then(() => {
+                return utils.delayPromise(null);
+            })
+            .then(() => {
+                return utils.delayPromise(-1);
+            })
+            .then(() => {
+                timeBefore = Date.now();
+                return utils.delayPromise(100);
+            })
+            .then(() => {
+                const timeAfter = Date.now();
+                expect(timeAfter - timeBefore).to.be.gte(95);
+            });
+    });
 });
