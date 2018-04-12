@@ -172,7 +172,9 @@ export const BUILD_TAG_LATEST = 'latest';
  */
 export const ACT_RESTART_ON_ERROR = {
     MAX_RESTARTS: 3,
-    INTERVAL_MILLIS: 5 * 60 * 1000,
+    // This needs to be low enough so that it only covers restart loops, rather than e.g.
+    // errors during crawling of large lists of URLs
+    INTERVAL_MILLIS: 1 * 60 * 1000,
 };
 
 /**
