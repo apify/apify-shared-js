@@ -164,7 +164,7 @@ module.exports = {
     // Core functions
     LEVELS: LOG_LEVELS,
     internal: logInternal,
-    prepareInternalJsonLogLine,
+    prepareInternalLogLine: prepareInternalJsonLogLine,
 
     // Indicates whether DEBUG messages will be printed or not
     isDebugMode: false,
