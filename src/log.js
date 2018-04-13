@@ -56,9 +56,11 @@ const limitDepth = function (record, depth) {
 };
 
 /**
- * Prepare internal log line
+ * Prepare internal JSON log line
  */
-const prepareInternalLogLine = function (message, data, level) {
+const prepareInternalJsonLogLine = function (message, data, level, exception) {
+    if (exception) data = Object.assign({}, data, { exception });
+
     data = limitDepth(data, MAX_DEPTH);
 
     // Use short names to save log space.
@@ -77,14 +79,35 @@ const prepareInternalLogLine = function (message, data, level) {
 };
 
 /**
+ * Prepare internal plain text log line
+ */
+const prepareInternalPlainLogLine = function (message, data, level, exception) {
+    data = limitDepth(data, MAX_DEPTH);
+
+    const parts = [];
+
+    if (!isProduction && !module.exports.skipTimeInDev) parts.push(new Date());
+    parts.push(`${level}:`);
+    parts.push(message);
+    if (data) parts.push(JSON.stringify(data));
+
+    const line = parts.join(' ');
+
+    return exception
+        ? `${line}\n- ${exception}`
+        : line;
+};
+
+/**
  * Logs given object as JSON to standart output.
  */
-const logInternal = function (message, data, level) {
+const logInternal = function (message, data, level, exception) {
     if (!level) level = LOG_LEVELS.INFO;
-
     if (!module.exports.isDebugMode && level === LOG_LEVELS.DEBUG) return;
 
-    const line = prepareInternalLogLine(message, data, level);
+    const line = module.exports.logJson
+        ? prepareInternalJsonLogLine(message, data, level, exception)
+        : prepareInternalPlainLogLine(message, data, level, exception);
 
     console.log(line);
 };
@@ -99,17 +122,17 @@ const logSoftFail = function (message, data) { logInternal(message, data, LOG_LE
 const logException = function (exception, message, data) {
     if (!data) data = {};
 
-    // if it's Meteor.Error then don't print stack trace and use "ERROR" level
-    // which is used for more serious errors
+    // if it's Meteor.Error then don't print stack trace and use "SOFT_FAIL" level
+    // which is used for less serious errors
     if (exception && exception.errorType === 'Meteor.Error') {
         const conciseException = {
             code: exception.error,
             reason: exception.reason || exception.message || exception.stack,
             details: exception.details,
         };
-        logInternal(message, Object.assign({}, data, { exception: conciseException }), LOG_LEVELS.SOFT_FAIL);
+        logInternal(message, data, LOG_LEVELS.SOFT_FAIL, conciseException);
     } else {
-        logInternal(message, Object.assign({}, data, { exception }), LOG_LEVELS.ERROR);
+        logInternal(message, data, LOG_LEVELS.ERROR, exception);
     }
 };
 
@@ -141,13 +164,16 @@ module.exports = {
     // Core functions
     LEVELS: LOG_LEVELS,
     internal: logInternal,
-    prepareInternalLogLine: prepareInternalLogLine,
+    prepareInternalJsonLogLine,
 
     // Indicates whether DEBUG messages will be printed or not
     isDebugMode: false,
 
     // Indicates that time should not be logged when running in non-production environment
     skipTimeInDev: true,
+
+    // Indicates if log line should be a JSON or plain text
+    logJson: true,
 
     // Helper functions for common usage
     warning: logWarning,
