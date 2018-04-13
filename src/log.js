@@ -93,8 +93,10 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
 
     const line = parts.join(' ');
 
+    if (exception) exception = limitDepth(exception, MAX_DEPTH);
+
     return exception
-        ? `${line}\n- ${exception}`
+        ? `${line}\n${JSON.stringify(exception)}`
         : line;
 };
 
