@@ -211,3 +211,8 @@ export const ACTOR_LIMITS = {
  * Use as username for returning user own info from API v2/users/username
  */
 export const ME_USER_NAME_PLACEHOLDER = 'me';
+
+/**
+ * Max length of the queue head that server will return in Request Queue API.
+ */
+export const REQUEST_QUEUE_HEAD_MAX_LIMIT = 1000;
