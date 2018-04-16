@@ -54,7 +54,6 @@ const tests = {
             'ssh://host.xz/a/b/c',
             'ssh://host.xz/a/b/c/#something',
             'ssh://host.xz/a/b/c/#something:a/b/c',
-
         ],
         invalid: [
             '/path/to/repo.git/',
@@ -69,6 +68,38 @@ const tests = {
             'user@host.xz:path/to/repo.git',
             'user@host.xz:~user/path/to/repo.git/',
             '~/path/to/repo.git',
+        ],
+    },
+
+    PROXY_GROUP_NAME_REGEX: {
+        valid: [
+            '123_jkn_090',
+            '123_090',
+            'klkn_kkk',
+            'd',
+            '7',
+        ],
+        invalid: [
+            'jjj_',
+            's-s',
+            'k#k',
+            '$',
+        ],
+    },
+
+    PROXY_SESSION_ID_REGEX: {
+        valid: [
+            '123_jkn_090',
+            '123_090',
+            'klkn_kkk',
+            'd',
+            '7',
+        ],
+        invalid: [
+            'jjj_',
+            's-s',
+            'k#k',
+            '$',
         ],
     },
 };

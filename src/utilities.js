@@ -385,3 +385,16 @@ exports.sequentializePromises = (promises) => {
             return results;
         });
 };
+
+/**
+ * Helper function for validation if parameter is an instance of given prototype or multiple prototypes.
+ */
+exports.checkParamPrototypeOrThrow = (paramVal, paramName, prototypes, prototypeName, isOptional = false) => {
+    if (isOptional && (paramVal === undefined || paramVal === null)) return;
+
+    const hasCorrectPrototype = prototypes instanceof Array
+        ? _.some(prototypes, prototype => paramVal instanceof prototype)
+        : paramVal instanceof prototypes;
+
+    if (!hasCorrectPrototype) throw new Error(`Parameter "${paramName}" must be an instance of ${prototypeName}`);
+};
