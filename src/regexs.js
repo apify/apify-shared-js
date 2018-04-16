@@ -17,6 +17,13 @@ export const GIT_REPO_REGEX = /^(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\/?|
 export const DNS_SAFE_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])$/;
 
 /**
+ * Apify proxy group name and SESSION ID is used in urls and cannot contain `-` because this character is used as separator
+ * in proxy username.
+ */
+export const PROXY_GROUP_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])$/;
+export const PROXY_SESSION_ID_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])$/;
+
+/**
  * AWS S3 docs say:
  * "The following character sets are generally safe for use in key names:
  * - Alphanumeric characters [0-9a-zA-Z]
