@@ -228,6 +228,20 @@ export const DEFAULT_PROXY_HOSTNAME = 'proxy.apify.com';
 export const DEFAULT_PROXY_PORT = 8000;
 
 /**
+ * Default value for APIFY_LOCAL_EMULATION_DIR
+ */
+export const DEFAULT_LOCAL_EMULATION_DIR = 'apify_local';
+
+/**
+ * Local emulation sub directories for local stores
+ */
+export const LOCAL_EMULATION_SUBDIRS = {
+    datasets: 'datasets',
+    keyValueStores: 'key-value-stores',
+    requestQueues: 'request-queues',
+};
+
+/**
  * Dictionary of APIFY_XXX environment variable names.
  */
 export const ENV_VARS = {
@@ -254,3 +268,4 @@ export const ENV_VARS = {
     ACTOR_EVENTS_WS_URL: 'APIFY_ACTOR_EVENTS_WS_URL',
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
 };
+
