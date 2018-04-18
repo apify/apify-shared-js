@@ -269,3 +269,11 @@ export const ENV_VARS = {
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
 };
 
+/**
+ * Defaults input and output key-value stores keys
+ */
+export const KEY_VALUE_STORE_KEYS = {
+    INPUT: 'INPUT',
+    OUTPUT: 'OUTPUT',
+};
+
