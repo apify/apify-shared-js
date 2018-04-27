@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/apifytech/apify-shared-js/issues"
   },
-  "homepage": "https://github.com/apifytech/apify-shared-js",
+  "homepage": "https://www.apify.com",
   "scripts": {
     "build": "rm -rf ./build && babel src --out-dir build",
     "build-doc": "npm run clean && npm run build && node ./node_modules/jsdoc/jsdoc.js --package ./package.json -c ./jsdoc/conf.json -d docs",
