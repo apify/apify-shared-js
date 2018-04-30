@@ -71,32 +71,19 @@ const tests = {
         ],
     },
 
-    PROXY_GROUP_NAME_REGEX: {
+    APIFY_PROXY_VALUE_REGEX: {
         valid: [
             '123_jkn_090',
             '123_090',
             'klkn_kkk',
             'd',
             '7',
+            '0.345245346',
+            'fff~ggg',
         ],
         invalid: [
-            'jjj_',
-            's-s',
-            'k#k',
-            '$',
-        ],
-    },
-
-    PROXY_SESSION_ID_REGEX: {
-        valid: [
-            '123_jkn_090',
-            '123_090',
-            'klkn_kkk',
-            'd',
-            '7',
-        ],
-        invalid: [
-            'jjj_',
+            '',
+            'jjj-',
             's-s',
             'k#k',
             '$',

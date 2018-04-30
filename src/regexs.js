@@ -3,25 +3,24 @@
  * with our restriction that hostname must be a TLD!
  * original:  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
  */
-export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
 /**
  * Comes from https://github.com/jonschlinkert/is-git-url/ but we have:
  * - added support for ...:/dir/subdir syntax
  */
-export const GIT_REPO_REGEX = /^(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\/?|\#[-\d\w._:\/]+?)$/;
+export const GIT_REPO_REGEX = /^(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\/?|#[-\d\w._:/]+?)$/;
 
 /**
  * Matches a string that might be used in a hostname (e.g. "my-host-name")
  */
-export const DNS_SAFE_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])$/;
+export const DNS_SAFE_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])$/;
 
 /**
- * Apify proxy group name and SESSION ID is used in urls and cannot contain `-` because this character is used as separator
- * in proxy username.
+ * Regular expression to validate Apify Proxy group name and session ID.
+ * This must correspond to REGEX_STR_USERNAME_VALUE in apify-system!
  */
-export const PROXY_GROUP_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])$/;
-export const PROXY_SESSION_ID_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9_]*[a-zA-Z0-9])$/;
+export const APIFY_PROXY_VALUE_REGEX = /^[\w._~]+$/;
 
 /**
  * AWS S3 docs say:
@@ -30,7 +29,7 @@ export const PROXY_SESSION_ID_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9_]*[a-
  * - Special characters !, -, _, ., *, ', (, and )"
  * Additionally we allow \ and / and limit the length to 256 characters (TODO: document this)
  */
-export const KEY_VALUE_STORE_KEY_REGEX = /^([a-zA-Z0-9!\-_.*'()\\\/]{1,256})$/;
+export const KEY_VALUE_STORE_KEY_REGEX = /^([a-zA-Z0-9!\-_.*'()\\/]{1,256})$/;
 
 // taken from https://github.com/shinnn/github-username-regex
 const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
