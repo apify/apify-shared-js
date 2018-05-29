@@ -242,6 +242,11 @@ export const LOCAL_EMULATION_SUBDIRS = {
 };
 
 /**
+ * Throttling period for mongo increment updates
+ */
+export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
+
+/**
  * Dictionary of APIFY_XXX environment variable names.
  */
 export const ENV_VARS = {
@@ -277,4 +282,3 @@ export const KEY_VALUE_STORE_KEYS = {
     INPUT: 'INPUT',
     OUTPUT: 'OUTPUT',
 };
-
