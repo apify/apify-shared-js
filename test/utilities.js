@@ -1,5 +1,6 @@
 import { assert, expect } from 'chai';
 import _ from 'underscore';
+import * as http from 'http';
 import utils from '../build/utilities';
 
 describe('utilities', () => {
@@ -198,10 +199,8 @@ describe('utilities', () => {
                 expect(timeAfter - timeBefore).to.be.gte(95);
             });
     });
-});
 
-describe('utils.checkParamPrototypeOrThrow()', () => {
-    it('works', () => {
+    it('checkParamPrototypeOrThrow()', () => {
         // One prototype
         expect(() => utils.checkParamPrototypeOrThrow(new Date(), 'param', Date, 'Date')).to.not.throw();
         expect(() => utils.checkParamPrototypeOrThrow(null, 'param', Function, 'Date', true)).to.not.throw();
@@ -213,5 +212,31 @@ describe('utils.checkParamPrototypeOrThrow()', () => {
         expect(() => utils.checkParamPrototypeOrThrow(new Date(), 'param', [Function, Date], 'Date')).to.not.throw();
         expect(() => utils.checkParamPrototypeOrThrow(new Date(), 'param', [Function, String], 'Date')).to.throw();
         expect(() => utils.checkParamPrototypeOrThrow(new Date(), 'param', [], 'Date')).to.throw();
+    });
+
+    it('promisifyServerListen()', (done) => {
+        const server1 = http.createServer();
+        const server2 = http.createServer();
+
+        utils
+            .promisifyServerListen(server1)(8799)
+            .then(() => {
+                expect(server1.listening).to.be.eql(true);
+                expect(server2.listening).to.be.eql(false);
+
+                return utils.promisifyServerListen(server2)(8799);
+            })
+            .then(() => {
+                throw new Error('Second server should not be able to start listening at the same port!');
+            }, (err) => {
+                expect(err.code).to.be.eql('EADDRINUSE');
+            })
+            .then(() => {
+                server1.close((err) => {
+                    expect(server1.listening).to.be.eql(false);
+                    expect(server2.listening).to.be.eql(false);
+                    done(err);
+                });
+            });
     });
 });

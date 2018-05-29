@@ -398,3 +398,37 @@ exports.checkParamPrototypeOrThrow = (paramVal, paramName, prototypes, prototype
 
     if (!hasCorrectPrototype) throw new Error(`Parameter "${paramName}" must be an instance of ${prototypeName}`);
 };
+
+/**
+ * Starts listening at a port specified in the constructor.
+ * Unfortunately server.listen() is not a normal function that fails on error, so we need this trickery.
+ * Returns a function that calls `server.listen(port)` and resolves once server starts listening.
+ *
+ * Usage: `promisifyServerListen(server)(1234)`;
+ *
+ * @param {Number} port
+ * @return {Function}
+ */
+exports.promisifyServerListen = (server) => {
+    return (port) => {
+        return new Promise((resolve, reject) => {
+            const onError = (err) => {
+                removeListeners();
+                reject(err);
+            };
+            const onListening = () => {
+                removeListeners();
+                resolve();
+            };
+            const removeListeners = () => {
+                server.removeListener('error', onError);
+                server.removeListener('listening', onListening);
+            };
+
+            server.on('error', onError);
+            server.on('listening', onListening);
+            server.listen(port);
+        });
+    };
+};
+
