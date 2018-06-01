@@ -63,6 +63,8 @@ const prepareInternalJsonLogLine = function (message, data, level, exception) {
 
     data = limitDepth(data, MAX_DEPTH);
 
+    if (module.exports.skipLevelInfo && level === LOG_LEVELS.INFO) level = undefined;
+
     // Use short names to save log space.
     // In development mode show more concise log otherwise it's impossible to see anything in it.
     // Message must be shown early for people to see!
@@ -87,7 +89,8 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
     const parts = [];
 
     if (!isProduction && !module.exports.skipTimeInDev) parts.push(new Date());
-    parts.push(`${level}:`);
+    if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${level}:`);
+
     parts.push(message);
     if (data) parts.push(JSON.stringify(data));
 
@@ -178,6 +181,10 @@ module.exports = {
 
     // Indicates if log line should be a JSON or plain text
     logJson: true,
+
+    // Indicates that level: "INFO" property should be skipped in the log.
+    // This is useful to reduce log space
+    skipLevelInfo: false,
 
     // Helper functions for common usage
     warning: logWarning,
