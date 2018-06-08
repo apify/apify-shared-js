@@ -223,11 +223,14 @@ exports.weightedAverage = function (val1, weight1, val2, weight2) {
  * @return
  */
 exports.requestPromised = function (opts, failOnHttpError) {
+    // TODO: Add unit test for this !!!
     return new Promise(((resolve, reject) => {
         request(opts, (error, response, body) => {
             if (error) return reject(error);
             if (failOnHttpError && response.statusCode >= 400 && response.statusCode <= 599) {
-                return reject(new Error('Received HTTP error response status ' + response.statusCode));
+                const err = new Error(`Received HTTP error response status ${response.statusCode}`);
+                err.statusCode = response.statusCode;
+                return reject(err);
             }
             resolve({ body, response });
         });
