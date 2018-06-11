@@ -203,7 +203,7 @@ export const ACTOR_LIMITS = {
     PAID_ACCOUNT_MAX_MEMORY_MBYTES: 16384,
 
     // Minimum and maximum memory for a single act run.
-    MIN_RUN_MEMORY_MBYTES: 256,
+    MIN_RUN_MEMORY_MBYTES: 128,
     MAX_RUN_MEMORY_MBYTES: 16384,
 };
 
