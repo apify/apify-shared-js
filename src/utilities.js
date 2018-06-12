@@ -230,6 +230,7 @@ exports.requestPromised = function (opts, failOnHttpError) {
             if (failOnHttpError && response.statusCode >= 400 && response.statusCode <= 599) {
                 const err = new Error(`Received HTTP error response status ${response.statusCode}`);
                 err.statusCode = response.statusCode;
+                err.body = body;
                 return reject(err);
             }
             resolve({ body, response });
