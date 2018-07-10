@@ -233,6 +233,11 @@ export const DEFAULT_PROXY_PORT = 8000;
 export const DEFAULT_LOCAL_EMULATION_DIR = 'apify_local';
 
 /**
+ * Default value for APIFY_CONTAINER_PORT
+ */
+export const DEFAULT_CONTAINER_PORT = 1234;
+
+/**
  * Local emulation sub directories for local stores
  */
 export const LOCAL_EMULATION_SUBDIRS = {
