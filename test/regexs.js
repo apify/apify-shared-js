@@ -89,6 +89,29 @@ const tests = {
             '$',
         ],
     },
+
+    KEY_VALUE_STORE_KEY_REGEX: {
+        valid: [
+            'hello123',
+            '123hello',
+            'this_is_1-key',
+            'with(parens)',
+            ")(x_._-''",
+            '!!!',
+        ],
+        invalid: [
+            '#',
+            '"hello"',
+            '/foo/bar',
+            '\\foo\\bar',
+            'some.*',
+            'one&two',
+            'yes?',
+            'xx{no}xx',
+            'http://www.google.com',
+            'C:\\Windows',
+        ],
+    },
 };
 
 describe('regexps', () => {
