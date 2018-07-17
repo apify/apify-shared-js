@@ -233,6 +233,11 @@ export const DEFAULT_PROXY_PORT = 8000;
 export const DEFAULT_LOCAL_EMULATION_DIR = 'apify_local';
 
 /**
+ * Default value for APIFY_CONTAINER_PORT
+ */
+export const DEFAULT_CONTAINER_PORT = 4321;
+
+/**
  * Local emulation sub directories for local stores
  */
 export const LOCAL_EMULATION_SUBDIRS = {
@@ -273,6 +278,8 @@ export const ENV_VARS = {
     ACTOR_EVENTS_WS_URL: 'APIFY_ACTOR_EVENTS_WS_URL',
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
+    CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
+    CONTAINER_URL: 'APIFY_CONTAINER_URL',
 };
 
 /**
