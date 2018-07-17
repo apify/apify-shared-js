@@ -27,9 +27,10 @@ export const APIFY_PROXY_VALUE_REGEX = /^[\w._~]+$/;
  * "The following character sets are generally safe for use in key names:
  * - Alphanumeric characters [0-9a-zA-Z]
  * - Special characters !, -, _, ., *, ', (, and )"
- * Additionally we allow \ and / and limit the length to 256 characters (TODO: document this)
+ * However, some of those characters are not valid across Win/Unix OS.
+ * Therefore we allow only a subset and limit the length to 256 characters (TODO: document this)
  */
-export const KEY_VALUE_STORE_KEY_REGEX = /^([a-zA-Z0-9!\-_.*'()\\/]{1,256})$/;
+export const KEY_VALUE_STORE_KEY_REGEX = /^([a-zA-Z0-9!\-_.'()]{1,256})$/;
 
 // taken from https://github.com/shinnn/github-username-regex
 const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
