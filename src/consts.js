@@ -235,7 +235,7 @@ export const DEFAULT_LOCAL_EMULATION_DIR = 'apify_local';
 /**
  * Default value for APIFY_CONTAINER_PORT
  */
-export const DEFAULT_CONTAINER_PORT = 1234;
+export const DEFAULT_CONTAINER_PORT = 4321;
 
 /**
  * Local emulation sub directories for local stores
