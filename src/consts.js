@@ -289,3 +289,12 @@ export const KEY_VALUE_STORE_KEYS = {
     INPUT: 'INPUT',
     OUTPUT: 'OUTPUT',
 };
+
+/**
+ * Types of customer request
+ */
+export const CUSTOMER_REQUEST_TYPES = {
+    EXTRACT_DATA: 'EXTRACT_DATA',
+    AUTOMATION: 'AUTOMATION',
+    OTHER: 'OTHER',
+};
