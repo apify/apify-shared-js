@@ -289,3 +289,8 @@ export const KEY_VALUE_STORE_KEYS = {
     INPUT: 'INPUT',
     OUTPUT: 'OUTPUT',
 };
+
+/**
+ * Max length of Actor log in number of characters.
+ */
+export const ACTOR_LOG_MAX_CHARS = 5000000;
