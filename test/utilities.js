@@ -239,4 +239,16 @@ describe('utilities', () => {
                 });
             });
     });
+
+    describe('stringifyGzipChunkArray', () => {
+        it('serializes simple input', () => {
+            const input = [
+                1,
+                'two',
+                { three: 'four' },
+                false,
+                null,
+            ];
+        });
+    });
 });
