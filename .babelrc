@@ -1,11 +1,5 @@
 {
-  "presets": [
-    ["babel-preset-env", {
-      "targets": {
-        "node": "7.0.0"
-      }
-    }]
-  ],
+  "presets": ["env"],
   "plugins": [
     "add-module-exports"
   ]
