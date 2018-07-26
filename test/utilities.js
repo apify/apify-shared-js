@@ -1,6 +1,9 @@
 import { assert, expect } from 'chai';
 import _ from 'underscore';
 import * as http from 'http';
+import { gunzip } from 'zlib';
+import { randomBytes } from 'crypto';
+import Promise from 'bluebird';
 import utils from '../build/utilities';
 
 describe('utilities', () => {
@@ -238,5 +241,119 @@ describe('utilities', () => {
                     done(err);
                 });
             });
+    });
+
+    describe('stringifyGzipChunkArray()', () => {
+        const gunzipP = Promise.promisify(gunzip);
+        const randomBytesP = Promise.promisify(randomBytes);
+        let expected;
+        const rD = size => randomBytesP(size || 1000).then(buf => buf.toString());
+        const data = [rD(), rD(), rD(), rD(), rD()];
+
+        it('serializes simple input', () => {
+            const input = [
+                1,
+                'two',
+                { three: 'four' },
+                false,
+                null,
+            ];
+
+            return utils
+                .stringifyGzipChunkArray(input, 1000)
+                .then(zipped => gunzipP(zipped[0]))
+                .then((unzipped) => {
+                    const string = unzipped.toString();
+                    const parsed = JSON.parse(string);
+                    expect(parsed).to.be.an('array');
+                    expect(parsed).to.deep.eql(input);
+                    expect(string).to.be.eql(JSON.stringify(input));
+                });
+        });
+        it('serializes large input into smaller chunks', () => {
+            return Promise.all(data)
+                .then((input) => {
+                    expected = input;
+                    return utils.stringifyGzipChunkArray(input, 4000);
+                })
+                .then(zipped => Promise.all(zipped.map(chunk => gunzipP(chunk))))
+                .then((unzipped) => {
+                    const parsedData = unzipped.map(buf => JSON.parse(buf.toString()));
+                    parsedData.forEach(item => expect(item).to.be.an('array'));
+                    const rebuilt = [].concat(...parsedData);
+                    expect(rebuilt).to.be.eql(expected);
+                });
+        });
+        it('serializes large input into individual chunks', () => {
+            return Promise.all(data)
+                .then((input) => {
+                    expected = input;
+                    return utils.stringifyGzipChunkArray(input, 1800);
+                })
+                .then(zipped => Promise.all(zipped.map(chunk => gunzipP(chunk))))
+                .then((unzipped) => {
+                    const parsedData = unzipped.map(buf => JSON.parse(buf.toString()));
+                    parsedData.forEach(item => expect(item).to.be.an('array'));
+                    const rebuilt = [].concat(...parsedData);
+                    expect(rebuilt).to.be.eql(expected);
+                });
+        });
+        it('fails to serialize when one chunk is too large', () => {
+            data.push(rD(2000));
+            return Promise.all(data)
+                .then((input) => {
+                    expected = input;
+                    return utils.stringifyGzipChunkArray(input, 1500);
+                })
+                .then(() => {
+                    throw new Error('Should fail');
+                }, (err) => {
+                    expect(err).to.be.an('error');
+                    expect(err.message).to.include('Chunk too large!');
+                });
+        });
+        it('fails to serialize large input chunks', () => {
+            return Promise.all(data)
+                .then((input) => {
+                    expected = input;
+                    return utils.stringifyGzipChunkArray(input, 800);
+                })
+                .then(() => {
+                    throw new Error('Should fail');
+                }, (err) => {
+                    expect(err).to.be.an('error');
+                    expect(err.message).to.include('Data too large!');
+                });
+        });
+        it('serializes complex structures correctly', () => {
+            const first = {
+                one: 'two',
+                three: [
+                    'four',
+                    {
+                        five: [6, 7, 8],
+                    },
+                ],
+                nine: {
+                    ten: 'eleven',
+                },
+            };
+            const second = [1, 2, 3, ['four', [5, 6], { seven: 8 }], 'nine'];
+            const third = [rD(2), rD(3), rD(10)];
+
+            return Promise.all(third)
+                .then((t) => {
+                    const input = [first, t, second, [], {}, null];
+                    expected = input;
+                    return utils.stringifyGzipChunkArray(input, 130);
+                })
+                .then(zipped => Promise.all(zipped.map(chunk => gunzipP(chunk))))
+                .then((unzipped) => {
+                    const parsedData = unzipped.map(buf => JSON.parse(buf.toString()));
+                    parsedData.forEach(item => expect(item).to.be.an('array'));
+                    const rebuilt = [].concat(...parsedData);
+                    expect(rebuilt).to.be.eql(expected);
+                });
+        });
     });
 });

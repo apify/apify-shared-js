@@ -9,6 +9,7 @@
 
 const _ = require('underscore');
 const crypto = require('crypto');
+const { gzip } = require('zlib');
 const Promise = require('bluebird');
 const request = require('request');
 const utilsClient = require('./utilities.client');
@@ -437,3 +438,43 @@ exports.promisifyServerListen = (server) => {
     };
 };
 
+const gzipP = Promise.promisify(gzip);
+/**
+ * Prepares an array of data for dispatch over network connection by serialization and compression into
+ * one or multiple chunks, limited in size by the maxChunkSizeBytes parameter.
+ *
+ * @param {Array} array of JSON serializable values
+ * @param {Number} maxChunkSizeBytes
+ *
+ * @return {Array}
+ */
+exports.stringifyGzipChunkArray = function stringifyGzipChunkArray(array, maxChunkSizeBytes) { // using "function" to be able to self-reference
+    if (!array.length) return [];
+    const serialized = JSON.stringify(array);
+    return gzipP(serialized).then((zipped) => {
+        const byteSize = Buffer.byteLength(zipped);
+        // return fast if size is ok
+        if (byteSize < maxChunkSizeBytes) return [zipped];
+        // now we know that it isn't, first check if we can do anything about it
+        if (array.length === 1) throw new Error(`Unable to serialize: Chunk too large! Item is ${byteSize} bytes. Limit is ${maxChunkSizeBytes} bytes.`); // eslint-disable-line
+        if (array.length > 1 && Math.ceil(byteSize / array.length) > maxChunkSizeBytes) throw new Error(`Unable to serialize: Data too large! Array cannot be split into chunks < ${maxChunkSizeBytes} bytes.`); // eslint-disable-line
+        // theoretically possible to chunk now, let's assume that all items are roughly equal in size
+        const numOfChunks = Math.ceil(byteSize / maxChunkSizeBytes);
+        const maxItemsPerChunk = Math.floor(array.length / numOfChunks);
+        const chunked = _.chunk(array, maxItemsPerChunk);
+        // attempt to serialize the chunks
+        const zipPromises = chunked.map(chunk => stringifyGzipChunkArray(chunk, maxChunkSizeBytes));
+        return Promise.all(zipPromises)
+            .catch((err) => {
+                // throw on unexpected errors
+                if (!err.message.startsWith('Unable to serialize: ')) throw err;
+                // if it still doesn't work, try serialization one by one
+                const singlePromises = array.map((item) => {
+                    const wrapped = Array.isArray(item) ? item : [item];
+                    return stringifyGzipChunkArray(wrapped, maxChunkSizeBytes);
+                });
+                return Promise.all(singlePromises);
+            })
+            .then(results => [].concat(...results));
+    });
+};
