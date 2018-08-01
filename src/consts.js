@@ -304,3 +304,8 @@ export const CUSTOMER_REQUEST_TYPES = {
     OTHER: 'OTHER',
 };
 
+/**
+ * Represents the maximum size in bytes of a request body (decompressed)
+ * that will be accepted by the App and API servers.
+ */
+export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
