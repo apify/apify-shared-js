@@ -233,7 +233,7 @@ exports.requestPromised = function (opts, failOnHttpError) {
                 err.body = body;
                 return reject(err);
             }
-            resolve({ body, response });
+            resolve({ body, response, statusCode: response.statusCode });
         });
     }));
 };
