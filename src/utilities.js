@@ -35,7 +35,6 @@ exports.cryptoRandomObjectId = function cryptoRandomObjectId(length) {
 
 /**
  * Returns a random integer between 0 and max (excluded, unless it is also 0).
- * Uses Math.round() which gives you a non-uniform distribution!
  * @param maxExcluded
  * @returns {number}
  */
