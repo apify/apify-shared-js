@@ -5,17 +5,33 @@ import { truncate } from './utilities.client';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const LOG_LEVELS = {
+    // Turns off logging completely
+    OFF: 0,
     // For unexpected errors in Apify system
-    ERROR: 'ERROR',
+    ERROR: 1,
     // For situations where error is caused by user (e.g. Meteor.Error), i.e. when the error is not
     // caused by Apify system, avoid the word "ERROR" to simplify searching in log
-    SOFT_FAIL: 'SOFT_FAIL',
-    WARNING: 'WARNING',
-    INFO: 'INFO',
-    DEBUG: 'DEBUG',
+    SOFT_FAIL: 2,
+    WARNING: 3,
+    INFO: 4,
+    DEBUG: 5,
     // for performance stats
-    PERF: 'PERF',
+    PERF: 6,
+
+    // String representations
+    0: 'OFF',
+    1: 'ERROR',
+    2: 'SOFT_FAIL',
+    3: 'WARNING',
+    4: 'INFO',
+    5: 'DEBUG',
+    6: 'PERF',
 };
+
+/**
+ * Represents selected log level with INFO as default.
+ */
+let logLevel = LOG_LEVELS.INFO;
 
 // Use 4 to log Braintree webhook data and chooseWorker() info.
 const MAX_DEPTH = 4;
@@ -71,7 +87,7 @@ const prepareInternalJsonLogLine = function (message, data, level, exception) {
     // NOTE: not adding time and host on production, because LogDNA adds it by default and log space is expensive
     const rec = {
         time: !isProduction && !module.exports.skipTimeInDev ? new Date() : undefined,
-        level,
+        level: LOG_LEVELS[level],
         msg: message,
     };
 
@@ -89,7 +105,7 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
     const parts = [];
 
     if (!isProduction && !module.exports.skipTimeInDev) parts.push(new Date());
-    if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${level}:`);
+    if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${LOG_LEVELS[level]}:`);
 
     parts.push(message);
     if (data) parts.push(JSON.stringify(data));
@@ -104,17 +120,33 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
 };
 
 /**
+ * Sets the log level. Only messages with log level at or below
+ * the chosen level will be logged.
+ *
+ * @example log.setLevel(log.LEVELS.ERROR) // Only errors will be logged.
+ *
+ * @param {Number} level
+ */
+const setLogLevel = (level) => {
+    if (typeof level !== 'number' || level < 0 || level > 6) {
+        throw new Error('Invalid log level. Use the LEVELS constants.');
+    }
+    logLevel = level;
+};
+
+/**
  * Logs given object as JSON to standart output.
  */
 const logInternal = function (message, data, level, exception) {
     if (!level) level = LOG_LEVELS.INFO;
     if (!module.exports.isDebugMode && level === LOG_LEVELS.DEBUG) return;
+    if (level > logLevel) return;
 
     const line = module.exports.logJson
         ? prepareInternalJsonLogLine(message, data, level, exception)
         : prepareInternalPlainLogLine(message, data, level, exception);
 
-    console.log(line);
+    console.log(line); // eslint-disable-line no-console
 };
 
 const logWarning = function (message, data) { logInternal(message, data, LOG_LEVELS.WARNING); };
@@ -174,7 +206,8 @@ module.exports = {
     prepareInternalPlainLogLine,
 
     // Indicates whether DEBUG messages will be printed or not
-    isDebugMode: false,
+    get isDebugMode() { return logLevel >= LOG_LEVELS.DEBUG; },
+    set isDebugMode(x) { logLevel = LOG_LEVELS.DEBUG; },
 
     // Indicates that time should not be logged when running in non-production environment
     skipTimeInDev: true,
@@ -184,7 +217,12 @@ module.exports = {
 
     // Indicates that level: "INFO" property should be skipped in the log.
     // This is useful to reduce log space
-    skipLevelInfo: false,
+    get skipLevelInfo() { return logLevel < LOG_LEVELS.INFO; },
+    set skipLevelInfo(x) { logLevel = LOG_LEVELS.INFO; },
+
+    // Sets log level
+    setLevel: setLogLevel,
+    getLevel: () => logLevel,
 
     // Helper functions for common usage
     warning: logWarning,
