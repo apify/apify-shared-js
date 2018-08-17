@@ -18,7 +18,7 @@ describe('log', () => {
             const [msg, data, level] = ['Hello', { one: 123, two: 456 }, log.LEVELS.INFO];
             log.internal(msg, data, level);
 
-            const expected = JSON.stringify(Object.assign({ level: log.LEVELS[level], msg }, data));
+            const expected = JSON.stringify(Object.assign({ level: 'INFO', msg }, data));
 
             sinon.assert.calledOnce(consoleStub);
             sinon.assert.calledWith(consoleStub, expected);
@@ -37,8 +37,8 @@ describe('log', () => {
         });
 
         it('works as expected', () => {
-            const [msg, data, level] = ['Hello', { one: 123, two: 456 }, log.LEVELS.INFO];
-            const expected = JSON.stringify(Object.assign({ level: log.LEVELS[level], msg }, data));
+            const [msg, data] = ['Hello', { one: 123, two: 456 }, log.LEVELS.INFO];
+            const expected = JSON.stringify(Object.assign({ level: 'INFO', msg }, data));
 
             log.info(msg, data);
             sinon.assert.calledOnce(consoleStub);

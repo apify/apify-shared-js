@@ -17,16 +17,10 @@ const LOG_LEVELS = {
     DEBUG: 5,
     // for performance stats
     PERF: 6,
-
-    // String representations
-    0: 'OFF',
-    1: 'ERROR',
-    2: 'SOFT_FAIL',
-    3: 'WARNING',
-    4: 'INFO',
-    5: 'DEBUG',
-    6: 'PERF',
 };
+
+// Maps log level numbers above to log level names to be outputted.
+const LOG_LEVEL_TO_STRING = ['OFF', 'ERROR', 'SOFT_FAIL', 'WARNING', 'INFO', 'DEBUG', 'PERF'];
 
 /**
  * Represents selected log level with INFO as default.
@@ -87,7 +81,7 @@ const prepareInternalJsonLogLine = function (message, data, level, exception) {
     // NOTE: not adding time and host on production, because LogDNA adds it by default and log space is expensive
     const rec = {
         time: !isProduction && !module.exports.skipTimeInDev ? new Date() : undefined,
-        level: LOG_LEVELS[level],
+        level: LOG_LEVEL_TO_STRING[level],
         msg: message,
     };
 
@@ -105,7 +99,7 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
     const parts = [];
 
     if (!isProduction && !module.exports.skipTimeInDev) parts.push(new Date());
-    if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${LOG_LEVELS[level]}:`);
+    if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${LOG_LEVEL_TO_STRING[level]}:`);
 
     parts.push(message);
     if (data) parts.push(JSON.stringify(data));
