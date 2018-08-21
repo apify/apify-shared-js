@@ -1,4 +1,5 @@
 import _ from 'underscore';
+import { ENV_VARS } from './consts';
 import { truncate } from './utilities.client';
 
 // Cache these values to avoid unnecessary syscalls, they are not changing anyway
@@ -229,3 +230,14 @@ module.exports = {
     methodCall: logMethodCall,
     methodException: logMethodException,
 };
+
+// Attempt to set log level from environment
+if (process.env[ENV_VARS.LOG_LEVEL]) {
+    const level = process.env[ENV_VARS.LOG_LEVEL];
+    try {
+        if (level.match(/\d+/)) setLogLevel(parseInt(level, 10));
+        else setLogLevel(LOG_LEVELS[level]);
+    } catch (err) {
+        logWarning(`Setting log level: ${level} from environment failed. Using level ${LOG_LEVEL_TO_STRING[logLevel]}`);
+    }
+}
