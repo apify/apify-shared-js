@@ -313,7 +313,7 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 /**
  * Categories for crawlers and actors
  */
-const ACTOR_CATEGORIES = {
+export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
     ENTERTAINMENT: 'Culture/Entertainment',
