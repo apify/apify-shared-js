@@ -309,3 +309,23 @@ export const CUSTOMER_REQUEST_TYPES = {
  * that will be accepted by the App and API servers.
  */
 export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
+
+/**
+ * Categories for crawlers and actors
+ */
+const ACTOR_CATEGORIES = {
+    TRAVEL: 'Travel',
+    ECOMMERCE: 'E-commerce',
+    ENTERTAINMENT: 'Culture/Entertainment',
+    SOCIAL: 'Social',
+    NEWS: 'Media/news',
+    FINANCE: 'Finance',
+    LIFESTYLE: 'Lifestyle',
+    SPORTS: 'Sports',
+    SEARCH_ENGINES: 'Search Engines',
+    DATABASES: 'Data processing',
+    TOOLS: 'Tools',
+    EXAMPLES: 'Examples',
+    UTILS: 'Developers utils',
+    OTHER: 'Other',
+};
