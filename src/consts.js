@@ -323,7 +323,7 @@ export const ACTOR_CATEGORIES = {
     LIFESTYLE: 'Lifestyle',
     SPORTS: 'Sports',
     SEARCH_ENGINES: 'Search Engines',
-    DATABASES: 'Data processing',
+    DATA: 'Data processing',
     TOOLS: 'Tools',
     EXAMPLES: 'Examples',
     UTILS: 'Developers utils',
