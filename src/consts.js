@@ -258,8 +258,8 @@ export const ENV_VARS = {
  */
 export const LOCAL_STORAGE_SUBDIRS = {
     datasets: 'datasets',
-    keyValueStores: 'key-value-stores',
-    requestQueues: 'request-queues',
+    keyValueStores: 'key_value_stores',
+    requestQueues: 'request_queues',
 };
 
 /**
