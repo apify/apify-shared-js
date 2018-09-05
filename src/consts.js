@@ -273,7 +273,7 @@ export const LOCAL_ENV_VARS = {
     [ENV_VARS.DEFAULT_DATASET_ID]: 'default',
     [ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
     [ENV_VARS.PROXY_HOSTNAME]: 'proxy.apify.com',
-    [ENV_VARS.PROXY_PORT]: (8000),
+    [ENV_VARS.PROXY_PORT]: (8000).toString(),
     [ENV_VARS.CONTAINER_PORT]: (4321).toString(),
     [ENV_VARS.CONTAINER_URL]: 'http://localhost:4321', // Must match port line above!
 };
