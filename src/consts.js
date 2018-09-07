@@ -251,7 +251,6 @@ export const ENV_VARS = {
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
-    PLATFORM_STORAGE: 'APIFY_PLATFORM_STORAGE',
 };
 
 /**
@@ -268,7 +267,6 @@ export const LOCAL_STORAGE_SUBDIRS = {
  * These are being preset in Apify SDK when it's running out of the Apify platform.
  */
 export const LOCAL_ENV_VARS = {
-    [ENV_VARS.LOCAL_STORAGE_DIR]: 'apify_storage',
     [ENV_VARS.DEFAULT_KEY_VALUE_STORE_ID]: 'default',
     [ENV_VARS.DEFAULT_DATASET_ID]: 'default',
     [ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
