@@ -218,35 +218,6 @@ export const ME_USER_NAME_PLACEHOLDER = 'me';
 export const REQUEST_QUEUE_HEAD_MAX_LIMIT = 1000;
 
 /**
- * Default value for APIFY_PROXY_HOSTNAME environment variable
- */
-export const DEFAULT_PROXY_HOSTNAME = 'proxy.apify.com';
-
-/**
- * Default value for APIFY_PROXY_PORT environment variable
- */
-export const DEFAULT_PROXY_PORT = 8000;
-
-/**
- * Default value for APIFY_LOCAL_EMULATION_DIR
- */
-export const DEFAULT_LOCAL_EMULATION_DIR = 'apify_local';
-
-/**
- * Default value for APIFY_CONTAINER_PORT
- */
-export const DEFAULT_CONTAINER_PORT = 4321;
-
-/**
- * Local emulation sub directories for local stores
- */
-export const LOCAL_EMULATION_SUBDIRS = {
-    datasets: 'datasets',
-    keyValueStores: 'key-value-stores',
-    requestQueues: 'request-queues',
-};
-
-/**
  * Throttling period for mongo increment updates
  */
 export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
@@ -267,7 +238,7 @@ export const ENV_VARS = {
     DEFAULT_KEY_VALUE_STORE_ID: 'APIFY_DEFAULT_KEY_VALUE_STORE_ID',
     DEFAULT_DATASET_ID: 'APIFY_DEFAULT_DATASET_ID',
     DEFAULT_REQUEST_QUEUE_ID: 'APIFY_DEFAULT_REQUEST_QUEUE_ID',
-    LOCAL_EMULATION_DIR: 'APIFY_LOCAL_EMULATION_DIR',
+    LOCAL_STORAGE_DIR: 'APIFY_LOCAL_STORAGE_DIR',
     WATCH_FILE: 'APIFY_WATCH_FILE',
     API_BASE_URL: 'APIFY_API_BASE_URL',
     HEADLESS: 'APIFY_HEADLESS',
@@ -280,6 +251,29 @@ export const ENV_VARS = {
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
+};
+
+/**
+ * Local emulation sub directories for local stores
+ */
+export const LOCAL_STORAGE_SUBDIRS = {
+    datasets: 'datasets',
+    keyValueStores: 'key_value_stores',
+    requestQueues: 'request_queues',
+};
+
+/**
+ * Local defaults for of some of the environment variables.
+ * These are being preset in Apify SDK when it's running out of the Apify platform.
+ */
+export const LOCAL_ENV_VARS = {
+    [ENV_VARS.DEFAULT_KEY_VALUE_STORE_ID]: 'default',
+    [ENV_VARS.DEFAULT_DATASET_ID]: 'default',
+    [ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
+    [ENV_VARS.PROXY_HOSTNAME]: 'proxy.apify.com',
+    [ENV_VARS.PROXY_PORT]: (8000).toString(),
+    [ENV_VARS.CONTAINER_PORT]: (4321).toString(),
+    [ENV_VARS.CONTAINER_URL]: 'http://localhost:4321', // Must match port line above!
 };
 
 /**
