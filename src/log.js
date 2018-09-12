@@ -202,7 +202,7 @@ module.exports = {
 
     // Indicates whether DEBUG messages will be printed or not
     get isDebugMode() { return logLevel >= LOG_LEVELS.DEBUG; },
-    set isDebugMode(x) { logLevel = LOG_LEVELS.DEBUG; },
+    set isDebugMode(x) { logLevel = x ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO; },
 
     // Indicates that time should not be logged when running in non-production environment
     skipTimeInDev: true,
@@ -213,7 +213,7 @@ module.exports = {
     // Indicates that level: "INFO" property should be skipped in the log.
     // This is useful to reduce log space
     get skipLevelInfo() { return logLevel < LOG_LEVELS.INFO; },
-    set skipLevelInfo(x) { logLevel = LOG_LEVELS.INFO; },
+    set skipLevelInfo(x) { logLevel = x ? LOG_LEVELS.WARNING : LOG_LEVELS.INFO; },
 
     // Sets log level
     setLevel: setLogLevel,
