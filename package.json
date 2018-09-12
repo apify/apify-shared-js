@@ -1,6 +1,6 @@
 {
   "name": "apify-shared",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "Tools and constants shared across Apify projects.",
   "main": "build/index.js",
   "keywords": [
@@ -37,6 +37,7 @@
     "bluebird": "^3.5.1",
     "clone": "^2.1.1",
     "request": "^2.83.0",
+    "slugg": "^1.2.1",
     "underscore": "^1.8.3",
     "url": "^0.11.0"
   },

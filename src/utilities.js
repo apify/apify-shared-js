@@ -14,6 +14,7 @@ const request = require('request');
 const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
+const slug = require('slugg');
 
 _.extend(exports, utilsClient);
 
