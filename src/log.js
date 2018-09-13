@@ -110,7 +110,7 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
     if (exception) exception = limitDepth(exception, MAX_DEPTH);
 
     return exception
-        ? `${line}\n${JSON.stringify(exception)}`
+        ? `${line}\n  ${exception.stack || exception}`
         : line;
 };
 
