@@ -254,6 +254,11 @@ export const ENV_VARS = {
 };
 
 /**
+ * Default value for APIFY_CONTAINER_PORT used both locally and at Apify platform.
+ */
+export const DEFAULT_CONTAINER_PORT = 4321;
+
+/**
  * Local emulation sub directories for local stores
  */
 export const LOCAL_STORAGE_SUBDIRS = {
@@ -272,8 +277,8 @@ export const LOCAL_ENV_VARS = {
     [ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
     [ENV_VARS.PROXY_HOSTNAME]: 'proxy.apify.com',
     [ENV_VARS.PROXY_PORT]: (8000).toString(),
-    [ENV_VARS.CONTAINER_PORT]: (4321).toString(),
-    [ENV_VARS.CONTAINER_URL]: 'http://localhost:4321', // Must match port line above!
+    [ENV_VARS.CONTAINER_PORT]: (DEFAULT_CONTAINER_PORT).toString(),
+    [ENV_VARS.CONTAINER_URL]: `http://localhost:${DEFAULT_CONTAINER_PORT}`, // Must match port line above!
 };
 
 /**
