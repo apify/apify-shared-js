@@ -14,6 +14,7 @@ const request = require('request');
 const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
+const slug = require('slugg');
 
 _.extend(exports, utilsClient);
 
@@ -434,5 +435,15 @@ exports.promisifyServerListen = (server) => {
             server.listen(port);
         });
     };
+};
+
+/**
+ * Creates a "nice path" for public act consisting of 5 chars of it's _id
+ * word "api" and slug version of either public.domain and customId.
+ */
+exports.getPublicCrawlerNicePath = (actId, customId, domain) => {
+    const parts = [actId.substr(0, consts.SHORT_CRAWLER_ID_LENGTH), 'api', slug(domain || customId)];
+
+    return parts.join('-');
 };
 

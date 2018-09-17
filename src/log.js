@@ -103,14 +103,14 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
     if (!module.exports.skipLevelInfo || level !== LOG_LEVELS.INFO) parts.push(`${LOG_LEVEL_TO_STRING[level]}:`);
 
     parts.push(message);
-    if (data) parts.push(JSON.stringify(data));
+    if (data && !_.isEmpty(data)) parts.push(JSON.stringify(data));
 
     const line = parts.join(' ');
 
     if (exception) exception = limitDepth(exception, MAX_DEPTH);
 
     return exception
-        ? `${line}\n${JSON.stringify(exception)}`
+        ? `${line}\n  ${exception.stack || exception}`
         : line;
 };
 
