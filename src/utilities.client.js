@@ -135,3 +135,23 @@ export const normalizeUrl = (url, keepFragment) => {
     }${params.length ? `?${params.join('&').trim()}` : ''
     }${keepFragment && urlObj.fragment ? `#${urlObj.fragment.trim()}` : ''}`;
 };
+
+// Helper function for markdown rendered marked
+// Renders links outside apify.com in readme with rel="nofollow" and target="_blank" attributes
+export const markedSetNofollowLinks = (href, title, text) => {
+    let urlParsed;
+    try {
+        urlParsed = URL.parse(href);
+    } catch (e) {
+        // Probably invalid url, go on
+    }
+    const isApifyLink = (urlParsed && /\.apify\.com$/i.test(urlParsed.hostname));
+    return (isApifyLink) ? `<a href="${href}">${title || text}</a>` : `<a rel="nofollow" target="_blank" href="${href}">${title || text}</a>`;
+};
+
+// Helper function for markdown rendered marked
+// Decreases level of all headings by one, h1 -> h2
+export const markedDecreaseHeadsLevel = (text, level) => {
+    level += 1;
+    return `<h${level}>${text}</h${level}>`;
+};
