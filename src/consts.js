@@ -1,13 +1,13 @@
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
 export const WORKER_MESSAGE_TYPES = {
-    EXECUTE_ACT_TASK: 'EXECUTE_ACT_TASK',
+    EXECUTE_ACT_JOB: 'EXECUTE_ACT_JOB',
     RUN_EXECUTION: 'RUN_EXECUTION',
     KILL_EXECUTION: 'KILL_EXECUTION',
-    FINISH_ACT_TASK: 'FINISH_ACT_TASK',
+    FINISH_ACT_JOB: 'FINISH_ACT_JOB',
 };
 
-export const ACT_TASK_TYPES = {
+export const ACT_JOB_TYPES = {
     BUILD: 'BUILD',
     RUN: 'RUN',
 };
@@ -28,7 +28,7 @@ export const ACTOR_EVENT_NAMES = {
 /**
  * Dictionary of possible values for 'status' field of act2Builds or act2Runs collections.
  */
-export const ACT_TASK_STATUSES = {
+export const ACT_JOB_STATUSES = {
     READY: 'READY', // started but not allocated to any worker yet
     RUNNING: 'RUNNING', // running on worker
     SUCCEEDED: 'SUCCEEDED', // finished and all good
@@ -40,13 +40,13 @@ export const ACT_TASK_STATUSES = {
 };
 
 /**
- * An array of act task statuses that are final for the task.
+ * An array of act jobs statuses that are final for the jobs.
  */
-export const ACT_TASK_TERMINAL_STATUSES = [
-    ACT_TASK_STATUSES.SUCCEEDED,
-    ACT_TASK_STATUSES.FAILED,
-    ACT_TASK_STATUSES.TIMED_OUT,
-    ACT_TASK_STATUSES.ABORTED,
+export const ACT_JOB_TERMINAL_STATUSES = [
+    ACT_JOB_STATUSES.SUCCEEDED,
+    ACT_JOB_STATUSES.FAILED,
+    ACT_JOB_STATUSES.TIMED_OUT,
+    ACT_JOB_STATUSES.ABORTED,
 ];
 
 // NOTE: for legacy reasons these are lower-case, maybe we should migrate to upper case later.
@@ -196,10 +196,10 @@ export const ACTOR_LIMITS = {
     // For each build or run container, set disk quota based on memory size
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
 
-    // The default limit of memory for all running Actor tasks for free accounts.
+    // The default limit of memory for all running Actor jobs for free accounts.
     FREE_ACCOUNT_MAX_MEMORY_MBYTES: 2048,
 
-    // The default limit of memory for all running Actor tasks for paid accounts.
+    // The default limit of memory for all running Actor jobs for paid accounts.
     PAID_ACCOUNT_MAX_MEMORY_MBYTES: 16384,
 
     // Minimum and maximum memory for a single act run.
