@@ -310,6 +310,11 @@ export const CUSTOMER_REQUEST_TYPES = {
 export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 
 /**
+ * Maximum length of actor input schema.
+ */
+export const ACTOR_INPUT_SCHEMA_MAX_CHARS = 10000;
+
+/**
  * Categories for crawlers and actors
  */
 export const ACTOR_CATEGORIES = {
