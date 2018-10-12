@@ -205,6 +205,9 @@ export const ACTOR_LIMITS = {
     // Minimum and maximum memory for a single act run.
     MIN_RUN_MEMORY_MBYTES: 128,
     MAX_RUN_MEMORY_MBYTES: 16384,
+
+    // Maximum length of actor input schema.
+    INPUT_SCHEMA_MAX_CHARS: 10000,
 };
 
 /**
@@ -308,11 +311,6 @@ export const CUSTOMER_REQUEST_TYPES = {
  * that will be accepted by the App and API servers.
  */
 export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
-
-/**
- * Maximum length of actor input schema.
- */
-export const ACTOR_INPUT_SCHEMA_MAX_CHARS = 10000;
 
 /**
  * Categories for crawlers and actors
