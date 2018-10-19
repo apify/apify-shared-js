@@ -6,6 +6,8 @@
  *
  */
 
+const slugg = require('slugg');
+const consts = require('./consts');
 require('./polyfills');
 
 /**
@@ -154,4 +156,14 @@ export const markedSetNofollowLinks = (href, title, text) => {
 export const markedDecreaseHeadsLevel = (text, level) => {
     level += 1;
     return `<h${level}>${text}</h${level}>`;
+};
+
+/**
+ * Creates a "nice path" for public act consisting of 5 chars of it's _id
+ * word "api" and slug version of either public.domain and customId.
+ */
+exports.getPublicCrawlerNicePath = (actId, customId, domain) => {
+    const parts = [actId.substr(0, consts.SHORT_CRAWLER_ID_LENGTH), 'api', slugg(domain || customId)];
+
+    return parts.join('-');
 };
