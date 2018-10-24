@@ -57,10 +57,12 @@ export const WORKER_SERVICE_TYPES = {
 };
 
 export const META_ORIGINS = {
-    WEB: 'WEB',
-    API: 'API',
-    SCHEDULER: 'SCHEDULER',
-    TEST: 'TEST',
+    CONSOLE: 'CONSOLE', // Job started from Console section of actor
+    DEV_CONSOLE: 'DEV_CONSOLE', // Job started from Developer console in Source section of actor
+    WEB: 'WEB', // Job started from other place on the website (probably Task page)
+    API: 'API', // Job started through API
+    SCHEDULER: 'SCHEDULER', // Job started through Scheduler
+    TEST: 'TEST', // Job started through test actor page
 };
 
 /**
