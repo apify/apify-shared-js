@@ -57,9 +57,8 @@ export const WORKER_SERVICE_TYPES = {
 };
 
 export const META_ORIGINS = {
-    CONSOLE: 'CONSOLE', // Job started from Console section of actor
-    DEV_CONSOLE: 'DEV_CONSOLE', // Job started from Developer console in Source section of actor
-    WEB: 'WEB', // Job started from other place on the website (probably Task page)
+    DEVELOPMENT: 'DEVELOPMENT', // Job started from Developer console in Source section of actor
+    WEB: 'WEB', // Job started from other place on the website (either console or task detail page)
     API: 'API', // Job started through API
     SCHEDULER: 'SCHEDULER', // Job started through Scheduler
     TEST: 'TEST', // Job started through test actor page
