@@ -104,10 +104,19 @@ const prepareInternalPlainLogLine = function (message, data, level, exception) {
 
     parts.push(message);
     if (data && !_.isEmpty(data)) parts.push(JSON.stringify(data));
+    if (exception) {
+        exception = limitDepth(exception, MAX_DEPTH);
+
+        // Parse error.type and error.details from ApifyClientError.
+        const details = [];
+        if (exception.type) details.push(`type=${exception.type}`);
+        if (exception.details) {
+            _.chain(exception.details).mapObject((val, key) => details.push(`${key}=${val}`));
+        }
+        if (details.length) parts.push(`(error details: ${details.join(', ')})`);
+    }
 
     const line = parts.join(' ');
-
-    if (exception) exception = limitDepth(exception, MAX_DEPTH);
 
     return exception
         ? `${line}\n  ${exception.stack || exception}`
