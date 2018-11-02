@@ -332,3 +332,9 @@ export const ACTOR_CATEGORIES = {
     UTILS: 'Developers utils',
     OTHER: 'Other',
 };
+
+/**
+ * Bases for converting version/build number to/from string/integer
+ */
+export const VERSION_INT_MAJOR_BASE = 1e7;
+export const VERSION_INT_MINOR_BASE = 1e5;
