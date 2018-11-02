@@ -175,7 +175,7 @@ export const getPublicCrawlerNicePath = (actId, customId, domain) => {
  * @return {string}
  */
 export const buildOrVersionNumberIntToStr = (int) => {
-    if (typeof (int) === 'number' || !(int >= 0)) return null;
+    if (typeof (int) !== 'number' || !(int >= 0)) return null;
 
     const major = Math.floor(int / consts.VERSION_INT_MAJOR_BASE);
     const remainder = int % consts.VERSION_INT_MAJOR_BASE;
