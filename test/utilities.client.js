@@ -269,4 +269,23 @@ describe('utilities.client', () => {
             );
         });
     });
+    describe('#buildOrVersionNumberIntToStr()', () => {
+        it('should convert build number to string', () => {
+            assert.equal(
+                utils.buildOrVersionNumberIntToStr(200000),
+                '0.2',
+            );
+
+            assert.equal(
+                utils.buildOrVersionNumberIntToStr(10200001),
+                '1.2.1',
+            );
+        });
+        it('should return null if string passed', () => {
+            assert.equal(
+                utils.buildOrVersionNumberIntToStr('bla'),
+                null,
+            );
+        });
+    });
 });

@@ -1,12 +1,5 @@
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
-export const WORKER_MESSAGE_TYPES = {
-    EXECUTE_ACT_JOB: 'EXECUTE_ACT_JOB',
-    RUN_EXECUTION: 'RUN_EXECUTION',
-    KILL_EXECUTION: 'KILL_EXECUTION',
-    FINISH_ACT_JOB: 'FINISH_ACT_JOB',
-};
-
 export const ACT_JOB_TYPES = {
     BUILD: 'BUILD',
     RUN: 'RUN',
@@ -201,7 +194,7 @@ export const ACTOR_LIMITS = {
     FREE_ACCOUNT_MAX_MEMORY_MBYTES: 2048,
 
     // The default limit of memory for all running Actor jobs for paid accounts.
-    PAID_ACCOUNT_MAX_MEMORY_MBYTES: 16384,
+    PAID_ACCOUNT_MAX_MEMORY_MBYTES: 32768,
 
     // Minimum and maximum memory for a single act run.
     MIN_RUN_MEMORY_MBYTES: 128,
@@ -319,16 +312,24 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Culture/Entertainment',
+    ENTERTAINMENT: 'Culture/entertainment',
     SOCIAL: 'Social',
+    MARKETING: 'Marketing',
     NEWS: 'Media/news',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
     SPORTS: 'Sports',
-    SEARCH_ENGINES: 'Search Engines',
+    SEARCH_ENGINES: 'Search engines',
     DATA: 'Data processing',
+    EGOVERNMENT: 'E-government',
     TOOLS: 'Tools',
+    UTILS: 'Developers utilities',
     EXAMPLES: 'Examples',
-    UTILS: 'Developers utils',
     OTHER: 'Other',
 };
+
+/**
+ * Bases for converting version/build number to/from string/integer
+ */
+export const VERSION_INT_MAJOR_BASE = 1e7;
+export const VERSION_INT_MINOR_BASE = 1e5;
