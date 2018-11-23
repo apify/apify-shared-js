@@ -312,17 +312,19 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Culture/Entertainment',
+    ENTERTAINMENT: 'Culture/entertainment',
     SOCIAL: 'Social',
+    MARKETING: 'Marketing',
     NEWS: 'Media/news',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
     SPORTS: 'Sports',
-    SEARCH_ENGINES: 'Search Engines',
+    SEARCH_ENGINES: 'Search engines',
     DATA: 'Data processing',
+    EGOVERNMENT: 'E-government',
     TOOLS: 'Tools',
+    UTILS: 'Developers utilities',
     EXAMPLES: 'Examples',
-    UTILS: 'Developers utils',
     OTHER: 'Other',
 };
 
