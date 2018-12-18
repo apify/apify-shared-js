@@ -1,5 +1,8 @@
 import { Transform } from 'stream';
 
+// TODO: Fix the issue with the separate 'data' and 'object' event - see below.
+// For example, we could just have 'data' and it would just pass the object.
+
 /**
  * A transforming stream which accepts string/Buffer data with JSON Lines objects on input
  * and emits 'object' event for every parsed JavaScript objects.
@@ -7,11 +10,15 @@ import { Transform } from 'stream';
  * Each JSON object is expected to be on a separate line, some lines might be empty or contain whitespace.
  * After each JSON object there needs to be '\n' or end of stream.
  * This stream is especially useful for processing stream from Docker engine, such as:
+ *
  * <pre>
  *  {"status":"Preparing","progressDetail":{},"id":"e0380bb6c0bb"}
  *  {"status":"Preparing","progressDetail":{},"id":"9f8566ee5135"}
  *  {"errorDetail":{"message":"no basic auth credentials"},"error":"no basic auth credentials"}
  * </pre>
+ *
+ * **WARNING**: You still need to consume the `data` event from the transformed stream,
+ * otherwise the internal buffers will get full and the stream might be corked.
  */
 export default class ParseJsonlStream extends Transform {
     constructor(options) {
