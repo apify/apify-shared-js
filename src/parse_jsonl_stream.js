@@ -2,6 +2,7 @@ import { Transform } from 'stream';
 
 // TODO: Fix the issue with the separate 'data' and 'object' event - see below.
 // For example, we could just have 'data' and it would just pass the object.
+// For that, you can use the 'objectMode' param
 
 /**
  * A transforming stream which accepts string/Buffer data with JSON Lines objects on input
