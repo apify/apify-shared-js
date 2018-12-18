@@ -191,7 +191,7 @@ export const ACTOR_LIMITS = {
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
 
     // The default limit of memory for all running Actor jobs for free accounts.
-    FREE_ACCOUNT_MAX_MEMORY_MBYTES: 2048,
+    FREE_ACCOUNT_MAX_MEMORY_MBYTES: 8192,
 
     // The default limit of memory for all running Actor jobs for paid accounts.
     PAID_ACCOUNT_MAX_MEMORY_MBYTES: 32768,
