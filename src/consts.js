@@ -223,8 +223,14 @@ export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
  * Dictionary of APIFY_XXX environment variable names.
  */
 export const ENV_VARS = {
+    IS_AT_HOME: 'APIFY_IS_AT_HOME',
+    // NOTE: These two are deprecated and shouldn't be used.
+    // TODO: Maybe we should update the value to 'APIFY_ACTOR_ID' and 'APIFY_ACTOR_RUN_ID'
     ACT_ID: 'APIFY_ACT_ID',
     ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
+    ACTOR_ID: 'APIFY_ACTOR_ID',
+    ACTOR_RUN_ID: 'APIFY_ACTOR_RUN_ID',
+    ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
     USER_ID: 'APIFY_USER_ID',
     TOKEN: 'APIFY_TOKEN',
     PROXY_PASSWORD: 'APIFY_PROXY_PASSWORD',
@@ -245,9 +251,9 @@ export const ENV_VARS = {
     LOG_LEVEL: 'APIFY_LOG_LEVEL',
     ACTOR_EVENTS_WS_URL: 'APIFY_ACTOR_EVENTS_WS_URL',
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
-    IS_AT_HOME: 'APIFY_IS_AT_HOME',
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
+    FACT: 'APIFY_FACT',
 };
 
 /**
