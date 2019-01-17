@@ -74,7 +74,7 @@ describe('log', () => {
             sinon.assert.calledWith(consoleStub, expected.replace('INFO', 'ERROR'));
             expect(log.getLevel()).to.be.eql(log.LEVELS.ERROR);
             expect(log.isDebugMode).to.be.eql(false);
-            expect(log.skipLevelInfo).to.be.eql(true);
+            expect(log.skipLevelInfo).to.be.eql(false);
         });
 
         it('loads initial log level from APIFY_LOG_LEVEL env var', () => {

@@ -221,8 +221,9 @@ module.exports = {
 
     // Indicates that level: "INFO" property should be skipped in the log.
     // This is useful to reduce log space
-    get skipLevelInfo() { return logLevel < LOG_LEVELS.INFO; },
-    set skipLevelInfo(x) { logLevel = x ? LOG_LEVELS.WARNING : LOG_LEVELS.INFO; },
+    // get skipLevelInfo() { return logLevel < LOG_LEVELS.INFO; },
+    // set skipLevelInfo(x) { logLevel = x ? LOG_LEVELS.WARNING : LOG_LEVELS.INFO; },
+    skipLevelInfo: false,
 
     // Sets log level
     setLevel: setLogLevel,
