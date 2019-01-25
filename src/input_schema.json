@@ -1,0 +1,146 @@
+{
+    "title": "JSON schema of Apify Actor INPUT_SCHEMA.json",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "schemaVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+        },
+        "description": {
+            "type": "string"
+        },
+        "type": {
+            "enum": ["object"]
+        },
+        "required": {
+            "type": "array",
+            "minItems": 0,
+            "items": { "type": "string" },
+            "uniqueItems": true
+        },
+        "properties": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "oneOf": [
+                        { "$ref": "#/definitions/stringProperty" },
+                        { "$ref": "#/definitions/stringEnumProperty" },
+                        { "$ref": "#/definitions/arrayProperty" },
+                        { "$ref": "#/definitions/objectProperty" },
+                        { "$ref": "#/definitions/integerProperty" },
+                        { "$ref": "#/definitions/booleanProperty" }
+                    ]
+                }
+            }
+        }
+    },
+    "additionalProperties": false,
+    "required": ["title", "type", "properties", "schemaVersion"],
+    "definitions": {
+        "stringEnumProperty": {
+            "title": "Enum property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "editor": { "enum": ["select"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "string" },
+                "prefill": { "type": "string" },
+
+                "enum": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "enumTitles": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                }
+            },
+            "required": ["type", "title", "description", "enum"]
+        },
+        "stringProperty": {
+            "title": "String property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "string" },
+                "prefill": { "type": "string" },
+
+                "maxLength": { "type": "integer" },
+                "editor": { "enum": ["javascript", "textfield", "textarea"] }
+            },
+            "required": ["type", "title", "description", "editor"]
+        },
+        "arrayProperty": {
+            "title": "Array property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "array" },
+                "prefill": { "type": "array" },
+
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls"] }
+            },
+            "required": ["type", "title", "description", "editor"]
+        },
+        "objectProperty": {
+            "title": "Object property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["object"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "object" },
+                "prefill": { "type": "object" },
+
+                "editor": { "enum": ["json", "proxy"] }
+            },
+            "required": ["type", "title", "description", "editor"]
+        },
+        "integerProperty": {
+            "title": "Integer property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["integer"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "integer" },
+                "prefill": { "type": "integer" },
+
+                "minimum": { "type": "integer" },
+                "maximum": { "type": "integer" },
+                "unit": { "type": "string" }
+            },
+            "required": ["type", "title", "description"]
+        },
+        "booleanProperty": {
+            "title": "Boolean property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["boolean"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "boolean" },
+
+                "groupCaption": { "type": "string" },
+                "groupDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description"]
+        }
+    }
+}
