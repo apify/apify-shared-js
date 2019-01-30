@@ -130,11 +130,10 @@ exports.expressErrorHandler = function (err, req, res, next) {
  * @returns Object that can be passed to betterClearInterval()
  */
 exports.betterSetInterval = function (func, delay) {
-    let funcWrapper,
-        callback,
-        timeoutId,
-        isRunning = true;
-    funcWrapper = function () {
+    let callback;
+    let timeoutId;
+    let isRunning = true;
+    const funcWrapper = function () {
         func(callback);
     };
     callback = function () {
@@ -172,7 +171,8 @@ exports.splitFullName = function (fullName) {
 
     if (nonEmptyNames.length === 0) {
         return [null, null];
-    } else if (nonEmptyNames.length === 1) {
+    }
+    if (nonEmptyNames.length === 1) {
         return [null, nonEmptyNames[0]];
     }
     return [names[0], nonEmptyNames.slice(1).join(' ')];
