@@ -76,7 +76,8 @@ export const parseUrl = (str) => {
     if (typeof (str) !== 'string') { return {}; }
     const o = {
         strictMode: false,
-        key: ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'fragment'],
+        key: ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
+            'relative', 'path', 'directory', 'file', 'query', 'fragment'],
         q: {
             name: 'queryKey',
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g,
@@ -185,4 +186,162 @@ export const buildOrVersionNumberIntToStr = (int) => {
     let str = `${major}.${minor}`;
     if (build > 0) str += `.${build}`;
     return str;
+};
+
+
+// escaped variants for various strings
+const ESCAPE_DOT = '\uFF0E'; // "."
+const ESCAPE_DOLLAR = '\uFF04'; // "$"
+const ESCAPE_TO_BSON = '\uFF54\uFF4F\uFF22\uFF33\uFF2F\uFF2E'; // "toBSON"
+const ESCAPE_BSON_TYPE = '\uFF3F\uFF42\uFF53\uFF4F\uFF4E\uFF54\uFF59\uFF50\uFF45'; // "_bsontype"
+const ESCAPE_NULL = ''; // "\0" (null chars are removed completely, they won't be recovered)
+
+const REGEXP_IS_ESCAPED = new RegExp(`(${ESCAPE_DOT}|^${ESCAPE_DOLLAR}|^${ESCAPE_TO_BSON}$|^${ESCAPE_BSON_TYPE}$)`);
+
+const REGEXP_DOT = new RegExp(ESCAPE_DOT, 'g');
+const REGEXP_DOLLAR = new RegExp(`^${ESCAPE_DOLLAR}`);
+const REGEXP_TO_BSON = new RegExp(`^${ESCAPE_TO_BSON}$`);
+const REGEXP_BSON_TYPE = new RegExp(`^${ESCAPE_BSON_TYPE}$`);
+
+
+/**
+ * If a property name is invalid for MongoDB or BSON, the function transforms
+ * it to a valid form, which can be (most of the time) reversed back using _unescapePropertyName().
+ * For a detailed list of transformations, see escapeForBson().
+ * @private
+ */
+const _escapePropertyName = (name) => {
+    // From MongoDB docs:
+    // "Field names cannot contain dots (.) or null ("\0") characters, and they must not start with
+    // a dollar sign (i.e. $). See faq-dollar-sign-escaping for an alternate approach."
+    // Moreover, the name cannot be "toBSON" and "_bsontype" because they have a special meaning in BSON serialization.
+    // Other special BSON properties like $id and $db are covered thanks to $ escape.
+
+    // pre-test to improve performance
+    if (/(\.|^\$|^toBSON$|^_bsontype$|\0)/.test(name)) {
+        name = name.replace(/\./g, ESCAPE_DOT);
+        name = name.replace(/^\$/, ESCAPE_DOLLAR);
+        name = name.replace(/^toBSON$/, ESCAPE_TO_BSON);
+        name = name.replace(/^_bsontype$/, ESCAPE_BSON_TYPE);
+        name = name.replace(/\0/g, ESCAPE_NULL);
+    }
+
+    return name;
+};
+
+/**
+ * Reverses a string transformed using _escapePropertyName() back to its original form.
+ * Note that the reverse transformation might not be 100% correct for certain unlikely-to-occur strings
+ * (e.g. string contain null chars).
+ * @param key
+ * @returns {*}
+ * @private
+ */
+const _unescapePropertyName = function (name) {
+    // pre-test to improve performance
+    if (REGEXP_IS_ESCAPED.test(name)) {
+        name = name.replace(REGEXP_DOT, '.');
+        name = name.replace(REGEXP_DOLLAR, '$');
+        name = name.replace(REGEXP_TO_BSON, 'toBSON');
+        name = name.replace(REGEXP_BSON_TYPE, '_bsontype');
+    }
+
+    return name;
+};
+
+exports.escapePropertyName = _escapePropertyName;
+exports.unescapePropertyName = _unescapePropertyName;
+
+
+/**
+ * Traverses an object, creates a deep clone if requested and transforms object keys using a provided function.
+ * @param obj Object to traverse, it must not contain circular references!
+ * @param clone If true, object is not modified but cloned.
+ * @param keyTransformFunc Function used to transform the property names. It has one string argument and one string return value.
+ * @returns {*}
+ * @private
+ */
+const _traverseObject = function (obj, clone, keyTransformFunc) {
+    // primitive types don't need to be cloned or further traversed
+    if (obj === null || typeof (obj) !== 'object' || Object.prototype.toString.call(obj) === '[object Date]') return obj;
+
+    let result;
+
+    if (Array.isArray(obj)) {
+        // obj is an array, keys are numbers and never need to be escaped
+        result = clone ? new Array(obj.length) : obj;
+        for (let i = 0; i < obj.length; i++) {
+            const val = _traverseObject(obj[i], clone, keyTransformFunc);
+            if (clone) result[i] = val;
+        }
+    } else {
+        // obj is an object, all keys need to be checked
+        result = clone ? {} : obj;
+        for (const key in obj) {
+            const val = _traverseObject(obj[key], clone, keyTransformFunc);
+            const escapedKey = keyTransformFunc(key);
+            if (key === escapedKey) {
+                // key doesn't need to be renamed
+                if (clone) result[key] = val;
+            } else {
+                // key needs to be renamed
+                result[escapedKey] = val;
+                if (!clone) delete obj[key];
+            }
+        }
+    }
+
+    return result;
+};
+
+
+/**
+ * Transforms an object so that it can be stored to MongoDB or serialized to BSON.
+ * It does so by transforming prohibited property names (e.g. names starting with "$",
+ * containing "." or null char, equal to "toBSON" or "_bsontype") to equivalent full-width Unicode chars
+ * which are normally allowed. To revert this transformation, use unescapeFromBson().
+ * @param obj Object to be transformed. It must not contain circular references or any complex types (e.g. Maps, Promises etc.)!
+ * @param clone If true, the function transforms a deep clone of the object rather than the original object.
+ * @returns {*} Transformed object
+ */
+exports.escapeForBson = function (obj, clone) {
+    return _traverseObject(obj, clone, _escapePropertyName);
+};
+
+
+/**
+ * Reverts a transformation of object property names performed by escapeForBson().
+ * Note that the reverse transformation might not be 100% equal to the original object
+ * for certain unlikely-to-occur property name (e.g. one contain null chars or full-width Unicode chars).
+ * @param obj Object to be transformed. It must not contain circular references or any complex types (e.g. Maps, Promises etc.)!
+ * @param clone If true, the function transforms a deep clone of the object rather than the original object.
+ * @returns {*} Transformed object.
+ */
+exports.unescapeFromBson = function (obj, clone) {
+    return _traverseObject(obj, clone, _unescapePropertyName);
+};
+
+
+/**
+ * Determines whether an object contains property names that cannot be stored to MongoDB.
+ * See escapeForBson() for more details.
+ * Note that this function only works with objects that are serializable to JSON!
+ * @param obj Object to be checked. It must not contain circular references or any complex types (e.g. Maps, Promises etc.)!
+ * @returns {boolean} Returns true if object is invalid, otherwise it returns false.
+ */
+exports.isBadForMongo = function (obj) {
+    let isBad = false;
+    try {
+        _traverseObject(obj, false, (key) => {
+            const escapedKey = _escapePropertyName(key);
+            if (key !== escapedKey) {
+                isBad = true;
+                throw new Error();
+            }
+            return key;
+        });
+    } catch (e) {
+        if (!isBad) throw e;
+    }
+    return isBad;
 };
