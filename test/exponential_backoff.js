@@ -22,7 +22,7 @@ describe('exponential_backoff', () => {
         });
         expect(funcCalledTimes).to.be.eql(4);
         expect(result.data).to.be.eql(true);
-    });
+    }).timeout(10000);
 
     it('Should return other errors immediately', async () => {
         const ERROR_MESSAGE = 'Unresolved variable x';
@@ -61,5 +61,5 @@ describe('exponential_backoff', () => {
             expect(e.message).to.be.eql(ERROR_MESSAGE);
             expect(funcCalledTimes).to.be.eql(RETRY_COUNT);
         }
-    });
-}).timeout(10000);
+    }).timeout(10000);
+});
