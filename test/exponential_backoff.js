@@ -62,4 +62,34 @@ describe('exponential_backoff', () => {
             expect(funcCalledTimes).to.be.eql(RETRY_COUNT);
         }
     }).timeout(10000);
+
+    it('Should validate func param', async () => {
+        let error;
+        try {
+            await retryWithExpBackoff({ func: 'String', expBackoffMaxRepeats: 10, expBackoffMillis: 100 });
+        } catch (e) {
+            error = e;
+        }
+        expect(error.message).to.be.eql('Param func should be type of function');
+    });
+
+    it('Should validate expBackoffMaxRepeats param', async () => {
+        let error;
+        try {
+            await retryWithExpBackoff({ func: () => {}, expBackoffMaxRepeats: 'String', expBackoffMillis: 100 });
+        } catch (e) {
+            error = e;
+        }
+        expect(error.message).to.be.eql('Param expBackoffMaxRepeats should be type of number');
+    });
+
+    it('Should validate expBackoffMillis param', async () => {
+        let error;
+        try {
+            await retryWithExpBackoff({ func: () => {}, expBackoffMaxRepeats: 5, expBackoffMillis: 'String' });
+        } catch (e) {
+            error = e;
+        }
+        expect(error.message).to.be.eql('Param expBackoffMillis should be type of number');
+    });
 });
