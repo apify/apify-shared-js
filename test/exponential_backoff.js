@@ -55,13 +55,13 @@ describe('exponential_backoff', () => {
             await retryWithExpBackoff({
                 func: alwaysThrowsRetryableError,
                 expBackoffMaxRepeats: RETRY_COUNT,
-                expBackoffMillis: 100,
+                expBackoffMillis: 50,
             });
         } catch (e) {
             expect(e.message).to.be.eql(ERROR_MESSAGE);
             expect(funcCalledTimes).to.be.eql(RETRY_COUNT);
         }
-    }).timeout(10000);
+    }).timeout(15000);
 
     it('Should validate func param', async () => {
         let error;
