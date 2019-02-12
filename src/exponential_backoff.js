@@ -7,44 +7,35 @@ export class RetryableError extends Error {}
 export const retryWithExpBackoff = async (params = {}) => {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
     if (typeof func !== 'function') {
-        throw new Error('Param func should be type of function');
+        throw new Error('Parameter func should be function');
     }
     if (typeof expBackoffMillis !== 'number') {
-        throw new Error('Param expBackoffMillis should be type of number');
+        throw new Error('Parameter expBackoffMillis should be number');
     }
     if (typeof expBackoffMaxRepeats !== 'number') {
-        throw new Error('Param expBackoffMaxRepeats should be type of number');
+        throw new Error('Parameter expBackoffMaxRepeats should be number');
     }
-    let iteration = 0;
-    while (iteration <= expBackoffMaxRepeats) {
-        let result;
+
+    for (let i = 0; i < expBackoffMaxRepeats; i++) {
         let error;
 
         try {
-            result = await func();
+            return await func();
         } catch (e) {
             error = e;
         }
 
-        if (result) {
-            return result;
-        }
-
-        if (error instanceof RetryableError) {
-            const waitMillis = expBackoffMillis * (2 ** iteration);
-            const randomizedWaitMillis = _.random(waitMillis, waitMillis * 2);
-            if (iteration === Math.round(expBackoffMaxRepeats / 2)) {
-                log.warning(`Retry failed ${iteration} times and will be repeated in ${randomizedWaitMillis}ms`, error);
-            }
-
-            await delayPromise(randomizedWaitMillis);
-        } else {
+        if (!(error instanceof RetryableError) || i === expBackoffMaxRepeats - 1) {
             throw error;
         }
 
-        if (iteration > expBackoffMaxRepeats) {
-            throw error;
+        const waitMillis = expBackoffMillis * (2 ** i);
+        const randomizedWaitMillis = _.random(waitMillis, waitMillis * 2);
+
+        if (i === Math.round(expBackoffMaxRepeats / 2)) {
+            log.warning(`Retry failed ${i} times and will be repeated in ${randomizedWaitMillis}ms`, error);
         }
-        iteration += 1;
+
+        await delayPromise(randomizedWaitMillis);
     }
 };
