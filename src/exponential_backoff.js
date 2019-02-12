@@ -7,16 +7,16 @@ export class RetryableError extends Error {}
 export const retryWithExpBackoff = async (params = {}) => {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
     if (typeof func !== 'function') {
-        throw new Error('Parameter func should be function');
+        throw new Error('Parameter "func" should be a function.');
     }
     if (typeof expBackoffMillis !== 'number') {
-        throw new Error('Parameter expBackoffMillis should be number');
+        throw new Error('Parameter "expBackoffMillis" should be a number.');
     }
     if (typeof expBackoffMaxRepeats !== 'number') {
-        throw new Error('Parameter expBackoffMaxRepeats should be number');
+        throw new Error('Parameter "expBackoffMaxRepeats" should be a number');
     }
 
-    for (let i = 0; i < expBackoffMaxRepeats; i++) {
+    for (let i = 0; ; i++) {
         let error;
 
         try {
@@ -25,7 +25,7 @@ export const retryWithExpBackoff = async (params = {}) => {
             error = e;
         }
 
-        if (!(error instanceof RetryableError) || i === expBackoffMaxRepeats - 1) {
+        if (!(error instanceof RetryableError) || i >= expBackoffMaxRepeats) {
             throw error;
         }
 
@@ -33,7 +33,9 @@ export const retryWithExpBackoff = async (params = {}) => {
         const randomizedWaitMillis = _.random(waitMillis, waitMillis * 2);
 
         if (i === Math.round(expBackoffMaxRepeats / 2)) {
-            log.warning(`Retry failed ${i} times and will be repeated in ${randomizedWaitMillis}ms`, error);
+            log.warning(`Retry failed ${i} times and will be repeated in ${randomizedWaitMillis}ms`,
+                { errorMessage: error.message },
+            );
         }
 
         await delayPromise(randomizedWaitMillis);
