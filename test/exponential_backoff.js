@@ -72,7 +72,7 @@ describe('exponential_backoff', () => {
         } catch (e) {
             error = e;
         }
-        expect(error.message).to.be.eql('Parameter func should be function');
+        expect(error.message).to.be.eql('Parameter "func" should be a function.');
     });
 
     it('should validate expBackoffMaxRepeats param', async () => {
@@ -82,7 +82,7 @@ describe('exponential_backoff', () => {
         } catch (e) {
             error = e;
         }
-        expect(error.message).to.be.eql('Parameter expBackoffMaxRepeats should be number');
+        expect(error.message).to.be.eql('Parameter "expBackoffMaxRepeats" should be a number.');
     });
 
     it('should validate expBackoffMillis param', async () => {
@@ -92,6 +92,6 @@ describe('exponential_backoff', () => {
         } catch (e) {
             error = e;
         }
-        expect(error.message).to.be.eql('Parameter expBackoffMillis should be number');
+        expect(error.message).to.be.eql('Parameter "expBackoffMillis" should be a number.');
     });
 });

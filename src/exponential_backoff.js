@@ -13,7 +13,7 @@ export const retryWithExpBackoff = async (params = {}) => {
         throw new Error('Parameter "expBackoffMillis" should be a number.');
     }
     if (typeof expBackoffMaxRepeats !== 'number') {
-        throw new Error('Parameter "expBackoffMaxRepeats" should be a number');
+        throw new Error('Parameter "expBackoffMaxRepeats" should be a number.');
     }
 
     for (let i = 0; ; i++) {
@@ -25,7 +25,7 @@ export const retryWithExpBackoff = async (params = {}) => {
             error = e;
         }
 
-        if (!(error instanceof RetryableError) || i >= expBackoffMaxRepeats) {
+        if (!(error instanceof RetryableError) || i >= expBackoffMaxRepeats - 1) {
             throw error;
         }
 
