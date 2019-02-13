@@ -10,7 +10,7 @@ describe('exponential_backoff', () => {
             funcCalledTimes += 1;
 
             if (throws[funcCalledTimes]) {
-                throw new RetryableError('Api is not available now');
+                throw new RetryableError(new Error('Api not available'));
             } else {
                 return { data: true };
             }
@@ -43,14 +43,14 @@ describe('exponential_backoff', () => {
         }
     });
 
-    it('should return Retryable error after expBackoffMaxRepeats', async () => {
+    it('should return original error after expBackoffMaxRepeats', async () => {
         const ERROR_MESSAGE = 'Api is not available now';
         const RETRY_COUNT = 5;
         let funcCalledTimes = 0;
         let error = {};
         const alwaysThrowsRetryableError = () => {
             funcCalledTimes += 1;
-            throw new RetryableError(ERROR_MESSAGE);
+            throw new RetryableError(new Error(ERROR_MESSAGE));
         };
         try {
             await retryWithExpBackoff({
@@ -62,6 +62,7 @@ describe('exponential_backoff', () => {
             error = e;
         }
         expect(error.message).to.be.eql(ERROR_MESSAGE);
+        expect(error instanceof Error).to.be.eql(true);
         expect(funcCalledTimes).to.be.eql(RETRY_COUNT);
     }).timeout(15000);
 

@@ -2,7 +2,12 @@ import _ from 'underscore';
 import log from './log';
 import { delayPromise } from './utilities';
 
-export class RetryableError extends Error {}
+export class RetryableError extends Error {
+    constructor(originalError, ...args) {
+        super(...args);
+        this.error = originalError;
+    }
+}
 
 export const retryWithExpBackoff = async (params = {}) => {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
@@ -25,8 +30,12 @@ export const retryWithExpBackoff = async (params = {}) => {
             error = e;
         }
 
-        if (!(error instanceof RetryableError) || i >= expBackoffMaxRepeats - 1) {
+        if (!(error instanceof RetryableError)) {
             throw error;
+        }
+
+        if (i >= expBackoffMaxRepeats - 1) {
+            throw error.error;
         }
 
         const waitMillis = expBackoffMillis * (2 ** i);
