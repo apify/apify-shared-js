@@ -91,7 +91,7 @@
                 "default": { "type": "array" },
                 "prefill": { "type": "array" },
 
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "hidden"] }
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] }
             },
             "required": ["type", "title", "description", "editor"]
         },
