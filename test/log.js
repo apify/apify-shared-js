@@ -114,4 +114,15 @@ describe('log', () => {
             require.cache[logId] = log;
         });
     });
+
+    describe('log deprecated', () => {
+        it('works as expected', () => {
+            const msg = 'This function was deprecated';
+            log.deprecated(msg);
+            log.deprecated(msg); // Second call should be skipped
+            const expected = JSON.stringify({ level: 'WARNING', msg });
+            sinon.assert.calledOnce(consoleStub);
+            sinon.assert.calledWith(consoleStub, expected);
+        });
+    });
 });

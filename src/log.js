@@ -177,6 +177,13 @@ const logException = function (exception, message, data) {
     }
 };
 
+const deprecationReported = {};
+const logDeprecated = function (message) {
+    if (deprecationReported[message]) return;
+    deprecationReported[message] = true;
+    logWarning(message);
+};
+
 
 /**
  * Prepares log data for logMethodCall/logMethodException.
@@ -239,6 +246,7 @@ module.exports = {
     softFail: logSoftFail,
     methodCall: logMethodCall,
     methodException: logMethodException,
+    deprecated: logDeprecated,
 };
 
 // Attempt to set log level from environment
