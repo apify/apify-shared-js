@@ -90,6 +90,8 @@
                 "description": { "type": "string" },
                 "default": { "type": "array" },
                 "prefill": { "type": "array" },
+                "placeholderValue": { "type": "string" },
+                "placeholderKey": { "type": "string" },
 
                 "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] }
             },
