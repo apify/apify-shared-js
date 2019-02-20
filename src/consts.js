@@ -226,12 +226,10 @@ export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
 export const ENV_VARS = {
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
     // NOTE: These two are deprecated and shouldn't be used.
-    // TODO: Maybe we should update the value to 'APIFY_ACTOR_ID' and 'APIFY_ACTOR_RUN_ID'
-    ACT_ID: 'APIFY_ACT_ID',
-    ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
     ACTOR_ID: 'APIFY_ACTOR_ID',
     ACTOR_RUN_ID: 'APIFY_ACTOR_RUN_ID',
     ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
+    INPUT_KEY: 'APIFY_INPUT_KEY',
     USER_ID: 'APIFY_USER_ID',
     TOKEN: 'APIFY_TOKEN',
     PROXY_PASSWORD: 'APIFY_PROXY_PASSWORD',
@@ -243,7 +241,6 @@ export const ENV_VARS = {
     DEFAULT_DATASET_ID: 'APIFY_DEFAULT_DATASET_ID',
     DEFAULT_REQUEST_QUEUE_ID: 'APIFY_DEFAULT_REQUEST_QUEUE_ID',
     LOCAL_STORAGE_DIR: 'APIFY_LOCAL_STORAGE_DIR',
-    WATCH_FILE: 'APIFY_WATCH_FILE',
     API_BASE_URL: 'APIFY_API_BASE_URL',
     HEADLESS: 'APIFY_HEADLESS',
     XVFB: 'APIFY_XVFB',
@@ -255,7 +252,17 @@ export const ENV_VARS = {
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
     FACT: 'APIFY_FACT',
+
+    // Deprecated, keep them for backward compatibility:
+    ACT_ID: 'APIFY_ACT_ID',
+    ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
 };
+export const INTEGER_ENV_VARS = [
+    ENV_VARS.PROXY_PORT,
+    ENV_VARS.INTERNAL_PORT,
+    ENV_VARS.MEMORY_MBYTES,
+    ENV_VARS.CONTAINER_PORT,
+];
 
 /**
  * Default value for APIFY_CONTAINER_PORT used both locally and at Apify platform.
