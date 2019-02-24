@@ -122,6 +122,9 @@ export const ACTOR_BASE_DOCKER_IMAGE_DEFAULT = ACTOR_BASE_DOCKER_IMAGES[0].name;
  * Keys of labels applied to act Docker images and containers.
  */
 export const DOCKER_LABELS = {
+    ACTOR_BUILD_ID: 'com.apify.actBuildId',
+    ACTOR_RUN_ID: 'com.apify.actRunId',
+    // Kept for backwards compatibility, will be removed soon
     ACT_BUILD_ID: 'com.apify.actBuildId',
     ACT_RUN_ID: 'com.apify.actRunId',
 };
@@ -165,12 +168,17 @@ export const BUILD_TAG_LATEST = 'latest';
  * Behaviour of act restart on error.
  * Act gets restarted when there are less than MAX_RESTARTS in the last INTERVAL_MILLIS.
  */
-export const ACT_RESTART_ON_ERROR = {
+export const ACTOR_RESTART_ON_ERROR = {
     MAX_RESTARTS: 3,
     // This needs to be low enough so that it only covers restart loops, rather than e.g.
     // errors during crawling of large lists of URLs
     INTERVAL_MILLIS: 1 * 60 * 1000,
 };
+
+/**
+ * Kept for backwards compatibility, will be removed soon.
+ */
+export const ACT_RESTART_ON_ERROR = ACTOR_RESTART_ON_ERROR;
 
 /**
  * 1 compute unit = 1GB * 1Hour.
@@ -225,7 +233,6 @@ export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
  */
 export const ENV_VARS = {
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
-    // NOTE: These two are deprecated and shouldn't be used.
     ACTOR_ID: 'APIFY_ACTOR_ID',
     ACTOR_RUN_ID: 'APIFY_ACTOR_RUN_ID',
     ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
@@ -244,7 +251,6 @@ export const ENV_VARS = {
     API_BASE_URL: 'APIFY_API_BASE_URL',
     HEADLESS: 'APIFY_HEADLESS',
     XVFB: 'APIFY_XVFB',
-    INTERNAL_PORT: 'APIFY_INTERNAL_PORT',
     MEMORY_MBYTES: 'APIFY_MEMORY_MBYTES',
     LOG_LEVEL: 'APIFY_LOG_LEVEL',
     ACTOR_EVENTS_WS_URL: 'APIFY_ACTOR_EVENTS_WS_URL',
