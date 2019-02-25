@@ -52,6 +52,7 @@
                 "description": { "type": "string" },
                 "default": { "type": "string" },
                 "prefill": { "type": "string" },
+                "nullable": { "type": "boolean" },
 
                 "enum": {
                     "type": "array",
@@ -74,6 +75,8 @@
                 "description": { "type": "string" },
                 "default": { "type": "string" },
                 "prefill": { "type": "string" },
+                "pattern": { "type": "string" },
+                "nullable": { "type": "boolean" },
 
                 "maxLength": { "type": "integer" },
                 "editor": { "enum": ["javascript", "textfield", "textarea", "hidden"] }
@@ -90,8 +93,11 @@
                 "description": { "type": "string" },
                 "default": { "type": "array" },
                 "prefill": { "type": "array" },
-                "placeholderValue": { "type": "string" },
                 "placeholderKey": { "type": "string" },
+                "placeholderValue": { "type": "string" },
+                "patternKey": { "type": "string" },
+                "patternValue": { "type": "string" },
+                "nullable": { "type": "boolean" },
 
                 "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] }
             },
@@ -107,6 +113,9 @@
                 "description": { "type": "string" },
                 "default": { "type": "object" },
                 "prefill": { "type": "object" },
+                "patternKey": { "type": "string" },
+                "patternValue": { "type": "string" },
+                "nullable": { "type": "boolean" },
 
                 "editor": { "enum": ["json", "proxy", "hidden"] }
             },
@@ -122,6 +131,7 @@
                 "description": { "type": "string" },
                 "default": { "type": "integer" },
                 "prefill": { "type": "integer" },
+                "nullable": { "type": "boolean" },
 
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
@@ -139,6 +149,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "default": { "type": "boolean" },
+                "nullable": { "type": "boolean" },
 
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
