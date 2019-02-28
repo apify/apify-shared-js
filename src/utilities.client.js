@@ -8,6 +8,7 @@
 
 const slugg = require('slugg');
 const consts = require('./consts');
+const { m } = require('./intl');
 require('./polyfills');
 
 /**
@@ -344,4 +345,153 @@ exports.isBadForMongo = function (obj) {
         if (!isBad) throw e;
     }
     return isBad;
+};
+
+/**
+ * Uses AJV validator to validate input with input schema and then
+ * does custom validation for our own properties (nullable, patternKey, patternValue)
+ * @param {AJV.Validator} validator Initialized AJV validator
+ * @param {Object} inputSchema Valid input schema in object
+ * @param {Object} input Input object to be validated
+ */
+exports.validateInputUsingValidator = function (validator, inputSchema, input) {
+    const isValid = validator(input); // Check if input is valid based on schema values
+
+    const { required, properties } = inputSchema;
+
+    let errors = [];
+    // Process AJV validation errors
+    if (!isValid) {
+        errors = validator.errors
+            .map((error) => {
+                // There are two possible errors comming from validation:
+                // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
+                // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
+
+                let fieldKey;
+                let message;
+
+                // If error is with keyword type, it means that type of input is incorrect
+                // this can mean that provided value is null
+                if (error.keyword === 'type') {
+                    fieldKey = error.dataPath.split('.').pop();
+                    // Check if value is null and field is nullable, if yes, then skip this error
+                    if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
+                        return null;
+                    }
+                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
+                } else if (error.keyword === 'required') {
+                    fieldKey = error.params.missingProperty;
+                    message = m('inputSchema.validation.required', { fieldKey });
+                } else {
+                    fieldKey = error.dataPath.split('.').pop();
+                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
+                }
+
+                return { fieldKey, message };
+            }).filter(error => !!error);
+    }
+
+    Object.keys(properties).forEach((property) => {
+        const value = input[property];
+        const { type, editor, patternKey, patternValue } = properties[property];
+        const fieldErrors = [];
+        // Check that proxy is required, if yes, valides that it's correctly setup
+        if (type === 'object' && editor === 'proxy' && required.includes(property)) {
+            if (!value) {
+                const message = m('inputSchema.validation.required', { fieldKey: property });
+                fieldErrors.push(message);
+                return;
+            }
+            const { useApifyProxy, proxyUrls } = value;
+            if (!useApifyProxy && (!proxyUrls || !Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
+                fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey: property }));
+            }
+        }
+        // Check that array items fit patternKey and patternValue
+        if (type === 'array' && value && Array.isArray(value)) {
+            // If patternKey is provided, then validate keys of objects in array
+            if (patternKey && editor === 'keyValue') {
+                const check = new RegExp(patternKey);
+                const invalidIndexes = [];
+                value.forEach((item, index) => {
+                    if (!check.test(item.key)) invalidIndexes.push(index);
+                });
+                if (invalidIndexes.length) {
+                    fieldErrors.push(m('inputSchema.validation.arrayKeysInvalid', {
+                        fieldKey: property,
+                        invalidIndexes: invalidIndexes.join(','),
+                        pattern: patternKey,
+                    }));
+                }
+            }
+            // If patternValue is provided and editor is keyValue, then validate values of objecs in array
+            if (patternValue && editor === 'keyValue') {
+                const check = new RegExp(patternValue);
+                const invalidIndexes = [];
+                value.forEach((item, index) => {
+                    if (!check.test(item.value)) invalidIndexes.push(index);
+                });
+                if (invalidIndexes.length) {
+                    fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        fieldKey: property,
+                        invalidIndexes: invalidIndexes.join(','),
+                        pattern: patternValue,
+                    }));
+                }
+            // If patternValue is provided and editor is stringList, then validate each item in array
+            } else if (patternValue && editor === 'stringList') {
+                const check = new RegExp(patternValue);
+                const invalidIndexes = [];
+                value.forEach((item, index) => {
+                    if (!check.test(item)) invalidIndexes.push(index);
+                });
+                if (invalidIndexes.length) {
+                    fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        fieldKey: property,
+                        invalidIndexes: invalidIndexes.join(','),
+                        pattern: patternValue,
+                    }));
+                }
+            }
+        }
+        // Check that object items fit patternKey and patternValue
+        if (type === 'object' && value) {
+            if (patternKey) {
+                const check = new RegExp(patternKey);
+                const invalidKeys = [];
+                Object.keys(value).forEach((key) => {
+                    if (!check.test(key)) invalidKeys.push(key);
+                });
+                if (invalidKeys.length) {
+                    fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                        fieldKey: property,
+                        invalidKeys: invalidKeys.join(','),
+                        pattern: patternKey,
+                    }));
+                }
+            }
+            if (patternValue) {
+                const check = new RegExp(patternValue);
+                const invalidKeys = [];
+                Object.keys(value).forEach((key) => {
+                    const propertyValue = value[key];
+                    if (typeof propertyValue !== 'string' || !check.test(propertyValue)) invalidKeys.push(key);
+                });
+                if (invalidKeys.length) {
+                    fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                        fieldKey: property,
+                        invalidKeys: invalidKeys.join(','),
+                        pattern: patternValue,
+                    }));
+                }
+            }
+        }
+        if (fieldErrors.length > 0) {
+            const message = fieldErrors.join(', ');
+            errors.push({ fieldKey: property, message });
+        }
+    });
+
+    return errors;
 };

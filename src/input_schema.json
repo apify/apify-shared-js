@@ -77,7 +77,7 @@
                 "prefill": { "type": "string" },
                 "pattern": { "type": "string" },
                 "nullable": { "type": "boolean" },
-
+                "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
                 "editor": { "enum": ["javascript", "textfield", "textarea", "hidden"] }
             },
@@ -98,6 +98,9 @@
                 "patternKey": { "type": "string" },
                 "patternValue": { "type": "string" },
                 "nullable": { "type": "boolean" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
 
                 "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] }
             },
@@ -116,6 +119,8 @@
                 "patternKey": { "type": "string" },
                 "patternValue": { "type": "string" },
                 "nullable": { "type": "boolean" },
+                "minProperties": { "type": "integer" },
+                "maxProperties": { "type": "integer" },
 
                 "editor": { "enum": ["json", "proxy", "hidden"] }
             },
@@ -132,7 +137,6 @@
                 "default": { "type": "integer" },
                 "prefill": { "type": "integer" },
                 "nullable": { "type": "boolean" },
-
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
                 "unit": { "type": "string" },
@@ -150,7 +154,6 @@
                 "description": { "type": "string" },
                 "default": { "type": "boolean" },
                 "nullable": { "type": "boolean" },
-
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
                 "editor": { "enum": ["checkbox", "hidden"] }

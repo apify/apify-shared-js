@@ -1,5 +1,6 @@
 import _ from 'underscore';
-import { assert } from 'chai';
+import Ajv from 'ajv';
+import { assert, expect } from 'chai';
 
 // This clone doesn't work for array of NULLs (returns an empty array).
 import brokenClone from 'clone';
@@ -579,6 +580,208 @@ describe('utilities.client', () => {
                 utils.buildOrVersionNumberIntToStr('bla'),
                 null,
             );
+        });
+    });
+
+    describe('#validateInputUsingValidator()', () => {
+        const baseInputSchema = {
+            title: 'Testing input schema',
+            type: 'object',
+            schemaVersion: 1,
+            properties: {},
+            required: ['field'],
+        };
+        const ajv = new Ajv({ cache: false });
+        const buildInputSchema = (properties) => {
+            const inputSchema = Object.assign({}, baseInputSchema, { properties });
+            const validator = ajv.compile(inputSchema);
+            return { inputSchema, validator };
+        };
+
+        it('should validate required proxy', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'Required proxy validation',
+                    description: 'Field for testing of a required proxy validation',
+                },
+            });
+            const inputs = [
+                // Invalid
+                { field: null },
+                { field: { useApifyProxy: false } },
+                { field: { useApifyProxy: false, proxyUrls: [] } },
+                // Valid
+                { field: { useApifyProxy: true } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 3 invalid inputs
+            expect(results.length).to.be.equal(3);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+
+        it('should validate string with regexp', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'string',
+                    title: 'pattern validation',
+                    description: 'Field for testing of a pattern validion',
+                    pattern: '\\w+',
+                    nullable: true,
+                    minLength: 2,
+                    maxLength: 5,
+                },
+            });
+            const inputs = [
+                // Invalid
+                {}, // Fails required check
+                { field: 'a' }, // Fails min length
+                { field: 'abcdef' }, // Fails max length
+                { field: '$$' }, // Fails pattern
+                // Valid
+                { field: null }, // Valid due to nullable true
+                { field: 'aA0' }, // Valid pattern and length
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 4 invalid inputs
+            expect(results.length).to.be.equal(4);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+
+        it('should validate key-value array with regexp', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'array',
+                    editor: 'keyValue',
+                    title: 'patternKey/patternValue validation',
+                    description: 'Field for testing of a patternKey/patternValue validation',
+                    patternKey: '\\w+',
+                    patternValue: '\\w+',
+                    minItems: 1,
+                    maxItems: 2,
+                    uniqueItems: true,
+                    nullable: true,
+                },
+            });
+            const inputs = [
+                // Invalid
+                {}, // Fails required check
+                { field: [] }, // Fails minItems check
+                { field: [{ key: '$', value: '' }] }, // Fails patternKey check
+                { field: [{ key: '', value: '$' }] }, // Fails patternValue check
+                { field: [{ key: 'aA0', value: 'aA0' }, { key: 'aA1', value: 'aA1' }, { key: 'aA2', value: 'aA2' }] }, // Fails maxItems check
+                { field: [{ key: 'aA0', value: 'aB0' }, { value: 'aB0', key: 'aA0' }] }, // Fails uniqueItems check
+                // Valid
+                { field: null },
+                { field: [{ key: 'aA0', value: 'aA0' }] },
+                { field: [{ key: 'aA0', value: 'aA0' }, { key: 'aA1', value: 'aA1' }] },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 6 invalid inputs
+            expect(results.length).to.be.equal(6);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+
+        it('should validate array list with regexp', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'array',
+                    editor: 'stringList',
+                    title: 'patternValue validation',
+                    description: 'Field for testing of a patternValue validation',
+                    patternValue: '\\w+',
+                    minItems: 1,
+                    maxItems: 2,
+                    uniqueItems: true,
+                    nullable: true,
+                },
+            });
+            const inputs = [
+                // Invalid
+                {}, // Fails required check
+                { field: [] }, // Fails minItems check
+                { field: ['$'] }, // Fails patternValue check
+                { field: ['aA0', 'aA1', 'aA2'] }, // Fails maxItems check
+                { field: ['aA0', 'aA0'] }, // Fails uniqueItems check
+                // Valid
+                { field: null },
+                { field: ['aA0'] },
+                { field: ['aA0', 'aA1'] },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 5 invalid inputs
+            expect(results.length).to.be.equal(5);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+
+        it('should validate object with regexp', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'json',
+                    title: 'Object patternKey/patternValue validation',
+                    description: 'Field for testing of a patternKey/patternValue validation',
+                    patternKey: '^\\w+$',
+                    patternValue: '^\\w+$',
+                    minProperties: 1,
+                    maxProperties: 2,
+                    nullable: true,
+                },
+            });
+            const inputs = [
+                // Invalid
+                {}, // Fails required check
+                { field: [] }, // Fails type check
+                { field: {} }, // Fails minProperties check
+                { field: { a$: '' } }, // Fails patternKey check
+                { field: { a: '$' } }, // Fails patternValue check
+                { field: { a: 'a', b: 'b', c: 'c' } }, // Fails maxProperties check
+                // Valid
+                { field: null },
+                { field: { a: 'a' } },
+                { field: { a: 'a', b: 'b' } },
+            ];
+
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 6 invalid inputs
+            expect(results.length).to.be.equal(6);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
         });
     });
 });
