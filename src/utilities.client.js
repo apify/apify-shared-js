@@ -479,7 +479,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input) {
                     if (typeof propertyValue !== 'string' || !check.test(propertyValue)) invalidKeys.push(key);
                 });
                 if (invalidKeys.length) {
-                    fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                    fieldErrors.push(m('inputSchema.validation.objectValuesInvalid', {
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternValue,
