@@ -257,6 +257,7 @@ export const ENV_VARS = {
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
+    META_ORIGIN: 'APIFY_META_ORIGIN',
     FACT: 'APIFY_FACT',
 
     // Deprecated, keep them for backward compatibility:
