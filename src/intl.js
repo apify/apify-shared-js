@@ -1,5 +1,4 @@
 const intlStrings = {
-    'inputSchema.validation.hasErrors': 'See more details errors bellow.',
     'inputSchema.validation.generic': 'Field input.{fieldKey} {message}',
     'inputSchema.validation.required': 'Field input.{fieldKey} is required',
     'inputSchema.validation.proxyRequired': 'Field input.{fieldKey} is required. Please provide custom proxy URLs or use Apify Proxy.',
