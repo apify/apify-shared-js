@@ -783,5 +783,34 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).to.be.equal('field');
             });
         });
+        it('should not allow additional properties when additionalProperties is set to false', () => {
+            const inputSchema = {
+                title: 'Testing input schema',
+                type: 'object',
+                schemaVersion: 1,
+                additionalProperties: false,
+                properties: {},
+                required: [],
+            };
+            const validator = ajv.compile(inputSchema);
+            const inputs = [
+                // Invalid
+                { field: 'a' }, // Fails type check
+                // Valid
+                {},
+            ];
+
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter(errors => errors.length > 0);
+
+            // There should be 1 invalid inputs
+            expect(results.length).to.be.equal(1);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
     });
 });

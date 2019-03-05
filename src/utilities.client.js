@@ -364,8 +364,9 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input) {
     if (!isValid) {
         errors = validator.errors
             .map((error) => {
-                // There are two possible errors comming from validation:
+                // There are 3 possible errors comming from validation:
                 // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
+                // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
                 // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
 
                 let fieldKey;
@@ -383,6 +384,9 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input) {
                 } else if (error.keyword === 'required') {
                     fieldKey = error.params.missingProperty;
                     message = m('inputSchema.validation.required', { fieldKey });
+                } else if (error.keyword === 'additionalProperties') {
+                    fieldKey = error.params.additionalProperty;
+                    message = m('inputSchema.validation.additionalProperty', { fieldKey });
                 } else {
                     fieldKey = error.dataPath.split('.').pop();
                     message = m('inputSchema.validation.generic', { fieldKey, message: error.message });

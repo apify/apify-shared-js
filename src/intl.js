@@ -6,6 +6,7 @@ const intlStrings = {
     'inputSchema.validation.arrayValuesInvalid': 'Values in input.{fieldKey} at positions [{invalidIndexes}] should match pattern "{pattern}"',
     'inputSchema.validation.objectKeysInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should match pattern "{pattern}',
     'inputSchema.validation.objectValuesInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should have string value which matches pattern "{pattern}"',
+    'inputSchema.validation.additionalProperty': 'Property {fieldKey} is now allowed.',
 };
 
 // Helper function to simulate intl formatMessage function
