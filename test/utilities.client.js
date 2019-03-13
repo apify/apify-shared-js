@@ -812,5 +812,73 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).to.be.equal('field');
             });
         });
+        it('should validate available proxy groups', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxyValidationOptions = {
+                availableProxyGroups: ['A', 'B', 'C'],
+            };
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: true, apifyProxyGroups: ['D'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['D', 'E'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['A', 'D', 'E'] } },
+                // Valid
+                { field: { useApifyProxy: true, apifyProxyGroups: [] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['A'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['A', 'B', 'C'] } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, proxyValidationOptions))
+                .filter(errors => errors.length > 0);
+
+            // There should be 3 invalid inputs
+            expect(results.length).to.be.equal(3);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+        it('should validate blocked proxy groups', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxyValidationOptions = {
+                availableProxyGroups: ['A', 'B', 'C'],
+                disabledProxyGroups: { B: 'B is blocked', C: 'C is blocked' },
+            };
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: true, apifyProxyGroups: ['B'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['B', 'C'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['A', 'B'] } },
+                // Valid
+                { field: { useApifyProxy: true, apifyProxyGroups: [] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['A'] } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, proxyValidationOptions))
+                .filter(errors => errors.length > 0);
+
+            // There should be 3 invalid inputs
+            expect(results.length).to.be.equal(3);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
     });
 });

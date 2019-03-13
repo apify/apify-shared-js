@@ -7,6 +7,7 @@ const intlStrings = {
     'inputSchema.validation.objectKeysInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should match pattern "{pattern}',
     'inputSchema.validation.objectValuesInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should have string value which matches pattern "{pattern}"',
     'inputSchema.validation.additionalProperty': 'Property {fieldKey} is not allowed.',
+    'inputSchema.validation.proxyGroupsNotAvailable': 'You currently do not have access to proxy groups: {groups}',
 };
 
 // Helper function to simulate intl formatMessage function
