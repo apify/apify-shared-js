@@ -372,7 +372,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         }
     }
     // If Apify proxy is not used or proxy groups are empty skip additional checks
-    if (!value.useApifyProxy || !value.apifyProxyGroups || !value.apifyProxyGroups.length) return fieldErrors;
+    if (!value || !value.useApifyProxy || !value.apifyProxyGroups || !value.apifyProxyGroups.length) return fieldErrors;
 
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
