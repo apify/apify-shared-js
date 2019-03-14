@@ -348,13 +348,64 @@ exports.isBadForMongo = function (obj) {
 };
 
 /**
+ * Validate's input field configured with proxy editor
+ * @param {Object} fieldKey Proxy field value
+ * @param {Object} value Proxy field value
+ * @param {Boolean} isRequired Whether the field is required or not
+ * @param {Object} options (Optional) Information about proxy groups availability
+ * @param {Array<String>} options.availableProxyGroups List of available proxy groups
+ * @param {Object} options.disabledProxyGroups Object with groupId as key and error message as value (mostly for residential/SERP)
+ */
+function validateProxyField(fieldKey, value, isRequired = false, options = null) {
+    const fieldErrors = [];
+    if (isRequired) {
+        // Nullable error is already handled by AJV
+        if (value === null) return fieldErrors;
+        if (!value) {
+            const message = m('inputSchema.validation.required', { fieldKey });
+            fieldErrors.push(message);
+            return fieldErrors;
+        }
+        const { useApifyProxy, proxyUrls } = value;
+        if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
+            fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
+        }
+    }
+    // If Apify proxy is not used or proxy groups are empty skip additional checks
+    if (!value.useApifyProxy || !value.apifyProxyGroups || !value.apifyProxyGroups.length) return fieldErrors;
+
+    // If options are not provided skip additional checks
+    if (!options) return fieldErrors;
+
+    const selectedProxyGroups = value.apifyProxyGroups;
+
+    // Check if proxy groups selected by user are available to him
+    const availableProxyGroupsById = {};
+    (options.availableProxyGroups || []).forEach((group) => { availableProxyGroupsById[group] = true; });
+    const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
+
+    if (unavailableProxyGroups.length) {
+        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', { fieldKey, groups: unavailableProxyGroups.join(', ') }));
+    }
+
+    // Check if any of the proxy groups are blocked and if yes then output the associated message
+    const blockedProxyGroupsById = options.disabledProxyGroups || {};
+    selectedProxyGroups.filter(group => blockedProxyGroupsById[group]).forEach((blockedGroup) => {
+        fieldErrors.push(blockedProxyGroupsById[blockedGroup]);
+    });
+
+    return fieldErrors;
+}
+
+/**
  * Uses AJV validator to validate input with input schema and then
  * does custom validation for our own properties (nullable, patternKey, patternValue)
  * @param {AJV.Validator} validator Initialized AJV validator
  * @param {Object} inputSchema Valid input schema in object
  * @param {Object} input Input object to be validated
+ * @param {Object} options (Optional) Additional validation configuration for certain fields
  */
-exports.validateInputUsingValidator = function (validator, inputSchema, input) {
+exports.validateInputUsingValidator = function (validator, inputSchema, input, options = {}) {
     const isValid = validator(input); // Check if input is valid based on schema values
 
     const { required, properties } = inputSchema;
@@ -401,16 +452,11 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input) {
         const { type, editor, patternKey, patternValue } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
-        if (type === 'object' && editor === 'proxy' && required.includes(property)) {
-            if (!value) {
-                const message = m('inputSchema.validation.required', { fieldKey: property });
-                fieldErrors.push(message);
-                return;
-            }
-            const { useApifyProxy, proxyUrls } = value;
-            if (!useApifyProxy && (!proxyUrls || !Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
-                fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey: property }));
-            }
+        if (type === 'object' && editor === 'proxy') {
+            const proxyValidationErrors = validateProxyField(property, value, required.includes(property), options.proxy);
+            proxyValidationErrors.forEach((error) => {
+                fieldErrors.push(error);
+            });
         }
         // Check that array items fit patternKey and patternValue
         if (type === 'array' && value && Array.isArray(value)) {
