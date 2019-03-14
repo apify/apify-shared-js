@@ -367,7 +367,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
             return fieldErrors;
         }
         const { useApifyProxy, proxyUrls } = value;
-        if (!useApifyProxy && (!proxyUrls || !Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
+        if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
             fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
         }
     }
@@ -403,9 +403,9 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
  * @param {AJV.Validator} validator Initialized AJV validator
  * @param {Object} inputSchema Valid input schema in object
  * @param {Object} input Input object to be validated
- * @param {Object} proxyFieldOptions (Optional) Information about proxy groups availability
+ * @param {Object} options (Optional) Additional validation configuration for certain fields
  */
-exports.validateInputUsingValidator = function (validator, inputSchema, input, proxyFieldOptions = null) {
+exports.validateInputUsingValidator = function (validator, inputSchema, input, options = {}) {
     const isValid = validator(input); // Check if input is valid based on schema values
 
     const { required, properties } = inputSchema;
@@ -453,7 +453,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, p
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
-            const proxyValidationErrors = validateProxyField(property, value, required.includes(property), proxyFieldOptions);
+            const proxyValidationErrors = validateProxyField(property, value, required.includes(property), options.proxy);
             proxyValidationErrors.forEach((error) => {
                 fieldErrors.push(error);
             });

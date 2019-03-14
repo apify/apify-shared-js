@@ -607,6 +607,7 @@ describe('utilities.client', () => {
                     description: 'Field for testing of a required proxy validation',
                 },
             });
+
             const inputs = [
                 // Invalid
                 { field: null },
@@ -615,6 +616,7 @@ describe('utilities.client', () => {
                 // Valid
                 { field: { useApifyProxy: true } },
             ];
+
             const results = inputs
                 .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
                 .filter(errors => errors.length > 0);
@@ -821,7 +823,7 @@ describe('utilities.client', () => {
                     description: 'Field for testing of a proxy validation',
                 },
             });
-            const proxyValidationOptions = {
+            const proxy = {
                 availableProxyGroups: ['A', 'B', 'C'],
             };
             const inputs = [
@@ -835,7 +837,7 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyGroups: ['A', 'B', 'C'] } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, proxyValidationOptions))
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
                 .filter(errors => errors.length > 0);
 
             // There should be 3 invalid inputs
@@ -855,7 +857,7 @@ describe('utilities.client', () => {
                     description: 'Field for testing of a proxy validation',
                 },
             });
-            const proxyValidationOptions = {
+            const proxy = {
                 availableProxyGroups: ['A', 'B', 'C'],
                 disabledProxyGroups: { B: 'B is blocked', C: 'C is blocked' },
             };
@@ -869,7 +871,7 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyGroups: ['A'] } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, proxyValidationOptions))
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
                 .filter(errors => errors.length > 0);
 
             // There should be 3 invalid inputs
