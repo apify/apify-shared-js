@@ -824,6 +824,7 @@ describe('utilities.client', () => {
                 },
             });
             const proxy = {
+                hasAutoProxyGroups: true,
                 availableProxyGroups: ['A', 'B', 'C'],
             };
             const inputs = [
@@ -858,6 +859,7 @@ describe('utilities.client', () => {
                 },
             });
             const proxy = {
+                hasAutoProxyGroups: true,
                 availableProxyGroups: ['A', 'B', 'C'],
                 disabledProxyGroups: { B: 'B is blocked', C: 'C is blocked' },
             };
@@ -876,6 +878,78 @@ describe('utilities.client', () => {
 
             // There should be 3 invalid inputs
             expect(results.length).to.be.equal(3);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+        it('should validate auto mode', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxy = {
+                hasAutoProxyGroups: false,
+                availableProxyGroups: ['RESIDENTIAL', 'GOOGLE_SERP'],
+                disabledProxyGroups: {},
+            };
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: true } },
+                { field: { useApifyProxy: true, apifyProxyGroups: [] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: null } },
+                // Valid
+                { field: { useApifyProxy: true, apifyProxyGroups: ['GOOGLE_SERP'] } },
+                { field: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter(errors => errors.length > 0);
+
+            // There should be 3 invalid inputs
+            expect(results.length).to.be.equal(3);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
+
+
+        it('should validate custom proxy urls with regexp', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxy = null;
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: false, proxyUrls: ['https://asdasd:qweqe@proxy.apify.com:8000'] } }, // https
+                { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe@proxy.apify.com'] } }, // missing port
+                { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe@proxy.apify.com:8000/asd'] } }, // path after port
+                { field: { useApifyProxy: false, proxyUrls: ['http://asdasd@qweqe@proxy.apify.com:8000'] } }, // malformed url
+                { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe:proxy.apify.com:8000'] } }, // malformed url
+                // Valid
+                { field: { useApifyProxy: false, proxyUrls: ['http://proxy.apify.com:8000'] } }, // without auth
+                { field: { useApifyProxy: false, proxyUrls: ['http://qweqe@proxy.apify.com:6000'] } }, // without password
+                { field: { useApifyProxy: false, proxyUrls: ['http://asd:qweqe@proxy.apify.com:55555'] } }, // with auth
+                { field: { useApifyProxy: false, proxyUrls: ['http://asd:qweqe@127.0.0.1:5555'] } }, // with IP address
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter(errors => errors.length > 0);
+
+            // There should be 5 invalid inputs
+            expect(results.length).to.be.equal(5);
             results.forEach((result) => {
                 // Only one error should be thrown
                 expect(result.length).to.be.equal(1);

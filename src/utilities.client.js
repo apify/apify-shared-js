@@ -8,6 +8,7 @@
 
 const slugg = require('slugg');
 const consts = require('./consts');
+const regex = require('./regexs');
 const { m } = require('./intl');
 require('./polyfills');
 
@@ -353,6 +354,7 @@ exports.isBadForMongo = function (obj) {
  * @param {Object} value Proxy field value
  * @param {Boolean} isRequired Whether the field is required or not
  * @param {Object} options (Optional) Information about proxy groups availability
+ * @param {Boolean} options.hasAutoProxyGroups Informs validation whether user has atleast one proxy group available in auto mode
  * @param {Array<String>} options.availableProxyGroups List of available proxy groups
  * @param {Object} options.disabledProxyGroups Object with groupId as key and error message as value (mostly for residential/SERP)
  */
@@ -366,18 +368,42 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
             fieldErrors.push(message);
             return fieldErrors;
         }
+
         const { useApifyProxy, proxyUrls } = value;
         if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
             fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
+            return fieldErrors;
         }
     }
-    // If Apify proxy is not used or proxy groups are empty skip additional checks
-    if (!value || !value.useApifyProxy || !value.apifyProxyGroups || !value.apifyProxyGroups.length) return fieldErrors;
+
+    // Input is not required, so missing value is valid
+    if (!value) return fieldErrors;
+
+    const { useApifyProxy, proxyUrls, apifyProxyGroups } = value;
+
+    if (!useApifyProxy && Array.isArray(proxyUrls)) {
+        let invalidUrl = false;
+        proxyUrls.forEach((url) => {
+            if (!regex.PROXY_URL_REGEX.test(url.trim())) invalidUrl = url.trim();
+        });
+        if (invalidUrl) {
+            fieldErrors.push(m('inputSchema.validation.customProxyInvalid', { invalidUrl }));
+        }
+    }
+
+    // If Apify proxy is not used skip additional checks
+    if (!useApifyProxy) return fieldErrors;
 
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
 
-    const selectedProxyGroups = value.apifyProxyGroups;
+    // Auto mode, check that user has access to alteast one proxy group usable in this mode
+    if ((!apifyProxyGroups || !apifyProxyGroups.length) && !options.hasAutoProxyGroups) {
+        fieldErrors.push(m('inputSchema.validation.noAvailableAutoProxy'));
+        return fieldErrors;
+    }
+
+    const selectedProxyGroups = apifyProxyGroups;
 
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {};
