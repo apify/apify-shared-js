@@ -8,7 +8,7 @@ const intlStrings = {
     'inputSchema.validation.objectValuesInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should have string value which matches pattern "{pattern}"',
     'inputSchema.validation.additionalProperty': 'Property {fieldKey} is not allowed.',
     'inputSchema.validation.proxyGroupsNotAvailable': 'You currently do not have access to proxy groups: {groups}',
-    'inputSchema.validation.customProxyInvalid': 'Proxy URL {invalidUrl} is not valid.',
+    'inputSchema.validation.customProxyInvalid': 'Proxy URL "{invalidUrl}" has invalid format, it must be http://[username[:password]]@hostname:port.',
     'inputSchema.validation.noAvailableAutoProxy': 'Currently you do not have access to any proxy group usable in automatic mode.',
 };
 
