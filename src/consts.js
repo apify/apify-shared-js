@@ -207,7 +207,7 @@ export const ACTOR_LIMITS = {
 
     // Minimum and maximum memory for a single act run.
     MIN_RUN_MEMORY_MBYTES: 128,
-    MAX_RUN_MEMORY_MBYTES: 16384,
+    MAX_RUN_MEMORY_MBYTES: 32768,
 
     // Maximum size of actor input schema.
     INPUT_SCHEMA_MAX_BYTES: 100 * 1024,
