@@ -354,3 +354,22 @@ export const ACTOR_CATEGORIES = {
  */
 export const VERSION_INT_MAJOR_BASE = 1e7;
 export const VERSION_INT_MINOR_BASE = 1e5;
+
+/**
+ * Basic options for XSS sanitization
+ */
+export const USER_BASIC_TEXT_XSS_OPTIONS = {
+    whiteList: {
+        a: ['href', 'title', 'target'],
+        code: [],
+        strong: [],
+        b: [],
+        br: [],
+        ul: [],
+        li: [],
+        ol: [],
+        i: [],
+        u: [],
+        p: [],
+    },
+};
