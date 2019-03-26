@@ -397,13 +397,13 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
 
+    const selectedProxyGroups = (apifyProxyGroups || []);
+
     // Auto mode, check that user has access to alteast one proxy group usable in this mode
-    if ((!apifyProxyGroups || !apifyProxyGroups.length) && !options.hasAutoProxyGroups) {
+    if (!selectedProxyGroups.length && !options.hasAutoProxyGroups) {
         fieldErrors.push(m('inputSchema.validation.noAvailableAutoProxy'));
         return fieldErrors;
     }
-
-    const selectedProxyGroups = apifyProxyGroups;
 
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {};
