@@ -102,13 +102,13 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // TODO: Keep the for some time and then migrate acts to recommended images.
     {
         name: 'apify/actor-node-puppeteer',
-        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian (use apify/actor-node-chrome)',
+        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
         copyChown: 'node:node',
         prePull: true,
     },
     {
         name: 'apify/actor-node-puppeteer:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian (use apify/actor-node-chrome:beta)',
+        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
         copyChown: 'node:node',
     },
 ];
