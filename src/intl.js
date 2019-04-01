@@ -2,7 +2,7 @@ const intlStrings = {
     'inputSchema.validation.generic': 'Field input.{fieldKey} {message}',
     'inputSchema.validation.required': 'Field input.{fieldKey} is required',
     'inputSchema.validation.proxyRequired': 'Field input.{fieldKey} is required. Please provide custom proxy URLs or use Apify Proxy.',
-    'inputSchema.validation.requrequestListSourcesInvalidest': 'Items in input.{fieldKey} at positions [{invalidIndexes}] do no contain valid URLs',
+    'inputSchema.validation.requestListSourcesInvalid': 'Items in input.{fieldKey} at positions [{invalidIndexes}] do no contain valid URLs',
     'inputSchema.validation.arrayKeysInvalid': 'Keys in input.{fieldKey} at positions [{invalidIndexes}] should match pattern "{pattern}"',
     'inputSchema.validation.arrayValuesInvalid': 'Values in input.{fieldKey} at positions [{invalidIndexes}] should match pattern "{pattern}"',
     'inputSchema.validation.objectKeysInvalid': 'Keys [{invalidKeys}] in input.{fieldKey} should match pattern "{pattern}',
