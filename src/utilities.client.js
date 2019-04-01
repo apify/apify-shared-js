@@ -487,6 +487,18 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
         }
         // Check that array items fit patternKey and patternValue
         if (type === 'array' && value && Array.isArray(value)) {
+            if (editor === 'requestListSources') {
+                const invalidIndexes = [];
+                value.forEach((item, index) => {
+                    if (!item || !item.url || !regex.URL_REGEX.test(item.url)) invalidIndexes.push(index);
+                });
+                if (invalidIndexes.length) {
+                    fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
+                        fieldKey: property,
+                        invalidIndexes: invalidIndexes.join(','),
+                    }));
+                }
+            }
             // If patternKey is provided, then validate keys of objects in array
             if (patternKey && editor === 'keyValue') {
                 const check = new RegExp(patternKey);
