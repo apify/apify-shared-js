@@ -434,7 +434,8 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
 exports.validateInputUsingValidator = function (validator, inputSchema, input, options = {}) {
     const isValid = validator(input); // Check if input is valid based on schema values
 
-    const { required, properties } = inputSchema;
+    const { properties } = inputSchema;
+    const required = inputSchema.required || [];
 
     let errors = [];
     // Process AJV validation errors
