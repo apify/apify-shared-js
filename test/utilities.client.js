@@ -680,17 +680,19 @@ describe('utilities.client', () => {
                 { field: [{ url: '' }] }, // Fails because URL is empty
                 { field: [{ url: 'asdad' }] }, // Fails because URL is not valid
                 { field: [{ url: 'http://example.com' }, {}] }, // Second item fails check
+                { field: [{ requestsFromUrl: 'ftp://example.com' }, {}] }, // Fails requestsFromUrl check
                 // Valid
                 { field: [] },
                 { field: [{ url: 'http://example.com' }] },
+                { field: [{ requestsFromUrl: 'http://example.com' }] },
                 { field: [{ url: 'http://example.com' }, { url: 'http://www.example.com' }] },
             ];
             const results = inputs
                 .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
                 .filter(errors => errors.length > 0);
 
-            // There should be 4 invalid inputs
-            expect(results.length).to.be.equal(4);
+            // There should be 5 invalid inputs
+            expect(results.length).to.be.equal(5);
             results.forEach((result) => {
                 // Only one error should be thrown
                 expect(result.length).to.be.equal(1);

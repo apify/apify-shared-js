@@ -490,7 +490,10 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
             if (editor === 'requestListSources') {
                 const invalidIndexes = [];
                 value.forEach((item, index) => {
-                    if (!item || !item.url || !regex.URL_REGEX.test(item.url)) invalidIndexes.push(index);
+                    if (!item) invalidIndexes.push(index);
+                    else if (!item.url && !item.requestsFromUrl) invalidIndexes.push(index);
+                    else if (item.url && !regex.URL_REGEX.test(item.url)) invalidIndexes.push(index);
+                    else if (item.requestsFromUrl && !regex.URL_REGEX.test(item.requestsFromUrl)) invalidIndexes.push(index);
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
