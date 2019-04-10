@@ -391,7 +391,7 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
-    // If one of these occurs then we can be sure that none other can cocur for the same triggerer.
+    // If one of these occurs then we can be sure that none other can occur for the same triggerer.
     ACTOR_RUN_TERMINAL: [
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_SUCCEEDED,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_FAILED,
