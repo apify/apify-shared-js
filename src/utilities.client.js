@@ -397,13 +397,13 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
 
+    const selectedProxyGroups = (apifyProxyGroups || []);
+
     // Auto mode, check that user has access to alteast one proxy group usable in this mode
-    if ((!apifyProxyGroups || !apifyProxyGroups.length) && !options.hasAutoProxyGroups) {
+    if (!selectedProxyGroups.length && !options.hasAutoProxyGroups) {
         fieldErrors.push(m('inputSchema.validation.noAvailableAutoProxy'));
         return fieldErrors;
     }
-
-    const selectedProxyGroups = apifyProxyGroups;
 
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {};
@@ -434,7 +434,8 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
 exports.validateInputUsingValidator = function (validator, inputSchema, input, options = {}) {
     const isValid = validator(input); // Check if input is valid based on schema values
 
-    const { required, properties } = inputSchema;
+    const { properties } = inputSchema;
+    const required = inputSchema.required || [];
 
     let errors = [];
     // Process AJV validation errors
@@ -486,6 +487,21 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
         }
         // Check that array items fit patternKey and patternValue
         if (type === 'array' && value && Array.isArray(value)) {
+            if (editor === 'requestListSources') {
+                const invalidIndexes = [];
+                value.forEach((item, index) => {
+                    if (!item) invalidIndexes.push(index);
+                    else if (!item.url && !item.requestsFromUrl) invalidIndexes.push(index);
+                    else if (item.url && !regex.URL_REGEX.test(item.url)) invalidIndexes.push(index);
+                    else if (item.requestsFromUrl && !regex.URL_REGEX.test(item.requestsFromUrl)) invalidIndexes.push(index);
+                });
+                if (invalidIndexes.length) {
+                    fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
+                        fieldKey: property,
+                        invalidIndexes: invalidIndexes.join(','),
+                    }));
+                }
+            }
             // If patternKey is provided, then validate keys of objects in array
             if (patternKey && editor === 'keyValue') {
                 const check = new RegExp(patternKey);
