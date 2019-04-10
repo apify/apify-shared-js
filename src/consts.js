@@ -203,7 +203,7 @@ export const ACTOR_LIMITS = {
     FREE_ACCOUNT_MAX_MEMORY_MBYTES: 8192,
 
     // The default limit of memory for all running Actor jobs for paid accounts.
-    PAID_ACCOUNT_MAX_MEMORY_MBYTES: 32768,
+    PAID_ACCOUNT_MAX_MEMORY_MBYTES: 65536,
 
     // Minimum and maximum memory for a single act run.
     MIN_RUN_MEMORY_MBYTES: 128,
@@ -372,4 +372,30 @@ export const USER_BASIC_TEXT_XSS_OPTIONS = {
         u: [],
         p: [],
     },
+};
+
+export const WEBHOOK_EVENT_TYPES = {
+    ACTOR_RUN_CREATED: 'ACTOR.RUN.CREATED',
+    ACTOR_RUN_SUCCEEDED: 'ACTOR.RUN.SUCCEEDED',
+    ACTOR_RUN_FAILED: 'ACTOR.RUN.FAILED',
+    ACTOR_RUN_TIMED_OUT: 'ACTOR.RUN.TIMED_OUT',
+    ACTOR_RUN_ABORTED: 'ACTOR.RUN.ABORTED',
+    TEST: 'TEST',
+};
+
+export const WEBHOOK_EVENT_TYPE_GROUPS = {
+    ACTOR_RUN: [
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_CREATED,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_SUCCEEDED,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_FAILED,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
+    ],
+    // If one of these occurs then we can be sure that none other can cocur for the same triggerer.
+    ACTOR_RUN_TERMINAL: [
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_SUCCEEDED,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_FAILED,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
+        WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
+    ],
 };
