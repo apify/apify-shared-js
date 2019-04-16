@@ -35,7 +35,8 @@
                         { "$ref": "#/definitions/arrayProperty" },
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
-                        { "$ref": "#/definitions/booleanProperty" }
+                        { "$ref": "#/definitions/booleanProperty" },
+                        { "$ref": "#/definitions/anyProperty" }
                     ]
                 }
             }
@@ -168,6 +169,31 @@
                 "editor": { "enum": ["checkbox", "hidden"] }
             },
             "required": ["type", "title", "description"]
+        },
+        "anyProperty": {
+            "title": "Any property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": ["array"],
+                    "items": {
+                        "type": "string",
+                        "enum": ["object", "array", "string", "integer", "boolean"]
+                    },
+                    "uniqueItems": true,
+                    "additionalItems": false,
+                    "minItems": 1
+                },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "prefill": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "example": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "nullable": { "type": "boolean" },
+                "editor": { "enum": ["json", "hidden"] }
+            },
+            "required": ["type", "title", "description", "editor"]
         }
     }
 }
