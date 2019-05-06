@@ -1062,4 +1062,26 @@ describe('utilities.client', () => {
             expect(utils.jsonStringifyExtended(value, replacer, 2)).to.be.eql(expected);
         });
     });
+
+    it('should support tokens', () => {
+        const value = {
+            foo: 'bar',
+            num: 1,
+            obj: {
+                foo: 'bar',
+                rpl: new utils.JsonToken('my.token'),
+            },
+        };
+
+        const expected = `{
+  "foo": "bar",
+  "num": 1,
+  "obj": {
+    "foo": "bar",
+    "rpl": {{my.token}}
+  }
+}`;
+
+        expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+    });
 });

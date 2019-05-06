@@ -589,9 +589,22 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     return errors;
 };
 
+exports.JsonToken = class JsonToken {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getToken() {
+        return `{{${this.name}}}`;
+    }
+};
+
 /**
  * Stringifies provided value to JSON with a difference that supports functions that
  * are stringified using .toString() method.
+ *
+ * In addition to that supports instances of JsonToken('my.token') that are replaced
+ * with a {{my.token}}.
  *
  * @param {*} value
  * @param {Function} [replacer]
@@ -601,11 +614,25 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
 exports.jsonStringifyExtended = (value, replacer, space) => {
     if (replacer && !_.isFunction(replacer)) throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
 
+    const replacements = {};
+
     const extendedReplacer = (key, val) => {
         val = replacer ? replacer(key, val) : val;
 
-        return _.isFunction(val) ? val.toString() : val;
+        if (_.isFunction(val)) return val.toString();
+        if (val instanceof exports.JsonToken) {
+            const randomToken = `<<<REPLACEMENT_TOKEN::${Math.random()}>>>`;
+            replacements[randomToken] = val.getToken();
+            return randomToken;
+        }
+
+        return val;
     };
 
-    return JSON.stringify(value, extendedReplacer, space);
+    let stringifiedValue = JSON.stringify(value, extendedReplacer, space);
+    _.mapObject(replacements, (replacementValue, replacementToken) => {
+        stringifiedValue = stringifiedValue.replace(`"${replacementToken}"`, replacementValue);
+    });
+
+    return stringifiedValue;
 };
