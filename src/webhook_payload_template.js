@@ -59,7 +59,8 @@ export default class WebhookPayloadTemplate {
      * @return {object}
      */
     static parse(payloadTemplate, allowedVariables, context) {
-        if (typeof payloadTemplate !== 'string') throw new Error('Cannot parse an object payload template.');
+        const type = typeof payloadTemplate;
+        if (type !== 'string') throw new Error(`Cannot parse a ${type} payload template.`);
         const template = new WebhookPayloadTemplate(payloadTemplate, allowedVariables, context);
         return template._parse(); // eslint-disable-line no-underscore-dangle
     }
