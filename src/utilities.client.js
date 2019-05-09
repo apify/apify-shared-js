@@ -589,7 +589,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     return errors;
 };
 
-exports.JsonToken = class JsonToken {
+exports.JsonVariable = class JsonVariable {
     constructor(name) {
         this.name = name;
     }
@@ -603,7 +603,7 @@ exports.JsonToken = class JsonToken {
  * Stringifies provided value to JSON with a difference that supports functions that
  * are stringified using .toString() method.
  *
- * In addition to that supports instances of JsonToken('my.token') that are replaced
+ * In addition to that supports instances of JsonVariable('my.token') that are replaced
  * with a {{my.token}}.
  *
  * @param {*} value
@@ -620,7 +620,7 @@ exports.jsonStringifyExtended = (value, replacer, space) => {
         val = replacer ? replacer(key, val) : val;
 
         if (_.isFunction(val)) return val.toString();
-        if (val instanceof exports.JsonToken) {
+        if (val instanceof exports.JsonVariable) {
             const randomToken = `<<<REPLACEMENT_TOKEN::${Math.random()}>>>`;
             replacements[randomToken] = val.getToken();
             return randomToken;

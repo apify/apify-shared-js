@@ -1069,7 +1069,7 @@ describe('utilities.client', () => {
             num: 1,
             obj: {
                 foo: 'bar',
-                rpl: new utils.JsonToken('my.token'),
+                rpl: new utils.JsonVariable('my.token'),
             },
         };
 
