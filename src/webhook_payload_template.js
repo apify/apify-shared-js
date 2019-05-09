@@ -36,6 +36,7 @@ const { JsonToken, jsonStringifyExtended } = require('./utilities.client');
  *    }
  * }
  * ```
+ * @hideconstructor
  */
 export default class WebhookPayloadTemplate {
     constructor(payloadTemplate, allowedVariables = null, context = {}) {
@@ -54,8 +55,8 @@ export default class WebhookPayloadTemplate {
      * Parse also validates the template structure, so it can be used
      * to check validity of the template JSON and usage of allowedVariables.
      * @param {string} payloadTemplate
-     * @param {Set<string>|null} [allowedVariables]
-     * @param {Object} [context]
+     * @param {Set<string>|null} [allowedVariables=null]
+     * @param {Object} [context={}]
      * @return {object}
      */
     static parse(payloadTemplate, allowedVariables, context) {
@@ -70,12 +71,14 @@ export default class WebhookPayloadTemplate {
      * Values created using `getTemplateVariable('foo.bar')`
      * will be stringified to `{{foo.bar}}` template variable.
      * @param {Object} objectTemplate
+     * @param {Function} [replacer]
+     * @param {number} [indent]
      * @return {string}
      */
-    static stringify(objectTemplate) {
+    static stringify(objectTemplate, replacer, indent) {
         const type = typeof objectTemplate;
         if (!objectTemplate || type !== 'object') throw new Error(`Cannot stringify a ${type} payload template.`);
-        return jsonStringifyExtended(objectTemplate);
+        return jsonStringifyExtended(objectTemplate, replacer, indent);
     }
 
     /**

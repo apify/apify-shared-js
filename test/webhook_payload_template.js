@@ -86,4 +86,19 @@ describe('WebhookPayloadTemplate', () => {
             expect(err.message).to.be.eql('Invalid payload template variable: eventType');
         }
     });
+    it('should stringify object payload templates', () => {
+        const numVar = WebhookPayloadTemplate.getVariable('num');
+        const bodyVar = WebhookPayloadTemplate.getVariable('body');
+        const objTemplate = {
+            hello: 'world',
+            num: numVar,
+            data: {
+                status: 304,
+                body: bodyVar,
+            },
+        };
+
+        const payloadTemplate = WebhookPayloadTemplate.stringify(objTemplate);
+        expect(payloadTemplate).to.be.eql('{"hello":"world","num":{{num}},"data":{"status":304,"body":{{body}}}}');
+    });
 });
