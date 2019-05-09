@@ -1,4 +1,4 @@
-const { JsonToken, jsonStringifyExtended } = require('./utilities.client');
+const { JsonVariable, jsonStringifyExtended } = require('./utilities.client');
 
 /**
  * WebhookPayloadTemplate enables creation and parsing of webhook payload template strings.
@@ -107,10 +107,10 @@ export default class WebhookPayloadTemplate {
      * ```
      *
      * @param {string} variable
-     * @return {JsonToken}
+     * @return {JsonVariable}
      */
     static getVariable(variable) {
-        return new JsonToken(variable);
+        return new JsonVariable(variable);
     }
 
     /** @private */
