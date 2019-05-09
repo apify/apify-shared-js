@@ -98,7 +98,7 @@ describe('WebhookPayloadTemplate', () => {
             },
         };
 
-        const payloadTemplate = WebhookPayloadTemplate.stringify(objTemplate);
+        const payloadTemplate = WebhookPayloadTemplate.stringify(objTemplate, null, 0);
         expect(payloadTemplate).to.be.eql('{"hello":"world","num":{{num}},"data":{"status":304,"body":{{body}}}}');
     });
 });

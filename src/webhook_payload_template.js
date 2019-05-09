@@ -72,10 +72,10 @@ export default class WebhookPayloadTemplate {
      * will be stringified to `{{foo.bar}}` template variable.
      * @param {Object} objectTemplate
      * @param {Function} [replacer]
-     * @param {number} [indent]
+     * @param {number} [indent=2]
      * @return {string}
      */
-    static stringify(objectTemplate, replacer, indent) {
+    static stringify(objectTemplate, replacer, indent = 2) {
         const type = typeof objectTemplate;
         if (!objectTemplate || type !== 'object') throw new Error(`Cannot stringify a ${type} payload template.`);
         return jsonStringifyExtended(objectTemplate, replacer, indent);
