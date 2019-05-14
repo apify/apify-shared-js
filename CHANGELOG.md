@@ -1,7 +1,10 @@
+0.1.45 / 2019-05-14
+===================
+- Fixed exponential backoff to include error in warning logs
+
 0.1.44 / 2019-05-09
 ===================
 - Renamed `JsonToken` to `JsonVariable`.
-- 
 
 0.1.43 / 2019-05-07
 ===================
