@@ -1,3 +1,7 @@
+0.1.46 / 2019-05-14
+===================
+- Added APIFY_UI_CLIENT_KEY constant
+
 0.1.45 / 2019-05-14
 ===================
 - Fixed exponential backoff to include error in warning logs
