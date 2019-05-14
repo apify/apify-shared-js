@@ -402,3 +402,6 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
 };
+
+// This client key is used in request queue to indentify requests from Apify app UI.
+export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
