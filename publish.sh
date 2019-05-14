@@ -15,14 +15,22 @@ PACKAGE_VERSION=`node -pe "require('./package.json').version"`
 BRANCH=`git status | grep 'On branch' | cut -d ' ' -f 3`
 BRANCH_UP_TO_DATE=`git status | grep 'nothing to commit' | tr -s \n ' '`;
 GIT_TAG="v${PACKAGE_VERSION}"
+IS_CHANGELOG_UPDATED=`cat CHANGELOG.md | grep "${PACKAGE_VERSION} /" | tr -s \n ' '`;
 
 if [ -z "${BRANCH_UP_TO_DATE}" ]; then
     printf "${RED}You have uncommitted changes!${NC}\n"
     exit 1
 fi
 
+if [ -z "${IS_CHANGELOG_UPDATED}" ]; then
+    printf "${RED}Please update CHANGELOG.md!${NC}\n"
+    exit 1
+fi
+
 echo "Pushing to git ..."
 git push
+
+exit 0;
 
 # Master gets published as LATEST if that version doesn't exists yet and retagged as LATEST otherwise.
 if [ "${BRANCH}" = "master" ]; then
