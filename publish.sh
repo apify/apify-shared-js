@@ -30,8 +30,6 @@ fi
 echo "Pushing to git ..."
 git push
 
-exit 0;
-
 # Master gets published as LATEST if that version doesn't exists yet and retagged as LATEST otherwise.
 if [ "${BRANCH}" = "master" ]; then
     echo "Building package ..."
