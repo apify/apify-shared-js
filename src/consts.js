@@ -403,5 +403,20 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
     ],
 };
 
+export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
+    "userId": {{userId}},
+    "createdAt": {{createdAt}},
+    "eventType": {{eventType}},
+    "eventData": {{eventData}},
+    "resource": {{resource}}
+}`;
+export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
+    'userId',
+    'createdAt',
+    'eventType',
+    'eventData',
+    'resource',
+]);
+
 // This client key is used in request queue to indentify requests from Apify app UI.
 export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';

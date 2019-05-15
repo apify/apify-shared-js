@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import WebhookPayloadTemplate, { InvalidJsonError, InvalidVariableError } from '../build/webhook_payload_template';
+import { WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES } from '../src/consts';
 
 const validJson = `
 {
@@ -68,6 +69,21 @@ describe('WebhookPayloadTemplate', () => {
                 } }],
             resource: null,
         });
+    });
+    it('should parse default template with allowed variables', () => {
+        const context = {
+            userId: 'some-user-id',
+            eventData: {
+                someData: 1,
+            },
+            createdAt: new Date().toString(),
+            eventType: 'ACTOR.RUN.SUCCEEDED',
+            resource: {
+                someResource: 2,
+            },
+        };
+        const payload = WebhookPayloadTemplate.parse(WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, context);
+        expect(payload).to.be.eql(context);
     });
     it('should throw InvalidJsonError on invalid json', () => {
         try {

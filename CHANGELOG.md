@@ -1,4 +1,8 @@
-0.1.47 / 2019-05-14
+0.1.48 / 2019-05-15
+===================
+- Added `WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE` and `WEBHOOK_ALLOWED_PAYLOAD_VARIABLES` to consts.
+
+0.1.47 / 2019-05-15
 ===================
 - Added `InvalidJsonError` and `InvalidVariableError` to `WebhookPayloadTemplate`.
 
