@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import WebhookPayloadTemplate from '../build/webhook_payload_template';
+import WebhookPayloadTemplate, { InvalidJsonError, InvalidVariableError } from '../build/webhook_payload_template';
 
 const validJson = `
 {
@@ -69,21 +69,23 @@ describe('WebhookPayloadTemplate', () => {
             resource: null,
         });
     });
-    it('should throw on invalid json', () => {
+    it('should throw InvalidJsonError on invalid json', () => {
         try {
             WebhookPayloadTemplate.parse(invalidJson);
             throw new Error('Wrong error.');
         } catch (err) {
             expect(err.message).to.be.eql('Unexpected token , in JSON at position 68');
+            expect(err).to.be.instanceOf(InvalidJsonError);
         }
     });
-    it('should throw on invalid variable', () => {
+    it('should throw InvalidVariableError on invalid variable', () => {
         const allowedVars = new Set(['userId', 'eventData']);
         try {
             WebhookPayloadTemplate.parse(validTemplate, allowedVars);
             throw new Error('Wrong error.');
         } catch (err) {
             expect(err.message).to.be.eql('Invalid payload template variable: eventType');
+            expect(err).to.be.instanceOf(InvalidVariableError);
         }
     });
     it('should stringify object payload templates', () => {

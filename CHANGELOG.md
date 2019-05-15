@@ -1,6 +1,10 @@
+0.1.47 / 2019-05-14
+===================
+- Added `InvalidJsonError` and `InvalidVariableError` to `WebhookPayloadTemplate`.
+
 0.1.46 / 2019-05-14
 ===================
-- Added APIFY_UI_CLIENT_KEY constant
+- Added `APIFY_UI_CLIENT_KEY` constant
 
 0.1.45 / 2019-05-14
 ===================

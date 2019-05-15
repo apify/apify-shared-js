@@ -1,5 +1,24 @@
 const { JsonVariable, jsonStringifyExtended } = require('./utilities.client');
 
+class WebhookPayloadTemplateError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+export class InvalidJsonError extends WebhookPayloadTemplateError {
+    constructor(originalError) {
+        super(originalError.message);
+    }
+}
+export class InvalidVariableError extends Error {
+    constructor(variable) {
+        super(`Invalid payload template variable: ${variable}`);
+    }
+}
+
 /**
  * WebhookPayloadTemplate enables creation and parsing of webhook payload template strings.
  * Template strings are JSON that may include template variables enclosed in double
@@ -123,7 +142,7 @@ export default class WebhookPayloadTemplate {
                 if (this._isErrorCausedByVariable(index)) {
                     this._replaceVariable(index);
                 } else {
-                    throw err;
+                    throw new InvalidJsonError(err);
                 }
             }
         }
@@ -154,7 +173,7 @@ export default class WebhookPayloadTemplate {
     _validateVariable(variable) {
         if (this.allowedVariables === null) return;
         const isVariableValid = this.allowedVariables.has(variable);
-        if (!isVariableValid) throw new Error(`Invalid payload template variable: ${variable}`);
+        if (!isVariableValid) throw new InvalidVariableError(variable);
     }
 
     /** @private */
