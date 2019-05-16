@@ -20,6 +20,20 @@ const validTemplate = `
 }
 `;
 
+const validTemplateWithVariableInString = `
+{
+    "foo": "bar\\"{{foo}}\\"",
+    "bar": {{xyz}}
+}
+`;
+
+const invalidTemplateWithVariableInString = `
+{
+    "foo": "bar"{{foo}}",
+    "bar": {{xyz}}
+}
+`;
+
 const invalidJson = `
 {
     "id": "some-id",
@@ -84,6 +98,17 @@ describe('WebhookPayloadTemplate', () => {
         };
         const payload = WebhookPayloadTemplate.parse(WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, context);
         expect(payload).to.be.eql(context);
+    });
+    it('does not replace variables in strings', () => {
+        const payload = WebhookPayloadTemplate.parse(validTemplateWithVariableInString);
+        expect(payload.foo).to.be.eql('bar"{{foo}}"');
+
+        try {
+            WebhookPayloadTemplate.parse(invalidTemplateWithVariableInString);
+            throw new Error('Wrong error.');
+        } catch (err) {
+            expect(err).to.be.instanceOf(InvalidJsonError);
+        }
     });
     it('should throw InvalidJsonError on invalid json', () => {
         try {

@@ -1,3 +1,7 @@
+0.1.49 / 2019-05-16
+===================
+- Refactor `WebhookPayloadTemplate` to disregard JSON.parse error messages in parsing.
+
 0.1.48 / 2019-05-15
 ===================
 - Added `WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE` and `WEBHOOK_ALLOWED_PAYLOAD_VARIABLES` to consts.

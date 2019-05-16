@@ -134,13 +134,14 @@ export default class WebhookPayloadTemplate {
 
     /** @private */
     _parse() {
-        while (true) { // eslint-disable-line no-constant-condition
+        while (true) {
+            // eslint-disable-line no-constant-condition
             try {
                 return JSON.parse(this.payload);
             } catch (err) {
-                const index = this._parseIndexFromErrorMessage(err);
-                if (this._isErrorCausedByVariable(index)) {
-                    this._replaceVariable(index);
+                const position = this._findPositionOfNextVariable();
+                if (position) {
+                    this._replaceVariable(position);
                 } else {
                     throw new InvalidJsonError(err);
                 }
@@ -149,24 +150,43 @@ export default class WebhookPayloadTemplate {
     }
 
     /** @private */
-    _parseIndexFromErrorMessage(err) { // eslint-disable-line class-methods-use-this
-        const errorPosition = err.message.match(/(\d+)$/)[0];
-        return Number(errorPosition);
+    _findPositionOfNextVariable(startIndex) {
+        const openBraceIndex = this.payload.indexOf('{{', startIndex);
+        const closeBraceIndex = this.payload.indexOf('}}', openBraceIndex) + 1;
+        const someVariableMaybeExists = (openBraceIndex > -1) && (closeBraceIndex > -1);
+        if (!someVariableMaybeExists) return null;
+        const isInsideString = this._isVariableInsideString(openBraceIndex);
+        if (!isInsideString) return { openBraceIndex, closeBraceIndex };
+        return this._findPositionOfNextVariable(openBraceIndex + 1);
     }
 
     /** @private */
-    _isErrorCausedByVariable(errorIndex) {
-        return this.payload[errorIndex - 1] === '{';
+    _isVariableInsideString(openBraceIndex) {
+        const unescapedQuoteCount = this._countUnescapedDoubleQuotesUpToIndex(openBraceIndex);
+        return unescapedQuoteCount % 2 === 1;
     }
 
     /** @private */
-    _replaceVariable(startIndex) {
-        const nextClosingBracesIndex = this.payload.indexOf('}}', startIndex);
-        const variable = this.payload.substring(startIndex + 1, nextClosingBracesIndex);
-        this._validateVariable(variable);
-        const replacement = this._getVariableReplacement(variable);
-        this.replacedVariables.push({ variable, replacement });
-        this.payload = this.payload.replace(`{{${variable}}}`, replacement);
+    _countUnescapedDoubleQuotesUpToIndex(index) {
+        const payloadSection = this.payload.substring(0, index);
+        let unescapedQuoteCount = 0;
+        for (let i = 0; i < payloadSection.length; i++) {
+            const char = payloadSection[i];
+            const prevChar = payloadSection[i - 1];
+            if (char === '"' && prevChar !== '\\') {
+                unescapedQuoteCount++;
+            }
+        }
+        return unescapedQuoteCount;
+    }
+
+    /** @private */
+    _replaceVariable({ openBraceIndex, closeBraceIndex }) {
+        const variableName = this.payload.substring(openBraceIndex + 2, closeBraceIndex - 1);
+        this._validateVariable(variableName);
+        const replacement = this._getVariableReplacement(variableName);
+        this.replacedVariables.push({ variableName, replacement });
+        this.payload = this.payload.replace(`{{${variableName}}}`, replacement);
     }
 
     /** @private */
@@ -179,8 +199,6 @@ export default class WebhookPayloadTemplate {
     /** @private */
     _getVariableReplacement(variable) {
         const replacement = this.context[variable];
-        return replacement
-            ? JSON.stringify(replacement)
-            : null;
+        return replacement ? JSON.stringify(replacement) : null;
     }
 }
