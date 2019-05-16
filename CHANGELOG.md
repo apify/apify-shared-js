@@ -1,3 +1,7 @@
+0.1.50 / 2019-05-16
+===================
+- Fix `WebhookPayloadTemplateError` `captureStackTrace` error in environments without support.
+
 0.1.49 / 2019-05-16
 ===================
 - Refactor `WebhookPayloadTemplate` to disregard JSON.parse error messages in parsing.
