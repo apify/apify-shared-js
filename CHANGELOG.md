@@ -1,4 +1,4 @@
-0.1.50 / 2019-05-16
+0.1.51 / 2019-05-16
 ===================
 - Add support of dot notation (`resource.id`) to `WebhookPayloadTemplate`.
 
