@@ -1,5 +1,9 @@
 0.1.50 / 2019-05-16
 ===================
+- Add support of dot notation (`resource.id`) to `WebhookPayloadTemplate`.
+
+0.1.50 / 2019-05-16
+===================
 - Fix `WebhookPayloadTemplateError` `captureStackTrace` error in environments without support.
 
 0.1.49 / 2019-05-16
