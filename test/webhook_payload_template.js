@@ -51,6 +51,7 @@ describe('WebhookPayloadTemplate', () => {
             dataToSend: '{{data}}',
         });
     });
+
     it('should parse template with variables', () => {
         const payload = WebhookPayloadTemplate.parse(validTemplate);
         expect(payload).to.be.eql({
@@ -61,6 +62,7 @@ describe('WebhookPayloadTemplate', () => {
             resource: null,
         });
     });
+
     it('should fill template with variables using context', () => {
         const context = {
             userId: 'some-user-id',
@@ -84,6 +86,7 @@ describe('WebhookPayloadTemplate', () => {
             resource: null,
         });
     });
+
     it('should parse default template with allowed variables', () => {
         const context = {
             userId: 'some-user-id',
@@ -99,6 +102,7 @@ describe('WebhookPayloadTemplate', () => {
         const payload = WebhookPayloadTemplate.parse(WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, context);
         expect(payload).to.be.eql(context);
     });
+
     it('does not replace variables in strings', () => {
         const payload = WebhookPayloadTemplate.parse(validTemplateWithVariableInString);
         expect(payload.foo).to.be.eql('bar"{{foo}}"');
@@ -110,6 +114,7 @@ describe('WebhookPayloadTemplate', () => {
             expect(err).to.be.instanceOf(InvalidJsonError);
         }
     });
+
     it('should throw InvalidJsonError on invalid json', () => {
         try {
             WebhookPayloadTemplate.parse(invalidJson);
@@ -119,6 +124,7 @@ describe('WebhookPayloadTemplate', () => {
             expect(err).to.be.instanceOf(InvalidJsonError);
         }
     });
+
     it('should throw InvalidVariableError on invalid variable', () => {
         const allowedVars = new Set(['userId', 'eventData']);
         try {
@@ -129,6 +135,7 @@ describe('WebhookPayloadTemplate', () => {
             expect(err).to.be.instanceOf(InvalidVariableError);
         }
     });
+
     it('should stringify object payload templates', () => {
         const numVar = WebhookPayloadTemplate.getVariable('num');
         const bodyVar = WebhookPayloadTemplate.getVariable('body');
@@ -143,5 +150,66 @@ describe('WebhookPayloadTemplate', () => {
 
         const payloadTemplate = WebhookPayloadTemplate.stringify(objTemplate, null, 0);
         expect(payloadTemplate).to.be.eql('{"hello":"world","num":{{num}},"data":{"status":304,"body":{{body}}}}');
+    });
+
+    describe('Dot Notation', () => {
+        const template = `
+        {
+            "zero": {{resource}}, 
+            "one": {{resource.first}}, 
+            "two": {{resource.first.second}},
+            "array": {{array.1.0}}
+        }
+        `;
+
+        it('should return nested properties', () => {
+            const context = {
+                resource: {
+                    first: {
+                        second: 'r',
+                    },
+                },
+                other: {
+                    first: {
+                        second: 'o',
+                    },
+                },
+                array: [
+                    false,
+                    [true],
+                ],
+            };
+            const payload = WebhookPayloadTemplate.parse(template, null, context);
+            expect(payload).to.be.eql({
+                zero: {
+                    first: {
+                        second: 'r',
+                    },
+                },
+                one: {
+                    second: 'r',
+                },
+                two: 'r',
+                array: true,
+            });
+        });
+
+        it('should return null when nested props not available', () => {
+            const context = {
+                resource: {
+                    foo: 'bar',
+                },
+                array: 'hello',
+            };
+            const payload = WebhookPayloadTemplate.parse(template, null, context);
+            expect(payload).to.be.eql({
+                zero: {
+                    foo: 'bar',
+                },
+                one: null,
+                two: null,
+                array: null,
+            });
+        });
     });
 });

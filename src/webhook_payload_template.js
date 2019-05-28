@@ -104,7 +104,7 @@ export default class WebhookPayloadTemplate {
 
     /**
      * Produces an instance of a template variable that can be used
-     * in objects and will be stringified into `{{variable}}` syntax.
+     * in objects and will be stringified into `{{variableName}}` syntax.
      *
      * **Example:**
      * ```js
@@ -127,11 +127,11 @@ export default class WebhookPayloadTemplate {
      * }
      * ```
      *
-     * @param {string} variable
+     * @param {string} variableName
      * @return {JsonVariable}
      */
-    static getVariable(variable) {
-        return new JsonVariable(variable);
+    static getVariable(variableName) {
+        return new JsonVariable(variableName);
     }
 
     /** @private */
@@ -145,6 +145,8 @@ export default class WebhookPayloadTemplate {
                 if (position) {
                     this._replaceVariable(position);
                 } else {
+                    // When we catch an error from JSON.parse, but there's
+                    // no variable, we must have an invalid JSON.
                     throw new InvalidJsonError(err);
                 }
             }
@@ -185,22 +187,33 @@ export default class WebhookPayloadTemplate {
     /** @private */
     _replaceVariable({ openBraceIndex, closeBraceIndex }) {
         const variableName = this.payload.substring(openBraceIndex + 2, closeBraceIndex - 1);
-        this._validateVariable(variableName);
+        this._validateVariableName(variableName);
         const replacement = this._getVariableReplacement(variableName);
         this.replacedVariables.push({ variableName, replacement });
         this.payload = this.payload.replace(`{{${variableName}}}`, replacement);
     }
 
     /** @private */
-    _validateVariable(variable) {
+    _validateVariableName(variableName) {
         if (this.allowedVariables === null) return;
+        const [variable] = variableName.split('.');
+
+        // Properties of the variable are not validated on purpose
+        // as they will later be set to null if not found.
+        // This serves to enable dynamic variable structures.
         const isVariableValid = this.allowedVariables.has(variable);
-        if (!isVariableValid) throw new InvalidVariableError(variable);
+
+        if (!isVariableValid) throw new InvalidVariableError(variableName);
     }
 
     /** @private */
-    _getVariableReplacement(variable) {
-        const replacement = this.context[variable];
+    _getVariableReplacement(variableName) {
+        const [variable, ...properties] = variableName.split('.');
+        const context = this.context[variable];
+        const replacement = properties.reduce((ctx, prop) => {
+            if (!ctx || typeof ctx !== 'object') return null;
+            return ctx[prop];
+        }, context);
         return replacement ? JSON.stringify(replacement) : null;
     }
 }
