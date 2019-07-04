@@ -18,6 +18,7 @@ const GOOD_OBJECTS = [
     undefined,
     123.456,
     'something',
+    Buffer.from('some-string'),
     new Date(),
     [],
     {
@@ -220,9 +221,13 @@ const testEscape = function (escapeFunc, src, trg) {
     const isDate = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Date]';
     };
+    const isDateOrBuffer = obj => isDate(obj) || Buffer.isBuffer(obj);
 
     // ensure srcClone didn't change
-    if ((srcClone && isObject(srcClone) && !isDate(srcClone)) || (trgClone && isObject(trgClone) && !isDate(trgClone))) assert.notEqual(srcClone, trgClone);
+    if (
+        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone))
+        || (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
+    ) assert.notEqual(srcClone, trgClone);
     assert.deepEqual(srcClone, src);
 
     const trgNoClone = escapeFunc(srcClone, false);
