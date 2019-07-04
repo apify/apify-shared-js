@@ -1,4 +1,4 @@
-0.1.51 / 2019-07-04
+0.1.52 / 2019-07-04
 ===================
 - _traverseObject() function used in unescapeFromBson() skips buffers.
 
