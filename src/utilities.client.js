@@ -6,6 +6,7 @@
  *
  */
 
+const _ = require('underscore');
 const slugg = require('slugg');
 const isBuffer = require('is-buffer');
 const consts = require('./consts');
@@ -593,4 +594,52 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     });
 
     return errors;
+};
+
+exports.JsonVariable = class JsonVariable {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getToken() {
+        return `{{${this.name}}}`;
+    }
+};
+
+/**
+ * Stringifies provided value to JSON with a difference that supports functions that
+ * are stringified using .toString() method.
+ *
+ * In addition to that supports instances of JsonVariable('my.token') that are replaced
+ * with a {{my.token}}.
+ *
+ * @param {*} value
+ * @param {Function} [replacer]
+ * @param {Number} [space=0]
+ * @return {*} value stringified to JSON.
+ */
+exports.jsonStringifyExtended = (value, replacer, space) => {
+    if (replacer && !_.isFunction(replacer)) throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
+
+    const replacements = {};
+
+    const extendedReplacer = (key, val) => {
+        val = replacer ? replacer(key, val) : val;
+
+        if (_.isFunction(val)) return val.toString();
+        if (val instanceof exports.JsonVariable) {
+            const randomToken = `<<<REPLACEMENT_TOKEN::${Math.random()}>>>`;
+            replacements[randomToken] = val.getToken();
+            return randomToken;
+        }
+
+        return val;
+    };
+
+    let stringifiedValue = JSON.stringify(value, extendedReplacer, space);
+    _.mapObject(replacements, (replacementValue, replacementToken) => {
+        stringifiedValue = stringifiedValue.replace(`"${replacementToken}"`, replacementValue);
+    });
+
+    return stringifiedValue;
 };

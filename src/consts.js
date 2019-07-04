@@ -15,6 +15,7 @@ export const ACT_SOURCE_TYPES = {
 
 export const ACTOR_EVENT_NAMES = {
     CPU_INFO: 'cpuInfo',
+    SYSTEM_INFO: 'systemInfo',
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
 };
@@ -151,7 +152,7 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.\-]{3,30}$/,
+    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
 };
 
 /**
@@ -259,6 +260,8 @@ export const ENV_VARS = {
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
     META_ORIGIN: 'APIFY_META_ORIGIN',
     FACT: 'APIFY_FACT',
+    DEDICATED_CPUS: 'APIFY_DEDICATED_CPUS',
+    SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
@@ -399,3 +402,21 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
 };
+
+export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
+    "userId": {{userId}},
+    "createdAt": {{createdAt}},
+    "eventType": {{eventType}},
+    "eventData": {{eventData}},
+    "resource": {{resource}}
+}`;
+export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
+    'userId',
+    'createdAt',
+    'eventType',
+    'eventData',
+    'resource',
+]);
+
+// This client key is used in request queue to indentify requests from Apify app UI.
+export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';

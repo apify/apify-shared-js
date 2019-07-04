@@ -992,4 +992,96 @@ describe('utilities.client', () => {
             });
         });
     });
+
+    describe('#jsonStringifyExtended()', () => {
+        it('should work', () => {
+            const value = {
+                foo: 'bar',
+                date: new Date('2019-05-06T13:08:15.590Z'),
+                num: 1,
+                boolean: true,
+                arr: [
+                    1,
+                    'something',
+                    (a, b) => a + b,
+                ],
+                obj: {
+                    foo: 'bar',
+                    arrFunc: (x, y) => {
+                        return x + y;
+                    },
+                    /* eslint-disable */
+                    myFunc: function (z) {
+                        return 'z';
+                    },
+                    /* eslint-enable */
+                },
+            };
+
+            const expected = `{
+  "foo": "bar",
+  "date": "2019-05-06T13:08:15.590Z",
+  "num": 1,
+  "boolean": true,
+  "arr": [
+    1,
+    "something",
+    "(a, b) => a + b"
+  ],
+  "obj": {
+    "foo": "bar",
+    "arrFunc": "(x, y) => {\\n                        return x + y;\\n                    }",
+    "myFunc": "function (z) {\\n                        return 'z';\\n                    }"
+  }
+}`;
+
+            expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+        });
+
+        it('should extend original replacer', () => {
+            const value = {
+                foo: 'bar',
+                date: new Date('2019-05-06T13:08:15.590Z'),
+                num: 1,
+                func: (x, y) => {
+                    return x + y;
+                },
+            };
+
+            const expected = `{
+  "foo": "bar",
+  "date": "2019-05-06T13:08:15.590Z",
+  "func": "(x, y) => {\\n                    return x + y;\\n                }"
+}`;
+
+            // Replacer removes number properties.
+            const replacer = (key, val) => {
+                return _.isNumber(val) ? undefined : val;
+            };
+
+            expect(utils.jsonStringifyExtended(value, replacer, 2)).to.be.eql(expected);
+        });
+    });
+
+    it('should support tokens', () => {
+        const value = {
+            foo: 'bar',
+            num: 1,
+            obj: {
+                foo: 'bar',
+                rpl: new utils.JsonVariable('my.token'),
+            },
+        };
+
+        const expected = `{
+  "foo": "bar",
+  "num": 1,
+  "obj": {
+    "foo": "bar",
+    "rpl": {{my.token}}
+  }
+}`;
+
+        expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+    });
 });
