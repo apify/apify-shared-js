@@ -1,3 +1,7 @@
+0.1.51 / 2019-07-04
+===================
+- _traverseObject() function used in unescapeFromBson() skips buffers.
+
 0.1.51 / 2019-05-16
 ===================
 - Add support of dot notation (`resource.id`) to `WebhookPayloadTemplate`.
