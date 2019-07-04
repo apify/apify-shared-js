@@ -8,6 +8,7 @@
 
 const _ = require('underscore');
 const slugg = require('slugg');
+const isBuffer = require('is-buffer');
 const consts = require('./consts');
 const regex = require('./regexs');
 const { m } = require('./intl');
@@ -265,8 +266,14 @@ exports.unescapePropertyName = _unescapePropertyName;
  * @private
  */
 const _traverseObject = function (obj, clone, keyTransformFunc) {
-    // primitive types don't need to be cloned or further traversed
-    if (obj === null || typeof (obj) !== 'object' || Object.prototype.toString.call(obj) === '[object Date]') return obj;
+    // Primitive types don't need to be cloned or further traversed.
+    // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
+    if (
+        obj === null
+        || typeof (obj) !== 'object'
+        || Object.prototype.toString.call(obj) === '[object Date]'
+        || isBuffer(obj)
+    ) return obj;
 
     let result;
 
