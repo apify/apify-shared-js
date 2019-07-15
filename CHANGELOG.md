@@ -1,3 +1,7 @@
+0.1.53 / 2019-07-15
+===================
+- Added python editor to input schema
+
 0.1.52 / 2019-07-04
 ===================
 - _traverseObject() function used in unescapeFromBson() skips buffers.

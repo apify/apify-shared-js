@@ -85,7 +85,7 @@
                 "nullable": { "type": "boolean" },
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
-                "editor": { "enum": ["javascript", "textfield", "textarea", "hidden"] }
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] }
             },
             "required": ["type", "title", "description", "editor"]
         },
