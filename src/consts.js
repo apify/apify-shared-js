@@ -336,10 +336,10 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Culture/entertainment',
+    ENTERTAINMENT: 'Entertainment',
     SOCIAL: 'Social',
     MARKETING: 'Marketing',
-    NEWS: 'Media/news',
+    NEWS: 'News',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
     SPORTS: 'Sports',
