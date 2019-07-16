@@ -1,3 +1,7 @@
+0.1.54 / 2019-07-16
+===================
+- Updated labels in ACTOR_CATEGORIES
+
 0.1.53 / 2019-07-15
 ===================
 - Added python editor to input schema
