@@ -342,12 +342,10 @@ export const ACTOR_CATEGORIES = {
     NEWS: 'News',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
-    SPORTS: 'Sports',
     SEARCH_ENGINES: 'Search engines',
     DATA: 'Data processing',
     EGOVERNMENT: 'E-government',
     TOOLS: 'Tools',
-    UTILS: 'Developers utilities',
     EXAMPLES: 'Examples',
     OTHER: 'Other',
 };

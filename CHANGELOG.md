@@ -1,3 +1,7 @@
+0.1.55 / 2019-07-18
+===================
+- Removed `SPORTS` and `UTILS` from `ACTOR_CATEGORIES`
+
 0.1.54 / 2019-07-16
 ===================
 - Updated labels in ACTOR_CATEGORIES
