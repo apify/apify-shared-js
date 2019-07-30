@@ -1,3 +1,7 @@
+0.1.56 / 2019-07-30
+===================
+- Added `sectionCaption` and `sectionDescription` as available properties for each input type in `INPUT_SCHEMA.json`
+
 0.1.55 / 2019-07-18
 ===================
 - Removed `SPORTS` and `UTILS` from `ACTOR_CATEGORIES`
