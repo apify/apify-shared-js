@@ -1,3 +1,7 @@
+0.1.57 / 2019-08-22
+===================
+- Moved `splitFullName` function from `utilities.js` to `utilities.client.js`
+
 0.1.56 / 2019-07-30
 ===================
 - Added `sectionCaption` and `sectionDescription` as available properties for each input type in `INPUT_SCHEMA.json`

@@ -676,7 +676,7 @@ describe('utilities.client', () => {
                     type: 'array',
                     editor: 'requestListSources',
                     title: 'requestListSources url validation',
-                    description: 'Field for testing of a requestListSources url validation'
+                    description: 'Field for testing of a requestListSources url validation',
                 },
             });
             const inputs = [
@@ -1066,19 +1066,18 @@ describe('utilities.client', () => {
 
             expect(utils.jsonStringifyExtended(value, replacer, 2)).to.be.eql(expected);
         });
-    });
 
-    it('should support tokens', () => {
-        const value = {
-            foo: 'bar',
-            num: 1,
-            obj: {
+        it('should support tokens', () => {
+            const value = {
                 foo: 'bar',
-                rpl: new utils.JsonVariable('my.token'),
-            },
-        };
+                num: 1,
+                obj: {
+                    foo: 'bar',
+                    rpl: new utils.JsonVariable('my.token'),
+                },
+            };
 
-        const expected = `{
+            const expected = `{
   "foo": "bar",
   "num": 1,
   "obj": {
@@ -1087,6 +1086,67 @@ describe('utilities.client', () => {
   }
 }`;
 
-        expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+            expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+        });
+    });
+
+    describe('#splitFullName()', () => {
+        it('it works', () => {
+            // invalid args
+            assert.deepEqual(
+                utils.splitFullName(''),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName(null),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName({}),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName(123456),
+                [null, null],
+            );
+
+            // valid args
+            assert.deepEqual(
+                utils.splitFullName(''),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName('        '),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName('   John Newman     '),
+                ['John', 'Newman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('   John \t\n\r Newman     '),
+                ['John', '\t\n\r Newman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('John Paul New\nman'),
+                ['John', 'Paul New\nman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('John Paul Newman  Karl   Ludvig   III'),
+                ['John', 'Paul Newman Karl Ludvig III'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('New-man'),
+                [null, 'New-man'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('  New  man  '),
+                ['New', 'man'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('More    Spaces Between'),
+                ['More', 'Spaces Between'],
+            );
+        });
     });
 });

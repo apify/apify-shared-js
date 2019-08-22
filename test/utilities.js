@@ -33,66 +33,6 @@ describe('utilities', () => {
         });
     });
 
-    describe('#splitFullName()', () => {
-        it('it works', () => {
-            // invalid args
-            assert.deepEqual(
-                utils.splitFullName(''),
-                [null, null],
-            );
-            assert.deepEqual(
-                utils.splitFullName(null),
-                [null, null],
-            );
-            assert.deepEqual(
-                utils.splitFullName({}),
-                [null, null],
-            );
-            assert.deepEqual(
-                utils.splitFullName(123456),
-                [null, null],
-            );
-
-            // valid args
-            assert.deepEqual(
-                utils.splitFullName(''),
-                [null, null],
-            );
-            assert.deepEqual(
-                utils.splitFullName('        '),
-                [null, null],
-            );
-            assert.deepEqual(
-                utils.splitFullName('   John Newman     '),
-                ['John', 'Newman'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('   John \t\n\r Newman     '),
-                ['John', '\t\n\r Newman'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('John Paul New\nman'),
-                ['John', 'Paul New\nman'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('John Paul Newman  Karl   Ludvig   III'),
-                ['John', 'Paul Newman Karl Ludvig III'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('New-man'),
-                [null, 'New-man'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('  New  man  '),
-                ['New', 'man'],
-            );
-            assert.deepEqual(
-                utils.splitFullName('More    Spaces Between'),
-                ['More', 'Spaces Between'],
-            );
-        });
-    });
-
     describe('weightedAverage()', () => {
         it('works', () => {
             assert.equal(Math.round(utils.weightedAverage(13, 3, 26, 4) * 100), Math.round(20.42857 * 100));
