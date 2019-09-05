@@ -29,7 +29,7 @@ export default class ImageProxyClient {
 
     // eslint-disable-next-line class-methods-use-this
     _createHex(string) {
-        return new Buffer(string, 'utf8').toString('hex');
+        return Buffer.from(string, 'utf8').toString('hex');
     }
 
     /**

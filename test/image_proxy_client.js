@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import ImageProxyClient from '../build/image_proxy_client.js';
+import ImageProxyClient from '../build/image_proxy_client';
 
 const IMAGE_PROXY_KEY = '2345DFGHCVBNGHJ';
 const IMAGE_PROXY_DOMAIN = 'localhost:3000';
