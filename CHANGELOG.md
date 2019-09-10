@@ -1,3 +1,7 @@
+0.1.58 / 2019-09-10
+===================
+- Added client to generate URL for Apify image proxy
+
 0.1.57 / 2019-08-22
 ===================
 - Moved `splitFullName` function from `utilities.js` to `utilities.client.js`
