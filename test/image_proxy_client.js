@@ -5,7 +5,7 @@ const IMAGE_PROXY_KEY = '2345DFGHCVBNGHJ';
 const IMAGE_PROXY_DOMAIN = 'localhost:3000';
 
 const imageProxyClient = new ImageProxyClient({
-    key: IMAGE_PROXY_KEY,
+    secretKey: IMAGE_PROXY_KEY,
     domain: IMAGE_PROXY_DOMAIN,
 });
 
