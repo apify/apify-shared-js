@@ -5,7 +5,7 @@ import querystring from 'querystring';
  * This client can be used to generate URLs for Apify image proxy server.
  * Usage:
  * const imageProxyClient = new ImageProxyClient({
- *   secretKey: process.env.CAMO_KEY,
+ *   hmacKey: process.env.CAMO_KEY,
  *   domain: 'apifyusercontent.com',
  * });
  * const imageUrl = imageProxyClient.generateUrl('http://example.com/example.gif');
@@ -13,17 +13,17 @@ import querystring from 'querystring';
 export default class ImageProxyClient {
     /**
      * @param domain - Domain name of proxy image server
-     * @param secretKey - Key for create Hmac hash
+     * @param hmacKey - Key for create Hmac hash
      * @param [protocol] - By default https is used
      */
-    constructor({ domain, secretKey, protocol = 'https' }) {
+    constructor({ domain, hmacKey, protocol = 'https' }) {
         this.protocol = protocol;
-        this.secretKey = secretKey;
+        this.hmacKey = hmacKey;
         this.domain = domain;
     }
 
     _createDigest(string) {
-        const hmac = crypto.createHmac('sha1', this.secretKey).update(string);
+        const hmac = crypto.createHmac('sha1', this.hmacKey).update(string);
         return hmac.digest('hex');
     }
 

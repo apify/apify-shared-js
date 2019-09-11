@@ -1,3 +1,7 @@
+0.1.59 / 2019-09-11
+===================
+- Updated `secretKey` option to `hmacKey` for image proxy client
+
 0.1.58 / 2019-09-10
 ===================
 - Added client to generate URL for Apify image proxy
