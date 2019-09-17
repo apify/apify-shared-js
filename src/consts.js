@@ -1,3 +1,5 @@
+import { DNS_SAFE_NAME_REGEX } from './regexs';
+
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
 export const ACT_JOB_TYPES = {
@@ -153,6 +155,15 @@ export const USERNAME = {
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
     REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+};
+
+/**
+ * Actor name constraints.
+ */
+export const ACTOR_NAME = {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 30,
+    REGEX: DNS_SAFE_NAME_REGEX,
 };
 
 /**

@@ -1,3 +1,7 @@
+0.1.60 / 2019-09-16
+===================
+- Added actor name constraints const
+
 0.1.59 / 2019-09-11
 ===================
 - Updated `secretKey` option to `hmacKey` for image proxy client
