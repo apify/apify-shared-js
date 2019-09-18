@@ -1,3 +1,7 @@
+0.1.61 / 2019-09-18
+===================
+- Added MAX_MULTIFILE_BYTES and SOURCE_FILE_FORMATS to consts. 
+
 0.1.60 / 2019-09-16
 ===================
 - Added actor name constraints const

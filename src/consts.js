@@ -429,3 +429,12 @@ export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
 
 // This client key is used in request queue to indentify requests from Apify app UI.
 export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
+
+// Max allowed size of files in multi-file editor
+export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
+
+// Formats for multi-file editor files
+export const SOURCE_FILE_FORMATS = {
+    TEXT: 'TEXT',
+    BASE64: 'BASE64',
+};
