@@ -81,12 +81,12 @@ export default class ImageProxyClient {
 
     /**
      * Creates HTML of image element with image proxy URL
-     * @param href -  Used for src attribute
+     * @param src -  Used for src attribute
      * @param title - Used for title attribute
-     * @param text - Used for alt attribute
+     * @param alt - Used for alt attribute
      * @return {string} - Image element
      */
-    createImageHtml(href, title, text) {
-        return `<img src="${this.generateUrl(href)}" alt="${text}" title="${title}">`;
+    createImageHtml(src, title, alt) {
+        return `<img src="${this.generateUrl(src)}" alt="${alt}" title="${title}">`;
     }
 }
