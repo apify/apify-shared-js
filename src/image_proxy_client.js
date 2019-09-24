@@ -17,6 +17,9 @@ export default class ImageProxyClient {
      * @param [protocol] - By default https is used
      */
     constructor({ domain, hmacKey, protocol = 'https' }) {
+        if (!domain) throw new Error('ImageProxyClient: Parameter domain is required!');
+        if (!hmacKey) throw new Error('ImageProxyClient: Parameter hmacKey is required!');
+
         this.protocol = protocol;
         this.hmacKey = hmacKey;
         this.domain = domain;
@@ -54,5 +57,36 @@ export default class ImageProxyClient {
         const digest = this._createDigest(url);
         const hexUrl = this._createHex(url);
         return `${this.protocol}://${this.domain}/${digest}/${hexUrl}`;
+    }
+
+    /**
+     * Finds all images in HTML and updates src attributes with image proxy URL
+     * @param html - string HTML
+     * @param $ - jQuery object
+     * @return {string} - Updated HTML
+     */
+    updateImagesInHtml(html, $) {
+        const $html = $(html);
+        if ($html.is('img')) {
+            $html.attr('src', this.generateUrl($html.attr('src')));
+        } else {
+            const self = this;
+            $html.find('img').each(function () {
+                const imageUrl = $(this).attr('src');
+                $(this).attr('src', self.generateUrl(imageUrl));
+            });
+        }
+        return $html[0].outerHTML;
+    }
+
+    /**
+     * Creates HTML of image element with image proxy URL
+     * @param href -  Used for src attribute
+     * @param title - Used for title attribute
+     * @param text - Used for alt attribute
+     * @return {string} - Image element
+     */
+    createImageHtml(href, title, text) {
+        return `<img src="${this.generateUrl(href)}" alt="${text}" title="${title}">`;
     }
 }
