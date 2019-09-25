@@ -12,6 +12,7 @@ const isBuffer = require('is-buffer');
 const consts = require('./consts');
 const regex = require('./regexs');
 const { m } = require('./intl');
+const { parseAjvError } = require('./input_schema');
 require('./polyfills');
 
 /**
@@ -449,37 +450,8 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors
-            .map((error) => {
-                // There are 3 possible errors comming from validation:
-                // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
-                // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
-                // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
-
-                let fieldKey;
-                let message;
-
-                // If error is with keyword type, it means that type of input is incorrect
-                // this can mean that provided value is null
-                if (error.keyword === 'type') {
-                    fieldKey = error.dataPath.split('.').pop();
-                    // Check if value is null and field is nullable, if yes, then skip this error
-                    if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
-                        return null;
-                    }
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                } else if (error.keyword === 'required') {
-                    fieldKey = error.params.missingProperty;
-                    message = m('inputSchema.validation.required', { fieldKey });
-                } else if (error.keyword === 'additionalProperties') {
-                    fieldKey = error.params.additionalProperty;
-                    message = m('inputSchema.validation.additionalProperty', { fieldKey });
-                } else {
-                    fieldKey = error.dataPath.split('.').pop();
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                }
-
-                return { fieldKey, message };
-            }).filter(error => !!error);
+            .map(error => parseAjvError(error, 'input', properties, input))
+            .filter(error => !!error);
     }
 
     Object.keys(properties).forEach((property) => {

@@ -1,78 +1,12 @@
-import Ajv from 'ajv';
 import { expect } from 'chai';
-import inputSchema from '../src/input_schema.json';
+import Ajv from 'ajv';
+import { validateInputSchema } from '../build/input_schema';
 
 describe('input_schema.json', () => {
-    const ajv = new Ajv({ cache: false });
+    const validator = new Ajv({ cache: false });
 
     describe('type any', () => {
-        it('should allow to compile only a valid type any', () => {
-            // Valid one.
-            if (!ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
-                    },
-                },
-            })) throw new Error(ajv.errorsText());
-
-            // Nonexisting type.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['array', 'nonexisting'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
-                    },
-                },
-            })) throw new Error('Input field definition with onexisting type should have failed!');
-
-            // Missing type.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: [],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
-                    },
-                },
-            })) throw new Error('Input field definition that misses type should have failed!');
-
-            // Duplicate types.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['string', 'integer', 'integer'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
-                    },
-                },
-            })) throw new Error('Input field definition that duplicate types should have failed!');
-        });
-
-        it('should allow all the needed types', () => {
+        it('should not throw on valid schema', () => {
             const schema = {
                 title: 'Test input schema',
                 type: 'object',
@@ -81,28 +15,55 @@ describe('input_schema.json', () => {
                     myField: {
                         title: 'Field title',
                         type: ['object', 'array', 'string', 'integer', 'boolean'],
-                        nullable: false,
                         description: 'Some description ...',
                         editor: 'json',
-                        default: { foo: 'bar' },
-                        prefill: [1, 2, 3],
-                        example: true,
                     },
                 },
             };
 
-            const test = (val) => {
-                if (!ajv.validate(schema, { myField: val })) throw new Error(ajv.errorsText());
-            };
-
-            test({ foo: 'bar' });
-            test([1, 2, 'foo']);
-            test('something');
-            test(324567);
-            test(true);
+            validateInputSchema(validator, schema);
         });
 
-        it('should work with a subset (integer and array is not allowed)', () => {
+        it('should throw error on basic structure level', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                xxx: 123,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        description: 'Some description ...',
+                        editor: 'json',
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Property schema.xxx is not allowed.)',
+            );
+
+            const schema2 = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 100000,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        description: 'Some description ...',
+                        editor: 'json',
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema2)).to.throw(
+                'Input schema is not valid (Field schema.schemaVersion should be <= 1)',
+            );
+        });
+
+        it('should throw error on field structure level for a type ANY', () => {
             const schema = {
                 title: 'Test input schema',
                 type: 'object',
@@ -110,23 +71,98 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'string', 'boolean'],
-                        nullable: false,
+                        type: ['object', 'array', 'string', 'integer', 'boolean'],
                         description: 'Some description ...',
-                        editor: 'json',
+                        editor: 'textfield',
                     },
                 },
             };
 
-            const test = (val) => {
-                if (!ajv.validate(schema, { myField: val })) throw new Error(ajv.errorsText());
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Field schema.properties.myField.editor should be equal to one of the allowed values)',
+            );
+        });
+
+        it('should throw error on field that doesn\'t match any of types', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'xxx',
+                        description: 'Some description ...',
+                        editor: 'textfield',
+                    },
+                },
             };
 
-            test({ foo: 'bar' });
-            expect(() => test([1, 2, 'foo'])).to.throw('data.myField should be object,string,boolean');
-            test('something');
-            expect(() => test(324567)).to.throw('data.myField should be object,string,boolean');
-            test(true);
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Field schema.properties.myField is not matching any input schema type definition.'
+                + ' Please make sure that it\'s type is valid.',
+            );
+        });
+
+        it('should throw error on field structure level for a type other than ANY and STRING', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'object',
+                        description: 'Some description ...',
+                        editor: 'json',
+                        xxx: 1,
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Property schema.properties.myField.xxx is not allowed.)',
+            );
+        });
+
+        it('should throw error on field structure level for a type non-ENUM STRING', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'xxx',
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Field schema.properties.myField.editor should be equal to one of the allowed values)',
+            );
+        });
+
+        it('should throw error on field structure level for a type ENUM STRING', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        enum: [123],
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).to.throw(
+                'Input schema is not valid (Field schema.properties.myField.enum[0] should be string)',
+            );
         });
     });
 });
