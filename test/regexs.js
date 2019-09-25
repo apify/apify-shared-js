@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { expect } from 'chai';
-import * as REGEXS from '../build/regexs.js';
+import * as REGEXS from '../build/regexs';
 
 const tests = {
     GIT_REPO_REGEX: {
