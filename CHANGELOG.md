@@ -1,3 +1,7 @@
+0.1.63 / 2019-09-25
+===================
+- Added validateInputSchema function to validate input schema with user friendly messages
+
 0.1.62 / 2019-09-18
 ===================
 - Added new function to ImageProxyClient

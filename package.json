@@ -1,6 +1,6 @@
 {
   "name": "apify-shared",
-  "version": "0.1.62",
+  "version": "0.1.63",
   "description": "Tools and constants shared across Apify projects.",
   "main": "build/index.js",
   "keywords": [
