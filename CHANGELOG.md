@@ -1,4 +1,4 @@
-0.1.63 / 2019-09-25
+0.1.64 / 2019-09-25
 ===================
 - Fixed missing variables in input schema validation messages
 
