@@ -373,14 +373,14 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         // Nullable error is already handled by AJV
         if (value === null) return fieldErrors;
         if (!value) {
-            const message = m('inputSchema.validation.required', { fieldKey });
+            const message = m('inputSchema.validation.required', { rootName: 'input', fieldKey });
             fieldErrors.push(message);
             return fieldErrors;
         }
 
         const { useApifyProxy, proxyUrls } = value;
         if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
-            fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
+            fieldErrors.push(m('inputSchema.validation.proxyRequired', { rootName: 'input', fieldKey }));
             return fieldErrors;
         }
     }
@@ -420,7 +420,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
-        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', { fieldKey, groups: unavailableProxyGroups.join(', ') }));
+        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
+            rootName: 'input',
+            fieldKey,
+            groups: unavailableProxyGroups.join(', '),
+        }));
     }
 
     // Check if any of the proxy groups are blocked and if yes then output the associated message
@@ -477,6 +481,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                     }));
@@ -491,6 +496,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternKey,
@@ -506,6 +512,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -520,6 +527,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -537,6 +545,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternKey,
@@ -552,6 +561,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternValue,
