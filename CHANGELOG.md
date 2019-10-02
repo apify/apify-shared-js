@@ -1,3 +1,7 @@
+0.1.65 / 2019-10-02
+===================
+- Fixed imageProxyClient.updateImagesInHtml() function
+
 0.1.64 / 2019-09-25
 ===================
 - Fixed missing variables in input schema validation messages

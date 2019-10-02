@@ -66,17 +66,14 @@ export default class ImageProxyClient {
      * @return {string} - Updated HTML
      */
     updateImagesInHtml(html, $) {
-        const $html = $(html);
-        if ($html.is('img')) {
-            $html.attr('src', this.generateUrl($html.attr('src')));
-        } else {
-            const self = this;
-            $html.find('img').each(function () {
-                const imageUrl = $(this).attr('src');
-                $(this).attr('src', self.generateUrl(imageUrl));
-            });
-        }
-        return $html[0].outerHTML;
+        // NOTE: We need to wrap HTML in div, otherwise we can not get proper HTML on output using .html().
+        const $html = $(`<div>${html}</div>`);
+        const self = this;
+        $html.find('img').each(function () {
+            const imageUrl = $(this).attr('src');
+            $(this).attr('src', self.generateUrl(imageUrl));
+        });
+        return $html.html();
     }
 
     /**

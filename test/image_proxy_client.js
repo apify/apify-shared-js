@@ -33,11 +33,29 @@ describe('proxy image client', () => {
         const html = (imageUrl) => {
             return '<div class="test-class">'
                 + `<img src="${imageUrl}" alt="test image" title="test image">`
+                + '<!-- toc -->'
                 + '</div>';
         };
         const testHtml = html(TEST_IMAGE_URL);
         const updatedHtml = imageProxyClient.updateImagesInHtml(testHtml, $);
         expect(updatedHtml).to.be.eql(html(EXPECTED_IMAGE_URL));
+    });
+
+    it('updateImagesInHtml() works with just image in HTML', () => {
+        const $ = jQuery(new jsdom.JSDOM().window);
+        const html = (imageUrl) => {
+            return `<img src="${imageUrl}" alt="test image" title="test image">`;
+        };
+        const testHtml = html(TEST_IMAGE_URL);
+        const updatedHtml = imageProxyClient.updateImagesInHtml(testHtml, $);
+        expect(updatedHtml).to.be.eql(html(EXPECTED_IMAGE_URL));
+    });
+
+    it('updateImagesInHtml() does not break HTML comment', () => {
+        const $ = jQuery(new jsdom.JSDOM().window);
+        const html = '<!-- toc -->';
+        const updatedHtml = imageProxyClient.updateImagesInHtml(html, $);
+        expect(updatedHtml).to.be.eql(html);
     });
 
     it('createImageHtml() works', () => {
