@@ -1,3 +1,7 @@
+0.1.66 / 2019-10-02
+===================
+- Added sectionCaption and sectionDescription to string enum input schema field
+
 0.1.65 / 2019-10-02
 ===================
 - Fixed imageProxyClient.updateImagesInHtml() function
@@ -16,7 +20,7 @@
 
 0.1.61 / 2019-09-18
 ===================
-- Added MAX_MULTIFILE_BYTES and SOURCE_FILE_FORMATS to consts. 
+- Added MAX_MULTIFILE_BYTES and SOURCE_FILE_FORMATS to consts.
 
 0.1.60 / 2019-09-16
 ===================

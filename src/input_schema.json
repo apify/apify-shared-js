@@ -58,6 +58,8 @@
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" },
 
                 "enum": {
                     "type": "array",
