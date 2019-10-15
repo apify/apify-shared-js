@@ -1,3 +1,7 @@
+0.1.67 / 2019-10-15
+===================
+- Added stream utilities with readStreamToString() from @apify/http-request
+
 0.1.66 / 2019-10-02
 ===================
 - Added sectionCaption and sectionDescription to string enum input schema field
