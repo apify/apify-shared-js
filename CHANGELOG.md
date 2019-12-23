@@ -1,4 +1,4 @@
-xxxx
+0.1.68 / 2019-12-23
 ===================
 - Better error messages for input schema regex errors
 
