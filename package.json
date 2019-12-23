@@ -1,6 +1,6 @@
 {
   "name": "apify-shared",
-  "version": "0.1.41",
+  "version": "0.1.67",
   "description": "Tools and constants shared across Apify projects.",
   "main": "build/index.js",
   "keywords": [
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/apifytech/apify-shared-js/issues"
   },
-  "homepage": "https://www.apify.com",
+  "homepage": "https://apify.com",
   "scripts": {
     "build": "rm -rf ./build && babel src --out-dir build && cp src/*.json build",
     "build-doc": "npm run clean && npm run build && node ./node_modules/jsdoc/jsdoc.js --package ./package.json -c ./jsdoc/conf.json -d docs",
@@ -37,6 +37,7 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "clone": "^2.1.1",
+    "is-buffer": "^2.0.3",
     "request": "^2.88.0",
     "slugg": "^1.2.1",
     "underscore": "^1.9.1",
@@ -56,6 +57,8 @@
     "istanbul": "0.4.5",
     "jsdoc": "^3.6.3",
     "jsdoc-export-default-interop": "^0.3.1",
+    "jsdom": "^15.1.1",
+    "jquery": "^3.4.1",
     "mocha": "^5.2.0",
     "sinon": "^8.0.1"
   }

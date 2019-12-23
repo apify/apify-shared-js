@@ -6,10 +6,13 @@
  *
  */
 
+const _ = require('underscore');
 const slugg = require('slugg');
+const isBuffer = require('is-buffer');
 const consts = require('./consts');
 const regex = require('./regexs');
 const { m } = require('./intl');
+const { parseAjvError } = require('./input_schema');
 require('./polyfills');
 
 /**
@@ -260,8 +263,14 @@ export const unescapePropertyName = function (name) {
  * @private
  */
 const traverseObject = function (obj, clone, keyTransformFunc) {
-    // primitive types don't need to be cloned or further traversed
-    if (obj === null || typeof (obj) !== 'object' || Object.prototype.toString.call(obj) === '[object Date]') return obj;
+    // Primitive types don't need to be cloned or further traversed.
+    // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
+    if (
+        obj === null
+        || typeof (obj) !== 'object'
+        || Object.prototype.toString.call(obj) === '[object Date]'
+        || isBuffer(obj)
+    ) return obj;
 
     let result;
 
@@ -360,14 +369,14 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         // Nullable error is already handled by AJV
         if (value === null) return fieldErrors;
         if (!value) {
-            const message = m('inputSchema.validation.required', { fieldKey });
+            const message = m('inputSchema.validation.required', { rootName: 'input', fieldKey });
             fieldErrors.push(message);
             return fieldErrors;
         }
 
         const { useApifyProxy, proxyUrls } = value;
         if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
-            fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
+            fieldErrors.push(m('inputSchema.validation.proxyRequired', { rootName: 'input', fieldKey }));
             return fieldErrors;
         }
     }
@@ -407,7 +416,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
-        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', { fieldKey, groups: unavailableProxyGroups.join(', ') }));
+        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
+            rootName: 'input',
+            fieldKey,
+            groups: unavailableProxyGroups.join(', '),
+        }));
     }
 
     // Check if any of the proxy groups are blocked and if yes then output the associated message
@@ -437,37 +450,8 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors
-            .map((error) => {
-                // There are 3 possible errors comming from validation:
-                // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
-                // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
-                // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
-
-                let fieldKey;
-                let message;
-
-                // If error is with keyword type, it means that type of input is incorrect
-                // this can mean that provided value is null
-                if (error.keyword === 'type') {
-                    fieldKey = error.dataPath.split('.').pop();
-                    // Check if value is null and field is nullable, if yes, then skip this error
-                    if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
-                        return null;
-                    }
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                } else if (error.keyword === 'required') {
-                    fieldKey = error.params.missingProperty;
-                    message = m('inputSchema.validation.required', { fieldKey });
-                } else if (error.keyword === 'additionalProperties') {
-                    fieldKey = error.params.additionalProperty;
-                    message = m('inputSchema.validation.additionalProperty', { fieldKey });
-                } else {
-                    fieldKey = error.dataPath.split('.').pop();
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                }
-
-                return { fieldKey, message };
-            }).filter(error => !!error);
+            .map(error => parseAjvError(error, 'input', properties, input))
+            .filter(error => !!error);
     }
 
     Object.keys(properties).forEach((property) => {
@@ -493,6 +477,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                     }));
@@ -507,6 +492,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternKey,
@@ -522,6 +508,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -536,6 +523,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -553,6 +541,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternKey,
@@ -568,6 +557,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternValue,
@@ -582,4 +572,73 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     });
 
     return errors;
+};
+
+exports.JsonVariable = class JsonVariable {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getToken() {
+        return `{{${this.name}}}`;
+    }
+};
+
+/**
+ * Stringifies provided value to JSON with a difference that supports functions that
+ * are stringified using .toString() method.
+ *
+ * In addition to that supports instances of JsonVariable('my.token') that are replaced
+ * with a {{my.token}}.
+ *
+ * @param {*} value
+ * @param {Function} [replacer]
+ * @param {Number} [space=0]
+ * @return {*} value stringified to JSON.
+ */
+exports.jsonStringifyExtended = (value, replacer, space) => {
+    if (replacer && !_.isFunction(replacer)) throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
+
+    const replacements = {};
+
+    const extendedReplacer = (key, val) => {
+        val = replacer ? replacer(key, val) : val;
+
+        if (_.isFunction(val)) return val.toString();
+        if (val instanceof exports.JsonVariable) {
+            const randomToken = `<<<REPLACEMENT_TOKEN::${Math.random()}>>>`;
+            replacements[randomToken] = val.getToken();
+            return randomToken;
+        }
+
+        return val;
+    };
+
+    let stringifiedValue = JSON.stringify(value, extendedReplacer, space);
+    _.mapObject(replacements, (replacementValue, replacementToken) => {
+        stringifiedValue = stringifiedValue.replace(`"${replacementToken}"`, replacementValue);
+    });
+
+    return stringifiedValue;
+};
+
+
+/**
+ * Splits a full name into the first name and last name, trimming all internal and external spaces.
+ * Returns an array with two elements or null if splitting is not possible.
+ * @param fullName
+ */
+exports.splitFullName = function (fullName) {
+    if (typeof (fullName) !== 'string') return [null, null];
+
+    const names = (fullName || '').trim().split(' ');
+    const nonEmptyNames = _.filter(names, (val) => { return !!val; });
+
+    if (nonEmptyNames.length === 0) {
+        return [null, null];
+    }
+    if (nonEmptyNames.length === 1) {
+        return [null, nonEmptyNames[0]];
+    }
+    return [names[0], nonEmptyNames.slice(1).join(' ')];
 };

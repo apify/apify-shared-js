@@ -1,3 +1,5 @@
+import { DNS_SAFE_NAME_REGEX } from './regexs';
+
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
 export const ACT_JOB_TYPES = {
@@ -15,6 +17,7 @@ export const ACT_SOURCE_TYPES = {
 
 export const ACTOR_EVENT_NAMES = {
     CPU_INFO: 'cpuInfo',
+    SYSTEM_INFO: 'systemInfo',
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
 };
@@ -155,6 +158,15 @@ export const USERNAME = {
 };
 
 /**
+ * Actor name constraints.
+ */
+export const ACTOR_NAME = {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 30,
+    REGEX: DNS_SAFE_NAME_REGEX,
+};
+
+/**
  * Length of short crawler ID for nice public crawlers path.
  */
 export const SHORT_CRAWLER_ID_LENGTH = 5;
@@ -259,6 +271,8 @@ export const ENV_VARS = {
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
     META_ORIGIN: 'APIFY_META_ORIGIN',
     FACT: 'APIFY_FACT',
+    DEDICATED_CPUS: 'APIFY_DEDICATED_CPUS',
+    SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
@@ -333,18 +347,16 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Culture/entertainment',
+    ENTERTAINMENT: 'Entertainment',
     SOCIAL: 'Social',
     MARKETING: 'Marketing',
-    NEWS: 'Media/news',
+    NEWS: 'News',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
-    SPORTS: 'Sports',
     SEARCH_ENGINES: 'Search engines',
     DATA: 'Data processing',
     EGOVERNMENT: 'E-government',
     TOOLS: 'Tools',
-    UTILS: 'Developers utilities',
     EXAMPLES: 'Examples',
     OTHER: 'Other',
 };
@@ -398,4 +410,31 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
+};
+
+export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
+    "userId": {{userId}},
+    "createdAt": {{createdAt}},
+    "eventType": {{eventType}},
+    "eventData": {{eventData}},
+    "resource": {{resource}}
+}`;
+export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
+    'userId',
+    'createdAt',
+    'eventType',
+    'eventData',
+    'resource',
+]);
+
+// This client key is used in request queue to indentify requests from Apify app UI.
+export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
+
+// Max allowed size of files in multi-file editor
+export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
+
+// Formats for multi-file editor files
+export const SOURCE_FILE_FORMATS = {
+    TEXT: 'TEXT',
+    BASE64: 'BASE64',
 };

@@ -35,7 +35,8 @@
                         { "$ref": "#/definitions/arrayProperty" },
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
-                        { "$ref": "#/definitions/booleanProperty" }
+                        { "$ref": "#/definitions/booleanProperty" },
+                        { "$ref": "#/definitions/anyProperty" }
                     ]
                 }
             }
@@ -57,6 +58,8 @@
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" },
 
                 "enum": {
                     "type": "array",
@@ -84,7 +87,9 @@
                 "nullable": { "type": "boolean" },
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
-                "editor": { "enum": ["javascript", "textfield", "textarea", "hidden"] }
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description", "editor"]
         },
@@ -108,7 +113,9 @@
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
 
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] }
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "keyValue", "stringList", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description", "editor"]
         },
@@ -129,7 +136,9 @@
                 "minProperties": { "type": "integer" },
                 "maxProperties": { "type": "integer" },
 
-                "editor": { "enum": ["json", "proxy", "hidden"] }
+                "editor": { "enum": ["json", "proxy", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description", "editor"]
         },
@@ -148,7 +157,9 @@
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
                 "unit": { "type": "string" },
-                "editor": { "enum": ["number", "hidden"] }
+                "editor": { "enum": ["number", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description"]
         },
@@ -165,9 +176,38 @@
                 "nullable": { "type": "boolean" },
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
-                "editor": { "enum": ["checkbox", "hidden"] }
+                "editor": { "enum": ["checkbox", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description"]
+        },
+        "anyProperty": {
+            "title": "Any property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": ["array"],
+                    "items": {
+                        "type": "string",
+                        "enum": ["object", "array", "string", "integer", "boolean"]
+                    },
+                    "uniqueItems": true,
+                    "additionalItems": false,
+                    "minItems": 1
+                },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "prefill": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "example": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "nullable": { "type": "boolean" },
+                "editor": { "enum": ["json", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "editor"]
         }
     }
 }

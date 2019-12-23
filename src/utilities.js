@@ -163,26 +163,6 @@ exports.betterClearInterval = function (intervalID) {
 };
 
 /**
- * Splits a full name into the first name and last name, trimming all internal and external spaces.
- * Returns an array with two elements or null if splitting is not possible.
- * @param fullName
- */
-exports.splitFullName = function (fullName) {
-    if (typeof (fullName) !== 'string') return [null, null];
-
-    const names = (fullName || '').trim().split(' ');
-    const nonEmptyNames = _.filter(names, (val) => { return !!val; });
-
-    if (nonEmptyNames.length === 0) {
-        return [null, null];
-    }
-    if (nonEmptyNames.length === 1) {
-        return [null, nonEmptyNames[0]];
-    }
-    return [names[0], nonEmptyNames.slice(1).join(' ')];
-};
-
-/**
  * Escapes a string so that it can be used in regular expression (e.g. converts "myfile.*" to "myfile\\.\\*").
  * @param string
  */
@@ -270,7 +250,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
     'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
     'kb', 'cookies', 'cookie-policy', 'cookies-policy', 'powered-by', 'run', 'runs', 'actor', 'actors',
-    'act', 'acts',
+    'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',

@@ -18,6 +18,7 @@ const GOOD_OBJECTS = [
     undefined,
     123.456,
     'something',
+    Buffer.from('some-string'),
     new Date(),
     [],
     {
@@ -220,11 +221,12 @@ const testEscape = function (escapeFunc, src, trg) {
     const isDate = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Date]';
     };
+    const isDateOrBuffer = obj => isDate(obj) || Buffer.isBuffer(obj);
 
     // ensure srcClone didn't change
     if (
-        (srcClone && isObject(srcClone) && !isDate(srcClone))
-        || (trgClone && isObject(trgClone) && !isDate(trgClone))
+        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone))
+        || (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
     ) assert.notEqual(srcClone, trgClone);
     assert.deepEqual(srcClone, src);
 
@@ -993,6 +995,158 @@ describe('utilities.client', () => {
                 expect(result.length).to.be.equal(1);
                 expect(result[0].fieldKey).to.be.equal('field');
             });
+        });
+    });
+
+    describe('#jsonStringifyExtended()', () => {
+        it('should work', () => {
+            const value = {
+                foo: 'bar',
+                date: new Date('2019-05-06T13:08:15.590Z'),
+                num: 1,
+                boolean: true,
+                arr: [
+                    1,
+                    'something',
+                    (a, b) => a + b,
+                ],
+                obj: {
+                    foo: 'bar',
+                    arrFunc: (x, y) => {
+                        return x + y;
+                    },
+                    /* eslint-disable */
+                    myFunc: function (z) {
+                        return 'z';
+                    },
+                    /* eslint-enable */
+                },
+            };
+
+            const expected = `{
+  "foo": "bar",
+  "date": "2019-05-06T13:08:15.590Z",
+  "num": 1,
+  "boolean": true,
+  "arr": [
+    1,
+    "something",
+    "(a, b) => a + b"
+  ],
+  "obj": {
+    "foo": "bar",
+    "arrFunc": "(x, y) => {\\n                        return x + y;\\n                    }",
+    "myFunc": "function (z) {\\n                        return 'z';\\n                    }"
+  }
+}`;
+
+            expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+        });
+
+        it('should extend original replacer', () => {
+            const value = {
+                foo: 'bar',
+                date: new Date('2019-05-06T13:08:15.590Z'),
+                num: 1,
+                func: (x, y) => {
+                    return x + y;
+                },
+            };
+
+            const expected = `{
+  "foo": "bar",
+  "date": "2019-05-06T13:08:15.590Z",
+  "func": "(x, y) => {\\n                    return x + y;\\n                }"
+}`;
+
+            // Replacer removes number properties.
+            const replacer = (key, val) => {
+                return _.isNumber(val) ? undefined : val;
+            };
+
+            expect(utils.jsonStringifyExtended(value, replacer, 2)).to.be.eql(expected);
+        });
+
+        it('should support tokens', () => {
+            const value = {
+                foo: 'bar',
+                num: 1,
+                obj: {
+                    foo: 'bar',
+                    rpl: new utils.JsonVariable('my.token'),
+                },
+            };
+
+            const expected = `{
+  "foo": "bar",
+  "num": 1,
+  "obj": {
+    "foo": "bar",
+    "rpl": {{my.token}}
+  }
+}`;
+
+            expect(utils.jsonStringifyExtended(value, null, 2)).to.be.eql(expected);
+        });
+    });
+
+    describe('#splitFullName()', () => {
+        it('it works', () => {
+            // invalid args
+            assert.deepEqual(
+                utils.splitFullName(''),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName(null),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName({}),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName(123456),
+                [null, null],
+            );
+
+            // valid args
+            assert.deepEqual(
+                utils.splitFullName(''),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName('        '),
+                [null, null],
+            );
+            assert.deepEqual(
+                utils.splitFullName('   John Newman     '),
+                ['John', 'Newman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('   John \t\n\r Newman     '),
+                ['John', '\t\n\r Newman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('John Paul New\nman'),
+                ['John', 'Paul New\nman'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('John Paul Newman  Karl   Ludvig   III'),
+                ['John', 'Paul Newman Karl Ludvig III'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('New-man'),
+                [null, 'New-man'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('  New  man  '),
+                ['New', 'man'],
+            );
+            assert.deepEqual(
+                utils.splitFullName('More    Spaces Between'),
+                ['More', 'Spaces Between'],
+            );
         });
     });
 });
