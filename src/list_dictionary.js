@@ -44,7 +44,7 @@ export default class ListDictionary {
      * Gets the first item in the list. The function returns null if the list is empty.
      */
     getFirst() {
-        const head = this.linkedList.head;
+        const { head } = this.linkedList;
         if (head) return head.data;
 
         return null;
@@ -54,7 +54,7 @@ export default class ListDictionary {
      * Gets the last item in the list. The function returns null if the list is empty.
      */
     getLast() {
-        const tail = this.linkedList.tail;
+        const { tail } = this.linkedList;
         if (tail) return tail.data;
 
         return null;
@@ -80,7 +80,7 @@ export default class ListDictionary {
      * The function returns the item or null if the list is empty.
      */
     removeFirst() {
-        const head = this.linkedList.head;
+        const { head } = this.linkedList;
 
         if (!head) return null;
 
@@ -95,7 +95,7 @@ export default class ListDictionary {
      * The function returns the item or null if the list is empty.
      */
     removeLast() {
-        const tail = this.linkedList.tail;
+        const { tail } = this.linkedList;
 
         if (!tail) return null;
 

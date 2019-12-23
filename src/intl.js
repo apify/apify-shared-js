@@ -1,3 +1,4 @@
+/* eslint-disable max-len,quotes,quote-props */
 const intlStrings = {
     'inputSchema.validation.generic':
         'Field {rootName}.{fieldKey} {message}',
@@ -26,6 +27,7 @@ const intlStrings = {
     'inputSchema.validation.noMatchingDefinition':
         'Field schema.properties.{fieldKey} is not matching any input schema type definition. Please make sure that it\'s type is valid.',
 };
+/* eslint-enable max-len,quotes,quote-props */
 
 // Helper function to simulate intl formatMessage function
 exports.m = function (stringId, variables) {

@@ -5,7 +5,7 @@ import LruCache from '../build/lru_cache';
 // asserts that linked list and dictionary is equivalent to an array of [{key: Object, value: Object}] objects
 const assertSame = function (lru, array) {
     assert.equal(lru.length(), array.length);
-    const dictionary = lru.listDictionary.dictionary;
+    const { dictionary } = lru.listDictionary;
     assert.equal(_.keys(dictionary).length, array.length);
 
     // iterate linked list forwards and check all invariants

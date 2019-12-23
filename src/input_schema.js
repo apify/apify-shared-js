@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import schema from './input_schema.json';
-const { m } = require('./intl');
+import { m } from './intl';
 
 const { definitions } = schema;
 
@@ -48,8 +48,8 @@ export const parseAjvError = (error, rootName, properties = {}, input = {}) => {
 /**
  * Validates given object against schema and throws a human readable error.
  */
-const validateAgainstSchemaOrThrow = (validator, obj, schema, rootName) => {
-    if (validator.validate(schema, obj)) return;
+const validateAgainstSchemaOrThrow = (validator, obj, inputSchema, rootName) => {
+    if (validator.validate(inputSchema, obj)) return;
 
     const errorMessage = parseAjvError(validator.errors[0], rootName).message;
     throw new Error(`Input schema is not valid (${errorMessage})`);

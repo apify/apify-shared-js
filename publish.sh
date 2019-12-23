@@ -37,6 +37,7 @@ if [ "${BRANCH}" = "master" ]; then
 
     echo "Running tests ..."
     npm run test
+    npm run lint
 
     echo "Publishing version ${PACKAGE_VERSION} with tag \"latest\" ..."
     cp package.json .npmignore README.md LICENSE build/

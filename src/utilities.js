@@ -29,6 +29,7 @@ exports.cryptoRandomObjectId = function cryptoRandomObjectId(length) {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const bytes = crypto.randomBytes(length);
     let str = '';
+    // eslint-disable-next-line
     for (let i = bytes.length - 1; i >= 0; i--) { str += chars[(bytes[i] | 0) % chars.length]; }
     return str;
 };
@@ -141,6 +142,7 @@ exports.betterSetInterval = function (func, delay) {
     };
     funcWrapper();
     return {
+        // eslint-disable-next-line no-underscore-dangle
         _betterClearInterval() {
             isRunning = false;
             clearTimeout(timeoutId);
@@ -149,8 +151,10 @@ exports.betterSetInterval = function (func, delay) {
 };
 
 exports.betterClearInterval = function (intervalID) {
+    // eslint-disable-next-line no-underscore-dangle
     if (intervalID && intervalID._betterClearInterval) {
         try {
+            // eslint-disable-next-line no-underscore-dangle
             intervalID._betterClearInterval();
         } catch (e) {
             log.exception(e, '_betterClearInterval() threw an exception!?');

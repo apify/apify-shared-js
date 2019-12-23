@@ -48,7 +48,7 @@ export const dateToString = function dateToString(date, middleT) {
     }${hours < 10 ? `0${hours}` : hours}:${
         minutes < 10 ? `0${minutes}` : minutes}:${
         seconds < 10 ? `0${seconds}` : seconds}.${
-        millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis)}`;
+        millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis)}`; // eslint-disable-line no-nested-ternary
 };
 
 /**
@@ -59,7 +59,7 @@ export const dateToString = function dateToString(date, middleT) {
  * @param suffix Suffix to be appended to truncated string. If null or undefined, it defaults to "...[truncated]".
  */
 export const truncate = function (str, maxLength, suffix) {
-    maxLength |= 0;
+    maxLength |= 0; // eslint-disable-line no-bitwise
     if (typeof (suffix) !== 'string') { suffix = '...[truncated]'; }
     // TODO: we should just ignore rest of the suffix...
     if (suffix.length > maxLength) { throw new Error('suffix string cannot be longer than maxLength'); }
@@ -88,11 +88,11 @@ export const parseUrl = (str) => {
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g,
         },
         parser: {
-            strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
-            loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/,
+            strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
+            loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
         },
     };
-    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str);
+    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str); // eslint-disable-line no-shadow
     const uri = {};
     let i = o.key.length;
 
@@ -211,11 +211,11 @@ const REGEXP_BSON_TYPE = new RegExp(`^${ESCAPE_BSON_TYPE}$`);
 
 /**
  * If a property name is invalid for MongoDB or BSON, the function transforms
- * it to a valid form, which can be (most of the time) reversed back using _unescapePropertyName().
+ * it to a valid form, which can be (most of the time) reversed back using unescapePropertyName().
  * For a detailed list of transformations, see escapeForBson().
  * @private
  */
-const _escapePropertyName = (name) => {
+export const escapePropertyName = (name) => {
     // From MongoDB docs:
     // "Field names cannot contain dots (.) or null ("\0") characters, and they must not start with
     // a dollar sign (i.e. $). See faq-dollar-sign-escaping for an alternate approach."
@@ -235,14 +235,14 @@ const _escapePropertyName = (name) => {
 };
 
 /**
- * Reverses a string transformed using _escapePropertyName() back to its original form.
+ * Reverses a string transformed using escapePropertyName() back to its original form.
  * Note that the reverse transformation might not be 100% correct for certain unlikely-to-occur strings
  * (e.g. string contain null chars).
  * @param key
  * @returns {*}
  * @private
  */
-const _unescapePropertyName = function (name) {
+export const unescapePropertyName = function (name) {
     // pre-test to improve performance
     if (REGEXP_IS_ESCAPED.test(name)) {
         name = name.replace(REGEXP_DOT, '.');
@@ -254,10 +254,6 @@ const _unescapePropertyName = function (name) {
     return name;
 };
 
-exports.escapePropertyName = _escapePropertyName;
-exports.unescapePropertyName = _unescapePropertyName;
-
-
 /**
  * Traverses an object, creates a deep clone if requested and transforms object keys using a provided function.
  * @param obj Object to traverse, it must not contain circular references!
@@ -266,7 +262,7 @@ exports.unescapePropertyName = _unescapePropertyName;
  * @returns {*}
  * @private
  */
-const _traverseObject = function (obj, clone, keyTransformFunc) {
+const traverseObject = function (obj, clone, keyTransformFunc) {
     // Primitive types don't need to be cloned or further traversed.
     // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
     if (
@@ -282,14 +278,14 @@ const _traverseObject = function (obj, clone, keyTransformFunc) {
         // obj is an array, keys are numbers and never need to be escaped
         result = clone ? new Array(obj.length) : obj;
         for (let i = 0; i < obj.length; i++) {
-            const val = _traverseObject(obj[i], clone, keyTransformFunc);
+            const val = traverseObject(obj[i], clone, keyTransformFunc);
             if (clone) result[i] = val;
         }
     } else {
         // obj is an object, all keys need to be checked
         result = clone ? {} : obj;
-        for (const key in obj) {
-            const val = _traverseObject(obj[key], clone, keyTransformFunc);
+        for (const key in obj) { // eslint-disable-line no-restricted-syntax, guard-for-in
+            const val = traverseObject(obj[key], clone, keyTransformFunc);
             const escapedKey = keyTransformFunc(key);
             if (key === escapedKey) {
                 // key doesn't need to be renamed
@@ -316,7 +312,7 @@ const _traverseObject = function (obj, clone, keyTransformFunc) {
  * @returns {*} Transformed object
  */
 exports.escapeForBson = function (obj, clone) {
-    return _traverseObject(obj, clone, _escapePropertyName);
+    return traverseObject(obj, clone, escapePropertyName);
 };
 
 
@@ -329,7 +325,7 @@ exports.escapeForBson = function (obj, clone) {
  * @returns {*} Transformed object.
  */
 exports.unescapeFromBson = function (obj, clone) {
-    return _traverseObject(obj, clone, _unescapePropertyName);
+    return traverseObject(obj, clone, unescapePropertyName);
 };
 
 
@@ -343,8 +339,8 @@ exports.unescapeFromBson = function (obj, clone) {
 exports.isBadForMongo = function (obj) {
     let isBad = false;
     try {
-        _traverseObject(obj, false, (key) => {
-            const escapedKey = _escapePropertyName(key);
+        traverseObject(obj, false, (key) => {
+            const escapedKey = escapePropertyName(key);
             if (key !== escapedKey) {
                 isBad = true;
                 throw new Error();
