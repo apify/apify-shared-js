@@ -122,7 +122,7 @@ export default class LinkedList {
      * returns the item object or null if the list is empty.
      */
     removeFirst() {
-        const head = this.head;
+        const { head } = this;
         if (!head) return null;
 
         this.removeNode(head);

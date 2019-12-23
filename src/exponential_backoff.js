@@ -43,8 +43,7 @@ export const retryWithExpBackoff = async (params = {}) => {
 
         if (i === Math.round(expBackoffMaxRepeats / 2)) {
             log.warning(`Retry failed ${i} times and will be repeated in ${randomizedWaitMillis}ms`,
-                { errorMessage: error.message },
-            );
+                { errorMessage: error.message });
         }
 
         await delayPromise(randomizedWaitMillis);

@@ -151,7 +151,7 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.\-]{3,30}$/,
+    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
 };
 
 /**

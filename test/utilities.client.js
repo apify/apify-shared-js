@@ -222,7 +222,10 @@ const testEscape = function (escapeFunc, src, trg) {
     };
 
     // ensure srcClone didn't change
-    if ((srcClone && isObject(srcClone) && !isDate(srcClone)) || (trgClone && isObject(trgClone) && !isDate(trgClone))) assert.notEqual(srcClone, trgClone);
+    if (
+        (srcClone && isObject(srcClone) && !isDate(srcClone))
+        || (trgClone && isObject(trgClone) && !isDate(trgClone))
+    ) assert.notEqual(srcClone, trgClone);
     assert.deepEqual(srcClone, src);
 
     const trgNoClone = escapeFunc(srcClone, false);
@@ -671,7 +674,7 @@ describe('utilities.client', () => {
                     type: 'array',
                     editor: 'requestListSources',
                     title: 'requestListSources url validation',
-                    description: 'Field for testing of a requestListSources url validation'
+                    description: 'Field for testing of a requestListSources url validation',
                 },
             });
             const inputs = [

@@ -38,6 +38,7 @@ else
     echo "Publishing version ${PACKAGE_VERSION} with tag \"beta\" ..."
     npm run build
     npm run test
+    npm run lint
     cp package.json .npmignore README.md LICENSE build/
     cd build && ls && npm i && RUNNING_FROM_SCRIPT=1 npm publish --tag beta
 

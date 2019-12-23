@@ -1,3 +1,4 @@
+/* eslint-disable max-len,quotes,quote-props */
 const intlStrings = {
     'inputSchema.validation.generic': 'Field input.{fieldKey} {message}',
     'inputSchema.validation.required': 'Field input.{fieldKey} is required',
@@ -12,6 +13,7 @@ const intlStrings = {
     'inputSchema.validation.customProxyInvalid': 'Proxy URL "{invalidUrl}" has invalid format, it must be http://[username[:password]]@hostname:port.',
     'inputSchema.validation.noAvailableAutoProxy': 'Currently you do not have access to any proxy group usable in automatic mode.',
 };
+/* eslint-enable max-len,quotes,quote-props */
 
 // Helper function to simulate intl formatMessage function
 exports.m = function (stringId, variables) {
