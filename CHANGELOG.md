@@ -1,3 +1,7 @@
+xxxx
+===================
+- Better error messages for input schema regex errors
+
 0.1.67 / 2019-10-15
 ===================
 - Added stream utilities with readStreamToString() from @apify/http-request
