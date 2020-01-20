@@ -1,3 +1,7 @@
+0.1.69 / 2020-01-20
+===================
+- Added "noopener noreferrer" to `markedSetNofollowLinks` in `utilities.client.js`
+
 0.1.68 / 2019-12-23
 ===================
 - Better error messages for input schema regex errors
