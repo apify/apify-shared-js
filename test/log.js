@@ -139,7 +139,6 @@ describe('log', () => {
             { prefix: null, suffix: null },
         );
         log.methodException(err, self, methodName, args);
-
     });
 
     it('should support deprecated() method', () => {
