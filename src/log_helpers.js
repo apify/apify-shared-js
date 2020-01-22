@@ -25,7 +25,7 @@ export const limitDepth = (record, depth, maxStringLength) => {
         record = _.extend({ name: record.name, message: record.message, stack: record.stack }, record);
     }
 
-    const nextCall = _.partial(limitDepth, _, depth - 1);
+    const nextCall = _.partial(limitDepth, _, depth - 1, maxStringLength);
     if (_.isArray(record)) return depth ? _.map(record, nextCall) : '[array]';
     if (_.isObject(record)) return depth ? _.mapObject(record, nextCall) : '[object]';
 

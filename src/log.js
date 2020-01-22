@@ -1,19 +1,21 @@
+import { ENV_VARS } from './consts';
 import LoggerText from './logger_text';
+import LoggerJson from './logger_json';
 import { LOG_LEVELS, LOG_LEVEL_TO_STRING } from './log_consts';
 import { limitDepth } from './log_helpers';
 
-const DEFAULT_OPTIONS = {
-    logLevel: LOG_LEVELS.INFO,
+const getDefaultOptions = () => ({
+    logLevel: parseInt(process.env[ENV_VARS.LOG_LEVEL] || LOG_LEVELS.INFO, 10),
     maxDepth: 4,
     maxStringLength: 2000,
     prefix: null,
     suffix: null,
     logger: new LoggerText(),
-};
+});
 
 class Log {
     constructor(options = {}) {
-        options = Object.assign({}, DEFAULT_OPTIONS, options);
+        options = Object.assign({}, getDefaultOptions(), options);
 
         if (!LOG_LEVEL_TO_STRING[options.logLevel]) throw new Error('Options "logLevel" must be one of 0,1,...,6!');
         if (typeof options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
@@ -31,6 +33,8 @@ class Log {
     }
 
     _log(logLevel, message, data, exception) {
+        if (logLevel > this.options.logLevel) return;
+
         data = this._limitDepth(data);
         exception = this._limitDepth(exception);
 
@@ -40,8 +44,12 @@ class Log {
         });
     }
 
-    set(options) {
+    setOptions(options) {
         this.options = Object.assign({}, this.options, options);
+    }
+
+    getOptions() {
+        return this.options;
     }
 
     child(options) {
@@ -104,39 +112,8 @@ class Log {
     }
 }
 
-
-/**
- * DEPRECATED:
- *
- * Env var:
- *
- * process.env.NODE_ENV === 'production'
- *
- * Functions:
- *
- * prepareInternalLogLine
- * prepareInternalJsonLogLine,
- * prepareInternalPlainLogLine,
- * setLevel: setLogLevel,
- * getLevel: () => logLevel,
- *
- * Options:
- *
- * skipLevelInfo: false
- * skipTimeInDev: true,
- * logJson: true,
- * get isDebugMode() { return logLevel >= LOG_LEVELS.DEBUG; },
- * set isDebugMode(x) { logLevel = x ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO; },
- *
- * if (process.env[ENV_VARS.LOG_LEVEL]) {
- * const level = process.env[ENV_VARS.LOG_LEVEL];
- *   try {
- *       if (level.match(/\d+/)) setLogLevel(parseInt(level, 10));
- *       else setLogLevel(LOG_LEVELS[level]);
- *   } catch (err) {
- *       logWarning(`Setting log level: ${level} from environment failed. Using level ${LOG_LEVEL_TO_STRING[logLevel]}`);
- *   }
- * }
- */
-
 module.exports = new Log();
+module.exports.Log = Log;
+module.exports.LoggerText = LoggerText;
+module.exports.LoggerJson = LoggerJson;
+module.exports.LOG_LEVELS = LOG_LEVELS;

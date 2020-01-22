@@ -36,11 +36,10 @@
   },
   "dependencies": {
     "bluebird": "^3.7.2",
+    "chalk": "^3.0.0",
     "clone": "^2.1.1",
-    "figures": "^3.1.0",
     "is-buffer": "^2.0.3",
     "request": "^2.88.0",
-    "signale": "^1.4.0",
     "slugg": "^1.2.1",
     "underscore": "^1.9.1",
     "url": "^0.11.0"
