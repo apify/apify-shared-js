@@ -212,7 +212,7 @@ export const ACTOR_LIMITS = {
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
 
     // For each build or run container, set CPU cores based on memory size
-    RUN_MEMORY_SIZE_TO_CPU_CORES_COEFF: 4096,
+    RUN_MEMORY_MBYTES_PER_CPU_CORE: 4096,
 
     // The default limit of memory for all running Actor jobs for free accounts.
     FREE_ACCOUNT_MAX_MEMORY_MBYTES: 8192,
