@@ -1,3 +1,7 @@
+0.1.69 / 2020-01-22
+===================
+- Added RUN_MEMORY_MBYTES_PER_CPU_CORE constant
+
 0.1.68 / 2019-12-23
 ===================
 - Better error messages for input schema regex errors
