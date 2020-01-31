@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { Log, LOG_LEVELS } from '../build/log';
+import { Log, LEVELS } from '../build/log';
 import { ENV_VARS } from '../src/consts';
 
 const dummyLogger = {
@@ -16,6 +16,7 @@ describe('log', () => {
     });
 
     afterEach(() => {
+        loggerMock.verify();
         loggerMock.restore();
     });
 
@@ -30,31 +31,31 @@ describe('log', () => {
     });
 
     it('gets correcty set log level based on ENV_VAR', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = LOG_LEVELS.SOFT_FAIL;
+        process.env[ENV_VARS.LOG_LEVEL] = LEVELS.SOFT_FAIL;
         const log = new Log();
-        expect(log.getOptions().logLevel).to.be.eql(LOG_LEVELS.SOFT_FAIL);
+        expect(log.getOptions().logLevel).to.be.eql(LEVELS.SOFT_FAIL);
 
-        process.env[ENV_VARS.LOG_LEVEL] = LOG_LEVELS.ERROR;
+        process.env[ENV_VARS.LOG_LEVEL] = LEVELS.ERROR;
         const log2 = new Log();
-        expect(log2.getOptions().logLevel).to.be.eql(LOG_LEVELS.ERROR);
+        expect(log2.getOptions().logLevel).to.be.eql(LEVELS.ERROR);
 
         delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
     it('should allow to create a child logger with inherrited config', () => {
         const log1 = new Log({ prefix: 'aaa' });
-        const log2 = log1.child({ suffix: 'bbb' });
+        const log2 = log1.child({ prefix: 'bbb', suffix: 'sss' });
 
         expect(log1.getOptions().prefix).to.be.eql('aaa');
         expect(log1.getOptions().suffix).to.be.eql(null);
-        expect(log2.getOptions().prefix).to.be.eql('aaa');
-        expect(log2.getOptions().suffix).to.be.eql('bbb');
+        expect(log2.getOptions().prefix).to.be.eql('aaa:bbb');
+        expect(log2.getOptions().suffix).to.be.eql('sss');
     });
 
     it('should support error() method', () => {
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.ERROR, 'Error happened', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.ERROR, 'Error happened', { foo: 'bar' });
         log.error('Error happened', { foo: 'bar' });
     });
 
@@ -62,43 +63,51 @@ describe('log', () => {
         const log = new Log({ logger: dummyLogger });
         const err = new Error('some-error');
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.ERROR, 'Error happened', { foo: 'bar' }, _.pick(err, 'name', 'message', 'stack'));
+        loggerMock.expects('log').once().withArgs(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, _.pick(err, 'name', 'message', 'stack'));
         log.exception(err, 'Error happened', { foo: 'bar' });
     });
 
     it('should support softFail() method', () => {
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.SOFT_FAIL, 'Soft fail happened', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.SOFT_FAIL, 'Soft fail happened', { foo: 'bar' });
         log.softFail('Soft fail happened', { foo: 'bar' });
     });
 
     it('should support warning() method', () => {
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.WARNING, 'Something to be warn about happened', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.WARNING, 'Something to be warn about happened', { foo: 'bar' });
         log.warning('Something to be warn about happened', { foo: 'bar' });
     });
 
     it('should support info() method', () => {
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar' });
         log.info('Something to be informed about happened', { foo: 'bar' });
     });
 
     it('should support debug() method', () => {
+        process.env[ENV_VARS.LOG_LEVEL] = LEVELS.DEBUG;
+
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.DEBUG, 'Something to be debugged happened', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.DEBUG, 'Something to be debugged happened', { foo: 'bar' });
         log.debug('Something to be debugged happened', { foo: 'bar' });
+
+        delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
     it('should support perf() method', () => {
+        process.env[ENV_VARS.LOG_LEVEL] = LEVELS.PERF;
+
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.PERF, 'Some perf info', { foo: 'bar' });
+        loggerMock.expects('log').once().withArgs(LEVELS.PERF, 'Some perf info', { foo: 'bar' });
         log.perf('Some perf info', { foo: 'bar' });
+
+        delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
     it('should support methodCall() method', () => {
@@ -109,7 +118,7 @@ describe('log', () => {
         const self = { userId, connection };
         const args = { foo: 'bar' };
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.INFO, 'Method called', {
+        loggerMock.expects('log').once().withArgs(LEVELS.INFO, 'Method called', {
             methodName,
             loggedUserId: userId,
             clientIp: connection.clientAddress,
@@ -127,7 +136,7 @@ describe('log', () => {
         const err = new Error('some-error');
 
         loggerMock.expects('log').once().withArgs(
-            LOG_LEVELS.ERROR,
+            LEVELS.ERROR,
             'Method threw an exception',
             {
                 methodName,
@@ -144,9 +153,9 @@ describe('log', () => {
     it('should support deprecated() method', () => {
         const log = new Log({ logger: dummyLogger });
 
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.WARNING, 'Message 1');
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.WARNING, 'Message 2');
-        loggerMock.expects('log').once().withArgs(LOG_LEVELS.WARNING, 'Message 3');
+        loggerMock.expects('log').once().withArgs(LEVELS.WARNING, 'Message 1');
+        loggerMock.expects('log').once().withArgs(LEVELS.WARNING, 'Message 2');
+        loggerMock.expects('log').once().withArgs(LEVELS.WARNING, 'Message 3');
         log.deprecated('Message 1');
         log.deprecated('Message 2');
         log.deprecated('Message 3');

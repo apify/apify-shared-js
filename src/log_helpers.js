@@ -1,5 +1,20 @@
 import _ from 'underscore';
 import { truncate } from './utilities.client';
+import { ENV_VARS } from './consts';
+import { LEVELS } from './log_consts';
+
+/**
+ * Gets log level from env variable.
+ * Both integers and strings (WARNING) are supported.
+ */
+export const getLogLevelFromEnv = () => {
+    const envVar = process.env[ENV_VARS.LOG_LEVEL];
+
+    if (!envVar) return LEVELS.INFO;
+    if (LEVELS[envVar]) return LEVELS[envVar];
+
+    return parseInt(envVar, 10);
+};
 
 /**
 * Limits given object to given depth.

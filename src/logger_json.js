@@ -1,4 +1,4 @@
-import { LOG_LEVELS, LOG_LEVEL_TO_STRING } from './log_consts';
+import { LEVELS, LEVEL_TO_STRING, PREFIX_DELIMITER } from './log_consts';
 import Logger from './logger';
 
 const DEFAULT_OPTIONS = {
@@ -11,10 +11,12 @@ export default class LoggerJson extends Logger {
         super(Object.assign({}, DEFAULT_OPTIONS, options));
     }
 
-    log(logLevel, message, data, exception, { prefix, suffix }) {
+    log(level, message, data, exception, opts = {}) {
+        const { prefix, suffix } = opts;
+
         if (exception) data = Object.assign({}, data, { exception });
-        if (this.options.skipLevelInfo && logLevel === LOG_LEVELS.INFO) logLevel = undefined;
-        if (prefix) message = `${prefix} ${message}`;
+        if (this.options.skipLevelInfo && level === LEVELS.INFO) level = undefined;
+        if (prefix) message = `${prefix}${PREFIX_DELIMITER} ${message}`;
         if (suffix) message = `${message} ${suffix}`;
 
         // Use short names to save log space.
@@ -23,7 +25,7 @@ export default class LoggerJson extends Logger {
         // NOTE: not adding time and host on production, because LogDNA adds it by default and log space is expensive
         const rec = {
             time: !this.options.skipTime ? new Date() : undefined,
-            level: LOG_LEVEL_TO_STRING[logLevel],
+            level: LEVEL_TO_STRING[level],
             msg: message,
         };
 

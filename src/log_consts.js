@@ -1,4 +1,4 @@
-export const LOG_LEVELS = {
+export const LEVELS = {
     // Turns off logging completely
     OFF: 0,
     // For unexpected errors in Apify system
@@ -14,4 +14,6 @@ export const LOG_LEVELS = {
 };
 
 // Inverse of LOG_LEVELS = maps log level to string.
-export const LOG_LEVEL_TO_STRING = Object.keys(LOG_LEVELS);
+export const LEVEL_TO_STRING = Object.keys(LEVELS);
+
+export const PREFIX_DELIMITER = ':';

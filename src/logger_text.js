@@ -1,33 +1,33 @@
 import _ from 'underscore';
 import chalk from 'chalk';
 import Logger from './logger';
-import { LOG_LEVEL_TO_STRING, LOG_LEVELS } from './log_consts';
+import { LEVEL_TO_STRING, LEVELS, PREFIX_DELIMITER } from './log_consts';
 
 const DEFAULT_OPTIONS = {
     skipTime: false,
 };
 
-const SHORTEN_LOG_LEVELS = {
+const SHORTEN_LEVELS = {
     SOFT_FAIL: 'SFAIL',
     WARNING: 'WARN',
 };
 
 const LEVEL_TO_COLOR = {
-    [LOG_LEVELS.ERROR]: 'red',
-    [LOG_LEVELS.SOFT_FAIL]: 'red',
-    [LOG_LEVELS.WARNING]: 'yellow',
-    [LOG_LEVELS.INFO]: 'green',
-    [LOG_LEVELS.DEBUG]: 'blue',
-    [LOG_LEVELS.PERF]: 'magenta',
+    [LEVELS.ERROR]: 'red',
+    [LEVELS.SOFT_FAIL]: 'red',
+    [LEVELS.WARNING]: 'yellow',
+    [LEVELS.INFO]: 'green',
+    [LEVELS.DEBUG]: 'blue',
+    [LEVELS.PERF]: 'magenta',
 };
 
-const SHORTENED_LOG_LEVES = LOG_LEVEL_TO_STRING.map(level => SHORTEN_LOG_LEVELS[level] || level);
-const MAX_LOG_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVES.map(l => l.length));
+const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map(level => SHORTEN_LEVELS[level] || level);
+const MAX_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVELS.map(l => l.length));
 
 const getLevelIndent = (level) => {
     let spaces = '';
 
-    for (let i = 0; i < MAX_LOG_LEVEL_LENGTH_SPACES - level.length; i++) spaces += ' ';
+    for (let i = 0; i < MAX_LEVEL_LENGTH_SPACES - level.length; i++) spaces += ' ';
 
     return spaces;
 };
@@ -37,7 +37,9 @@ export default class LoggerText extends Logger {
         super(Object.assign({}, DEFAULT_OPTIONS, options));
     }
 
-    log(level, message, data, exception, { prefix, suffix }) {
+    log(level, message, data, exception, opts = {}) {
+        let { prefix, suffix } = opts;
+
         let maybeDate = '';
         if (!this.options.skipTime) {
             maybeDate = `${(new Date()).toISOString().replace('Z', '').replace('T', ' ')} `;
@@ -45,14 +47,14 @@ export default class LoggerText extends Logger {
 
         const errStack = exception ? this._parseException(exception) : '';
         const color = LEVEL_TO_COLOR[level];
-        const levelStr = SHORTENED_LOG_LEVES[level];
-        const spaces = getLevelIndent(levelStr);
+        const levelStr = SHORTENED_LOG_LEVELS[level];
+        const levelIndent = getLevelIndent(levelStr);
 
-        prefix = prefix ? ` ${prefix}` : '';
+        prefix = prefix ? ` ${prefix}${PREFIX_DELIMITER}` : '';
         suffix = suffix ? ` ${suffix}` : '';
         data = data ? ` ${JSON.stringify(data)}` : '';
 
-        console.log(chalk`{gray ${maybeDate}}{${color} ${levelStr}}${spaces}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`); // eslint-disable-line
+        console.error(chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`); // eslint-disable-line
     }
 
     _parseException(exception) {
