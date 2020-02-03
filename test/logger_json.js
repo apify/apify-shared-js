@@ -1,6 +1,4 @@
-import _ from 'underscore';
 import { expect } from 'chai';
-import sinon from 'sinon';
 import LoggerJson from '../build/logger_json';
 import { PREFIX_DELIMITER, LEVELS, LEVEL_TO_STRING } from '../build/log_consts';
 

@@ -3,10 +3,6 @@ import chalk from 'chalk';
 import Logger from './logger';
 import { LEVEL_TO_STRING, LEVELS, PREFIX_DELIMITER } from './log_consts';
 
-const DEFAULT_OPTIONS = {
-    skipTime: false,
-};
-
 const SHORTEN_LEVELS = {
     SOFT_FAIL: 'SFAIL',
     WARNING: 'WARN',
@@ -30,6 +26,10 @@ const getLevelIndent = (level) => {
     for (let i = 0; i < MAX_LEVEL_LENGTH_SPACES - level.length; i++) spaces += ' ';
 
     return spaces;
+};
+
+const DEFAULT_OPTIONS = {
+    skipTime: false,
 };
 
 export default class LoggerText extends Logger {
