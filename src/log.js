@@ -162,25 +162,7 @@ const logSoftFail = function (message, data) { logInternal(message, data, LOG_LE
 
 const logException = function (exception, message, data) {
     if (!data) data = {};
-
-    // If it's Meteor.Error then don't print stack trace and use "SOFT_FAIL" level
-    // which is used for less serious errors.
-    if (exception && exception.errorType === 'Meteor.Error') {
-        const conciseException = {
-            code: exception.error,
-            reason: exception.reason || exception.message || exception.stack,
-            details: exception.details,
-        };
-
-        // Determine log level
-        const httpCode = (exception.details ? exception.details.httpCode : null) || 500;
-        const forceSoftFail = exception.details ? exception.details.forceSoftFail : false;
-        const level = httpCode >= 500 && !forceSoftFail ? LOG_LEVELS.ERROR : LOG_LEVELS.SOFT_FAIL;
-
-        logInternal(message, data, level, conciseException);
-    } else {
-        logInternal(message, data, LOG_LEVELS.ERROR, exception);
-    }
+    logInternal(message, data, LOG_LEVELS.ERROR, exception);
 };
 
 const deprecationReported = {};
