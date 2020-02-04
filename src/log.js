@@ -163,15 +163,21 @@ const logSoftFail = function (message, data) { logInternal(message, data, LOG_LE
 const logException = function (exception, message, data) {
     if (!data) data = {};
 
-    // if it's Meteor.Error then don't print stack trace and use "SOFT_FAIL" level
-    // which is used for less serious errors
+    // If it's Meteor.Error then don't print stack trace and use "SOFT_FAIL" level
+    // which is used for less serious errors.
     if (exception && exception.errorType === 'Meteor.Error') {
         const conciseException = {
             code: exception.error,
             reason: exception.reason || exception.message || exception.stack,
             details: exception.details,
         };
-        logInternal(message, data, LOG_LEVELS.SOFT_FAIL, conciseException);
+
+        // Determine log level
+        const httpCode = (exception.details ? exception.details.httpCode : null) || 500;
+        const forceSoftFail = exception.details ? exception.details.forceSoftFail : false;
+        const level = httpCode >= 500 && !forceSoftFail ? LOG_LEVELS.ERROR : LOG_LEVELS.SOFT_FAIL;
+
+        logInternal(message, data, level, conciseException);
     } else {
         logInternal(message, data, LOG_LEVELS.ERROR, exception);
     }
@@ -182,30 +188,6 @@ const logDeprecated = function (message) {
     if (deprecationReported[message]) return;
     deprecationReported[message] = true;
     logWarning(message);
-};
-
-
-/**
- * Prepares log data for logMethodCall/logMethodException.
- */
-const prepareData = function (self, methodName, args) {
-    return {
-        // keep method name first!
-        methodName,
-        loggedUserId: self.userId,
-        clientIp: self.connection ? self.connection.clientAddress : null,
-        args: args || undefined,
-    };
-};
-
-// helper method to log server method invocation
-const logMethodCall = function (self, methodName, args) {
-    logInfo('Method called', prepareData(self, methodName, args));
-};
-
-// helper method to log Meteor server method exception
-const logMethodException = function (exception, self, methodName, args) {
-    logException(exception, 'Method threw an exception', prepareData(self, methodName, args));
 };
 
 module.exports = {
@@ -244,8 +226,6 @@ module.exports = {
     error: logError,
     exception: logException,
     softFail: logSoftFail,
-    methodCall: logMethodCall,
-    methodException: logMethodException,
     deprecated: logDeprecated,
 };
 
