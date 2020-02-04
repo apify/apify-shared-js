@@ -9,6 +9,7 @@
 const _ = require('underscore');
 const slugg = require('slugg');
 const isBuffer = require('is-buffer');
+const { countries } = require('countries-list');
 const consts = require('./consts');
 const regex = require('./regexs');
 const { m } = require('./intl');
@@ -384,7 +385,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // Input is not required, so missing value is valid
     if (!value) return fieldErrors;
 
-    const { useApifyProxy, proxyUrls, apifyProxyGroups } = value;
+    const { useApifyProxy, proxyUrls, apifyProxyGroups, apifyProxyCountry } = value;
 
     if (!useApifyProxy && Array.isArray(proxyUrls)) {
         let invalidUrl = false;
@@ -398,6 +399,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
 
     // If Apify proxy is not used skip additional checks
     if (!useApifyProxy) return fieldErrors;
+
+    // If Apify proxy is used, check if there is a selected country and if so, check that it's valid (empty or a valid country code)
+    if (apifyProxyCountry && apifyProxyCountry !== '' && !countries[apifyProxyCountry]) {
+        fieldErrors.push(m('inputSchema.validation.apifyProxyCountryInvalid', { invalidCountry: apifyProxyCountry }));
+    }
 
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;

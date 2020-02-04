@@ -996,6 +996,42 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).to.be.equal('field');
             });
         });
+
+        it('should validate Apify proxy country', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxy = null;
+            // apifyProxyCountry must be either undefined, an empty string or a valid country code
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: true, apifyProxyCountry: 123 } },
+                { field: { useApifyProxy: true, apifyProxyCountry: {} } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'XY' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'Czech Republic' } },
+                // Valid
+                { field: { useApifyProxy: true } },
+                { field: { useApifyProxy: true, apifyProxyCountry: '' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'CZ' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'US' } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter(errors => errors.length > 0);
+
+            // There should be 4 invalid inputs
+            expect(results.length).to.be.equal(4);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {
