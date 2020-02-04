@@ -1007,13 +1007,15 @@ describe('utilities.client', () => {
                 },
             });
             const proxy = null;
-            // apifyProxyCountry must be either undefined, an empty string or a valid country code
+            // If Apify proxy is used, apifyProxyCountry must be either undefined, an empty string or a valid country code
+            // If Apify proxy is not used, apifyProxyCountry must not be set
             const inputs = [
                 // Invalid
                 { field: { useApifyProxy: true, apifyProxyCountry: 123 } },
                 { field: { useApifyProxy: true, apifyProxyCountry: {} } },
                 { field: { useApifyProxy: true, apifyProxyCountry: 'XY' } },
                 { field: { useApifyProxy: true, apifyProxyCountry: 'Czech Republic' } },
+                { field: { useApifyProxy: false, apifyProxyCountry: 'CZ' } },
                 // Valid
                 { field: { useApifyProxy: true } },
                 { field: { useApifyProxy: true, apifyProxyCountry: '' } },
@@ -1024,8 +1026,8 @@ describe('utilities.client', () => {
                 .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
                 .filter(errors => errors.length > 0);
 
-            // There should be 4 invalid inputs
-            expect(results.length).to.be.equal(4);
+            // There should be 5 invalid inputs
+            expect(results.length).to.be.equal(5);
             results.forEach((result) => {
                 // Only one error should be thrown
                 expect(result.length).to.be.equal(1);

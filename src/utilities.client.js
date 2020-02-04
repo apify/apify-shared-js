@@ -397,6 +397,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         }
     }
 
+    // Apify proxy country can be set only when using Apify proxy
+    if (!useApifyProxy && apifyProxyCountry) {
+        fieldErrors.push(m('inputSchema.validation.apifyProxyCountryWithoutApifyProxyForbidden'));
+    }
+
     // If Apify proxy is not used skip additional checks
     if (!useApifyProxy) return fieldErrors;
 

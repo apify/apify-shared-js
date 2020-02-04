@@ -24,6 +24,8 @@ const intlStrings = {
         'Proxy URL "{invalidUrl}" has invalid format, it must be http://[username[:password]]@hostname:port.',
     'inputSchema.validation.apifyProxyCountryInvalid':
         'Country code "{invalidCountry}" is invalid.',
+    'inputSchema.validation.apifyProxyCountryWithoutApifyProxyForbidden':
+        'The country for Apify Proxy can be specified only when using Apify Proxy',
     'inputSchema.validation.noAvailableAutoProxy':
         'Currently you do not have access to any proxy group usable in automatic mode.',
     'inputSchema.validation.noMatchingDefinition':
