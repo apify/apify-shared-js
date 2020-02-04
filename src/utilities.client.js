@@ -401,7 +401,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     if (!useApifyProxy) return fieldErrors;
 
     // If Apify proxy is used, check if there is a selected country and if so, check that it's valid (empty or a valid country code)
-    if (apifyProxyCountry && apifyProxyCountry !== '' && !countries[apifyProxyCountry]) {
+    if (apifyProxyCountry && !countries[apifyProxyCountry]) {
         fieldErrors.push(m('inputSchema.validation.apifyProxyCountryInvalid', { invalidCountry: apifyProxyCountry }));
     }
 
