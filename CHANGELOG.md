@@ -1,3 +1,8 @@
+xxxxxxxxxxxxxxxxxxx
+===================
+- New logger released. API is compatible with the old one except the `log.internal()` where signature got changed,
+  `logMethodCall|logMethodException()` were removed and initial configuration changes.
+
 0.1.68 / 2019-12-23
 ===================
 - Better error messages for input schema regex errors

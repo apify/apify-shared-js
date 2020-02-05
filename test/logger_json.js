@@ -2,20 +2,26 @@ import { expect } from 'chai';
 import LoggerJson from '../build/logger_json';
 import { PREFIX_DELIMITER, LEVELS, LEVEL_TO_STRING } from '../build/log_consts';
 
+const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'];
+
 describe('loggerJson', () => {
-    let loggedLine;
-    let originalConsoleLog;
+    let loggedLines;
+    const originalConsoleMethods = {};
 
     beforeEach(() => {
-        originalConsoleLog = console.log;
-        console.log = (line) => {
-            console.dir(line);
-            loggedLine = JSON.parse(line);
-        };
+        loggedLines = {};
+        CONSOLE_METHODS.map((method) => {
+            originalConsoleMethods[method] = console[method];
+            console[method] = (line) => {
+                loggedLines[method] = JSON.parse(line);
+            };
+        });
     });
 
     afterEach(() => {
-        console.log = originalConsoleLog;
+        CONSOLE_METHODS.map((method) => {
+            console[method] = originalConsoleMethods[method];
+        });
     });
 
     it('works', () => {
@@ -27,12 +33,11 @@ describe('loggerJson', () => {
         const prefix = 'Before';
         const suffix = 'After';
         logger.log(level, message, data, null, { prefix, suffix });
-
-        expect(loggedLine.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
-        expect(loggedLine.msg).to.eql(`${prefix}${PREFIX_DELIMITER} ${message} ${suffix}`);
-        expect(loggedLine.foo).to.be.eql(data.foo);
-        expect(loggedLine.level).to.be.eql(LEVEL_TO_STRING[level]);
-        expect(loggedLine.exception).to.be.eql(undefined);
+        expect(loggedLines.log.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.log.msg).to.eql(`${prefix}${PREFIX_DELIMITER} ${message} ${suffix}`);
+        expect(loggedLines.log.foo).to.be.eql(data.foo);
+        expect(loggedLines.log.level).to.be.eql(LEVEL_TO_STRING[level]);
+        expect(loggedLines.log.exception).to.be.eql(undefined);
 
         level = LEVELS.ERROR;
         message = 'Some error happened';
@@ -40,12 +45,29 @@ describe('loggerJson', () => {
         const err = new Error('some-error');
         const errObj = Object.assign({ name: err.name, message: err.message, stack: err.stack }, err);
         logger.log(level, message, data, errObj);
+        expect(loggedLines.error.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.error.msg).to.eql(message);
+        expect(loggedLines.error.foo).to.be.eql(data.foo);
+        expect(loggedLines.error.level).to.be.eql(LEVEL_TO_STRING[level]);
+        expect(loggedLines.error.exception).to.be.eql(errObj);
 
-        expect(loggedLine.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
-        expect(loggedLine.msg).to.eql(message);
-        expect(loggedLine.foo).to.be.eql(data.foo);
-        expect(loggedLine.level).to.be.eql(LEVEL_TO_STRING[level]);
-        expect(loggedLine.exception).to.be.eql(errObj);
+        level = LEVELS.DEBUG;
+        message = 'Some debug happened';
+        data = { foo: 'bar' };
+        logger.log(level, message, data);
+        expect(loggedLines.debug.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.debug.msg).to.eql(message);
+        expect(loggedLines.debug.foo).to.be.eql(data.foo);
+        expect(loggedLines.debug.level).to.be.eql(LEVEL_TO_STRING[level]);
+
+        level = LEVELS.WARNING;
+        message = 'Some debug happened';
+        data = { foo: 'bar' };
+        logger.log(level, message, data);
+        expect(loggedLines.warn.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.warn.msg).to.eql(message);
+        expect(loggedLines.warn.foo).to.be.eql(data.foo);
+        expect(loggedLines.warn.level).to.be.eql(LEVEL_TO_STRING[level]);
     });
 
     it('should support skipLevelInfo', () => {
@@ -55,9 +77,9 @@ describe('loggerJson', () => {
         const message = 'Some message';
         logger.log(level, message);
 
-        expect(loggedLine.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
-        expect(loggedLine.msg).to.eql(message);
-        expect(loggedLine.level).to.be.eql(undefined);
+        expect(loggedLines.log.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.log.msg).to.eql(message);
+        expect(loggedLines.log.level).to.be.eql(undefined);
     });
 
     it('should support skipTime', () => {
@@ -67,8 +89,8 @@ describe('loggerJson', () => {
         const message = 'Some message';
         logger.log(level, message);
 
-        expect(loggedLine.time).to.be.eql(undefined);
-        expect(loggedLine.msg).to.eql(message);
-        expect(loggedLine.level).to.be.eql(LEVEL_TO_STRING[level]);
+        expect(loggedLines.log.time).to.be.eql(undefined);
+        expect(loggedLines.log.msg).to.eql(message);
+        expect(loggedLines.log.level).to.be.eql(LEVEL_TO_STRING[level]);
     });
 });

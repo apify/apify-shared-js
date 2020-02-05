@@ -15,7 +15,6 @@ export default class LoggerJson extends Logger {
         const { prefix, suffix } = opts;
 
         if (exception) data = Object.assign({}, data, { exception });
-        if (this.options.skipLevelInfo && level === LEVELS.INFO) level = undefined;
         if (prefix) message = `${prefix}${PREFIX_DELIMITER} ${message}`;
         if (suffix) message = `${message} ${suffix}`;
 
@@ -23,14 +22,26 @@ export default class LoggerJson extends Logger {
         // In development mode show more concise log otherwise it's impossible to see anything in it.
         // Message must be shown early for people to see!
         // NOTE: not adding time and host on production, because LogDNA adds it by default and log space is expensive
-        const rec = {
+        const rec = Object.assign({
             time: !this.options.skipTime ? new Date() : undefined,
-            level: LEVEL_TO_STRING[level],
+            level: this.options.skipLevelInfo && level === LEVELS.INFO ? undefined : LEVEL_TO_STRING[level],
             msg: message,
-        };
+        }, data);
 
-        Object.assign(rec, data);
+        const stringified = JSON.stringify(rec);
 
-        console.log(JSON.stringify(rec));
+        switch (level) {
+            case LEVELS.ERROR:
+                console.error(stringified);
+                break;
+            case LEVELS.WARNING:
+                console.warn(stringified);
+                break;
+            case LEVELS.DEBUG:
+                console.debug(stringified);
+                break;
+            default:
+                console.log(stringified);
+        }
     }
 }
