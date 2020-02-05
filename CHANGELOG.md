@@ -3,6 +3,7 @@
 - Logger completely rewritten to support colors, be extendable, ... .
   Logger API is compatible with the old one except the `log.internal()` where signature got changed, `logMethodCall|logMethodException()`
   were removed and initial configuration is different.
+- Added support for `apifyProxyCountry` to input schema proxy field validation.
 
 0.1.70 / 2020-02-05
 ===================
