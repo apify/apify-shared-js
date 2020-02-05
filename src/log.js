@@ -31,7 +31,7 @@ export class Log {
         return limitDepth(obj, this.options.maxDepth);
     }
 
-    _log(logLevel, message, data, exception) {
+    internal(logLevel, message, data, exception) {
         if (logLevel > this.options.logLevel) return;
 
         data = this._limitDepth(data);
@@ -66,31 +66,31 @@ export class Log {
     }
 
     error(message, data) {
-        this._log(LEVELS.ERROR, message, data);
+        this.internal(LEVELS.ERROR, message, data);
     }
 
     exception(exception, message, data) {
-        this._log(LEVELS.ERROR, message, data, exception);
+        this.internal(LEVELS.ERROR, message, data, exception);
     }
 
     softFail(message, data) {
-        this._log(LEVELS.SOFT_FAIL, message, data);
+        this.internal(LEVELS.SOFT_FAIL, message, data);
     }
 
     warning(message, data) {
-        this._log(LEVELS.WARNING, message, data);
+        this.internal(LEVELS.WARNING, message, data);
     }
 
     info(message, data) {
-        this._log(LEVELS.INFO, message, data);
+        this.internal(LEVELS.INFO, message, data);
     }
 
     debug(message, data) {
-        this._log(LEVELS.DEBUG, message, data);
+        this.internal(LEVELS.DEBUG, message, data);
     }
 
     perf(message, data) {
-        this._log(LEVELS.PERF, message, data);
+        this.internal(LEVELS.PERF, message, data);
     }
 
     /**
