@@ -1,6 +1,10 @@
-0.1.69 / 2020-01-20
+0.1.70 / 2020-02-05
 ===================
 - Added "noopener noreferrer" to `markedSetNofollowLinks` in `utilities.client.js`
+
+0.1.69 / 2020-01-22
+===================
+- Added RUN_MEMORY_MBYTES_PER_CPU_CORE constant
 
 0.1.68 / 2019-12-23
 ===================
