@@ -94,46 +94,6 @@ export class Log {
     }
 
     /**
-     * Creates info object about Meteor.js method call.
-     *
-     * @param {Object} self Meteor method this reference.
-     * @param {String} methodName
-     * @param {Object} args
-     */
-    _prepareMethodData(self, methodName, args) {
-        return {
-            // keep method name first!
-            methodName,
-            loggedUserId: self.userId,
-            clientIp: self.connection ? self.connection.clientAddress : null,
-            args: args || undefined,
-        };
-    }
-
-    /**
-     * Logs info about Meteor.js method call.
-     *
-     * @param {Object} self Meteor method this reference.
-     * @param {String} methodName
-     * @param {Object} args
-     */
-    methodCall(self, methodName, args) {
-        this.info('Method called', this._prepareMethodData(self, methodName, args));
-    }
-
-    /**
-     * Logs error info about exception thrown from Meteor.js method call.
-     *
-     * @param {Error} exception
-     * @param {Object} self Meteor method this reference.
-     * @param {String} methodName
-     * @param {Object} args
-     */
-    methodException(exception, self, methodName, args) {
-        this.exception(exception, 'Method threw an exception', this._prepareMethodData(self, methodName, args));
-    }
-
-    /**
      * Logs given message only once as WARNING. It's used to warn user that some feature he is using
      * has been deprecated.
      */

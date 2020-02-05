@@ -52,6 +52,13 @@ describe('log', () => {
         expect(log2.getOptions().suffix).to.be.eql('sss');
     });
 
+    it('should support internal() method', () => {
+        const log = new Log({ logger: dummyLogger });
+
+        loggerMock.expects('log').once().withArgs(LEVELS.ERROR, 'Something to be informed about happened', { foo: 'bar' });
+        log.internal(LEVELS.ERROR, 'Something to be informed about happened', { foo: 'bar' });
+    });
+
     it('should support error() method', () => {
         const log = new Log({ logger: dummyLogger });
 
@@ -108,46 +115,6 @@ describe('log', () => {
         log.perf('Some perf info', { foo: 'bar' });
 
         delete process.env[ENV_VARS.LOG_LEVEL];
-    });
-
-    it('should support methodCall() method', () => {
-        const log = new Log({ logger: dummyLogger });
-        const methodName = 'someName';
-        const userId = 'someId';
-        const connection = { clientAddress: '127.0.0.1' };
-        const self = { userId, connection };
-        const args = { foo: 'bar' };
-
-        loggerMock.expects('log').once().withArgs(LEVELS.INFO, 'Method called', {
-            methodName,
-            loggedUserId: userId,
-            clientIp: connection.clientAddress,
-            args,
-        });
-        log.methodCall(self, methodName, args);
-    });
-
-    it('should support methodException() method', () => {
-        const log = new Log({ logger: dummyLogger });
-        const methodName = 'someName';
-        const userId = 'someId';
-        const self = { userId };
-        const args = { foo: 'bar' };
-        const err = new Error('some-error');
-
-        loggerMock.expects('log').once().withArgs(
-            LEVELS.ERROR,
-            'Method threw an exception',
-            {
-                methodName,
-                loggedUserId: userId,
-                clientIp: null,
-                args,
-            },
-            _.pick(err, 'name', 'message', 'stack'),
-            { prefix: null, suffix: null },
-        );
-        log.methodException(err, self, methodName, args);
     });
 
     it('should support deprecated() method', () => {
