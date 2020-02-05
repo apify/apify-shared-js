@@ -1,6 +1,7 @@
 0.1.70 / 2020-02-05
 ===================
 - Added "noopener noreferrer" to `markedSetNofollowLinks` in `utilities.client.js`
+- Removed Meteor.js related methods and code from the logger
 
 0.1.69 / 2020-01-22
 ===================
