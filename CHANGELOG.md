@@ -3,6 +3,15 @@ xxxxxxxxxxxxxxxxxxx
 - New logger released. API is compatible with the old one except the `log.internal()` where signature got changed,
   `logMethodCall|logMethodException()` were removed and initial configuration changes.
 
+0.1.70 / 2020-02-05
+===================
+- Added "noopener noreferrer" to `markedSetNofollowLinks` in `utilities.client.js`
+- Removed Meteor.js related methods and code from the logger
+
+0.1.69 / 2020-01-22
+===================
+- Added RUN_MEMORY_MBYTES_PER_CPU_CORE constant
+
 0.1.68 / 2019-12-23
 ===================
 - Better error messages for input schema regex errors
