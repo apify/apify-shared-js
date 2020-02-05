@@ -3,6 +3,7 @@ import LoggerJson from '../build/logger_json';
 import { PREFIX_DELIMITER, LEVELS, LEVEL_TO_STRING } from '../build/log_consts';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'];
+const DATE_REGEX = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/;
 
 describe('loggerJson', () => {
     let loggedLines;
@@ -33,7 +34,7 @@ describe('loggerJson', () => {
         const prefix = 'Before';
         const suffix = 'After';
         logger.log(level, message, data, null, { prefix, suffix });
-        expect(loggedLines.log.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.log.time).to.be.match(DATE_REGEX);
         expect(loggedLines.log.msg).to.eql(`${prefix}${PREFIX_DELIMITER} ${message} ${suffix}`);
         expect(loggedLines.log.foo).to.be.eql(data.foo);
         expect(loggedLines.log.level).to.be.eql(LEVEL_TO_STRING[level]);
@@ -45,7 +46,7 @@ describe('loggerJson', () => {
         const err = new Error('some-error');
         const errObj = Object.assign({ name: err.name, message: err.message, stack: err.stack }, err);
         logger.log(level, message, data, errObj);
-        expect(loggedLines.error.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.error.time).to.be.match(DATE_REGEX);
         expect(loggedLines.error.msg).to.eql(message);
         expect(loggedLines.error.foo).to.be.eql(data.foo);
         expect(loggedLines.error.level).to.be.eql(LEVEL_TO_STRING[level]);
@@ -55,7 +56,7 @@ describe('loggerJson', () => {
         message = 'Some debug happened';
         data = { foo: 'bar' };
         logger.log(level, message, data);
-        expect(loggedLines.debug.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.debug.time).to.be.match(DATE_REGEX);
         expect(loggedLines.debug.msg).to.eql(message);
         expect(loggedLines.debug.foo).to.be.eql(data.foo);
         expect(loggedLines.debug.level).to.be.eql(LEVEL_TO_STRING[level]);
@@ -64,10 +65,23 @@ describe('loggerJson', () => {
         message = 'Some debug happened';
         data = { foo: 'bar' };
         logger.log(level, message, data);
-        expect(loggedLines.warn.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.warn.time).to.be.match(DATE_REGEX);
         expect(loggedLines.warn.msg).to.eql(message);
         expect(loggedLines.warn.foo).to.be.eql(data.foo);
         expect(loggedLines.warn.level).to.be.eql(LEVEL_TO_STRING[level]);
+    });
+
+    it('should have prepareLogLine() method', () => {
+        const logger = new LoggerJson({ skipLevelInfo: true });
+
+        const level = LEVELS.INFO;
+        const message = 'Some message';
+
+        const line = logger.prepareLogLine(level, message);
+        const parsed = JSON.parse(line);
+        expect(parsed.time).to.be.match(DATE_REGEX);
+        expect(parsed.msg).to.eql(message);
+        expect(parsed.level).to.be.eql(undefined);
     });
 
     it('should support skipLevelInfo', () => {
@@ -77,7 +91,7 @@ describe('loggerJson', () => {
         const message = 'Some message';
         logger.log(level, message);
 
-        expect(loggedLines.log.time).to.be.match(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/);
+        expect(loggedLines.log.time).to.be.match(DATE_REGEX);
         expect(loggedLines.log.msg).to.eql(message);
         expect(loggedLines.log.level).to.be.eql(undefined);
     });

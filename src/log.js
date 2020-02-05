@@ -1,6 +1,6 @@
-import LoggerTextImported from './logger_text';
-import LoggerJsonImported from './logger_json';
-import { LEVELS as LEVELS_IMPORTED, LEVEL_TO_STRING, PREFIX_DELIMITER } from './log_consts';
+import LoggerText from './logger_text';
+import LoggerJson from './logger_json';
+import { LEVELS, LEVEL_TO_STRING, PREFIX_DELIMITER } from './log_consts';
 import { limitDepth, getLogLevelFromEnv } from './log_helpers';
 
 const getDefaultOptions = () => ({
@@ -9,10 +9,10 @@ const getDefaultOptions = () => ({
     maxStringLength: 2000,
     prefix: null,
     suffix: null,
-    logger: new LoggerTextImported(),
+    logger: new LoggerText(),
 });
 
-export class Log {
+class Log {
     constructor(options = {}) {
         options = Object.assign({}, getDefaultOptions(), options);
 
@@ -105,9 +105,12 @@ export class Log {
     }
 }
 
-// Default export is an initialized instance of logger.
-export default new Log();
+const log = new Log();
 
-export const LoggerText = LoggerTextImported;
-export const LoggerJson = LoggerJsonImported;
-export const LEVELS = LEVELS_IMPORTED;
+log.Log = Log;
+log.LEVELS = LEVELS;
+log.LoggerText = LoggerText;
+log.LoggerJson = LoggerJson;
+
+// Default export is an initialized instance of logger.
+export default log;

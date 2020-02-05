@@ -11,7 +11,7 @@ export default class LoggerJson extends Logger {
         super(Object.assign({}, DEFAULT_OPTIONS, options));
     }
 
-    log(level, message, data, exception, opts = {}) {
+    prepareLogLine(level, message, data, exception, opts = {}) {
         const { prefix, suffix } = opts;
 
         if (exception) data = Object.assign({}, data, { exception });
@@ -28,20 +28,24 @@ export default class LoggerJson extends Logger {
             msg: message,
         }, data);
 
-        const stringified = JSON.stringify(rec);
+        return JSON.stringify(rec);
+    }
+
+    log(level, message, data, exception, opts = {}) {
+        const line = this.prepareLogLine(level, message, data, exception, opts);
 
         switch (level) {
             case LEVELS.ERROR:
-                console.error(stringified);
+                console.error(line);
                 break;
             case LEVELS.WARNING:
-                console.warn(stringified);
+                console.warn(line);
                 break;
             case LEVELS.DEBUG:
-                console.debug(stringified);
+                console.debug(line);
                 break;
             default:
-                console.log(stringified);
+                console.log(line);
         }
     }
 }
