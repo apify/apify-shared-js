@@ -153,7 +153,7 @@ export const markedSetNofollowLinks = (href, title, text) => {
     } catch (e) {
         // Probably invalid url, go on
     }
-    const isApifyLink = (urlParsed && /\.apify\.com$/i.test(urlParsed.hostname));
+    const isApifyLink = (urlParsed && /(\.|^)apify\.com$/i.test(urlParsed.hostname));
     return (isApifyLink)
         ? `<a href="${href}">${title || text}</a>`
         : `<a rel="noopener noreferrer nofollow" target="_blank" href="${href}">${title || text}</a>`;
