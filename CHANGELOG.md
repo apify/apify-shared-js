@@ -1,3 +1,7 @@
+0.2.1 / 2020-02-05
+==================
+- Fix in imports/exports of new logger + added `prepareLogLine` method to `LoggerJson`
+
 0.2.0 / 2020-02-05
 ===================
 - Logger completely rewritten to support colors, be extendable, ... .
