@@ -1035,8 +1035,8 @@ describe('utilities.client', () => {
   ],
   "obj": {
     "foo": "bar",
-    "arrFunc": "(x, y) => {\\n                        return x + y;\\n                    }",
-    "myFunc": "function (z) {\\n                        return 'z';\\n                    }"
+    "arrFunc": "(x, y) => {\\n            return x + y;\\n          }",
+    "myFunc": "function (z) {\\n            return 'z';\\n          }"
   }
 }`;
 
@@ -1056,7 +1056,7 @@ describe('utilities.client', () => {
             const expected = `{
   "foo": "bar",
   "date": "2019-05-06T13:08:15.590Z",
-  "func": "(x, y) => {\\n                    return x + y;\\n                }"
+  "func": "(x, y) => {\\n          return x + y;\\n        }"
 }`;
 
             // Replacer removes number properties.
