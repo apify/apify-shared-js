@@ -33,11 +33,11 @@ describe('log', () => {
     it('gets correcty set log level based on ENV_VAR', () => {
         process.env[ENV_VARS.LOG_LEVEL] = LEVELS.SOFT_FAIL;
         const log = new Log();
-        expect(log.getOptions().logLevel).to.be.eql(LEVELS.SOFT_FAIL);
+        expect(log.getOptions().level).to.be.eql(LEVELS.SOFT_FAIL);
 
         process.env[ENV_VARS.LOG_LEVEL] = LEVELS.ERROR;
         const log2 = new Log();
-        expect(log2.getOptions().logLevel).to.be.eql(LEVELS.ERROR);
+        expect(log2.getOptions().level).to.be.eql(LEVELS.ERROR);
 
         delete process.env[ENV_VARS.LOG_LEVEL];
     });

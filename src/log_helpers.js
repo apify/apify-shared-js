@@ -7,7 +7,7 @@ import { LEVELS } from './log_consts';
  * Gets log level from env variable.
  * Both integers and strings (WARNING) are supported.
  */
-export const getLogLevelFromEnv = () => {
+export const getLevelFromEnv = () => {
     const envVar = process.env[ENV_VARS.LOG_LEVEL];
 
     if (!envVar) return LEVELS.INFO;

@@ -15,6 +15,8 @@ const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
 
+const { LoggerJson, LEVELS } = log;
+
 _.extend(exports, utilsClient);
 
 /**
@@ -418,4 +420,16 @@ exports.promisifyServerListen = (server) => {
             server.listen(port);
         });
     };
+};
+
+exports.configureLogger = (givenLog, isProduction) => {
+    if (isProduction) {
+        givenLog.setOptions({
+            level: LEVELS.INFO,
+            logger: new LoggerJson({ skipLevelInfo: true }),
+        });
+    } else {
+        givenLog.setOptions({ level: LEVELS.DEBUG });
+        givenLog.getOptions().logger.setOptions({ skipTime: true });
+    }
 };

@@ -1,10 +1,10 @@
 import LoggerText from './logger_text';
 import LoggerJson from './logger_json';
 import { LEVELS, LEVEL_TO_STRING, PREFIX_DELIMITER } from './log_consts';
-import { limitDepth, getLogLevelFromEnv } from './log_helpers';
+import { limitDepth, getLevelFromEnv } from './log_helpers';
 
 const getDefaultOptions = () => ({
-    logLevel: getLogLevelFromEnv(),
+    level: getLevelFromEnv(),
     maxDepth: 4,
     maxStringLength: 2000,
     prefix: null,
@@ -17,7 +17,7 @@ class Log {
     constructor(options = {}) {
         options = Object.assign({}, getDefaultOptions(), options);
 
-        if (!LEVEL_TO_STRING[options.logLevel]) throw new Error('Options "logLevel" must be one of log.LEVELS enum!');
+        if (!LEVEL_TO_STRING[options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
         if (typeof options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
         if (options.prefix && typeof options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
@@ -33,14 +33,14 @@ class Log {
         return limitDepth(obj, this.options.maxDepth);
     }
 
-    internal(logLevel, message, data, exception) {
-        if (logLevel > this.options.logLevel) return;
+    internal(level, message, data, exception) {
+        if (level > this.options.level) return;
 
         data = Object.assign({}, this.options.data, data);
         data = this._limitDepth(data);
         exception = this._limitDepth(exception);
 
-        this.options.logger.log(logLevel, message, data, exception, {
+        this.options.logger.log(level, message, data, exception, {
             prefix: this.options.prefix,
             suffix: this.options.suffix,
         });

@@ -2,28 +2,28 @@ import _ from 'underscore';
 import { expect } from 'chai';
 import { LEVELS, LEVEL_TO_STRING } from '../build/log_consts';
 import { ENV_VARS } from '../src/consts';
-import { limitDepth, getLogLevelFromEnv } from '../build/log_helpers';
+import { limitDepth, getLevelFromEnv } from '../build/log_helpers';
 
-describe('getLogLevelFromEnv()', () => {
+describe('getLevelFromEnv()', () => {
     it('should support integers', () => {
         process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
-        expect(getLogLevelFromEnv()).to.be.eql(LEVELS.SOFT_FAIL);
+        expect(getLevelFromEnv()).to.be.eql(LEVELS.SOFT_FAIL);
         process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.WARNING}`;
-        expect(getLogLevelFromEnv()).to.be.eql(LEVELS.WARNING);
+        expect(getLevelFromEnv()).to.be.eql(LEVELS.WARNING);
         delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
     it('should support strings', () => {
         process.env[ENV_VARS.LOG_LEVEL] = LEVEL_TO_STRING[LEVELS.SOFT_FAIL];
-        expect(getLogLevelFromEnv()).to.be.eql(LEVELS.SOFT_FAIL);
+        expect(getLevelFromEnv()).to.be.eql(LEVELS.SOFT_FAIL);
         process.env[ENV_VARS.LOG_LEVEL] = LEVEL_TO_STRING[LEVELS.WARNING];
-        expect(getLogLevelFromEnv()).to.be.eql(LEVELS.WARNING);
+        expect(getLevelFromEnv()).to.be.eql(LEVELS.WARNING);
         delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
     it('should support default to INFO', () => {
         delete process.env[ENV_VARS.LOG_LEVEL];
-        expect(getLogLevelFromEnv()).to.be.eql(LEVELS.INFO);
+        expect(getLevelFromEnv()).to.be.eql(LEVELS.INFO);
     });
 });
 
