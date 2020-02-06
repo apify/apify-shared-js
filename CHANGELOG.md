@@ -1,3 +1,7 @@
+0.1.71 / 2020-02-06
+===================
+- Just republishing v0.1.x as latest
+
 0.1.70 / 2020-02-05
 ===================
 - Added "noopener noreferrer" to `markedSetNofollowLinks` in `utilities.client.js`
