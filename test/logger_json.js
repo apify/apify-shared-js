@@ -71,19 +71,6 @@ describe('loggerJson', () => {
         expect(loggedLines.warn.level).to.be.eql(LEVEL_TO_STRING[level]);
     });
 
-    it('should have prepareLogLine() method', () => {
-        const logger = new LoggerJson({ skipLevelInfo: true });
-
-        const level = LEVELS.INFO;
-        const message = 'Some message';
-
-        const line = logger.prepareLogLine(level, message);
-        const parsed = JSON.parse(line);
-        expect(parsed.time).to.be.match(DATE_REGEX);
-        expect(parsed.msg).to.eql(message);
-        expect(parsed.level).to.be.eql(undefined);
-    });
-
     it('should support skipLevelInfo', () => {
         const logger = new LoggerJson({ skipLevelInfo: true });
 
@@ -106,5 +93,19 @@ describe('loggerJson', () => {
         expect(loggedLines.log.time).to.be.eql(undefined);
         expect(loggedLines.log.msg).to.eql(message);
         expect(loggedLines.log.level).to.be.eql(LEVEL_TO_STRING[level]);
+    });
+
+    it('should be eventEmitter', () => {
+        const emitted = [];
+        const logger = new LoggerJson({ skipTime: true });
+        logger.on('line', line => emitted.push(line));
+
+        logger.log(LEVELS.INFO, 'Some info message');
+        logger.log(LEVELS.ERROR, 'Some error message');
+
+        expect(emitted).to.be.eql([
+            '{"level":"INFO","msg":"Some info message"}',
+            '{"level":"ERROR","msg":"Some error message"}',
+        ]);
     });
 });

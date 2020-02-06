@@ -1,5 +1,8 @@
-export default class Logger {
+const EventEmitter = require('events');
+
+export default class Logger extends EventEmitter {
     constructor(options) {
+        super();
         this.options = options;
     }
 
@@ -11,7 +14,13 @@ export default class Logger {
         return this.options;
     }
 
-    log() {
+    _log() {
         throw new Error('log() method must be implemented!');
+    }
+
+    log(...args) {
+        const line = this._log(...args);
+
+        this.emit('line', line);
     }
 }

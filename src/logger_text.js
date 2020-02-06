@@ -37,7 +37,7 @@ export default class LoggerText extends Logger {
         super(Object.assign({}, DEFAULT_OPTIONS, options));
     }
 
-    log(level, message, data, exception, opts = {}) {
+    _log(level, message, data, exception, opts = {}) {
         let { prefix, suffix } = opts;
 
         let maybeDate = '';
@@ -54,7 +54,11 @@ export default class LoggerText extends Logger {
         suffix = suffix ? ` ${suffix}` : '';
         data = data ? ` ${JSON.stringify(data)}` : '';
 
-        console.error(chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`); // eslint-disable-line
+        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
+
+        console.error(line);
+
+        return line;
     }
 
     _parseException(exception) {
