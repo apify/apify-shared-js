@@ -441,3 +441,37 @@ export const SOURCE_FILE_FORMATS = {
     TEXT: 'TEXT',
     BASE64: 'BASE64',
 };
+
+// Marketplace project statuses
+export const PROJECT_STATUSES = {
+    REQUEST: 'REQUEST',
+    SPECIFICATION: 'SPECIFICATION',
+    OFFERS: 'OFFERS',
+    DEPOSIT: 'DEPOSIT',
+    DEPOSIT_PAID: 'DEPOSIT_PAID',
+    NEW: 'NEW',
+    IN_PROGRESS: 'IN_PROGRESS',
+    QA: 'QA',
+    CUSTOMER_QA: 'CUSTOMER_QA',
+    READY_FOR_INVOICE: 'READY_FOR_INVOICE',
+    INVOICED: 'INVOICED',
+    PAID: 'PAID',
+    DELIVERED: 'DELIVERED',
+    CLOSED: 'CLOSED',
+    FINISHED: 'FINISHED',
+};
+
+// Marketplace projects with status from this array is considered as successfully finished
+export const FINISHED_PROJECT_STATUSES = [
+    PROJECT_STATUSES.READY_FOR_INVOICE,
+    PROJECT_STATUSES.INVOICED,
+    PROJECT_STATUSES.PAID,
+    PROJECT_STATUSES.DELIVERED,
+    PROJECT_STATUSES.FINISHED,
+];
+
+export const MARKETPLACE_USER_ROLES = {
+    DEVELOPER: 'DEVELOPER',
+    DATA_EXPERT: 'DATA_EXPERT',
+    CUSTOMER: 'CUSTOMER',
+};
