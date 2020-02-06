@@ -1,3 +1,7 @@
+0.1.72 / 2020-02-06
+===================
+- Added statuses for marketplace projects and marketplace user role names to `consts.js`
+
 0.1.71 / 2020-02-06
 ===================
 - Just republishing v0.1.x as latest
