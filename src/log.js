@@ -10,6 +10,7 @@ const getDefaultOptions = () => ({
     prefix: null,
     suffix: null,
     logger: new LoggerText(),
+    data: {},
 });
 
 class Log {
@@ -22,6 +23,7 @@ class Log {
         if (options.prefix && typeof options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
         if (options.suffix && typeof options.suffix !== 'string') throw new Error('Options "suffix" must be a string!');
         if (typeof options.logger !== 'object') throw new Error('Options "logger" must be an object!');
+        if (typeof options.data !== 'object') throw new Error('Options "data" must be an object!');
 
         this.options = options;
         this.deprecationsReported = {};
@@ -34,6 +36,7 @@ class Log {
     internal(logLevel, message, data, exception) {
         if (logLevel > this.options.logLevel) return;
 
+        data = Object.assign({}, this.options.data, data);
         data = this._limitDepth(data);
         exception = this._limitDepth(exception);
 
@@ -60,7 +63,15 @@ class Log {
                 : options.prefix;
         }
 
-        const newOptions = Object.assign({}, this.options, options, { prefix });
+        const data = options.data
+            ? Object.assign({}, this.options.data, options.data)
+            : this.options.data;
+
+
+        const newOptions = Object.assign({}, this.options, options, {
+            prefix,
+            data,
+        });
 
         return new Log(newOptions);
     }

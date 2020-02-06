@@ -43,13 +43,15 @@ describe('log', () => {
     });
 
     it('should allow to create a child logger with inherrited config', () => {
-        const log1 = new Log({ prefix: 'aaa' });
-        const log2 = log1.child({ prefix: 'bbb', suffix: 'sss' });
+        const log1 = new Log({ prefix: 'aaa', data: { foo: 'bar' } });
+        const log2 = log1.child({ prefix: 'bbb', suffix: 'sss', data: { hotel: 'restaurant' } });
 
         expect(log1.getOptions().prefix).to.be.eql('aaa');
         expect(log1.getOptions().suffix).to.be.eql(null);
+        expect(log1.getOptions().data).to.be.eql({ foo: 'bar' });
         expect(log2.getOptions().prefix).to.be.eql('aaa:bbb');
         expect(log2.getOptions().suffix).to.be.eql('sss');
+        expect(log2.getOptions().data).to.be.eql({ foo: 'bar', hotel: 'restaurant' });
     });
 
     it('should support internal() method', () => {
@@ -132,5 +134,12 @@ describe('log', () => {
         log.deprecated('Message 1');
         log.deprecated('Message 2');
         log.deprecated('Message 3');
+    });
+
+    it('should support data', () => {
+        const log = new Log({ logger: dummyLogger, data: { foo: 'bar' } });
+
+        loggerMock.expects('log').once().withArgs(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar', hotel: 'restaurant' });
+        log.info('Something to be informed about happened', { hotel: 'restaurant' });
     });
 });
