@@ -71,7 +71,8 @@ export default class LoggerText extends Logger {
         }
 
         // Parse error stack lines.
-        let errorLines = exception.stack || exception.toString();
+        // NOTE: Reason is here to support Meteor.js like errors.
+        let errorLines = exception.stack || exception.reason || exception.toString();
         errorLines = errorLines.split('\n');
 
         // Add details to a first line.

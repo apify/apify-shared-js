@@ -1,3 +1,7 @@
+0.2.6 / 2020-02-10
+==================
+- Added support for Meteor like errors with `reason` property.
+
 0.2.5 / 2020-02-10
 ==================
 - Returning `log.set|getLevel()` methods.
