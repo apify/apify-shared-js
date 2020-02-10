@@ -55,8 +55,7 @@ export default class LoggerText extends Logger {
         data = data ? ` ${JSON.stringify(data)}` : '';
 
         const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
-
-        console.error(line);
+        console.log(line);
 
         return line;
     }
