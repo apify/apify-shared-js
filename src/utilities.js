@@ -430,6 +430,5 @@ exports.configureLogger = (givenLog, isProduction) => {
         });
     } else {
         givenLog.setOptions({ level: LEVELS.DEBUG });
-        givenLog.getOptions().logger.setOptions({ skipTime: true });
     }
 };

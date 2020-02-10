@@ -29,7 +29,7 @@ const getLevelIndent = (level) => {
 };
 
 const DEFAULT_OPTIONS = {
-    skipTime: false,
+    skipTime: true,
 };
 
 export default class LoggerText extends Logger {

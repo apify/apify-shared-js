@@ -1,6 +1,10 @@
+0.2.1 / 2020-02-10
+==================
+- `skipTime` set to `true` by default for a text logger
+
 0.2.2 / 2020-02-10
 ==================
-- Final touches to new logger 
+- Final touches to new logger
 
 0.2.1 / 2020-02-05
 ==================
