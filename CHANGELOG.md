@@ -1,3 +1,7 @@
+0.2.5 / 2020-02-10
+==================
+- Returning `log.set|getLevel()` methods.
+
 0.2.4 / 2020-02-10
 ==================
 - Fixing logger problem when error doesn't have stack and using console.error() in text logger

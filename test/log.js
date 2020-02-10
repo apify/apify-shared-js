@@ -42,6 +42,18 @@ describe('log', () => {
         delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
+    it('should allow to retrieve and modify level using get|setLevel()', () => {
+        process.env[ENV_VARS.LOG_LEVEL] = LEVELS.SOFT_FAIL;
+
+        const log = new Log();
+        expect(log.getLevel()).to.be.eql(LEVELS.SOFT_FAIL);
+
+        log.setLevel(LEVELS.ERROR);
+        expect(log.getLevel()).to.be.eql(LEVELS.ERROR);
+
+        delete process.env[ENV_VARS.LOG_LEVEL];
+    });
+
     it('should allow to create a child logger with inherrited config', () => {
         const log1 = new Log({ prefix: 'aaa', data: { foo: 'bar' } });
         const log2 = log1.child({ prefix: 'bbb', suffix: 'sss', data: { hotel: 'restaurant' } });

@@ -33,6 +33,16 @@ class Log {
         return limitDepth(obj, this.options.maxDepth);
     }
 
+    getLevel() {
+        return this.options.level;
+    }
+
+    setLevel(level) {
+        if (!LEVEL_TO_STRING[level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
+
+        this.options.level = level;
+    }
+
     internal(level, message, data, exception) {
         if (level > this.options.level) return;
 
