@@ -1,3 +1,13 @@
+0.2.1 / 2020-02-05
+- Fix in imports/exports of new logger + added `prepareLogLine` method to `LoggerJson`
+
+0.2.0 / 2020-02-05
+===================
+- Logger completely rewritten to support colors, be extendable, ... .
+  Logger API is compatible with the old one except the `log.internal()` where signature got changed, `logMethodCall|logMethodException()`
+  were removed and initial configuration is different.
+- Added support for `apifyProxyCountry` to input schema proxy field validation.
+
 0.1.72 / 2020-02-06
 ===================
 - Added statuses for marketplace projects and marketplace user role names to `consts.js`

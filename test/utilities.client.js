@@ -996,6 +996,44 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).to.be.equal('field');
             });
         });
+
+        it('should validate Apify proxy country', () => {
+            const { inputSchema, validator } = buildInputSchema({
+                field: {
+                    type: 'object',
+                    editor: 'proxy',
+                    title: 'proxy',
+                    description: 'Field for testing of a proxy validation',
+                },
+            });
+            const proxy = null;
+            // If Apify proxy is used, apifyProxyCountry must be either undefined, an empty string or a valid country code
+            // If Apify proxy is not used, apifyProxyCountry must not be set
+            const inputs = [
+                // Invalid
+                { field: { useApifyProxy: true, apifyProxyCountry: 123 } },
+                { field: { useApifyProxy: true, apifyProxyCountry: {} } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'XY' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'Czech Republic' } },
+                { field: { useApifyProxy: false, apifyProxyCountry: 'CZ' } },
+                // Valid
+                { field: { useApifyProxy: true } },
+                { field: { useApifyProxy: true, apifyProxyCountry: '' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'CZ' } },
+                { field: { useApifyProxy: true, apifyProxyCountry: 'US' } },
+            ];
+            const results = inputs
+                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter(errors => errors.length > 0);
+
+            // There should be 5 invalid inputs
+            expect(results.length).to.be.equal(5);
+            results.forEach((result) => {
+                // Only one error should be thrown
+                expect(result.length).to.be.equal(1);
+                expect(result[0].fieldKey).to.be.equal('field');
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {
@@ -1035,8 +1073,8 @@ describe('utilities.client', () => {
   ],
   "obj": {
     "foo": "bar",
-    "arrFunc": "(x, y) => {\\n                        return x + y;\\n                    }",
-    "myFunc": "function (z) {\\n                        return 'z';\\n                    }"
+    "arrFunc": "(x, y) => {\\n            return x + y;\\n          }",
+    "myFunc": "function (z) {\\n            return 'z';\\n          }"
   }
 }`;
 
@@ -1056,7 +1094,7 @@ describe('utilities.client', () => {
             const expected = `{
   "foo": "bar",
   "date": "2019-05-06T13:08:15.590Z",
-  "func": "(x, y) => {\\n                    return x + y;\\n                }"
+  "func": "(x, y) => {\\n          return x + y;\\n        }"
 }`;
 
             // Replacer removes number properties.
