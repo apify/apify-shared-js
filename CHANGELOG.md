@@ -1,4 +1,4 @@
-0.2.1 / 2020-02-10
+0.2.3 / 2020-02-10
 ==================
 - `skipTime` set to `true` by default for a text logger
 
