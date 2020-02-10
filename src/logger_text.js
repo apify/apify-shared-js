@@ -55,7 +55,7 @@ export default class LoggerText extends Logger {
         data = data ? ` ${JSON.stringify(data)}` : '';
 
         const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
-        console.log(line);
+        this._outputWithConsole(level, line);
 
         return line;
     }
@@ -71,7 +71,7 @@ export default class LoggerText extends Logger {
         }
 
         // Parse error stack lines.
-        let errorLines = exception.stack || exception;
+        let errorLines = exception.stack || exception.toString();
         errorLines = errorLines.split('\n');
 
         // Add details to a first line.

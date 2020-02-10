@@ -1,4 +1,5 @@
-const EventEmitter = require('events');
+import EventEmitter from 'events';
+import { LEVELS } from './log_consts';
 
 export default class Logger extends EventEmitter {
     constructor(options) {
@@ -12,6 +13,22 @@ export default class Logger extends EventEmitter {
 
     getOptions() {
         return this.options;
+    }
+
+    _outputWithConsole(level, line) {
+        switch (level) {
+            case LEVELS.ERROR:
+                console.error(line);
+                break;
+            case LEVELS.WARNING:
+                console.warn(line);
+                break;
+            case LEVELS.DEBUG:
+                console.debug(line);
+                break;
+            default:
+                console.log(line);
+        }
     }
 
     _log() {

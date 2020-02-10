@@ -29,20 +29,7 @@ export default class LoggerJson extends Logger {
         }, data);
 
         const line = JSON.stringify(rec);
-
-        switch (level) {
-            case LEVELS.ERROR:
-                console.error(line);
-                break;
-            case LEVELS.WARNING:
-                console.warn(line);
-                break;
-            case LEVELS.DEBUG:
-                console.debug(line);
-                break;
-            default:
-                console.log(line);
-        }
+        this._outputWithConsole(level, line);
 
         return line;
     }

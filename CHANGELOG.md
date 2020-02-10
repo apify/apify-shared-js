@@ -1,3 +1,7 @@
+0.2.4 / 2020-02-10
+==================
+- Fixing logger problem when error doesn't have stack and using console.error() in text logger
+
 0.2.3 / 2020-02-10
 ==================
 - `skipTime` set to `true` by default for a text logger
