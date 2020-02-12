@@ -1,3 +1,7 @@
+0.2.7 / 2020-02-12
+==================
+- Increased node.js version in base images names.
+
 0.2.6 / 2020-02-10
 ==================
 - Added support for Meteor like errors with `reason` property.

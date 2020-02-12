@@ -69,18 +69,18 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // Latest:
     {
         name: 'apify/actor-node-basic',
-        displayName: 'Node.js 10 on Alpine Linux',
+        displayName: 'Node.js 12 on Alpine Linux',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome',
-        displayName: 'Node.js 10 + Chrome on Debian',
+        displayName: 'Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome-xvfb',
-        displayName: 'Node.js 10 + Chrome + Xvfb on Debian',
+        displayName: 'Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
@@ -88,16 +88,16 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // Beta:
     {
         name: 'apify/actor-node-basic:beta',
-        displayName: 'BETA: Node.js 10 on Alpine Linux',
+        displayName: 'BETA: Node.js 12 on Alpine Linux',
     },
     {
         name: 'apify/actor-node-chrome:beta',
-        displayName: 'BETA: Node.js 10 + Chrome on Debian',
+        displayName: 'BETA: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
     },
     {
         name: 'apify/actor-node-chrome-xvfb:beta',
-        displayName: 'BETA: Node.js 10 + Chrome + Xvfb on Debian',
+        displayName: 'BETA: Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
     },
 
@@ -105,13 +105,13 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // TODO: Keep the for some time and then migrate acts to recommended images.
     {
         name: 'apify/actor-node-puppeteer',
-        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
+        displayName: '[DEPRECATED] Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
         copyChown: 'node:node',
         prePull: true,
     },
     {
         name: 'apify/actor-node-puppeteer:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
+        displayName: '[DEPRECATED] BETA: Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
         copyChown: 'node:node',
     },
 ];
