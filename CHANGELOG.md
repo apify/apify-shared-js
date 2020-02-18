@@ -1,3 +1,7 @@
+0.2.8 / 2020-02-18
+==================
+- Added EMAIL_REGEX_STR, added test for EMAIL_REGEX
+
 0.2.7 / 2020-02-12
 ==================
 - Increased node.js version in base images names.
