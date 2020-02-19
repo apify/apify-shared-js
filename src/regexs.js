@@ -1,9 +1,14 @@
 /**
- * email validation regexp adapted from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address,
- * with our restriction that hostname must be a TLD!
- * original:  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+ * Email validation regexp adapted from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
+ * with our restriction that hostname must be a TLD! (will not match example@localhost)
  */
-export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/; // eslint-disable-line max-len
+export const EMAIL_REGEX_STR = '[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+'; // eslint-disable-line max-len
+
+/**
+ * Matches a string containing valid email
+ * Hostname must be a TLD! (will not match example@localhost)
+ */
+export const EMAIL_REGEX = new RegExp(`^${EMAIL_REGEX_STR}$`);
 
 /**
  * Comes from https://github.com/jonschlinkert/is-git-url/ but we have:

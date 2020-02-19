@@ -112,6 +112,23 @@ const tests = {
             'C:\\Windows',
         ],
     },
+
+    EMAIL_REGEX: {
+        valid: [
+            'test@example.com',
+            'a.b+123~@example.com',
+            'a-b@example.at',
+            'test@my.example.com',
+            'test@my-super.example.com',
+        ],
+        invalid: [
+            ' test@example.com',
+            'test@@example.com',
+            'test@localhost',
+            'not an email',
+            '@example.com',
+        ],
+    },
 };
 
 describe('regexps', () => {
