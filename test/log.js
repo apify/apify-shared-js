@@ -30,7 +30,7 @@ describe('log', () => {
         expect(options2.prefix).to.be.eql('bbb');
     });
 
-    it('gets correcty set log level based on ENV_VAR', () => {
+    it('correctly sets log level based on ENV_VAR', () => {
         process.env[ENV_VARS.LOG_LEVEL] = LEVELS.SOFT_FAIL;
         const log = new Log();
         expect(log.getOptions().level).to.be.eql(LEVELS.SOFT_FAIL);
@@ -54,7 +54,7 @@ describe('log', () => {
         delete process.env[ENV_VARS.LOG_LEVEL];
     });
 
-    it('should allow to create a child logger with inherrited config', () => {
+    it('should allow to create a child logger with inherited config', () => {
         const log1 = new Log({ prefix: 'aaa', data: { foo: 'bar' } });
         const log2 = log1.child({ prefix: 'bbb', suffix: 'sss', data: { hotel: 'restaurant' } });
 
