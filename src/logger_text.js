@@ -49,12 +49,12 @@ export default class LoggerText extends Logger {
         const color = LEVEL_TO_COLOR[level];
         const levelStr = SHORTENED_LOG_LEVELS[level];
         const levelIndent = getLevelIndent(levelStr);
+        const dataStr = _.isEmpty(data) ? '' : ` ${JSON.stringify(data)}`;
 
         prefix = prefix ? ` ${prefix}${PREFIX_DELIMITER}` : '';
         suffix = suffix ? ` ${suffix}` : '';
-        data = data ? ` ${JSON.stringify(data)}` : '';
 
-        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${data}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
+        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${dataStr}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
         this._outputWithConsole(level, line);
 
         return line;

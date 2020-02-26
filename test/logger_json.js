@@ -3,7 +3,7 @@ import LoggerJson from '../build/logger_json';
 import { PREFIX_DELIMITER, LEVELS, LEVEL_TO_STRING } from '../build/log_consts';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'];
-const DATE_REGEX = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d.\d\d\dZ/;
+const DATE_REGEX = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ/;
 
 describe('loggerJson', () => {
     let loggedLines;

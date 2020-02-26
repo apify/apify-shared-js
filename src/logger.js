@@ -1,6 +1,12 @@
 import EventEmitter from 'events';
 import { LEVELS } from './log_consts';
 
+/**
+ * This is an abstract class that should
+ * be extended by custom logger classes.
+ *
+ * this._log() method must be implemented by them.
+ */
 export default class Logger extends EventEmitter {
     constructor(options) {
         super();
