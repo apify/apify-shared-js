@@ -475,3 +475,89 @@ export const MARKETPLACE_USER_ROLES = {
     DATA_EXPERT: 'DATA_EXPERT',
     CUSTOMER: 'CUSTOMER',
 };
+
+export const ACTOR_TEMPLATES = {
+    hello_world: {
+        name: 'Hello world - The smallest actor you will see today, it only takes input and generates output',
+        value: 'hello_world',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/hello_world.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 256,
+        },
+        skipOptionalDeps: true,
+    },
+    puppeteer_crawler: {
+        name: 'Puppeteer crawler - Recursively crawl a website using Chrome and Puppeteer',
+        value: 'puppeteer_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/puppeteer_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    puppeteer_single_page: {
+        name: 'Puppeteer single page - Load a single web page using Chrome and Puppeteer and extract data from it',
+        value: 'puppeteer_single_page',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/puppeteer_single_page.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    cheerio_crawler: {
+        name: 'Cheerio crawler - Recursively crawl a website using raw HTTP requests and Cheerio HTML parser',
+        value: 'cheerio_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/cheerio_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+        skipOptionalDeps: true,
+    },
+    basic_crawler: {
+        name: 'Basic crawler - Crawl a list of URLs using raw HTTP requests and Cheerio HTML parser',
+        value: 'basic_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/basic_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+        skipOptionalDeps: true,
+    },
+    apify_project: {
+        name: 'Apify project - Standardized template containing boilerplate and code style rules used for Apify Marketplace projects',
+        value: 'apify_project',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/apify_project.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 2048,
+        },
+    },
+    // NOTE: We can use isDeprecated flag if we want to omit template from templates list which user can use for new actors.
+    // But if old users have this template in apify.json, it will work.
+    puppeteer: {
+        isDeprecated: true,
+        value: 'puppeteer',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    basic: {
+        isDeprecated: true,
+        value: 'basic',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+    },
+};

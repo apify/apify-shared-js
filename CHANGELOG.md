@@ -1,3 +1,7 @@
+0.2.9 / 2020-02-27
+==================
+- Added ACTOR_TEMPLATES
+
 0.2.8 / 2020-02-18
 ==================
 - Added EMAIL_REGEX_STR, added test for EMAIL_REGEX
