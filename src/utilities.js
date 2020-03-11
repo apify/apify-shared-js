@@ -426,7 +426,7 @@ exports.configureLogger = (givenLog, isProduction) => {
     if (isProduction) {
         givenLog.setOptions({
             level: LEVELS.INFO,
-            logger: new LoggerJson({ skipLevelInfo: true }),
+            logger: new LoggerJson(),
         });
     } else {
         givenLog.setOptions({ level: LEVELS.DEBUG });

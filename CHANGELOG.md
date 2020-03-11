@@ -1,3 +1,7 @@
+xxx
+==================
+- Removed `skipLevelInfo: true` from LoggerJson() to improve LogDNA filtering
+
 0.2.9 / 2020-02-27
 ==================
 - Added ACTOR_TEMPLATES
