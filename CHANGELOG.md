@@ -1,6 +1,7 @@
-xxx
+0.2.10 / 2020/03/16
 ==================
 - Removed `skipLevelInfo: true` from LoggerJson() to improve LogDNA filtering
+- Added SPLIT_PATH_REGEX regex
 
 0.2.9 / 2020-02-27
 ==================

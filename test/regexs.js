@@ -143,3 +143,15 @@ describe('regexps', () => {
         });
     });
 });
+
+describe('SPLIT_PATH_REGEX', () => {
+    it('works', () => {
+        expect(
+            '/aaa/bbb/ccc'.match(REGEXS.SPLIT_PATH_REGEX),
+        ).to.be.eql([
+            'aaa',
+            'bbb',
+            'ccc',
+        ]);
+    });
+});

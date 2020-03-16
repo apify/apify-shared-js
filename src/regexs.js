@@ -59,3 +59,6 @@ export const URL_REGEX = /^(http:\/\/|https:\/\/)/i;
 
 // E.g. https://gist.github.com/jancurn/2dbe83fea77c439b1119fb3f118513e7
 export const GITHUB_GIST_URL_REGEX = new RegExp(`^https:\\/\\/gist\\.github\\.com\\/${GITHUB_REGEX_STR}\\/[0-9a-f]{32}$`, 'i');
+
+// Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].
+export const SPLIT_PATH_REGEX = /[^/]+/g;
