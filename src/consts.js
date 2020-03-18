@@ -189,6 +189,7 @@ export const ACTOR_RESTART_ON_ERROR = {
 
 /**
  * Kept for backwards compatibility, will be removed soon.
+ * TODO: Remove this once it's no longer used anywhere.
  */
 export const ACT_RESTART_ON_ERROR = ACTOR_RESTART_ON_ERROR;
 
@@ -200,6 +201,7 @@ export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
 
 /**
  * Contains various Actor platform limits that are shared between the projects.
+ * IMPORTANT: If you update any of them, update also https://github.com/apifytech/apify-docs/edit/master/docs/actor/limits.md !!!
  */
 export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
@@ -226,6 +228,9 @@ export const ACTOR_LIMITS = {
 
     // Maximum size of actor input schema.
     INPUT_SCHEMA_MAX_BYTES: 100 * 1024,
+
+    // Max length of run/build log in number of characters
+    LOG_MAX_CHARS: 5000000,
 };
 
 /**
@@ -326,8 +331,9 @@ export const KEY_VALUE_STORE_KEYS = {
 
 /**
  * Max length of Actor log in number of characters.
+ * TODO: Remove this once it's no longer used anywhere.
  */
-export const ACTOR_LOG_MAX_CHARS = 5000000;
+export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
 
 /**
  * Types of customer request.
