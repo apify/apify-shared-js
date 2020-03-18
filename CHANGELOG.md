@@ -1,3 +1,7 @@
+xxxx
+==================
+- Deprecated ACTOR_LOG_MAX_CHARS in favor of ACTOR_LIMITS.LOG_MAX_CHARS
+
 0.2.10 / 2020/03/16
 ==================
 - Removed `skipLevelInfo: true` from LoggerJson() to improve LogDNA filtering
