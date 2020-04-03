@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "bluebird": "^3.7.2",
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "clone": "^2.1.1",
     "countries-list": "^2.5.1",
     "is-buffer": "^2.0.3",
