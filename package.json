@@ -49,6 +49,7 @@
     "@apify/eslint-config": "0.0.3",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "ajv": "^6.9.2",
