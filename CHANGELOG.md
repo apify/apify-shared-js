@@ -1,4 +1,4 @@
-0.2.10 / 2020/04/08
+0.2.11 / 2020/04/08
 ==================
 - Deprecated ACTOR_LOG_MAX_CHARS in favor of ACTOR_LIMITS.LOG_MAX_CHARS
 - Fixed Babel configuration that was not working on iOS devices
