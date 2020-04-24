@@ -19,23 +19,22 @@ export const customHeadingRenderer = (text, level) => {
             <h${level}>
                 <a 
                     name="${nameHtmlParam}" 
-                      href="${idTags}" 
-                      id="${idTags}"> 
-                      <span class="header-link"></span>
-                    </a>
-                    ${titleText}
-                  </h${level}>`;
+                    href="${idTag}" 
+                    id="${idTag}"> 
+                    <span class="header-link"></span>
+                </a>
+                ${titleText}
+            </h${level}>`;
     } else {
         headingToReturn = `
             <h${level}>
                 <a 
                     name="${nameHtmlParam}"
                     href="#${nameHtmlParam}">
-                      class="anchor" 
-                      <span class="header-link"></span>
-                    </a>
-                    ${text}
-                  </h${level}>`;
+                    <span class="header-link"></span>
+                </a>
+                ${text}
+            </h${level}>`;
     }
     return headingToReturn;
 };
