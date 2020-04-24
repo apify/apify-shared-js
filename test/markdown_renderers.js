@@ -55,4 +55,18 @@ describe('customHeadingRenderer', () => {
                 Welcome to Apify
             </h1>`);
     });
+
+    it('trims whitespace, inserts dashes between words, converts to lowercase, removes punctuation', () => {
+        const renderedTitle = marked('# Welcome to Apify { #  .Welcome -title-id }');
+        expect(renderedTitle).to.eql(`
+            <h1>
+                <a 
+                    name="welcome-to-apify"
+                    href="#welcome-title-id"
+                    id="#welcome-title-id">
+                    <span class="header-link"></span>
+                </a>
+                Welcome to Apify
+            </h1>`);
+    });
 });
