@@ -4,14 +4,13 @@ export const customHeadingRenderer = (text, level) => {
     let headingToReturn;
 
     const idRegEx = /[^{}]+(?=})/g;
-    let idTags = text.match(idRegEx);
-    if (!idTags.includes('#')) {
-        idTags = `#${idTags}`;
-    }
+    const idTags = text.match(idRegEx);
 
     let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
 
     if (idTags) {
+        let idTag = idTags[0];
+        if (!idTag.includes('#')) idTag = `#${idTag}`;
         const titleText = text.split('{')[0].trim();
         nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
 
