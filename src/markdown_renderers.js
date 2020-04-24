@@ -1,5 +1,3 @@
-// const marked = require('marked');
-
 function formatIdTag(idTag) {
     // Get rid of whitespace and random characters
     idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');
@@ -50,5 +48,3 @@ export const customHeadingRenderer = (text, level) => {
     }
     return headingToReturn;
 };
-
-// marked.use({ customHeadingRenderer });
