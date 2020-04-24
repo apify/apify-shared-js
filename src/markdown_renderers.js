@@ -1,4 +1,4 @@
-const marked = require('marked');
+// const marked = require('marked');
 
 function formatIdTag(idTag) {
     // Get rid of whitespace and random characters
@@ -51,4 +51,4 @@ export const customHeadingRenderer = (text, level) => {
     return headingToReturn;
 };
 
-marked.use({ customHeadingRenderer });
+// marked.use({ customHeadingRenderer });
