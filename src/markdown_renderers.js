@@ -16,9 +16,9 @@ export const customHeadingRenderer = (text, level) => {
         nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
 
         headingToReturn = `
-                  <h${level}>
-                    <a 
-                      name="${nameHtmlParam}" 
+            <h${level}>
+                <a 
+                    name="${nameHtmlParam}" 
                       href="${idTags}" 
                       id="${idTags}"> 
                       <span class="header-link"></span>
@@ -27,10 +27,10 @@ export const customHeadingRenderer = (text, level) => {
                   </h${level}>`;
     } else {
         headingToReturn = `
-                  <h${level}>
-                    <a 
-                      name="${nameHtmlParam}"
-                      href="#${nameHtmlParam}">
+            <h${level}>
+                <a 
+                    name="${nameHtmlParam}"
+                    href="#${nameHtmlParam}">
                       class="anchor" 
                       <span class="header-link"></span>
                     </a>
