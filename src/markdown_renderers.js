@@ -18,17 +18,14 @@ export const customHeadingRenderer = (text, level) => {
     const idRegEx = /[^{}]+(?=})/g;
     const idTags = text.match(idRegEx);
 
-    let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
-
     if (idTags) {
         const idTag = formatIdTag(idTags[0]);
         const titleText = text.split('{')[0].trim();
-        nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
-
+        const htmlName = titleText.toLowerCase().replace(/[^\w]+/g, '-');
         headingToReturn = `
             <h${level}>
                 <a 
-                    name="${nameHtmlParam}"
+                    name="${htmlName}"
                     href="${idTag}"
                     id="${idTag}">
                     <span class="header-link"></span>
@@ -36,11 +33,12 @@ export const customHeadingRenderer = (text, level) => {
                 ${titleText}
             </h${level}>`;
     } else {
+        const htmlName = text.toLowerCase().replace(/[^\w]+/g, '-');
         headingToReturn = `
             <h${level}>
                 <a 
-                    name="${nameHtmlParam}"
-                    href="#${nameHtmlParam}">
+                    name="${htmlName}"
+                    href="#${htmlName}">
                     <span class="header-link"></span>
                 </a>
                 ${text}
