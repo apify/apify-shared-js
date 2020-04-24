@@ -12,26 +12,20 @@ function formatIdTag(idTag) {
     return idTag;
 }
 
-export const customHeadingRenderer = (text, level) => {
-    let headingToReturn;
-
+export const customHeadingRenderer = (text, level, raw) => {
     const idRegEx = /[^{}]+(?=})/g;
     const idTags = text.match(idRegEx);
 
-    if (idTags) {
-        const idTag = formatIdTag(idTags[0]);
-        const titleText = text.split('{')[0].trim();
-        const htmlName = titleText.toLowerCase().replace(/[^\w]+/g, '-');
-        headingToReturn = `
-            <h${level}>
-                <a 
-                    name="${htmlName}"
-                    href="${idTag}"
-                    id="${idTag}">
-                    <span class="header-link"></span>
-                </a>
+    let idTag = idTags && idTags.length ? formatIdTag(idTags[0]) : null;
+    if (!idTag) idTag = formatIdTag(raw);
+
+    const titleText = text.split('{')[0].trim();
+
+    const headingToReturn = `
+            <h${level} id="${idTag}">
+                <a href="${idTag}"></a>
                 ${titleText}
             </h${level}>`;
-    }
+
     return headingToReturn;
 };
