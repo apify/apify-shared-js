@@ -32,17 +32,6 @@ export const customHeadingRenderer = (text, level) => {
                 </a>
                 ${titleText}
             </h${level}>`;
-    } else {
-        const htmlName = text.toLowerCase().replace(/[^\w]+/g, '-');
-        headingToReturn = `
-            <h${level}>
-                <a 
-                    name="${htmlName}"
-                    href="#${htmlName}">
-                    <span class="header-link"></span>
-                </a>
-                ${text}
-            </h${level}>`;
     }
     return headingToReturn;
 };
