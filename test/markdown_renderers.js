@@ -54,8 +54,8 @@ describe('customHeadingRenderer', () => {
             </h1>`);
     });
 
-    it('trims whitespace, inserts dashes between words, converts to lowercase, removes punctuation', () => {
-        const renderedTitle = marked('# Welcome to Apify { #  .Welcome -title-id }');
+    it('trims whitespace, inserts dashes between words, converts to lowercase, removes punctuation and trailing dash', () => {
+        const renderedTitle = marked('# Welcome to Apify { #  .Welcome -title-id . - ? -}');
         expect(renderedTitle).to.eql(`
             <h1>
                 <a 

@@ -9,6 +9,10 @@ function formatIdTag(idTag) {
     while (idTag[1] === '-') {
         idTag = idTag.replace(idTag[1], '');
     }
+    // Remove trailing dashes
+    if (idTag.slice(-1) === '-') {
+        idTag = idTag.substring(0, idTag.length - 1);
+    }
     return idTag;
 }
 
