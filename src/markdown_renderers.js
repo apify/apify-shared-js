@@ -1,5 +1,17 @@
 const marked = require('marked');
 
+function formatIdTag(idTag) {
+    // Replace spaces with dashes and get rid of whitespace
+    idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');
+    // Add hastag if it is missing
+    if (!idTag.includes('#')) idTag = `#${idTag}`;
+    // Remove dashes right after hashtag
+    while (idTag[1] === '-') {
+        idTag = idTag.replace(idTag[1], '');
+    }
+    return idTag;
+}
+
 export const customHeadingRenderer = (text, level) => {
     let headingToReturn;
 
@@ -9,8 +21,7 @@ export const customHeadingRenderer = (text, level) => {
     let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
 
     if (idTags) {
-        let idTag = idTags[0];
-        if (!idTag.includes('#')) idTag = `#${idTag}`;
+        const idTag = formatIdTag(idTags[0]);
         const titleText = text.split('{')[0].trim();
         nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
 
