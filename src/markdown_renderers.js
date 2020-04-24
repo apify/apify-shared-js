@@ -17,9 +17,9 @@ export const customHeadingRenderer = (text, level) => {
         headingToReturn = `
             <h${level}>
                 <a 
-                    name="${nameHtmlParam}" 
-                    href="${idTag}" 
-                    id="${idTag}"> 
+                    name="${nameHtmlParam}"
+                    href="${idTag}"
+                    id="${idTag}">
                     <span class="header-link"></span>
                 </a>
                 ${titleText}
