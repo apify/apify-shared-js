@@ -1,8 +1,6 @@
 function formatIdTag(idTag) {
     // Get rid of whitespace and random characters
     idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');
-    // Add hastag if it is missing
-    if (!idTag.includes('#')) idTag = `#${idTag}`;
     // Remove dashes right after hashtag
     while (idTag[1] === '-') {
         idTag = idTag.replace(idTag[1], '');
