@@ -9,8 +9,6 @@ describe('customHeadingRenderer', () => {
     renderer.heading = customHeadingRenderer;
     marked.use({ renderer });
 
-    // TODO: it ('trims whitespace at the ends and inserts dashes in spaces)
-
     it('returns a header with ID param when ID is passed', () => {
         const renderedTitle = function () {
             return marked('# Welcome to Apify {#welcome-title-id}');
