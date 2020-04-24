@@ -1,19 +1,18 @@
 const marked = require('marked');
 
-const renderer = {
-    heading(text, level) {
-        let headingToReturn;
+export const customHeadingRenderer = (text, level) => {
+    let headingToReturn;
 
-        const idRegEx = /[^{}]+(?=})/g;
-        const idTags = text.match(idRegEx);
+    const idRegEx = /[^{}]+(?=})/g;
+    const idTags = text.match(idRegEx);
 
-        let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
+    let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
 
-        if (idTags) {
-            const titleText = text.split('{')[0].trim();
-            nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
+    if (idTags) {
+        const titleText = text.split('{')[0].trim();
+        nameHtmlParam = titleText.toLowerCase().replace(/[^\w]+/g, '-');
 
-            headingToReturn = `
+        headingToReturn = `
                   <h${level}>
                     <a 
                       name="${nameHtmlParam}" 
@@ -23,8 +22,8 @@ const renderer = {
                     </a>
                     ${titleText}
                   </h${level}>`;
-        } else {
-            headingToReturn = `
+    } else {
+        headingToReturn = `
                   <h${level}>
                     <a 
                       name="${nameHtmlParam}"
@@ -34,16 +33,8 @@ const renderer = {
                     </a>
                     ${text}
                   </h${level}>`;
-        }
-        return headingToReturn;
-    },
+    }
+    return headingToReturn;
 };
 
-marked.use({ renderer });
-
-function renderMarkdown(title) {
-    return marked(title);
-}
-
-
-module.exports = renderMarkdown();
+marked.use({ customHeadingRenderer });
