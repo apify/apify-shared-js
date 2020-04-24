@@ -23,7 +23,7 @@ export const customHeadingRenderer = (text, level, raw) => {
 
     const headingToReturn = `
             <h${level} id="${idTag}">
-                <a href="${idTag}"></a>
+                <a href="#${idTag}"></a>
                 ${titleText}
             </h${level}>`;
 
