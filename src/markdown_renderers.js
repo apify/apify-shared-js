@@ -1,7 +1,7 @@
 const marked = require('marked');
 
 function formatIdTag(idTag) {
-    // Replace spaces with dashes and get rid of whitespace
+    // Get rid of whitespace and random characters
     idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');
     // Add hastag if it is missing
     if (!idTag.includes('#')) idTag = `#${idTag}`;
