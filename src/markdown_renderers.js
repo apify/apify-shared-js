@@ -4,7 +4,10 @@ export const customHeadingRenderer = (text, level) => {
     let headingToReturn;
 
     const idRegEx = /[^{}]+(?=})/g;
-    const idTags = text.match(idRegEx);
+    let idTags = text.match(idRegEx);
+    if (!idTags.includes('#')) {
+        idTags = `#${idTags}`;
+    }
 
     let nameHtmlParam = text.toLowerCase().replace(/[^\w]+/g, '-');
 
@@ -16,8 +19,8 @@ export const customHeadingRenderer = (text, level) => {
                   <h${level}>
                     <a 
                       name="${nameHtmlParam}" 
-                      href="${idTags[0]}" 
-                      id="${idTags[0]}"> 
+                      href="${idTags}" 
+                      id="${idTags}"> 
                       <span class="header-link"></span>
                     </a>
                     ${titleText}
