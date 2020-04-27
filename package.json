@@ -54,8 +54,6 @@
     "@babel/register": "^7.0.0",
     "ajv": "^6.9.2",
     "apify-jsdoc-template": "github:apifytech/apify-jsdoc-template",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "chai-as-promised": "^7.1.1",
     "babel-plugin-add-module-exports": "^1.0.2",
     "chai": "^4.2.0",
@@ -68,7 +66,6 @@
     "jsdoc-export-default-interop": "^0.3.1",
     "jsdom": "^15.1.1",
     "mocha": "^7.0.1",
-    "sinon": "^8.0.1",
-    "strip-ansi": "^6.5.0"
+    "sinon": "^8.0.1"
   }
 }
