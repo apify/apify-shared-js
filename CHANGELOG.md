@@ -1,3 +1,7 @@
+0.2.12 / 2020/04/27
+==================
+- Added health checker
+
 0.2.11 / 2020/04/08
 ==================
 - Deprecated ACTOR_LOG_MAX_CHARS in favor of ACTOR_LIMITS.LOG_MAX_CHARS
