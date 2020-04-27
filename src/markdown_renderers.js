@@ -4,9 +4,7 @@ function formatIdTag(idTag) {
     // Get rid of whitespace and random characters
     idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');
     // Remove dashes at the start
-    while (idTag[0] === '-') {
-        idTag = idTag.replace(idTag[0], '');
-    }
+    idTag = idTag.replace(/^[-]+|[-]+$/g, '');
     // Remove trailing dashes
     if (idTag.slice(-1) === '-') {
         idTag = idTag.substring(0, idTag.length - 1);
@@ -33,4 +31,3 @@ export const customHeadingRenderer = (text, level, raw) => {
 
     return headingToReturn;
 };
-
