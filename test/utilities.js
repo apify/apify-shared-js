@@ -185,3 +185,58 @@ describe('utilities', () => {
         expect(nicePath).to.be.eql('12345-api-example-crawler');
     });
 });
+
+describe('timeoutPromise()', () => {
+    it('should work when promise resolves in time', async () => {
+        const promise = new Promise((resolve) => {
+            setTimeout(() => resolve('xxx'), 100);
+        });
+        const timeoutPromise = utils.timeoutPromise(promise, 200);
+        expect(await timeoutPromise).to.be.eql('xxx');
+    });
+
+    it('should work when promise rejects in time', async () => {
+        const error = new Error('some-fail');
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => reject(error), 100);
+        });
+        const timeoutPromise = utils.timeoutPromise(promise, 200);
+
+        try {
+            await timeoutPromise;
+            throw new Error('This should have failed!');
+        } catch (err) {
+            expect(err.message).to.be.eql('some-fail');
+        }
+    });
+
+    it('should work when promise timeouts in time', async () => {
+        const error = new Error('some-fail');
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => reject(error), 200);
+        });
+        const timeoutPromise = utils.timeoutPromise(promise, 100);
+
+        try {
+            await timeoutPromise;
+            throw new Error('This should have failed!');
+        } catch (err) {
+            expect(err.message).to.be.eql('Promise has timed-out');
+        }
+    });
+
+    it('should support custom error message', async () => {
+        const error = new Error('some-fail');
+        const promise = new Promise((resolve, reject) => {
+            setTimeout(() => reject(error), 200);
+        });
+        const timeoutPromise = utils.timeoutPromise(promise, 100, 'Custom error message');
+
+        try {
+            await timeoutPromise;
+            throw new Error('This should have failed!');
+        } catch (err) {
+            expect(err.message).to.be.eql('Custom error message');
+        }
+    });
+});

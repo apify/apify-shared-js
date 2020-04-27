@@ -433,3 +433,24 @@ exports.configureLogger = (givenLog, isProduction) => {
         givenLog.setOptions({ level: LEVELS.DEBUG });
     }
 };
+
+/**
+ * Wraps given promise with timeout.
+ */
+exports.timeoutPromise = (promise, timeoutMillis, errorMessage = 'Promise has timed-out') => {
+    return new Promise((resolve, reject) => {
+        let timeout;
+        let hasFulfilled = false;
+
+        const callback = (err, result) => {
+            if (hasFulfilled) return;
+            clearTimeout(timeout);
+            hasFulfilled = true;
+            if (err) return reject(err);
+            resolve(result);
+        };
+
+        promise.then(result => callback(null, result), callback);
+        timeout = setTimeout(() => callback(new Error(errorMessage)), timeoutMillis);
+    });
+};
