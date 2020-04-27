@@ -24,11 +24,10 @@ export const customHeadingRenderer = (text, level, raw) => {
     // If the custom ID is badly formatted, throw error
     if (idTags && idTag !== idTags[0]) log.error('Badly formatted heading ID', { id: idTags[0] });
 
-    const titleText = raw.split('{')[0].trim();
+    const titleText = text.split('{')[0].trim();
 
     const headingToReturn = `
             <h${level} id="${idTag}">
-                <a href="#${formatIdTag(titleText)}"></a>
                 ${titleText}
             </h${level}>`;
 
