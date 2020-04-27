@@ -13,7 +13,6 @@ describe('customHeadingRenderer', () => {
         const renderedTitle = marked('# Welcome to Apify {welcome-title-id}');
         expect(renderedTitle).to.equal(`
             <h1 id="welcome-title-id">
-                <a href="#welcome-to-apify"></a>
                 Welcome to Apify
             </h1>`);
     });
@@ -22,7 +21,6 @@ describe('customHeadingRenderer', () => {
         const renderedTitle = marked('## Welcome to Apify');
         expect(renderedTitle).to.eql(`
             <h2 id="welcome-to-apify">
-                <a href="#welcome-to-apify"></a>
                 Welcome to Apify
             </h2>`);
     });
@@ -31,7 +29,6 @@ describe('customHeadingRenderer', () => {
         const renderedTitle = marked('# Welcome to Apify { #  .Welcome -title-id . - ? -}');
         expect(renderedTitle).to.eql(`
             <h1 id="welcome-title-id">
-                <a href="#welcome-to-apify"></a>
                 Welcome to Apify
             </h1>`);
     });
