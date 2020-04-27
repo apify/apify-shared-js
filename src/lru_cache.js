@@ -1,4 +1,4 @@
-const ListDictionary = require('./list_dictionary');
+import ListDictionary from './list_dictionary';
 
 /**
  * The main ListDictionary class.

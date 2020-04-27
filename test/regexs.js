@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { expect } from 'chai';
-import * as REGEXS from '../build/regexs.js';
+import * as REGEXS from '../build/regexs';
 
 const tests = {
     GIT_REPO_REGEX: {
@@ -112,6 +112,23 @@ const tests = {
             'C:\\Windows',
         ],
     },
+
+    EMAIL_REGEX: {
+        valid: [
+            'test@example.com',
+            'a.b+123~@example.com',
+            'a-b@example.at',
+            'test@my.example.com',
+            'test@my-super.example.com',
+        ],
+        invalid: [
+            ' test@example.com',
+            'test@@example.com',
+            'test@localhost',
+            'not an email',
+            '@example.com',
+        ],
+    },
 };
 
 describe('regexps', () => {
@@ -124,5 +141,17 @@ describe('regexps', () => {
                 expect(str).to.not.match(REGEXS[key]);
             });
         });
+    });
+});
+
+describe('SPLIT_PATH_REGEX', () => {
+    it('works', () => {
+        expect(
+            '/aaa/bbb/ccc'.match(REGEXS.SPLIT_PATH_REGEX),
+        ).to.be.eql([
+            'aaa',
+            'bbb',
+            'ccc',
+        ]);
     });
 });

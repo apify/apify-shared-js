@@ -1,3 +1,5 @@
+import { DNS_SAFE_NAME_REGEX } from './regexs';
+
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
 export const ACT_JOB_TYPES = {
@@ -15,6 +17,7 @@ export const ACT_SOURCE_TYPES = {
 
 export const ACTOR_EVENT_NAMES = {
     CPU_INFO: 'cpuInfo',
+    SYSTEM_INFO: 'systemInfo',
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
 };
@@ -66,18 +69,18 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // Latest:
     {
         name: 'apify/actor-node-basic',
-        displayName: 'Node.js 10 on Alpine Linux',
+        displayName: 'Node.js 12 on Alpine Linux',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome',
-        displayName: 'Node.js 10 + Chrome on Debian',
+        displayName: 'Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome-xvfb',
-        displayName: 'Node.js 10 + Chrome + Xvfb on Debian',
+        displayName: 'Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
@@ -85,16 +88,16 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // Beta:
     {
         name: 'apify/actor-node-basic:beta',
-        displayName: 'BETA: Node.js 10 on Alpine Linux',
+        displayName: 'BETA: Node.js 12 on Alpine Linux',
     },
     {
         name: 'apify/actor-node-chrome:beta',
-        displayName: 'BETA: Node.js 10 + Chrome on Debian',
+        displayName: 'BETA: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
     },
     {
         name: 'apify/actor-node-chrome-xvfb:beta',
-        displayName: 'BETA: Node.js 10 + Chrome + Xvfb on Debian',
+        displayName: 'BETA: Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
     },
 
@@ -102,13 +105,13 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     // TODO: Keep the for some time and then migrate acts to recommended images.
     {
         name: 'apify/actor-node-puppeteer',
-        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
+        displayName: '[DEPRECATED] Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
         copyChown: 'node:node',
         prePull: true,
     },
     {
         name: 'apify/actor-node-puppeteer:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
+        displayName: '[DEPRECATED] BETA: Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
         copyChown: 'node:node',
     },
 ];
@@ -151,7 +154,16 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.\-]{3,30}$/,
+    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+};
+
+/**
+ * Actor name constraints.
+ */
+export const ACTOR_NAME = {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 30,
+    REGEX: DNS_SAFE_NAME_REGEX,
 };
 
 /**
@@ -177,6 +189,7 @@ export const ACTOR_RESTART_ON_ERROR = {
 
 /**
  * Kept for backwards compatibility, will be removed soon.
+ * TODO: Remove this once it's no longer used anywhere.
  */
 export const ACT_RESTART_ON_ERROR = ACTOR_RESTART_ON_ERROR;
 
@@ -188,6 +201,7 @@ export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
 
 /**
  * Contains various Actor platform limits that are shared between the projects.
+ * IMPORTANT: If you update any of them, update also https://github.com/apifytech/apify-docs/edit/master/docs/actor/limits.md !!!
  */
 export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
@@ -198,6 +212,9 @@ export const ACTOR_LIMITS = {
 
     // For each build or run container, set disk quota based on memory size
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
+
+    // For each build or run container, set CPU cores based on memory size
+    RUN_MEMORY_MBYTES_PER_CPU_CORE: 4096,
 
     // The default limit of memory for all running Actor jobs for free accounts.
     FREE_ACCOUNT_MAX_MEMORY_MBYTES: 8192,
@@ -211,6 +228,9 @@ export const ACTOR_LIMITS = {
 
     // Maximum size of actor input schema.
     INPUT_SCHEMA_MAX_BYTES: 100 * 1024,
+
+    // Max length of run/build log in number of characters
+    LOG_MAX_CHARS: 5000000,
 };
 
 /**
@@ -259,6 +279,8 @@ export const ENV_VARS = {
     CONTAINER_URL: 'APIFY_CONTAINER_URL',
     META_ORIGIN: 'APIFY_META_ORIGIN',
     FACT: 'APIFY_FACT',
+    DEDICATED_CPUS: 'APIFY_DEDICATED_CPUS',
+    SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
@@ -309,8 +331,9 @@ export const KEY_VALUE_STORE_KEYS = {
 
 /**
  * Max length of Actor log in number of characters.
+ * TODO: Remove this once it's no longer used anywhere.
  */
-export const ACTOR_LOG_MAX_CHARS = 5000000;
+export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
 
 /**
  * Types of customer request.
@@ -333,18 +356,16 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
 export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Culture/entertainment',
+    ENTERTAINMENT: 'Entertainment',
     SOCIAL: 'Social',
     MARKETING: 'Marketing',
-    NEWS: 'Media/news',
+    NEWS: 'News',
     FINANCE: 'Finance',
     LIFESTYLE: 'Lifestyle',
-    SPORTS: 'Sports',
     SEARCH_ENGINES: 'Search engines',
     DATA: 'Data processing',
     EGOVERNMENT: 'E-government',
     TOOLS: 'Tools',
-    UTILS: 'Developers utilities',
     EXAMPLES: 'Examples',
     OTHER: 'Other',
 };
@@ -398,4 +419,151 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
+};
+
+export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
+    "userId": {{userId}},
+    "createdAt": {{createdAt}},
+    "eventType": {{eventType}},
+    "eventData": {{eventData}},
+    "resource": {{resource}}
+}`;
+export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
+    'userId',
+    'createdAt',
+    'eventType',
+    'eventData',
+    'resource',
+]);
+
+// This client key is used in request queue to indentify requests from Apify app UI.
+export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
+
+// Max allowed size of files in multi-file editor
+export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
+
+// Formats for multi-file editor files
+export const SOURCE_FILE_FORMATS = {
+    TEXT: 'TEXT',
+    BASE64: 'BASE64',
+};
+
+// Marketplace project statuses
+export const PROJECT_STATUSES = {
+    REQUEST: 'REQUEST',
+    SPECIFICATION: 'SPECIFICATION',
+    OFFERS: 'OFFERS',
+    DEPOSIT: 'DEPOSIT',
+    DEPOSIT_PAID: 'DEPOSIT_PAID',
+    NEW: 'NEW',
+    IN_PROGRESS: 'IN_PROGRESS',
+    QA: 'QA',
+    CUSTOMER_QA: 'CUSTOMER_QA',
+    READY_FOR_INVOICE: 'READY_FOR_INVOICE',
+    INVOICED: 'INVOICED',
+    PAID: 'PAID',
+    DELIVERED: 'DELIVERED',
+    CLOSED: 'CLOSED',
+    FINISHED: 'FINISHED',
+};
+
+// Marketplace projects with status from this array is considered as successfully finished
+export const FINISHED_PROJECT_STATUSES = [
+    PROJECT_STATUSES.READY_FOR_INVOICE,
+    PROJECT_STATUSES.INVOICED,
+    PROJECT_STATUSES.PAID,
+    PROJECT_STATUSES.DELIVERED,
+    PROJECT_STATUSES.FINISHED,
+];
+
+export const MARKETPLACE_USER_ROLES = {
+    DEVELOPER: 'DEVELOPER',
+    DATA_EXPERT: 'DATA_EXPERT',
+    CUSTOMER: 'CUSTOMER',
+};
+
+export const ACTOR_TEMPLATES = {
+    hello_world: {
+        name: 'Hello world - The smallest actor you will see today, it only takes input and generates output',
+        value: 'hello_world',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/hello_world.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 256,
+        },
+        skipOptionalDeps: true,
+    },
+    puppeteer_crawler: {
+        name: 'Puppeteer crawler - Recursively crawl a website using Chrome and Puppeteer',
+        value: 'puppeteer_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/puppeteer_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    puppeteer_single_page: {
+        name: 'Puppeteer single page - Load a single web page using Chrome and Puppeteer and extract data from it',
+        value: 'puppeteer_single_page',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/puppeteer_single_page.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    cheerio_crawler: {
+        name: 'Cheerio crawler - Recursively crawl a website using raw HTTP requests and Cheerio HTML parser',
+        value: 'cheerio_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/cheerio_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+        skipOptionalDeps: true,
+    },
+    basic_crawler: {
+        name: 'Basic crawler - Crawl a list of URLs using raw HTTP requests and Cheerio HTML parser',
+        value: 'basic_crawler',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/basic_crawler.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+        skipOptionalDeps: true,
+    },
+    apify_project: {
+        name: 'Apify project - Standardized template containing boilerplate and code style rules used for Apify Marketplace projects',
+        value: 'apify_project',
+        archiveUrl: 'https://github.com/apifytech/actor-templates/blob/master/build/apify_project.zip?raw=true',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 2048,
+        },
+    },
+    // NOTE: We can use isDeprecated flag if we want to omit template from templates list which user can use for new actors.
+    // But if old users have this template in apify.json, it will work.
+    puppeteer: {
+        isDeprecated: true,
+        value: 'puppeteer',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 0,
+            memoryMbytes: 2048,
+        },
+    },
+    basic: {
+        isDeprecated: true,
+        value: 'basic',
+        defaultRunOptions: {
+            build: 'latest',
+            timeoutSecs: 3600,
+            memoryMbytes: 512,
+        },
+    },
 };

@@ -15,6 +15,8 @@ const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
 
+const { LoggerJson, LEVELS } = log;
+
 _.extend(exports, utilsClient);
 
 /**
@@ -29,6 +31,7 @@ exports.cryptoRandomObjectId = function cryptoRandomObjectId(length) {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCEDFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const bytes = crypto.randomBytes(length);
     let str = '';
+    // eslint-disable-next-line
     for (let i = bytes.length - 1; i >= 0; i--) { str += chars[(bytes[i] | 0) % chars.length]; }
     return str;
 };
@@ -141,6 +144,7 @@ exports.betterSetInterval = function (func, delay) {
     };
     funcWrapper();
     return {
+        // eslint-disable-next-line no-underscore-dangle
         _betterClearInterval() {
             isRunning = false;
             clearTimeout(timeoutId);
@@ -149,33 +153,15 @@ exports.betterSetInterval = function (func, delay) {
 };
 
 exports.betterClearInterval = function (intervalID) {
+    // eslint-disable-next-line no-underscore-dangle
     if (intervalID && intervalID._betterClearInterval) {
         try {
+            // eslint-disable-next-line no-underscore-dangle
             intervalID._betterClearInterval();
         } catch (e) {
             log.exception(e, '_betterClearInterval() threw an exception!?');
         }
     }
-};
-
-/**
- * Splits a full name into the first name and last name, trimming all internal and external spaces.
- * Returns an array with two elements or null if splitting is not possible.
- * @param fullName
- */
-exports.splitFullName = function (fullName) {
-    if (typeof (fullName) !== 'string') return [null, null];
-
-    const names = (fullName || '').trim().split(' ');
-    const nonEmptyNames = _.filter(names, (val) => { return !!val; });
-
-    if (nonEmptyNames.length === 0) {
-        return [null, null];
-    }
-    if (nonEmptyNames.length === 1) {
-        return [null, nonEmptyNames[0]];
-    }
-    return [names[0], nonEmptyNames.slice(1).join(' ')];
 };
 
 /**
@@ -266,11 +252,12 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'selenium', '(selenium.*webdriver)', 'undefined', 'page-analyzer', 'wp-login.php',
     'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
     'kb', 'cookies', 'cookie-policy', 'cookies-policy', 'powered-by', 'run', 'runs', 'actor', 'actors',
-    'act', 'acts',
+    'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace', 'presskit', 'press-kit', 'covid-19',
+    'covid', 'covid19', 'matfyz',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
-    '(sitemap\\.[a-z]+)', '(apple-touch-icon.*)',
+    '(sitemap\\.[a-z]+)', '(apple-touch-icon.*)', 'security-whitepaper\\.pdf',
 
     // All hidden files
     '(\\..*)',
@@ -434,6 +421,17 @@ exports.promisifyServerListen = (server) => {
             server.listen(port);
         });
     };
+};
+
+exports.configureLogger = (givenLog, isProduction) => {
+    if (isProduction) {
+        givenLog.setOptions({
+            level: LEVELS.INFO,
+            logger: new LoggerJson(),
+        });
+    } else {
+        givenLog.setOptions({ level: LEVELS.DEBUG });
+    }
 };
 
 /**

@@ -1,9 +1,14 @@
 /**
- * email validation regexp adapted from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address,
- * with our restriction that hostname must be a TLD!
- * original:  /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+ * Email validation regexp adapted from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
+ * with our restriction that hostname must be a TLD! (will not match example@localhost)
  */
-export const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+export const EMAIL_REGEX_STR = '[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+'; // eslint-disable-line max-len
+
+/**
+ * Matches a string containing valid email
+ * Hostname must be a TLD! (will not match example@localhost)
+ */
+export const EMAIL_REGEX = new RegExp(`^${EMAIL_REGEX_STR}$`);
 
 /**
  * Comes from https://github.com/jonschlinkert/is-git-url/ but we have:
@@ -46,12 +51,14 @@ const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
 export const TWITTER_REGEX = /^@[a-z0-9_]{1,15}$/i;
 export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
 
-/*
-    @TODO: Test this regex
-    /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i
-    And if it works, use it instead
-*/
+// @TODO: Test this regex
+// eslint-disable-next-line
+// /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i
+// And if it works, use it instead
 export const URL_REGEX = /^(http:\/\/|https:\/\/)/i;
 
 // E.g. https://gist.github.com/jancurn/2dbe83fea77c439b1119fb3f118513e7
 export const GITHUB_GIST_URL_REGEX = new RegExp(`^https:\\/\\/gist\\.github\\.com\\/${GITHUB_REGEX_STR}\\/[0-9a-f]{32}$`, 'i');
+
+// Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].
+export const SPLIT_PATH_REGEX = /[^/]+/g;

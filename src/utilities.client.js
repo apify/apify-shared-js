@@ -6,10 +6,14 @@
  *
  */
 
+const _ = require('underscore');
 const slugg = require('slugg');
+const isBuffer = require('is-buffer');
+const { countries } = require('countries-list');
 const consts = require('./consts');
 const regex = require('./regexs');
 const { m } = require('./intl');
+const { parseAjvError } = require('./input_schema');
 require('./polyfills');
 
 /**
@@ -45,7 +49,7 @@ export const dateToString = function dateToString(date, middleT) {
     }${hours < 10 ? `0${hours}` : hours}:${
         minutes < 10 ? `0${minutes}` : minutes}:${
         seconds < 10 ? `0${seconds}` : seconds}.${
-        millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis)}`;
+        millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis)}`; // eslint-disable-line no-nested-ternary
 };
 
 /**
@@ -56,7 +60,7 @@ export const dateToString = function dateToString(date, middleT) {
  * @param suffix Suffix to be appended to truncated string. If null or undefined, it defaults to "...[truncated]".
  */
 export const truncate = function (str, maxLength, suffix) {
-    maxLength |= 0;
+    maxLength |= 0; // eslint-disable-line no-bitwise
     if (typeof (suffix) !== 'string') { suffix = '...[truncated]'; }
     // TODO: we should just ignore rest of the suffix...
     if (suffix.length > maxLength) { throw new Error('suffix string cannot be longer than maxLength'); }
@@ -85,11 +89,11 @@ export const parseUrl = (str) => {
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g,
         },
         parser: {
-            strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
-            loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/,
+            strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
+            loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
         },
     };
-    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str);
+    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str); // eslint-disable-line no-shadow
     const uri = {};
     let i = o.key.length;
 
@@ -142,7 +146,7 @@ export const normalizeUrl = (url, keepFragment) => {
 };
 
 // Helper function for markdown rendered marked
-// Renders links outside apify.com in readme with rel="nofollow" and target="_blank" attributes
+// Renders links outside apify.com in readme with rel="noopener noreferrer nofollow" and target="_blank" attributes
 export const markedSetNofollowLinks = (href, title, text) => {
     let urlParsed;
     try {
@@ -150,8 +154,10 @@ export const markedSetNofollowLinks = (href, title, text) => {
     } catch (e) {
         // Probably invalid url, go on
     }
-    const isApifyLink = (urlParsed && /\.apify\.com$/i.test(urlParsed.hostname));
-    return (isApifyLink) ? `<a href="${href}">${title || text}</a>` : `<a rel="nofollow" target="_blank" href="${href}">${title || text}</a>`;
+    const isApifyLink = (urlParsed && /(\.|^)apify\.com$/i.test(urlParsed.hostname));
+    return (isApifyLink)
+        ? `<a href="${href}">${title || text}</a>`
+        : `<a rel="noopener noreferrer nofollow" target="_blank" href="${href}">${title || text}</a>`;
 };
 
 // Helper function for markdown rendered marked
@@ -208,11 +214,11 @@ const REGEXP_BSON_TYPE = new RegExp(`^${ESCAPE_BSON_TYPE}$`);
 
 /**
  * If a property name is invalid for MongoDB or BSON, the function transforms
- * it to a valid form, which can be (most of the time) reversed back using _unescapePropertyName().
+ * it to a valid form, which can be (most of the time) reversed back using unescapePropertyName().
  * For a detailed list of transformations, see escapeForBson().
  * @private
  */
-const _escapePropertyName = (name) => {
+export const escapePropertyName = (name) => {
     // From MongoDB docs:
     // "Field names cannot contain dots (.) or null ("\0") characters, and they must not start with
     // a dollar sign (i.e. $). See faq-dollar-sign-escaping for an alternate approach."
@@ -232,14 +238,14 @@ const _escapePropertyName = (name) => {
 };
 
 /**
- * Reverses a string transformed using _escapePropertyName() back to its original form.
+ * Reverses a string transformed using escapePropertyName() back to its original form.
  * Note that the reverse transformation might not be 100% correct for certain unlikely-to-occur strings
  * (e.g. string contain null chars).
  * @param key
  * @returns {*}
  * @private
  */
-const _unescapePropertyName = function (name) {
+export const unescapePropertyName = function (name) {
     // pre-test to improve performance
     if (REGEXP_IS_ESCAPED.test(name)) {
         name = name.replace(REGEXP_DOT, '.');
@@ -251,10 +257,6 @@ const _unescapePropertyName = function (name) {
     return name;
 };
 
-exports.escapePropertyName = _escapePropertyName;
-exports.unescapePropertyName = _unescapePropertyName;
-
-
 /**
  * Traverses an object, creates a deep clone if requested and transforms object keys using a provided function.
  * @param obj Object to traverse, it must not contain circular references!
@@ -263,9 +265,15 @@ exports.unescapePropertyName = _unescapePropertyName;
  * @returns {*}
  * @private
  */
-const _traverseObject = function (obj, clone, keyTransformFunc) {
-    // primitive types don't need to be cloned or further traversed
-    if (obj === null || typeof (obj) !== 'object' || Object.prototype.toString.call(obj) === '[object Date]') return obj;
+const traverseObject = function (obj, clone, keyTransformFunc) {
+    // Primitive types don't need to be cloned or further traversed.
+    // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
+    if (
+        obj === null
+        || typeof (obj) !== 'object'
+        || Object.prototype.toString.call(obj) === '[object Date]'
+        || isBuffer(obj)
+    ) return obj;
 
     let result;
 
@@ -273,14 +281,14 @@ const _traverseObject = function (obj, clone, keyTransformFunc) {
         // obj is an array, keys are numbers and never need to be escaped
         result = clone ? new Array(obj.length) : obj;
         for (let i = 0; i < obj.length; i++) {
-            const val = _traverseObject(obj[i], clone, keyTransformFunc);
+            const val = traverseObject(obj[i], clone, keyTransformFunc);
             if (clone) result[i] = val;
         }
     } else {
         // obj is an object, all keys need to be checked
         result = clone ? {} : obj;
-        for (const key in obj) {
-            const val = _traverseObject(obj[key], clone, keyTransformFunc);
+        for (const key in obj) { // eslint-disable-line no-restricted-syntax, guard-for-in
+            const val = traverseObject(obj[key], clone, keyTransformFunc);
             const escapedKey = keyTransformFunc(key);
             if (key === escapedKey) {
                 // key doesn't need to be renamed
@@ -307,7 +315,7 @@ const _traverseObject = function (obj, clone, keyTransformFunc) {
  * @returns {*} Transformed object
  */
 exports.escapeForBson = function (obj, clone) {
-    return _traverseObject(obj, clone, _escapePropertyName);
+    return traverseObject(obj, clone, escapePropertyName);
 };
 
 
@@ -320,7 +328,7 @@ exports.escapeForBson = function (obj, clone) {
  * @returns {*} Transformed object.
  */
 exports.unescapeFromBson = function (obj, clone) {
-    return _traverseObject(obj, clone, _unescapePropertyName);
+    return traverseObject(obj, clone, unescapePropertyName);
 };
 
 
@@ -334,8 +342,8 @@ exports.unescapeFromBson = function (obj, clone) {
 exports.isBadForMongo = function (obj) {
     let isBad = false;
     try {
-        _traverseObject(obj, false, (key) => {
-            const escapedKey = _escapePropertyName(key);
+        traverseObject(obj, false, (key) => {
+            const escapedKey = escapePropertyName(key);
             if (key !== escapedKey) {
                 isBad = true;
                 throw new Error();
@@ -364,14 +372,14 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         // Nullable error is already handled by AJV
         if (value === null) return fieldErrors;
         if (!value) {
-            const message = m('inputSchema.validation.required', { fieldKey });
+            const message = m('inputSchema.validation.required', { rootName: 'input', fieldKey });
             fieldErrors.push(message);
             return fieldErrors;
         }
 
         const { useApifyProxy, proxyUrls } = value;
         if (!useApifyProxy && (!Array.isArray(proxyUrls) || proxyUrls.length === 0)) {
-            fieldErrors.push(m('inputSchema.validation.proxyRequired', { fieldKey }));
+            fieldErrors.push(m('inputSchema.validation.proxyRequired', { rootName: 'input', fieldKey }));
             return fieldErrors;
         }
     }
@@ -379,7 +387,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // Input is not required, so missing value is valid
     if (!value) return fieldErrors;
 
-    const { useApifyProxy, proxyUrls, apifyProxyGroups } = value;
+    const { useApifyProxy, proxyUrls, apifyProxyGroups, apifyProxyCountry } = value;
 
     if (!useApifyProxy && Array.isArray(proxyUrls)) {
         let invalidUrl = false;
@@ -391,8 +399,18 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
         }
     }
 
+    // Apify proxy country can be set only when using Apify proxy
+    if (!useApifyProxy && apifyProxyCountry) {
+        fieldErrors.push(m('inputSchema.validation.apifyProxyCountryWithoutApifyProxyForbidden'));
+    }
+
     // If Apify proxy is not used skip additional checks
     if (!useApifyProxy) return fieldErrors;
+
+    // If Apify proxy is used, check if there is a selected country and if so, check that it's valid (empty or a valid country code)
+    if (apifyProxyCountry && !countries[apifyProxyCountry]) {
+        fieldErrors.push(m('inputSchema.validation.apifyProxyCountryInvalid', { invalidCountry: apifyProxyCountry }));
+    }
 
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
@@ -411,7 +429,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
-        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', { fieldKey, groups: unavailableProxyGroups.join(', ') }));
+        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
+            rootName: 'input',
+            fieldKey,
+            groups: unavailableProxyGroups.join(', '),
+        }));
     }
 
     // Check if any of the proxy groups are blocked and if yes then output the associated message
@@ -441,37 +463,8 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors
-            .map((error) => {
-                // There are 3 possible errors comming from validation:
-                // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
-                // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
-                // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
-
-                let fieldKey;
-                let message;
-
-                // If error is with keyword type, it means that type of input is incorrect
-                // this can mean that provided value is null
-                if (error.keyword === 'type') {
-                    fieldKey = error.dataPath.split('.').pop();
-                    // Check if value is null and field is nullable, if yes, then skip this error
-                    if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
-                        return null;
-                    }
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                } else if (error.keyword === 'required') {
-                    fieldKey = error.params.missingProperty;
-                    message = m('inputSchema.validation.required', { fieldKey });
-                } else if (error.keyword === 'additionalProperties') {
-                    fieldKey = error.params.additionalProperty;
-                    message = m('inputSchema.validation.additionalProperty', { fieldKey });
-                } else {
-                    fieldKey = error.dataPath.split('.').pop();
-                    message = m('inputSchema.validation.generic', { fieldKey, message: error.message });
-                }
-
-                return { fieldKey, message };
-            }).filter(error => !!error);
+            .map(error => parseAjvError(error, 'input', properties, input))
+            .filter(error => !!error);
     }
 
     Object.keys(properties).forEach((property) => {
@@ -497,6 +490,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                     }));
@@ -511,6 +505,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternKey,
@@ -526,6 +521,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -540,6 +536,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidIndexes.length) {
                     fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
                         pattern: patternValue,
@@ -557,6 +554,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternKey,
@@ -572,6 +570,7 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
                 });
                 if (invalidKeys.length) {
                     fieldErrors.push(m('inputSchema.validation.objectValuesInvalid', {
+                        rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
                         pattern: patternValue,
@@ -586,4 +585,73 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     });
 
     return errors;
+};
+
+exports.JsonVariable = class JsonVariable {
+    constructor(name) {
+        this.name = name;
+    }
+
+    getToken() {
+        return `{{${this.name}}}`;
+    }
+};
+
+/**
+ * Stringifies provided value to JSON with a difference that supports functions that
+ * are stringified using .toString() method.
+ *
+ * In addition to that supports instances of JsonVariable('my.token') that are replaced
+ * with a {{my.token}}.
+ *
+ * @param {*} value
+ * @param {Function} [replacer]
+ * @param {Number} [space=0]
+ * @return {*} value stringified to JSON.
+ */
+exports.jsonStringifyExtended = (value, replacer, space) => {
+    if (replacer && !_.isFunction(replacer)) throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
+
+    const replacements = {};
+
+    const extendedReplacer = (key, val) => {
+        val = replacer ? replacer(key, val) : val;
+
+        if (_.isFunction(val)) return val.toString();
+        if (val instanceof exports.JsonVariable) {
+            const randomToken = `<<<REPLACEMENT_TOKEN::${Math.random()}>>>`;
+            replacements[randomToken] = val.getToken();
+            return randomToken;
+        }
+
+        return val;
+    };
+
+    let stringifiedValue = JSON.stringify(value, extendedReplacer, space);
+    _.mapObject(replacements, (replacementValue, replacementToken) => {
+        stringifiedValue = stringifiedValue.replace(`"${replacementToken}"`, replacementValue);
+    });
+
+    return stringifiedValue;
+};
+
+
+/**
+ * Splits a full name into the first name and last name, trimming all internal and external spaces.
+ * Returns an array with two elements or null if splitting is not possible.
+ * @param fullName
+ */
+exports.splitFullName = function (fullName) {
+    if (typeof (fullName) !== 'string') return [null, null];
+
+    const names = (fullName || '').trim().split(' ');
+    const nonEmptyNames = _.filter(names, (val) => { return !!val; });
+
+    if (nonEmptyNames.length === 0) {
+        return [null, null];
+    }
+    if (nonEmptyNames.length === 1) {
+        return [null, nonEmptyNames[0]];
+    }
+    return [names[0], nonEmptyNames.slice(1).join(' ')];
 };
