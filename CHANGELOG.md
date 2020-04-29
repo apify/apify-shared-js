@@ -1,3 +1,7 @@
+0.2.13 / 2020/04/29
+===================
+- Added markdown heading renderer with custom ID support
+
 0.2.12 / 2020/04/27
 ==================
 - Added health checker
