@@ -21,9 +21,7 @@ export const customHeadingRenderer = (text, level, raw) => {
     const titleText = text.split('{')[0].trim();
 
     const headingToReturn = `
-            <h${level} id="${idTag}">
-                ${titleText}
-            </h${level}>`;
+            <h${level} id="${idTag}">${titleText}</h${level}>`;
 
     return headingToReturn;
 };
