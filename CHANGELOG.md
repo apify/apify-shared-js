@@ -1,3 +1,7 @@
+0.2.14 / 2020/05/05
+===================
+- Fixed extra whitespace in heading markdown renderer
+
 0.2.13 / 2020/04/29
 ===================
 - Added markdown heading renderer with custom ID support
