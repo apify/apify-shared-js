@@ -234,6 +234,29 @@ export const ACTOR_LIMITS = {
 };
 
 /**
+ * Contains various limits of the Apify platform.
+ */
+export const DEFAULT_PLATFORM_LIMITS = {
+    // Maximum number of actors per user
+    MAX_ACTORS_PER_USER: 100,
+
+    // Maximum number of tasks per user
+    MAX_TASKS_PER_USER: 1000,
+
+    // Maximum number of schedules per user
+    MAX_SCHEDULES_PER_USER: 100,
+
+    // Maximum number of webhooks per user
+    MAX_WEBHOOKS_PER_USER: 100,
+
+    // Maximum number of actors per scheduler
+    MAX_ACTORS_PER_SCHEDULER: 10,
+
+    // Maximum number of tasks per scheduler
+    MAX_TASKS_PER_SCHEDULER: 10,
+};
+
+/**
  * Use as username for returning user own info from API v2/users/username
  */
 export const ME_USER_NAME_PLACEHOLDER = 'me';
