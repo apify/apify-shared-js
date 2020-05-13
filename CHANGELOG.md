@@ -1,6 +1,7 @@
 0.2.15 / 2020/05/13
 ===================
 - Added `HTTP_URL_REGEX` for better URL matching
+- Added new constant with the default Apify platform limits
 
 0.2.14 / 2020/05/05
 ===================
