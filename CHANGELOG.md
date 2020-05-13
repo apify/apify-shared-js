@@ -1,3 +1,7 @@
+0.2.15 / 2020/05/13
+===================
+- Added `HTTP_URL_REGEX` for better URL matching
+
 0.2.14 / 2020/05/05
 ===================
 - Fixed extra whitespace in heading markdown renderer
