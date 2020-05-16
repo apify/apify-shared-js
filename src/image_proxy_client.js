@@ -62,18 +62,23 @@ export default class ImageProxyClient {
     /**
      * Finds all images in HTML and updates src attributes with image proxy URL
      * @param html - string HTML
-     * @param $ - jQuery object
      * @return {string} - Updated HTML
      */
-    updateImagesInHtml(html, $) {
-        // NOTE: We need to wrap HTML in div, otherwise we can not get proper HTML on output using .html().
-        const $html = $(`<div>${html}</div>`);
-        const self = this;
-        $html.find('img').each(function () {
-            const imageUrl = $(this).attr('src');
-            $(this).attr('src', self.generateUrl(imageUrl));
+    updateImagesInHtml(html) {
+        const allImgElements = html.match(/<\s*img[^>]*\/?>/g);
+        if (!allImgElements) return html;
+
+        allImgElements.forEach((img) => {
+            const srcMatch = img.match(/src="([^">]+)"/);
+            if (srcMatch && srcMatch[1] && srcMatch[1].startsWith('http')) {
+                const imageUrl = srcMatch[1];
+                const updatedImageUrl = this.generateUrl(imageUrl);
+                const updatedImg = img.replace(imageUrl, updatedImageUrl);
+                html = html.replace(img, updatedImg);
+            }
         });
-        return $html.html();
+
+        return html;
     }
 
     /**
