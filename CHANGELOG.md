@@ -1,3 +1,9 @@
+0.3.0 / 2020/05/18
+==================
+- Removed actor template constants in favor of
+  [actor templates](https://github.com/apifytech/actor-templates)
+  repository and package.
+
 0.2.16 / 2020/05/18
 ===================
 - Removed jsdom and jQuery dependencies from image proxy
