@@ -1,3 +1,7 @@
+0.2.16 / 2020/05/18
+===================
+- Removed jsdom and jQuery dependencies from image proxy
+
 0.2.15 / 2020/05/13
 ===================
 - Added `HTTP_URL_REGEX` for better URL matching
