@@ -65,12 +65,12 @@ export default class ImageProxyClient {
      * @return {string} - Updated HTML
      */
     updateImagesInHtml(html) {
-        const allImgElements = html.match(/<\s*img[^>]*\/?>/g);
+        const allImgElements = html.match(/<\s*img[^>]*>/gi);
         if (!allImgElements) return html;
 
         allImgElements.forEach((img) => {
-            const srcMatch = img.match(/src="([^">]+)"/);
-            if (srcMatch && srcMatch[1] && srcMatch[1].startsWith('http')) {
+            const srcMatch = img.match(/src=["|']([^'">]+)['|"]/);
+            if (srcMatch && srcMatch[1] && srcMatch[1].toLowerCase().startsWith('http')) {
                 const imageUrl = srcMatch[1];
                 const updatedImageUrl = this.generateUrl(imageUrl);
                 const updatedImg = img.replace(imageUrl, updatedImageUrl);
