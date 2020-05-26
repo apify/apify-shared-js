@@ -1,3 +1,7 @@
+0.2.17 / 2020/05/26
+===================
+- Added `utils.makeInputJsFieldsReadable()`
+
 0.2.16 / 2020/05/18
 ===================
 - Removed jsdom and jQuery dependencies from image proxy

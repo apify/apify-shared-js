@@ -11,6 +11,7 @@ const _ = require('underscore');
 const crypto = require('crypto');
 const Promise = require('bluebird');
 const request = require('request');
+const cherow = require('cherow');
 const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
@@ -453,4 +454,74 @@ exports.timeoutPromise = (promise, timeoutMillis, errorMessage = 'Promise has ti
         promise.then(result => callback(null, result), callback);
         timeout = setTimeout(() => callback(new Error(errorMessage)), timeoutMillis);
     });
+};
+
+/**
+ * This functions parses all given JSON and then takes each of the jsFields.
+ * Then if the field:
+ * - is valid JS single function it replaces its single line string with a function delacation.
+ * - is valid multiline JS code then replaces its single line string with `multiline` string
+ * Then stringifies the code with given number of jsonSpacing spaces and finally prefixes whole
+ * stringified JSON except the first line with globalSpacing spaces.
+ *
+ * @param  {String} json
+ * @param  {Array<String>} jsFields
+ * @param  {Number} [jsonSpacing=4]
+ * @param  {Number} [globalSpacing=4]
+ * @return {String}
+ */
+exports.makeInputJsFieldsReadable = (json, jsFields, jsonSpacing = 4, globalSpacing = 0) => {
+    const parsedJson = JSON.parse(json);
+    const replacements = {};
+
+    jsFields.forEach((field) => {
+        let maybeFunction = parsedJson[field];
+        if (!maybeFunction || !_.isString(maybeFunction)) return;
+
+        let ast;
+        try {
+            ast = cherow.parse(maybeFunction);
+        } catch (err) {
+            // Don't do anything in a case of invalid JS code.
+            return;
+        }
+
+        const isMultiline = maybeFunction.includes('\n');
+        const isSingleFunction = ast
+            && ast.body
+            && ast.body.length === 1 // Must have only one expression inside!
+            && ast.body[0]
+            && (
+                // Normal function ...
+                ast.body[0].type === 'FunctionDeclaration'
+                // or arrow function
+                || (ast.body[0].expression && ast.body[0].expression.type === 'ArrowFunctionExpression')
+            );
+
+        // If it's not a function declaration or multiline JS code then we do nothing.
+        if (!isSingleFunction && !isMultiline) return;
+
+        const spaces = (new Array(isSingleFunction ? jsonSpacing : jsonSpacing * 2)).fill(' ').join('');
+        maybeFunction = maybeFunction
+            .split('\n').join(`\n${spaces}`) // This prefixes each line with spaces.
+            .trim(); // Trim whitespace on both sides
+
+        const replacementValue = isSingleFunction
+            ? maybeFunction.replace(/[;]+$/g, '') // Remove trailing semicolons
+            : `\`${maybeFunction}\``;
+        const replacementToken = `<<<REPLACEMENT_TOKEN:${Math.random()}>>>`;
+        replacements[replacementToken] = replacementValue;
+        parsedJson[field] = replacementToken;
+    });
+
+    let niceJson = JSON.stringify(parsedJson, null, jsonSpacing);
+
+    _.mapObject(replacements, (replacementValue, replacementToken) => {
+        niceJson = niceJson.replace(`"${replacementToken}"`, replacementValue);
+    });
+
+    const globalSpaces = (new Array(globalSpacing)).fill(' ').join('');
+    niceJson = niceJson.split('\n').join(`\n${globalSpaces}`);
+
+    return niceJson;
 };
