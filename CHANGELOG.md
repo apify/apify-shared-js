@@ -1,6 +1,7 @@
 0.2.17 / 2020/05/26
 ===================
 - Added `utils.makeInputJsFieldsReadable()`
+- Dropped NodeJS v8 support
 
 0.2.16 / 2020/05/18
 ===================
