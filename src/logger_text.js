@@ -54,7 +54,7 @@ export default class LoggerText extends Logger {
         prefix = prefix ? ` ${prefix}${PREFIX_DELIMITER}` : '';
         suffix = suffix ? ` ${suffix}` : '';
 
-        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message}{gray ${dataStr}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
+        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message || ''}{gray ${dataStr}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
         this._outputWithConsole(level, line);
 
         return line;

@@ -1,6 +1,32 @@
-xxxx
+0.2.17 / 2020/05/26
+===================
+- Added `utils.makeInputJsFieldsReadable()`
+
+0.2.16 / 2020/05/18
+===================
+- Removed jsdom and jQuery dependencies from image proxy
+
+0.2.15 / 2020/05/13
+===================
+- Added `HTTP_URL_REGEX` for better URL matching
+- Added new constant with the default Apify platform limits
+
+0.2.14 / 2020/05/05
+===================
+- Fixed extra whitespace in heading markdown renderer
+
+0.2.13 / 2020/04/29
+===================
+- Added markdown heading renderer with custom ID support
+
+0.2.12 / 2020/04/27
+==================
+- Added health checker
+
+0.2.11 / 2020/04/08
 ==================
 - Deprecated ACTOR_LOG_MAX_CHARS in favor of ACTOR_LIMITS.LOG_MAX_CHARS
+- Fixed Babel configuration that was not working on iOS devices
 
 0.2.10 / 2020/03/16
 ==================

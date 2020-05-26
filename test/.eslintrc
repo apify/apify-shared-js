@@ -1,11 +1,12 @@
 {
-    "extends": "../.eslintrc",
     "globals": {
+        "test": false,
         "describe": false,
+        "xit": false,
         "it": false,
         "before": false,
-        "beforeEach": false,
         "after": false,
+        "beforeEach": false,
         "afterEach": false
     }
 }
