@@ -258,14 +258,18 @@ export const unescapePropertyName = function (name) {
 };
 
 /**
- * Traverses an object, creates a deep clone if requested and transforms object keys using a provided function.
+ * Traverses an object, creates a deep clone if requested and transforms object keys and values using a provided function.
+ * The `traverseObject` is recursive, hence if the input object has circular references, the function will run into
+ * and infinite recursion and crash the Node.js process.
  * @param obj Object to traverse, it must not contain circular references!
  * @param clone If true, object is not modified but cloned.
- * @param keyTransformFunc Function used to transform the property names. It has one string argument and one string return value.
+ * @param transformFunc Function used to transform the property names na value.
+ *  It has the following signature: `(key, value) => [key, value]`.
+ *  Beware that the transformed value is only set if it !== old value.
  * @returns {*}
  * @private
  */
-const traverseObject = function (obj, clone, keyTransformFunc) {
+export const traverseObject = function (obj, clone, transformFunc) {
     // Primitive types don't need to be cloned or further traversed.
     // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
     if (
@@ -281,21 +285,21 @@ const traverseObject = function (obj, clone, keyTransformFunc) {
         // obj is an array, keys are numbers and never need to be escaped
         result = clone ? new Array(obj.length) : obj;
         for (let i = 0; i < obj.length; i++) {
-            const val = traverseObject(obj[i], clone, keyTransformFunc);
+            const val = traverseObject(obj[i], clone, transformFunc);
             if (clone) result[i] = val;
         }
     } else {
         // obj is an object, all keys need to be checked
         result = clone ? {} : obj;
         for (const key in obj) { // eslint-disable-line no-restricted-syntax, guard-for-in
-            const val = traverseObject(obj[key], clone, keyTransformFunc);
-            const escapedKey = keyTransformFunc(key);
-            if (key === escapedKey) {
-                // key doesn't need to be renamed
-                if (clone) result[key] = val;
+            const val = traverseObject(obj[key], clone, transformFunc);
+            const [transformedKey, transformedVal] = transformFunc(key, val);
+            if (key === transformedKey) {
+                // For better efficiency, skip setting the key-value if not cloning and nothing changed
+                if (clone || val !== transformedVal) result[key] = transformedVal;
             } else {
-                // key needs to be renamed
-                result[escapedKey] = val;
+                // Key has been renamed
+                result[transformedKey] = transformedVal;
                 if (!clone) delete obj[key];
             }
         }
@@ -315,7 +319,7 @@ const traverseObject = function (obj, clone, keyTransformFunc) {
  * @returns {*} Transformed object
  */
 exports.escapeForBson = function (obj, clone) {
-    return traverseObject(obj, clone, escapePropertyName);
+    return traverseObject(obj, clone, (key, value) => [escapePropertyName(key), value]);
 };
 
 
@@ -328,7 +332,7 @@ exports.escapeForBson = function (obj, clone) {
  * @returns {*} Transformed object.
  */
 exports.unescapeFromBson = function (obj, clone) {
-    return traverseObject(obj, clone, unescapePropertyName);
+    return traverseObject(obj, clone, (key, value) => [unescapePropertyName(key), value]);
 };
 
 
@@ -342,13 +346,13 @@ exports.unescapeFromBson = function (obj, clone) {
 exports.isBadForMongo = function (obj) {
     let isBad = false;
     try {
-        traverseObject(obj, false, (key) => {
+        traverseObject(obj, false, (key, value) => {
             const escapedKey = escapePropertyName(key);
             if (key !== escapedKey) {
                 isBad = true;
                 throw new Error();
             }
-            return key;
+            return [key, value];
         });
     } catch (e) {
         if (!isBad) throw e;

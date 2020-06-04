@@ -239,6 +239,98 @@ const testEscape = function (escapeFunc, src, trg) {
 
 
 describe('utilities.client', () => {
+    describe('#traverseObject()', () => {
+        it('works with identity', () => {
+            const identity = (key, value) => [key, value];
+
+            const obj = {
+                something: 123,
+                array: [1, 2, 3],
+                date1At: new Date(1000),
+                subObject: {
+                    date2At: new Date(2000),
+                    test: 'test',
+                    anotherSub: {
+                        date3At: new Date(2000),
+                    },
+                },
+            };
+            const clonedObj = clone(obj);
+
+            {
+                const returnedObject = utils.traverseObject(obj, false, identity);
+                assert.deepEqual(returnedObject, clonedObj);
+                assert.equal(returnedObject, obj);
+            }
+
+            {
+                const returnedObject = utils.traverseObject(obj, true, identity);
+                assert.deepEqual(returnedObject, clonedObj);
+                assert.notEqual(returnedObject, obj);
+            }
+        });
+
+        it('works with transformation', () => {
+            const incrementDates = (key, value) => {
+                if (key.endsWith('At') && _.isDate(value)) {
+                    return [key, new Date(value.getTime() + 1)];
+                }
+                return [key, value];
+            };
+
+            const origObj = {
+                something: 123,
+                array: [1, 2, 3],
+                date1At: new Date(1000),
+                subObject: {
+                    date2At: new Date(2000),
+                    test: 'test',
+                    anotherSub: {
+                        date3At: new Date(3000),
+                    },
+                },
+            };
+            const clonedOrigObj = clone(origObj);
+            const clonedObj = clone(origObj);
+
+            {
+                const returnedObject = utils.traverseObject(clonedObj, false, incrementDates);
+                assert.deepEqual(returnedObject, {
+                    something: 123,
+                    array: [1, 2, 3],
+                    date1At: new Date(1001),
+                    subObject: {
+                        date2At: new Date(2001),
+                        test: 'test',
+                        anotherSub: {
+                            date3At: new Date(3001),
+                        },
+                    },
+                });
+                assert.equal(returnedObject, clonedObj);
+            }
+
+            {
+                console.dir(origObj);
+                const returnedObject = utils.traverseObject(origObj, true, incrementDates);
+                assert.deepEqual(returnedObject, {
+                    something: 123,
+                    array: [1, 2, 3],
+                    date1At: new Date(1001),
+                    subObject: {
+                        date2At: new Date(2001),
+                        test: 'test',
+                        anotherSub: {
+                            date3At: new Date(3001),
+                        },
+                    },
+                });
+                assert.notEqual(returnedObject, origObj);
+                assert.deepEqual(origObj, clonedOrigObj);
+            }
+        });
+    });
+
     describe('#isBadForMongo()', () => {
         it('works with good objects', () => {
             GOOD_OBJECTS.forEach((obj) => {
