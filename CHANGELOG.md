@@ -1,3 +1,9 @@
+0.4.0 / 2020/06/04
+==================
+- Removed actor template constants in favor of
+  [actor templates](https://github.com/apifytech/actor-templates)
+  repository and package.
+git
 0.3.1 / 2020/06/03
 ===================
 - Exported the `traverseObject()` function and extended the transformation function to enable also transformation of values
