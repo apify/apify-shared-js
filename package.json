@@ -48,7 +48,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@apify/eslint-config": "0.0.3",
+    "@apify/eslint-config": "0.1.0",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.9.5",
