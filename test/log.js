@@ -22,9 +22,9 @@ describe('log', () => {
 
     it('allows to set/get options', () => {
         const log = new Log({ prefix: 'aaa' });
-        const options1 = Object.assign({}, log.getOptions());
+        const options1 = { ...log.getOptions() };
         log.setOptions({ prefix: 'bbb' });
-        const options2 = Object.assign({}, log.getOptions());
+        const options2 = { ...log.getOptions() };
 
         expect(options1.prefix).to.be.eql('aaa');
         expect(options2.prefix).to.be.eql('bbb');

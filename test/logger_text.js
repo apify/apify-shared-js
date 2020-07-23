@@ -44,7 +44,7 @@ describe('loggerText', () => {
         level = LEVELS.ERROR;
         message = 'Some error happened';
         const err = new Error('some-error');
-        const errObj = Object.assign({ name: err.name, message: err.message, stack: err.stack }, err);
+        const errObj = { name: err.name, message: err.message, stack: err.stack, ...err };
         logger.log(level, message, data, errObj);
 
         line = loggedLines.error;
@@ -86,7 +86,7 @@ describe('loggerText', () => {
     it('should be eventEmitter', () => {
         const emitted = [];
         const logger = new LoggerText();
-        logger.on('line', line => emitted.push(stripAnsi(line)));
+        logger.on('line', (line) => emitted.push(stripAnsi(line)));
 
         logger.log(LEVELS.INFO, 'Some info message');
         logger.log(LEVELS.ERROR, 'Some error message');

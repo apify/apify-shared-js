@@ -115,7 +115,7 @@ describe('utilities', () => {
 
         return utils
             .sequentializePromises(promises)
-            .then(data => expect(data).to.be.eql(range));
+            .then((data) => expect(data).to.be.eql(range));
     });
 
     it('delayPromise()', () => {
@@ -240,7 +240,6 @@ describe('timeoutPromise()', () => {
         }
     });
 
-
     describe('#makeInputJsFieldsReadable()', () => {
         it('should correctly handle normal functions, arrow functions and JS code', () => {
             /* eslint-disable */
@@ -305,7 +304,6 @@ describe('timeoutPromise()', () => {
 
             expect(given).to.be.eql(expected);
         });
-
 
         it('should support global spaces', () => {
             const json = `{

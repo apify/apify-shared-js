@@ -44,7 +44,7 @@ describe('loggerJson', () => {
         message = 'Some error happened';
         data = { foo: 'bar' };
         const err = new Error('some-error');
-        const errObj = Object.assign({ name: err.name, message: err.message, stack: err.stack }, err);
+        const errObj = { name: err.name, message: err.message, stack: err.stack, ...err };
         logger.log(level, message, data, errObj);
         expect(loggedLines.error.time).to.be.match(DATE_REGEX);
         expect(loggedLines.error.msg).to.eql(message);
@@ -98,7 +98,7 @@ describe('loggerJson', () => {
     it('should be eventEmitter', () => {
         const emitted = [];
         const logger = new LoggerJson({ skipTime: true });
-        logger.on('line', line => emitted.push(line));
+        logger.on('line', (line) => emitted.push(line));
 
         logger.log(LEVELS.INFO, 'Some info message');
         logger.log(LEVELS.ERROR, 'Some error message');

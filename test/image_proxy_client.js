@@ -26,7 +26,6 @@ const getComplicatedHtml = (imageUrl) => {
         + '<img src="/relative/img.jpg" alt="test image" title="test image">';
 };
 
-
 describe('proxy image client', () => {
     it('generateUrlWithParam() works', () => {
         const testImageUrl = 'http://example.com/image.gif';

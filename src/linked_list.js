@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint max-classes-per-file: 0 */
+
 /**
  * A helper function to determine whether two data objects are equal.
  * The function attempts to do so using data1's function 'equal(data)' if there is one,
