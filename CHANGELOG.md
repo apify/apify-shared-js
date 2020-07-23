@@ -1,3 +1,7 @@
+0.4.1 / 2020/07/23
+==================
+- Dependencies updated.
+
 0.4.0 / 2020/06/04
 ==================
 - Removed actor template constants in favor of
