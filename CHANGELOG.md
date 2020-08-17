@@ -1,3 +1,7 @@
+0.4.1/ 2020/08/17
+==================
+- Moved Salesforce client from commons to shared
+
 0.4.0 / 2020/06/04
 ==================
 - Removed actor template constants in favor of
