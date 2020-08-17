@@ -1,4 +1,4 @@
-0.4.1/ 2020/08/17
+0.4.1 / 2020/08/17
 ==================
 - Moved Salesforce client from commons to shared
 
