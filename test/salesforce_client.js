@@ -10,19 +10,19 @@ import { SalesforceClient, cleanAndCompareWithSchema, MISSING_NAME_PLACEHOLDER }
 
 const BASE_CONFIG = {
     tokenUrl: 'https://test.salesforce.com/services/oauth2/token',
-    clientId: '3MVG96_7YM2sI9wS23lCeD7S72lj_.NZ_2T44.iQ_.M.s9LlOhrjvV4Wr.Wh4RXTRnC45vJ5PwFtSToanEtIq',
-    clientSecret: '1FAAAA5315FA0241BFF1187F297938EFC5F79F906FDE70CC497823AD9F3A1CBD',
-    username: 'apifyiuser@mooza.io.mooza',
-    password: 'd=\\wCW}vf82]L(ppoiiDInAWy9E47T8ZJxrGgABJl',
+    clientId: 'dummy_clientId',
+    clientSecret: 'dummy_secret',
+    username: 'dummy_user@example.com',
+    password: 'dummy_password',
 };
 
 const DEFAULT_TOKEN_REPLY = {
-    access_token: '00D5E0000009poM!ARwAQEwOQugDlYAyY1iu1dDoXIPY4PmWW9cY9xn5rxZKpuHu3aAPVCVvm._0kRdEOiISa8GQ2N9OLvbZXYj9QZJD_dYt.I8B',
-    instance_url: 'https://myapify--mooza.my.salesforce.com',
-    id: 'https://test.salesforce.com/id/00D5E0000009poMUAQ/0052p000009gX3iAAE',
+    access_token: 'dummy_token',
+    instance_url: 'https://example.my.salesforce.com',
+    id: 'https://test.salesforce.com/id/dummy/dummy',
     token_type: 'Bearer',
     issued_at: '1566909508249',
-    signature: 'yB+OH3LekuiAfGT6QtNnp/a5tUrRYhVe5tMOEEnYCj4=',
+    signature: 'dummy_signature',
 };
 
 // Test for the cleaning function used in the client
