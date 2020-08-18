@@ -192,13 +192,13 @@ export class SalesforceClient {
      * Helper function for calling the Salesforce API, catches common errors with nice error messages, but keeps
      * other errors for debugging.
      */
-    async _callApi(endpoint, method, body = null, retry = 0) {
+    async _callApi(endpointPath, method, body = null, retry = 0) {
         if (!ALLOWED_API_METHODS.includes(method)) throw new Error(`Method ${method} is not allowed in this client.`);
 
         await this.getToken();
         try {
             const response = await axios({
-                url: `${this.auth.instanceUrl}/services/apexrest/${endpoint}`,
+                url: `${this.auth.instanceUrl}${endpointPath}`,
                 method,
                 data: body,
                 headers: {
@@ -216,12 +216,31 @@ export class SalesforceClient {
             if (maybeStatus === 401 && retry < AUTH_RETRY_ATTEMPTS) {
                 this.auth = null;
                 await this.getToken();
-                return this._callApi(endpoint, method, body, retry + 1);
+                return this._callApi(endpointPath, method, body, retry + 1);
             }
             if (maybeStatus === 404) throw new Error(NOT_FOUND_MESSAGE);
             if (maybeStatus === 409) throw new Error('Salesforce record already exists');
-            throw error.response && error.response.data ? new Error(error.response.data.message) : error;
+            if (error.response && error.response.data) {
+                const { data } = error.response;
+                const message = _.isArray(data) ? data[0].message : data.message;
+                throw new Error(message);
+            }
+            throw error;
         }
+    }
+
+    async _callSObjectApi(objectName, method, body, retry = 0) {
+        const endpointPath = `/services/data/v49.0/sobjects/${objectName}`;
+        return this._callApi(endpointPath, method, body, retry);
+    }
+
+    /**
+     * Helper function for calling the Salesforce API, catches common errors with nice error messages, but keeps
+     * other errors for debugging.
+     */
+    async _callApexrestApi(endpoint, method, body = null, retry = 0) {
+        const endpointPath = `/services/apexrest/${endpoint}`;
+        return this._callApi(endpointPath, method, body, retry);
     }
 
     /**
@@ -231,7 +250,7 @@ export class SalesforceClient {
      */
     async getAccount(userId) {
         try {
-            const account = await this._callApi(`ApifyAccount/${userId}`, 'GET');
+            const account = await this._callApexrestApi(`ApifyAccount/${userId}`, 'GET');
             return account;
         } catch (error) {
             if (error.message === NOT_FOUND_MESSAGE) return null;
@@ -288,7 +307,7 @@ export class SalesforceClient {
      */
     async createAccount(user) {
         const data = this._transformUser(user, true);
-        const response = await this._callApi('ApifyAccount', 'POST', data);
+        const response = await this._callApexrestApi('ApifyAccount', 'POST', data);
         return response.salesforceId;
     }
 
@@ -301,7 +320,7 @@ export class SalesforceClient {
      */
     async updateAccount(userId, modifier) {
         const data = this._transformUser(modifier);
-        await this._callApi('ApifyAccount', 'PATCH', { apifyId: userId, ...data });
+        await this._callApexrestApi('ApifyAccount', 'PATCH', { apifyId: userId, ...data });
     }
 
     /**
@@ -310,7 +329,7 @@ export class SalesforceClient {
      * @return undefined
      */
     async deleteAccount(userId) {
-        await this._callApi(`ApifyAccount/${userId}`, 'DELETE');
+        await this._callApexrestApi(`ApifyAccount/${userId}`, 'DELETE');
     }
 
     /**
@@ -320,7 +339,7 @@ export class SalesforceClient {
      */
     async getInvoice(invoiceId) {
         try {
-            const invoice = await this._callApi(`ApifyInvoice/${invoiceId}`, 'GET');
+            const invoice = await this._callApexrestApi(`ApifyInvoice/${invoiceId}`, 'GET');
             return invoice;
         } catch (error) {
             if (error.message === NOT_FOUND_MESSAGE) return null;
@@ -355,7 +374,7 @@ export class SalesforceClient {
      */
     async createInvoice(invoice) {
         const data = this._transformInvoice(invoice);
-        const response = await this._callApi('ApifyInvoice', 'POST', data);
+        const response = await this._callApexrestApi('ApifyInvoice', 'POST', data);
         return response.salesforceId;
     }
 
@@ -368,7 +387,7 @@ export class SalesforceClient {
      */
     async updateInvoice(invoiceId, modifier) {
         const data = this._transformInvoice(modifier);
-        await this._callApi('ApifyInvoice', 'PATCH', { apifyId: invoiceId, ...data });
+        await this._callApexrestApi('ApifyInvoice', 'PATCH', { apifyId: invoiceId, ...data });
     }
 
     /**
@@ -377,6 +396,63 @@ export class SalesforceClient {
      * @return undefined
      */
     async deleteInvoice(invoiceId) {
-        await this._callApi(`ApifyInvoice/${invoiceId}`, 'DELETE');
+        await this._callApexrestApi(`ApifyInvoice/${invoiceId}`, 'DELETE');
+    }
+
+    /**
+     * Get Lead by email
+     * @param {string} email
+     * @return {Promise<lead|null>}
+     */
+    async getLeadByEmail(email) {
+        const endpointPath = `/services/data/v49.0/sobjects/Lead/email/${encodeURIComponent(email)}`;
+        try {
+            const lead = await this._callApi(endpointPath, 'GET');
+            return lead;
+        } catch (err) {
+            if (err.message === NOT_FOUND_MESSAGE) {
+                return null;
+            }
+            throw err;
+        }
+    }
+
+    /**
+     * Create new lead
+     * @param {String} firstName
+     * @param {String} lastName
+     * @param {String} company
+     * @param {String} email
+     * @param {String} mobile
+     * @return {Promise<*|undefined>}
+     */
+    async createLead({ firstName, lastName, company, email, mobile }) {
+        const body = {
+            FirstName: firstName,
+            LastName: lastName,
+            Company: company,
+            Email: email,
+            Phone: mobile,
+        };
+        return this._callSObjectApi('Lead', 'POST', body);
+    }
+
+    /**
+     * Create new email event
+     * @param {String} whoId - ID of object which event refers to. It can be ID of lead or contact.
+     * @param {String} subject
+     * @param {String} message
+     * @return {Promise<*|undefined>}
+     */
+    async createEmailEvent({ whoId, subject, message }) {
+        const body = {
+            WhoId: whoId,
+            Subject: subject,
+            Description: message,
+            Type: 'Email',
+            DurationInMinutes: 1,
+            ActivityDateTime: new Date().toISOString(),
+        };
+        return this._callSObjectApi('Event', 'POST', body);
     }
 }

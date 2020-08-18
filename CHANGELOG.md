@@ -1,3 +1,7 @@
+0.4.2 / 2020/08/18
+==================
+- Added methods createLead, createEvent, getLeadByEmail into salesforce client
+
 0.4.1 / 2020/08/17
 ==================
 - Moved Salesforce client from commons to shared
