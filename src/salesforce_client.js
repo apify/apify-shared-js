@@ -220,6 +220,11 @@ export class SalesforceClient {
             }
             if (maybeStatus === 404) throw new Error(NOT_FOUND_MESSAGE);
             if (maybeStatus === 409) throw new Error('Salesforce record already exists');
+            if (error.response && error.response.data) {
+                const { data } = error.response;
+                const message = _.isArray(data) ? data[0].message : data.message;
+                throw new Error(message);
+            }
             throw error.response && error.response.data ? new Error(error.response.data.message) : error;
         }
     }
@@ -392,6 +397,24 @@ export class SalesforceClient {
      */
     async deleteInvoice(invoiceId) {
         await this._callApexrestApi(`ApifyInvoice/${invoiceId}`, 'DELETE');
+    }
+
+    /**
+     * Get Lead by email
+     * @param {string} email
+     * @return {Promise<lead|null>}
+     */
+    async getLeadByEmail(email) {
+        const endpointPath = `/services/data/v49.0/sobjects/Lead/email/${encodeURIComponent(email)}`;
+        try {
+            const lead = await this._callApi(endpointPath, 'GET');
+            return lead;
+        } catch (err) {
+            if (err.message === NOT_FOUND_MESSAGE) {
+                return null;
+            }
+            throw err;
+        }
     }
 
     /**

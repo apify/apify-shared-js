@@ -1306,4 +1306,47 @@ describe('SalesforceClient', () => {
             expect(event.id).to.be.eql(expectedReply.id);
         });
     });
+
+    describe('getLeadByEmail()', () => {
+        it('get lead works', async () => {
+            const salesforceClient = new SalesforceClient(BASE_CONFIG);
+            const email = 'test@example.com';
+            const apiCallOptions = {
+                reqheaders: {
+                    authorization: `Bearer ${DEFAULT_TOKEN_REPLY.access_token}`,
+                },
+            };
+
+            const expectedReply = {
+                Id: 'leadId',
+                status: 'success',
+            };
+
+            nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions)
+                .get(`/services/data/v49.0/sobjects/Lead/email/${encodeURIComponent(email)}`)
+                .reply(200, expectedReply);
+
+            const lead = await salesforceClient.getLeadByEmail(email);
+
+            expect(lead.Id).to.be.eql(expectedReply.Id);
+        });
+
+        it('returns null if lead doest not exist', async () => {
+            const salesforceClient = new SalesforceClient(BASE_CONFIG);
+            const email = 'test2@example.com';
+            const apiCallOptions = {
+                reqheaders: {
+                    authorization: `Bearer ${DEFAULT_TOKEN_REPLY.access_token}`,
+                },
+            };
+
+            nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions)
+                .get(`/services/data/v49.0/sobjects/Lead/email/${encodeURIComponent(email)}`)
+                .reply(404);
+
+            const lead = await salesforceClient.getLeadByEmail(email);
+
+            expect(lead).to.be.eql(null);
+        });
+    });
 });
