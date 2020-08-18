@@ -225,7 +225,7 @@ export class SalesforceClient {
                 const message = _.isArray(data) ? data[0].message : data.message;
                 throw new Error(message);
             }
-            throw error.response && error.response.data ? new Error(error.response.data.message) : error;
+            throw error;
         }
     }
 
