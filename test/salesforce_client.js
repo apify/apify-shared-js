@@ -221,7 +221,7 @@ describe('SalesforceClient', () => {
             }
         });
     });
-    describe('_callApi()', () => {
+    describe('_callApexrestApi()', () => {
         it('works for all used method types', async () => {
             const salesforceClient = new SalesforceClient(BASE_CONFIG);
             await salesforceClient.getToken();
@@ -239,17 +239,17 @@ describe('SalesforceClient', () => {
             nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).patch('/services/apexrest/testApiCall', { id: '1' }).reply(200, SUCCESS);
             nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).delete('/services/apexrest/testApiCall').reply(200, SUCCESS);
 
-            let data = await salesforceClient._callApi('testApiCall', 'GET');
+            let data = await salesforceClient._callApexrestApi('testApiCall', 'GET');
             expect(data).to.be.deep.equal(SUCCESS);
-            data = await salesforceClient._callApi('testApiCall', 'DELETE');
+            data = await salesforceClient._callApexrestApi('testApiCall', 'DELETE');
             expect(data).to.be.deep.equal(SUCCESS);
-            data = await salesforceClient._callApi('testApiCall', 'POST', { id: '1' });
+            data = await salesforceClient._callApexrestApi('testApiCall', 'POST', { id: '1' });
             expect(data).to.be.deep.equal(SUCCESS);
-            data = await salesforceClient._callApi('testApiCall', 'PATCH', { id: '1' });
+            data = await salesforceClient._callApexrestApi('testApiCall', 'PATCH', { id: '1' });
             expect(data).to.be.deep.equal(SUCCESS);
 
             try {
-                await salesforceClient._callApi('testApiCall', 'PUT', { id: '1' });
+                await salesforceClient._callApexrestApi('testApiCall', 'PUT', { id: '1' });
                 expect('Method PUT is not allowed in this client.').to.be.eql('');
             } catch (error) {
                 // do nothing
@@ -266,7 +266,7 @@ describe('SalesforceClient', () => {
             };
 
             nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).get('/services/apexrest/testApiCall').reply(200, { status: 'success' });
-            await salesforceClient._callApi('testApiCall', 'GET');
+            await salesforceClient._callApexrestApi('testApiCall', 'GET');
 
             expect(salesforceClient.auth).to.be.instanceOf(Object);
             expect(salesforceClient.auth.instanceUrl).to.be.a('string');
@@ -289,7 +289,7 @@ describe('SalesforceClient', () => {
             };
 
             nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).get('/services/apexrest/testApiCall').reply(200, { status: 'success' });
-            await salesforceClient._callApi('testApiCall', 'GET');
+            await salesforceClient._callApexrestApi('testApiCall', 'GET');
 
             expect(salesforceClient.auth).to.be.instanceOf(Object);
             expect(salesforceClient.auth.instanceUrl).to.be.a('string');
@@ -325,7 +325,7 @@ describe('SalesforceClient', () => {
                 errorCode: 'INVALID_SESSION_ID',
             });
 
-            await salesforceClient._callApi('testApiCall', 'GET');
+            await salesforceClient._callApexrestApi('testApiCall', 'GET');
 
             expect(salesforceClient.auth).to.be.instanceOf(Object);
             expect(salesforceClient.auth.instanceUrl).to.be.a('string');
@@ -1257,6 +1257,53 @@ describe('SalesforceClient', () => {
             } catch (error) {
                 expect(error.message).to.be.eql(expectedReply.message);
             }
+        });
+    });
+
+
+    describe('createLead()', () => {
+        it('create lead works', async () => {
+            const salesforceClient = new SalesforceClient(BASE_CONFIG);
+            const data = { firstName: 'foo', lastName: 'bar', company: 'example company', email: 'foo@example.com', mobile: '888666999' };
+            const apiCallOptions = {
+                reqheaders: {
+                    authorization: `Bearer ${DEFAULT_TOKEN_REPLY.access_token}`,
+                },
+            };
+
+            const expectedReply = {
+                id: 'leadId',
+                status: 'success',
+            };
+
+            nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).post('/services/data/v49.0/sobjects/Lead').reply(200, expectedReply);
+
+            const lead = await salesforceClient.createLead(data);
+
+            expect(lead.id).to.be.eql(expectedReply.id);
+        });
+    });
+
+    describe('createEmailEvent()', () => {
+        it('create event works', async () => {
+            const salesforceClient = new SalesforceClient(BASE_CONFIG);
+            const data = { whoId: 'leadId', subject: 'Request form submitted', message: 'Hey, I want to explain enterprise plans.' };
+            const apiCallOptions = {
+                reqheaders: {
+                    authorization: `Bearer ${DEFAULT_TOKEN_REPLY.access_token}`,
+                },
+            };
+
+            const expectedReply = {
+                id: 'eventId',
+                status: 'success',
+            };
+
+            nock(DEFAULT_TOKEN_REPLY.instance_url, apiCallOptions).post('/services/data/v49.0/sobjects/Event').reply(200, expectedReply);
+
+            const event = await salesforceClient.createEmailEvent(data);
+
+            expect(event.id).to.be.eql(expectedReply.id);
         });
     });
 });
