@@ -212,6 +212,11 @@ export class SalesforceClient {
                 ? error.response && error.response.status
                 : null;
 
+            // NOTE: Multiple choices, it is not an error
+            if (maybeStatus === 300) {
+                return error.response.data;
+            }
+
             // Catch authentication error this means that token expired and we need a new one
             if (maybeStatus === 401 && retry < AUTH_RETRY_ATTEMPTS) {
                 this.auth = null;
@@ -407,7 +412,12 @@ export class SalesforceClient {
     async getLeadByEmail(email) {
         const endpointPath = `/services/data/v49.0/sobjects/Lead/email/${encodeURIComponent(email)}`;
         try {
-            const lead = await this._callApi(endpointPath, 'GET');
+            let lead = await this._callApi(endpointPath, 'GET');
+            // NOTE: It is possible that it returns multiple lead paths.
+            // TODO: For now simply returns the first one.
+            if (_.isArray(lead)) {
+                lead = await this._callApi(lead[0], 'GET');
+            }
             return lead;
         } catch (err) {
             if (err.message === NOT_FOUND_MESSAGE) {

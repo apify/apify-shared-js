@@ -1,3 +1,7 @@
+0.4.3 / 2020/08/19
+==================
+- Fixed getLeadByEmail with multiple leads in response
+
 0.4.2 / 2020/08/18
 ==================
 - Added methods createLead, createEvent, getLeadByEmail into salesforce client
