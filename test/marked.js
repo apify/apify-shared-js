@@ -1,11 +1,12 @@
+/* eslint-disable */
+
 import marked from 'marked';
 import { expect } from 'chai';
 import { apifyMarked } from '../src/marked';
 
-
 describe('apifyMarked', () => {
     it('correctly parses code block with marked-tabs', () => {
-        const markdown = `
+        const markdown = `# Welcome to Apify {welcome-title-id}
             \`\`\`marked-tabs
             <marked-tab header="NodeJS" lang="javascript">
             console.log('Some JS code');
@@ -23,7 +24,7 @@ describe('apifyMarked', () => {
             \`\`\`
         `;
 
-        expect(apifyMarked(markdown)).to.eql(`<apify-code-tabs input="{
+        expect(apifyMarked(markdown).trim()).to.eql(`<h1 id="welcome-title-id">Welcome to Apify</h1><apify-code-tabs input="{
 \\"NodeJS\\": { \\"language\\": \\"javascript\\", \\"code: \\"console.log('Some JS code');\\" },
 \\"Python\\": { \\"language\\": \\"python\\", \\"code: \\"print('Some python code');
 count = 1
@@ -35,12 +36,10 @@ print('Some python code on next line');\\" },
     });
 
     it('correctly parses normal code block', () => {
-        const markdown = `
-        \`\`\`
-        // Some code
-        console.log('Hello World');
-        \`\`\`
-        `;
+        const markdown = " # Test heading \
+        ``` \
+            console.log(\'Hello World\'); \
+        ```"
         expect(apifyMarked(markdown)).to.eql(marked(markdown));
     });
 });
