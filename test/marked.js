@@ -1,8 +1,7 @@
-// import marked from 'marked';
+import marked from 'marked';
 import { expect } from 'chai';
 import { apifyMarked } from '../src/marked';
 
-const marked = require('marked');
 
 describe('apifyMarked', () => {
     it('correctly parses code block with marked-tabs', () => {
