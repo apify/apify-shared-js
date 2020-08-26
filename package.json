@@ -43,6 +43,7 @@
     "countries-list": "^2.5.1",
     "is-buffer": "^2.0.3",
     "marked": "^1.0.0",
+    "match-all": "^1.2.6",
     "moment": "^2.27.0",
     "request": "^2.88.0",
     "slugg": "^1.2.1",

@@ -1,5 +1,7 @@
 import { customHeadingRenderer } from './markdown_renderers';
 
+const matchAll = require('match-all');
+
 const marked = require('marked');
 
 export const apifyMarked = (() => {
@@ -10,7 +12,13 @@ export const apifyMarked = (() => {
             return false;
         }
 
-        const matches = [...code.matchAll(/<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg)];
+        const matchesIterator = matchAll(code, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
+        const matches = [];
+        let nextMatch = matchesIterator.nextRaw();
+        while (nextMatch) {
+            matches.push(nextMatch);
+            nextMatch = matchesIterator.nextRaw();
+        }
 
         const inputArg = matches
             .map((match) => {
