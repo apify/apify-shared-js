@@ -1,3 +1,7 @@
+0.4.4 / 2020/03/01
+==================
+- Added custom code renderer to `marked` package
+
 0.4.3 / 2020/08/19
 ==================
 - Fixed getLeadByEmail with multiple leads in response
