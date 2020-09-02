@@ -23,38 +23,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
     const tabs = {};
     for (const match of matches) {
         const { header, lang } = match.groups;
-        let tabCode = match.groups.code;
-
-        let numLeadingSpacesOnFirstLine = 0;
-        while (tabCode.startsWith('\n') || tabCode.startsWith(' ')) {
-            if (tabCode.startsWith('\n')) {
-                numLeadingSpacesOnFirstLine = 0;
-            } else if (tabCode.startsWith(' ')) {
-                numLeadingSpacesOnFirstLine += 1;
-            }
-            tabCode = tabCode.substring(1);
-        }
-
-        while (tabCode.endsWith('\n') || tabCode.endsWith(' ')) {
-            tabCode = tabCode.substring(0, tabCode.length - 1);
-        }
-
-        tabCode = tabCode
-            .split('\n')
-            .map((line, index) => {
-                if (index === 0) {
-                    return line;
-                }
-
-                for (let i = 0; i < numLeadingSpacesOnFirstLine; i++) {
-                    if (line.startsWith(' ')) {
-                        line = line.substring(1);
-                    }
-                }
-                return line;
-            })
-            .join('\n');
-        tabs[header] = { language: lang, code: tabCode };
+        tabs[header] = { language: lang, code: match.groups.code.trim() };
     }
     return tabs;
 };
