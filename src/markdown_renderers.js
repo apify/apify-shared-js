@@ -1,7 +1,5 @@
 import log from './log';
 
-export const APIFY_CODE_TABS = 'apify-code-tabs';
-
 function formatIdTag(idTag) {
     // Get rid of whitespace and random characters
     idTag = idTag.toLowerCase().trim().replace(/[^\w]+/g, '-');

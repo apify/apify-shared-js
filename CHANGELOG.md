@@ -1,4 +1,7 @@
-0.4.4 / 2020/03/01
+0.4.5 / 2020/09/09
+- Fixed custom code renderer to support the use case of rendering code tabs.
+
+0.4.4 / 2020/09/01
 ==================
 - Added custom code renderer to `marked` package
 

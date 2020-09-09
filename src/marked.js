@@ -1,7 +1,6 @@
 import marked from 'marked';
+import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
-
-const matchAll = require('match-all');
 
 
 const APIFY_CODE_TABS = 'apify-code-tabs';
@@ -44,12 +43,24 @@ export const apifyMarked = (markdown) => {
     };
     const tokens = marked.lexer(markdown);
 
+    /**
+     * Each code block of following form
+     * ```marked-tabs
+     * ... some code
+     * ```
+     * is replaced by [apify-code-tabs]INDEX[/apify-code-tabs] where index is
+     * an increasing integer starting at 0, to allow multiple marked-tabs components
+     * on the same page.
+     *
+     * [apify-code-tabs]INDEX[/apify-code-tabs] is meant to be later replaced be a react component
+     * rendering the appropriate codeTabBlockObject returned by this function.
+     */
     let markedTabTokenIndex = 0;
     const codeTabsObjectPerIndex = {};
     tokens.forEach((token) => {
-        if (token.type === 'code' && token.lang && token.lang === 'marked-tabs') {
+        if (token.type === 'code' && token.lang === 'marked-tabs') {
             codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
-            token.text = `[${APIFY_CODE_TABS}]${markedTabTokenIndex}[${APIFY_CODE_TABS}]`;
+            token.text = `[${APIFY_CODE_TABS}]${markedTabTokenIndex}[/${APIFY_CODE_TABS}]`;
 
             markedTabTokenIndex++;
         }
