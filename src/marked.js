@@ -3,6 +3,31 @@ import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 
 
+/**
+ * Map from the language of a fenced code block to the title of corresponding tab.
+ * The language is a string provided by the default marked tokenizer.
+ * Note that not all of the languages (such as python2) might be possible at the moment
+ * in the default marked tokenizer. We anyway include them here for
+ * robustness to potential future improvements of marked.
+ * In case tab title can't be resolved from language using this mapping, the language itself is used as a tab title.
+ */
+const LANGAUGE_TO_TAB_TITLE = {
+    js: 'Node.JS',
+    javascript: 'Node.JS',
+    nodejs: 'Node.JS',
+    bash: 'Bash',
+    curl: 'cURL',
+    dockerfile: 'Dockerfile',
+    php: 'PHP',
+    json: 'JSON',
+    xml: 'XML',
+    python: 'Python',
+    python2: 'Python3',
+    python3: 'Python3',
+    yml: 'YAML',
+    yaml: 'YAML',
+};
+
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new marked.Renderer();
 
@@ -36,7 +61,7 @@ export const apifyMarked = (markdown) => {
     const renderer = new marked.Renderer();
     renderer.heading = customHeadingRenderer;
     renderer.code = (code, language) => {
-        if (language === 'marked-tabs') {
+        if (language) {
             return code;
         }
         return DEFAULT_MARKED_RENDERER.code(code, language);
@@ -58,10 +83,19 @@ export const apifyMarked = (markdown) => {
     let markedTabTokenIndex = 0;
     const codeTabsObjectPerIndex = {};
     tokens.forEach((token) => {
-        if (token.type === 'code' && token.lang === 'marked-tabs') {
-            codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
+        if (token.type === 'code' && token.lang) {
+            if (token.lang === 'marked-tabs') {
+                codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
+            } else {
+                const tabTitle = LANGAUGE_TO_TAB_TITLE[token.lang] || token.lang;
+                codeTabsObjectPerIndex[markedTabTokenIndex] = {
+                    [tabTitle]: {
+                        language: token.lang,
+                        code: token.text,
+                    },
+                };
+            }
             token.text = `[${APIFY_CODE_TABS}]${markedTabTokenIndex}[/${APIFY_CODE_TABS}]`;
-
             markedTabTokenIndex++;
         }
     });
