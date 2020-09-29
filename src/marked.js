@@ -11,7 +11,7 @@ import { customHeadingRenderer } from './markdown_renderers';
  * robustness to potential future improvements of marked.
  * In case tab title can't be resolved from language using this mapping, the language itself is used as a tab title.
  */
-const LANGAUGE_TO_TAB_TITLE = {
+const LANGUAGE_TO_TAB_TITLE = {
     js: 'Node.JS',
     javascript: 'Node.js',
     nodejs: 'Node.js',
@@ -54,6 +54,76 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
 
 
 /**
+ * This custom function is used in the same context as default `marked` function.
+ *
+ * It parses the given markdown and treats some headings and code blocks in a custom way
+ * -----------------------------------------------------------------------------------------------
+ * 0. Heading with {custom-id} in text will have id="custom-id" property on reasulting <h...> tag.
+ * E.g.
+ * # Welcome to Apify {welcome-title-id}
+ * is turned to
+ * <h1 id="welcome-title-id">Welcome to Apify</h1>
+ * -----------------------------------------------------------------------------------------------
+ * 1. Fenced code block with explicit language which is in the mapping LANGUAGE_TO_TAB_TITLE
+ * ```my-lang
+ * my-code
+ * ```
+ *  This block is turned into [apify-code-tabs]$INDEX[/apify-code-tabs] in returned HTML
+ *  and returned codeTabsObjectPerIndex contains key $INDEX with value
+ *  {
+ *      LANGUAGE_TO_TAB_TITLE[my-lang]: { lang: 'my-lang', code: 'my-code' }
+ *  }
+ * -----------------------------------------------------------------------------------------------
+ * 2. Fenced code block with explicit language which is NOT in the mapping LANGUAGE_TO_TAB_TITLE
+ * ```my-lang-not-in-mapping
+ * my-code
+ * ```
+ *  This block is turned into [apify-code-tabs]$INDEX[/apify-code-tabs] in returned HTML
+ *  and returned codeTabsObjectPerIndex contains key $INDEX with value
+ *  {
+ *      my-lang-not-in-mapping: { lang: 'my-lang-not-in-mapping', code: 'my-code' }
+ *  }
+ * -----------------------------------------------------------------------------------------------
+ * 3. Fenced code block with no language
+ * ```
+ * my-code
+ * ```
+ *
+ * is handled by default marked package and returned in HTML already parsed to <code> block.
+ * -----------------------------------------------------------------------------------------------
+ * 4. Indented code block
+ *      my-code
+ *
+ * is handled by default marked package and returned in HTML already parsed to <code> block.
+ * -----------------------------------------------------------------------------------------------
+ * 5. Special marked-tabs code fence
+ * Each code block of following form
+ * ```marked-tabs
+ * <marked-tab header="Node.js" lang="javascript">
+ * js-code
+ * </marked-tab>
+ *
+ * <marked-tab header="Python" lang="python">
+ * python-code
+ * </marked-tab>
+ * ```
+ * is replaced by [apify-code-tabs]$INDEX[/apify-code-tabs] in the returned HTML where $INDEX is
+ * an unique integer, to allow multiple marked-tabs components on the same page.
+ *
+ * For the example above codeTabsObjectPerIndex would contain key $INDEX with the following value
+ * {
+ *      'Node.js': {lang: 'javascript', code: 'js-code'},
+ *      'Python': {lang: 'python', code: 'python-code'}
+ * }
+ *
+ * i.e. each <marked-tab header="HEADER" lang="LANG">CODE</marked-tab> is turned into
+ * HEADER: {lang: LANG, code: CODE} entry.
+ *
+ * Note that you have to use double quotation marks around HEADER and LANG, otherwise, the expression will not be matched
+ * which results in unexpected and hard to debug errors.
+ *
+ * Each [apify-code-tabs]$INDEX[/apify-code-tabs] is meant to be later replaced be a react component
+ * rendering the appropriate codeTabBlockObject returned by this function.
  * @param {string} markdown
  * @return {{ html: string, codeTabsObjectPerIndex: Object.<number, Object.<string, {language: string, code: string}>> }}
  */
@@ -68,18 +138,6 @@ export const apifyMarked = (markdown) => {
     };
     const tokens = marked.lexer(markdown);
 
-    /**
-     * Each code block of following form
-     * ```marked-tabs
-     * ... some code
-     * ```
-     * is replaced by [apify-code-tabs]INDEX[/apify-code-tabs] where index is
-     * an increasing integer starting at 0, to allow multiple marked-tabs components
-     * on the same page.
-     *
-     * [apify-code-tabs]INDEX[/apify-code-tabs] is meant to be later replaced be a react component
-     * rendering the appropriate codeTabBlockObject returned by this function.
-     */
     let markedTabTokenIndex = 0;
     const codeTabsObjectPerIndex = {};
     tokens.forEach((token) => {
@@ -87,7 +145,7 @@ export const apifyMarked = (markdown) => {
             if (token.lang === 'marked-tabs') {
                 codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
             } else {
-                const tabTitle = LANGAUGE_TO_TAB_TITLE[token.lang] || token.lang;
+                const tabTitle = LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
                 codeTabsObjectPerIndex[markedTabTokenIndex] = {
                     [tabTitle]: {
                         language: token.lang,
