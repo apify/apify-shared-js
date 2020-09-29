@@ -13,8 +13,8 @@ import { customHeadingRenderer } from './markdown_renderers';
  */
 const LANGAUGE_TO_TAB_TITLE = {
     js: 'Node.JS',
-    javascript: 'Node.JS',
-    nodejs: 'Node.JS',
+    javascript: 'Node.js',
+    nodejs: 'Node.js',
     bash: 'Bash',
     curl: 'cURL',
     dockerfile: 'Dockerfile',
@@ -22,8 +22,8 @@ const LANGAUGE_TO_TAB_TITLE = {
     json: 'JSON',
     xml: 'XML',
     python: 'Python',
-    python2: 'Python3',
-    python3: 'Python3',
+    python2: 'Python 2',
+    python3: 'Python 3',
     yml: 'YAML',
     yaml: 'YAML',
 };
