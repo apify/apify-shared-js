@@ -10,7 +10,7 @@ const MARKDOWN_UNDER_TEST = `
 
 ## Code block with tabs
 \`\`\`marked-tabs
-<marked-tab header="NodeJS" lang="javascript">
+<marked-tab header="Node.js" lang="javascript">
 console.log('Some JS code');
 </marked-tab>
 
@@ -22,7 +22,7 @@ if count >= 1:
 print('Some python code on next line');
 </marked-tab>
 
-<marked-tab header="Curl" lang="bash">
+<marked-tab header="Bash" lang="bash">
 echo "Some bash code"
 </marked-tab>
 \`\`\`
@@ -32,12 +32,18 @@ echo "Some bash code"
 console.log('Your standard javascript code block')
 \`\`\`
 
+\`\`\`
+console.log('Fenced block with no language')
+\`\`\`
+
+    console.log('Tab indented block')
+
 ## Second block with tabs
 \`\`\`marked-tabs
-<marked-tab header="NodeJS" lang="javascript">
+<marked-tab header="Custom title" lang="javascript">
 console.log('Some JS code 2');
 </marked-tab>
-<marked-tab header="Curl" lang="bash">
+<marked-tab header="Bash" lang="bash">
 echo "Some bash code 2"
 </marked-tab>
 \`\`\`
@@ -49,9 +55,10 @@ This is footer text.
 const EXPECTED_HTML =   '\n' +
 '            <h1 id="title">Title</h1>\n' +
 '            <h2 id="code-block-with-tabs">Code block with tabs</h2>[apify-code-tabs]0[/apify-code-tabs]\n' +
-'            <h2 id="code-block-without-tabs">Code block without tabs</h2><pre><code class="language-javascript">console.log(&#39;Your standard javascript code block&#39;)</code></pre>\n' +
+'            <h2 id="code-block-without-tabs">Code block without tabs</h2>[apify-code-tabs]1[/apify-code-tabs]<pre><code>console.log(&#39;Fenced block with no language&#39;)</code></pre>\n' +
+'<pre><code>console.log(&#39;Tab indented block&#39;)</code></pre>\n' +
 '\n' +
-'            <h2 id="second-block-with-tabs">Second block with tabs</h2>[apify-code-tabs]1[/apify-code-tabs]\n' +
+'            <h2 id="second-block-with-tabs">Second block with tabs</h2>[apify-code-tabs]2[/apify-code-tabs]\n' +
 '            <h2 id="footer">Footer</h2><p>This is footer text.</p>\n';
 
 describe('apifyMarked custom renderer works', () => {
@@ -62,20 +69,23 @@ describe('apifyMarked custom renderer works', () => {
         expect(codeTabsObjectPerIndex).to.eql(
             {
                 '0': {
-                  NodeJS: { language: 'javascript', code: "console.log('Some JS code');" },
-                  Python: {
-                    language: 'python',
-                    code: "print('Some python code');\n" +
-                      'count = 1\n' +
-                      'if count >= 1:\n' +
-                      "    print('Some intended python code');\n" +
-                      "print('Some python code on next line');"
-                  },
-                  Curl: { language: 'bash', code: 'echo "Some bash code"' }
+                    'Node.js': { language: 'javascript', code: "console.log('Some JS code');" },
+                    Python: {
+                        language: 'python',
+                        code: "print('Some python code');\n" +
+                        'count = 1\n' +
+                        'if count >= 1:\n' +
+                        "    print('Some intended python code');\n" +
+                        "print('Some python code on next line');"
+                    },
+                    'Bash': { language: 'bash', code: 'echo "Some bash code"' }
                 },
                 '1': {
-                  NodeJS: { language: 'javascript', code: "console.log('Some JS code 2');" },
-                  Curl: { language: 'bash', code: 'echo "Some bash code 2"' }
+                    'Node.js': { language: 'javascript', code: "console.log('Your standard javascript code block')" },
+                },
+                '2': {
+                    'Custom title': { language: 'javascript', code: "console.log('Some JS code 2');" },
+                    Bash: { language: 'bash', code: 'echo "Some bash code 2"' }
                 }
             }
         );

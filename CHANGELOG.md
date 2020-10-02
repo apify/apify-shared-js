@@ -1,4 +1,9 @@
+0.4.6 / 2020/09/29
+==================
+- Improved custom code renderer to support default markdown fenced code block with explicitly specified language.
+
 0.4.5 / 2020/09/09
+==================
 - Fixed custom code renderer to support the use case of rendering code tabs.
 
 0.4.4 / 2020/09/01
