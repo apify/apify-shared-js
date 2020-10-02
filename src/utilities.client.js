@@ -7,7 +7,6 @@
  */
 
 const _ = require('underscore');
-const slugg = require('slugg');
 const isBuffer = require('is-buffer');
 const { countries } = require('countries-list');
 const consts = require('./consts');
@@ -165,16 +164,6 @@ export const markedSetNofollowLinks = (href, title, text) => {
 export const markedDecreaseHeadsLevel = (text, level) => {
     level += 1;
     return `<h${level}>${text}</h${level}>`;
-};
-
-/**
- * Creates a "nice path" for public act consisting of 5 chars of it's _id
- * word "api" and slug version of either public.domain and customId.
- */
-export const getPublicCrawlerNicePath = (actId, customId, domain) => {
-    const parts = [actId.substr(0, consts.SHORT_CRAWLER_ID_LENGTH), 'api', slugg(domain || customId)];
-
-    return parts.join('-');
 };
 
 /**
