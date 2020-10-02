@@ -179,11 +179,6 @@ describe('utilities', () => {
                 });
             });
     });
-
-    it('getPublicCrawlerNicePath()', () => {
-        const nicePath = utils.getPublicCrawlerNicePath('1234567890', 'example-crawler');
-        expect(nicePath).to.be.eql('12345-api-example-crawler');
-    });
 });
 
 describe('timeoutPromise()', () => {
