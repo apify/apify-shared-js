@@ -9,7 +9,6 @@
 
 const _ = require('underscore');
 const crypto = require('crypto');
-const Promise = require('bluebird');
 const request = require('request');
 const cherow = require('cherow');
 const utilsClient = require('./utilities.client');

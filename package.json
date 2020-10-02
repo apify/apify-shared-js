@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "bluebird": "^3.7.2",
     "chalk": "^4.0.0",
     "cherow": "^1.6.9",
     "clone": "^2.1.1",
