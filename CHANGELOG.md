@@ -1,3 +1,8 @@
+0.5.0 / 2020/10/02
+==================
+- Removed unused `getPublicCrawlerNiceUrl` function and its unlicensed dependency `slugg`.
+- Removed `bluebird` dependency because it was not needed for anything.
+
 0.4.6 / 2020/09/29
 ==================
 - Improved custom code renderer to support default markdown fenced code block with explicitly specified language.
