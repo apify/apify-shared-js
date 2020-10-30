@@ -97,6 +97,43 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         })).to.eql(expectedResult)
     });
 
+    it('works correctly for Github repo with explicit branch name and <img src=... /> tags', () => {
+        const testMarkdown = `
+            # Heading
+            ![img1](http://www.apify-awesome-test-image.com)
+            ![img2](./relative-path-to-img.jpg)
+            <img src='./relative-path-to-img.jpg' />
+            <img src='./relative-path-to-img.jpg' alt='Some alt text'/>
+            <img alt='Some alt text' src='./relative-path-to-img.jpg' />
+            <img alt='Some alt text' src='./relative-path-to-img.jpg' width="500"/>
+            <img src="./relative-path-to-img.jpg" />
+            <img src="./relative-path-to-img.jpg" alt="Some alt text"/>
+            <img alt="Some alt text" src="./relative-path-to-img.jpg" />
+            <img alt="Some alt text" src="./relative-path-to-img.jpg" width="500"/>
+        `;
+        const expectedResult = `
+            # Heading
+            ![img1](http://www.apify-awesome-test-image.com)
+            ![img2](https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg)
+            <img src='https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg' />
+            <img src='https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg' alt='Some alt text'/>
+            <img alt='Some alt text' src='https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg' />
+            <img alt='Some alt text' src='https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg' width="500"/>
+            <img src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" />
+            <img src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" alt="Some alt text"/>
+            <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" />
+            <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" width="500"/>
+        `;
+        console.log(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+        }));
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+        })).to.eql(expectedResult)
+    });
+
     it('works correctly for unknown repo', () => {
         const testMarkdown = `
             # Heading

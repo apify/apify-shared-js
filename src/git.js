@@ -1,4 +1,4 @@
-import GitUrlParse from 'git-url-parse';
+import gitUrlParse from 'git-url-parse';
 
 
 /**
@@ -13,7 +13,7 @@ import GitUrlParse from 'git-url-parse';
  * @return {string} updated readme
  */
 export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl, gitBranchName }) => {
-    const parsedRepoUrl = GitUrlParse(gitRepoUrl);
+    const parsedRepoUrl = gitUrlParse(gitRepoUrl);
 
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
     const repoNameParts = parsedRepoUrl.full_name.split('/');
@@ -26,26 +26,27 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
     const branchName = parsedRepoUrl.hash || gitBranchName || 'master';
 
     // Images in markdown have syntax ![alt text](image url)
-    const relativeImageRegex = /(!\[.*?\])\(\.\/(.*?)\)/g;
+    const relativeImageMarkdownRegex = /(!\[.*?\])\(\.\/(.*?)\)/g;
 
-    switch (parsedRepoUrl.resource) {
-        case 'github.com':
-            return readme.replace(
-                relativeImageRegex,
-                `$1(https://raw.githubusercontent.com/${repoFullName}/${branchName}/$2)`,
-            );
-        case 'gitlab.com':
-            return readme.replace(
-                relativeImageRegex,
-                `$1(https://gitlab.com/${repoFullName}/-/raw/${branchName}/$2)`,
-            );
-        case 'bitbucket.org':
-            // Note: bytebucket is raw content serving service by Bitbucket
-            return readme.replace(
-                relativeImageRegex,
-                `$1(https://bytebucket.org/${repoFullName}/raw/${branchName}/$2)`,
-            );
-        default:
-            return readme;
+    // HTML image references of type <img src="..." /> can be also embedded in markdown (e.g. in HTML table)
+    // We provide 2 regular expression for cases where src attribute is wrapped in double or single quotes
+    const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")\.\/(.*?)(".*?\/>)/g;
+    const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')\.\/(.*?)('.*?\/>)/g;
+
+    let urlPrefix = null;
+    if (parsedRepoUrl.resource === 'github.com') {
+        urlPrefix = `https://raw.githubusercontent.com/${repoFullName}/${branchName}`;
+    } else if (parsedRepoUrl.resource === 'gitlab.com') {
+        urlPrefix = `https://gitlab.com/${repoFullName}/-/raw/${branchName}`;
+    } else if (parsedRepoUrl.resource === 'bitbucket.org') {
+        // Note: bytebucket is raw content serving service by Bitbucket
+        urlPrefix = `https://bytebucket.org/${repoFullName}/raw/${branchName}`;
     }
+
+    return urlPrefix
+        ? readme
+            .replace(relativeImageMarkdownRegex, `$1(${urlPrefix}/$2)`)
+            .replace(relativeImageHtmlRegexWithDoubleQuotes, `$1${urlPrefix}/$2$3`)
+            .replace(relativeImageHtmlRegexWithSingleQuotes, `$1${urlPrefix}/$2$3`)
+        : readme;
 };
