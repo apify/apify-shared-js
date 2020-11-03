@@ -1,3 +1,7 @@
+0.5.1 / 2020/10/27
+==================
+- Added function to convert relative URL paths in git README files to absolute paths
+
 0.5.0 / 2020/10/02
 ==================
 - Removed unused `getPublicCrawlerNiceUrl` function and its unlicensed dependency `slugg`.
