@@ -96,7 +96,7 @@ describe('HealthChecker', () => {
     });
 
     it('should fail when some of the checks timeouts', async () => {
-        redis.get.onFirstCall().returns(new Promise(resolve => setTimeout(resolve, 200))); // Timeouts.
+        redis.get.onFirstCall().returns(new Promise((resolve) => setTimeout(resolve, 200))); // Timeouts.
 
         await expect(healthChecker.ensureIsHealthy()).to.be.rejectedWith('Health check test "REDIS" failed with an error: Check has timed-out');
 

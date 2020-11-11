@@ -60,10 +60,8 @@ const validateAgainstSchemaOrThrow = (validator, obj, inputSchema, rootName) => 
  * We override schema.properties.properties not to validate field defitions.
  */
 const validateBasicStructure = (validator, obj) => {
-    const schemaWithoutProperties = Object.assign({}, schema);
-    schemaWithoutProperties.properties = Object.assign({}, schema.properties, {
-        properties: { type: 'object' },
-    });
+    const schemaWithoutProperties = { ...schema };
+    schemaWithoutProperties.properties = { ...schema.properties, properties: { type: 'object' } };
     validateAgainstSchemaOrThrow(validator, obj, schemaWithoutProperties, 'schema');
 };
 
@@ -96,13 +94,13 @@ const validateField = (validator, fieldSchema, fieldKey) => {
     // If there are more matching definitions then the type is string and we need to get the right one.
     // If the definition contains "enum" property then it's enum type.
     if (fieldSchema.enum) {
-        const definition = matchingDefinitions.filter(item => !!item.properties.enum).pop();
+        const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
         validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
         return;
     }
     // Otherwise we use the other definition.
-    const definition = matchingDefinitions.filter(item => !item.properties.enum).pop();
+    const definition = matchingDefinitions.filter((item) => !item.properties.enum).pop();
     if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
     validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);

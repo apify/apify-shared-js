@@ -275,7 +275,7 @@ export class SalesforceClient {
             data.apifyId = user._id;
             delete data._id;
         }
-        data.salesReps = (data.salesReps || []).map(salesRep => ({
+        data.salesReps = (data.salesReps || []).map((salesRep) => ({
             userId: salesRep.userId,
             engagementType: salesRep.engagementType,
         }));
