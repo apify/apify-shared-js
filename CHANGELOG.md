@@ -1,3 +1,8 @@
+0.5.2 / 2020/11/11
+==================
+- Packages updated
+- Code linted to match the new set of rules
+
 0.5.1 / 2020/10/27
 ==================
 - Added function to convert relative URL paths in git README files to absolute paths
