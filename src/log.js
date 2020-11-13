@@ -74,7 +74,7 @@ class Log {
         }
 
         const data = options.data
-            ? ({ ...this.options.data, ...options.data })
+            ? { ...this.options.data, ...options.data }
             : this.options.data;
 
         const newOptions = {
