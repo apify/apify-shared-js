@@ -41,6 +41,7 @@
     "cherow": "^1.6.9",
     "clone": "^2.1.1",
     "countries-list": "^2.5.1",
+    "create-hmac": "^1.1.7",
     "is-buffer": "^2.0.3",
     "marked": "^1.1.0",
     "match-all": "^1.2.6",
