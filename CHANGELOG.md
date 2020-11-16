@@ -1,3 +1,7 @@
+0.5.2 / 2020/11/12
+==================
+- Replaced deprecated methods insert and remove of collection for mongoDb package
+
 0.5.1 / 2020/10/27
 ==================
 - Added function to convert relative URL paths in git README files to absolute paths
