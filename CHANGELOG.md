@@ -1,3 +1,7 @@
+0.5.3 / 2020/11/19
+==================
+- Added function `deterministicUniqueId` for ID generation.
+
 0.5.2 / 2020/11/12
 ==================
 - Replaced deprecated methods insert and remove of collection for mongoDb package
