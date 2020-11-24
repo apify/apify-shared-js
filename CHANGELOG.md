@@ -1,6 +1,11 @@
-0.5.3 / 2020/11/19
+0.5.4 / 2020/11/24
 ==================
 - Added function `deterministicUniqueId` for ID generation.
+
+0.5.3 / 2020/11/24
+==================
+- Packages updated
+- Code linted to match the new set of rules
 
 0.5.2 / 2020/11/12
 ==================

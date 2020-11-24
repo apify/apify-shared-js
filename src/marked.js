@@ -2,7 +2,6 @@ import marked from 'marked';
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 
-
 /**
  * Map from the language of a fenced code block to the title of corresponding tab.
  * The language is a string provided by the default marked tokenizer.
@@ -51,7 +50,6 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
     }
     return tabs;
 };
-
 
 /**
  * This custom function is used in the same context as default `marked` function.
