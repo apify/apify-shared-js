@@ -18,9 +18,9 @@ describe('HealthChecker', () => {
     };
 
     const writeTestCollection = {
-        insert: sinon.stub(),
+        insertOne: sinon.stub(),
         findOne: sinon.stub(),
-        remove: sinon.stub(),
+        deleteMany: sinon.stub(),
     };
 
     const mongoWrite = {
@@ -56,9 +56,9 @@ describe('HealthChecker', () => {
         sinon.assert.calledOnce(redis.set);
         sinon.assert.calledOnce(redis.get);
         sinon.assert.calledOnce(mongoRead.listCollections);
-        sinon.assert.calledOnce(writeTestCollection.insert);
+        sinon.assert.calledOnce(writeTestCollection.insertOne);
         sinon.assert.calledOnce(writeTestCollection.findOne);
-        sinon.assert.calledOnce(writeTestCollection.remove);
+        sinon.assert.calledOnce(writeTestCollection.deleteMany);
     });
 
     it('should fail when some of the checks returns something wrong.', async () => {
@@ -73,9 +73,9 @@ describe('HealthChecker', () => {
         sinon.assert.calledOnce(redis.set);
         sinon.assert.calledOnce(redis.get);
         sinon.assert.calledOnce(mongoRead.listCollections);
-        sinon.assert.calledOnce(writeTestCollection.insert);
+        sinon.assert.calledOnce(writeTestCollection.insertOne);
         sinon.assert.calledOnce(writeTestCollection.findOne);
-        sinon.assert.calledOnce(writeTestCollection.remove);
+        sinon.assert.calledOnce(writeTestCollection.deleteMany);
     });
 
     it('should fail when some of the checks returns something wrong.', async () => {
@@ -90,9 +90,9 @@ describe('HealthChecker', () => {
         sinon.assert.calledOnce(redis.set);
         sinon.assert.calledOnce(redis.get);
         sinon.assert.calledOnce(mongoRead.listCollections);
-        sinon.assert.calledOnce(writeTestCollection.insert);
+        sinon.assert.calledOnce(writeTestCollection.insertOne);
         sinon.assert.calledOnce(writeTestCollection.findOne);
-        sinon.assert.calledOnce(writeTestCollection.remove);
+        sinon.assert.calledOnce(writeTestCollection.deleteMany);
     });
 
     it('should fail when some of the checks timeouts', async () => {
@@ -128,9 +128,9 @@ describe('HealthChecker', () => {
         sinon.assert.calledOnce(redis.set);
         sinon.assert.calledOnce(redis.get);
         sinon.assert.calledOnce(mongoRead.listCollections);
-        sinon.assert.calledOnce(writeTestCollection.insert);
+        sinon.assert.calledOnce(writeTestCollection.insertOne);
         sinon.assert.calledOnce(writeTestCollection.findOne);
-        sinon.assert.calledOnce(writeTestCollection.remove);
+        sinon.assert.calledOnce(writeTestCollection.deleteMany);
     });
 
     it('should fail when mongo cannot read', async () => {
@@ -143,9 +143,9 @@ describe('HealthChecker', () => {
         sinon.assert.calledOnce(redis.set);
         sinon.assert.calledOnce(redis.get);
         sinon.assert.calledOnce(mongoRead.listCollections);
-        sinon.assert.calledOnce(writeTestCollection.insert);
+        sinon.assert.calledOnce(writeTestCollection.insertOne);
         sinon.assert.calledOnce(writeTestCollection.findOne);
-        sinon.assert.calledOnce(writeTestCollection.remove);
+        sinon.assert.calledOnce(writeTestCollection.deleteMany);
     });
 
     it('should correctly validate checks', async () => {
