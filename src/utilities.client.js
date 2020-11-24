@@ -414,7 +414,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {};
     (options.availableProxyGroups || []).forEach((group) => { availableProxyGroupsById[group] = true; });
-    const unavailableProxyGroups = selectedProxyGroups.filter((group) => !availableProxyGroupsById[group]);
+    const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
         fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
@@ -427,7 +427,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // Check if any of the proxy groups are blocked and if yes then output the associated message
     const blockedProxyGroupsById = options.disabledProxyGroups || {};
     selectedProxyGroups
-        .filter((group) => blockedProxyGroupsById[group])
+        .filter(group => blockedProxyGroupsById[group])
         .forEach((blockedGroup) => {
             fieldErrors.push(blockedProxyGroupsById[blockedGroup]);
         });
@@ -453,8 +453,8 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors
-            .map((error) => parseAjvError(error, 'input', properties, input))
-            .filter((error) => !!error);
+            .map(error => parseAjvError(error, 'input', properties, input))
+            .filter(error => !!error);
     }
 
     Object.keys(properties).forEach((property) => {

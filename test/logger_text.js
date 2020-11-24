@@ -13,7 +13,9 @@ describe('loggerText', () => {
     beforeEach(() => {
         loggedLines = {};
         CONSOLE_METHODS.map((method) => {
+            // eslint-disable-next-line no-console
             originalConsoleMethods[method] = console[method];
+            // eslint-disable-next-line no-console
             console[method] = (line) => {
                 loggedLines[method] = stripAnsi(line);
             };
@@ -22,6 +24,7 @@ describe('loggerText', () => {
 
     afterEach(() => {
         CONSOLE_METHODS.map((method) => {
+            // eslint-disable-next-line no-console
             console[method] = originalConsoleMethods[method];
         });
     });
@@ -86,7 +89,7 @@ describe('loggerText', () => {
     it('should be eventEmitter', () => {
         const emitted = [];
         const logger = new LoggerText();
-        logger.on('line', (line) => emitted.push(stripAnsi(line)));
+        logger.on('line', line => emitted.push(stripAnsi(line)));
 
         logger.log(LEVELS.INFO, 'Some info message');
         logger.log(LEVELS.ERROR, 'Some error message');

@@ -12,7 +12,9 @@ describe('loggerJson', () => {
     beforeEach(() => {
         loggedLines = {};
         CONSOLE_METHODS.map((method) => {
+            // eslint-disable-next-line no-console
             originalConsoleMethods[method] = console[method];
+            // eslint-disable-next-line no-console
             console[method] = (line) => {
                 loggedLines[method] = JSON.parse(line);
             };
@@ -21,6 +23,7 @@ describe('loggerJson', () => {
 
     afterEach(() => {
         CONSOLE_METHODS.map((method) => {
+            // eslint-disable-next-line no-console
             console[method] = originalConsoleMethods[method];
         });
     });
@@ -98,7 +101,7 @@ describe('loggerJson', () => {
     it('should be eventEmitter', () => {
         const emitted = [];
         const logger = new LoggerJson({ skipTime: true });
-        logger.on('line', (line) => emitted.push(line));
+        logger.on('line', line => emitted.push(line));
 
         logger.log(LEVELS.INFO, 'Some info message');
         logger.log(LEVELS.ERROR, 'Some error message');

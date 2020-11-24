@@ -138,6 +138,7 @@ export default class WebhookPayloadTemplate {
 
     /** @private */
     _parse() {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             // eslint-disable-line no-constant-condition
             try {

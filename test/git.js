@@ -124,6 +124,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" />
             <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" width="500"/>
         `;
+        // eslint-disable-next-line no-console
         console.log(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',

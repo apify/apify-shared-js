@@ -24,15 +24,19 @@ export default class Logger extends EventEmitter {
     _outputWithConsole(level, line) {
         switch (level) {
             case LEVELS.ERROR:
+                // eslint-disable-next-line no-console
                 console.error(line);
                 break;
             case LEVELS.WARNING:
+                // eslint-disable-next-line no-console
                 console.warn(line);
                 break;
             case LEVELS.DEBUG:
+                // eslint-disable-next-line no-console
                 console.debug(line);
                 break;
             default:
+                // eslint-disable-next-line no-console
                 console.log(line);
         }
     }

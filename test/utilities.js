@@ -129,7 +129,7 @@ describe('utilities', () => {
 
         return utils
             .sequentializePromises(promises)
-            .then((data) => expect(data).to.be.eql(range));
+            .then(data => expect(data).to.be.eql(range));
     });
 
     it('delayPromise()', () => {

@@ -17,8 +17,8 @@ const LEVEL_TO_COLOR = {
     [LEVELS.PERF]: 'magenta',
 };
 
-const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map((level) => SHORTEN_LEVELS[level] || level);
-const MAX_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVELS.map((l) => l.length));
+const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map(level => SHORTEN_LEVELS[level] || level);
+const MAX_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVELS.map(l => l.length));
 
 const getLevelIndent = (level) => {
     let spaces = '';
@@ -79,7 +79,7 @@ export default class LoggerText extends Logger {
         if (errDetails.length) errorLines[0] += chalk`{gray (details: ${errDetails.join(', ')})}`;
 
         // Compose it back.
-        errStack = errorLines.map((line) => `  ${line}`).join('\n');
+        errStack = errorLines.map(line => `  ${line}`).join('\n');
         errStack = `\n${errStack}`;
 
         return errStack;

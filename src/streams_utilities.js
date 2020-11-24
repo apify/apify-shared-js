@@ -10,7 +10,7 @@ async function concatStreamToBuffer(stream) {
             .on('data', (chunk) => {
                 chunks.push(chunk);
             })
-            .on('error', (e) => reject(e))
+            .on('error', e => reject(e))
             .on('end', () => {
                 const buffer = Buffer.concat(chunks);
                 return resolve(buffer);

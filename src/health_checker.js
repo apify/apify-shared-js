@@ -41,7 +41,7 @@ class HealthChecker {
         } = options;
 
         if (!_.isArray(checks)) throw new Error('Parameter "check" must be an array');
-        checks.map((check) => this._validateCheck(check));
+        checks.map(check => this._validateCheck(check));
 
         this.checks = checks;
         this.redisPrefix = redisPrefix;

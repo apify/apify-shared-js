@@ -45,6 +45,7 @@ export const limitDepth = (record, depth, maxStringLength) => {
     if (_.isObject(record)) return depth ? _.mapObject(record, nextCall) : '[object]';
 
     // this shouldn't happen
+    // eslint-disable-next-line no-console
     console.log(`WARNING: Object cannot be logged: ${record}`);
 
     return undefined;
