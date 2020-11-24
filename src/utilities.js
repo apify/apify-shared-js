@@ -52,7 +52,6 @@ exports.deterministicUniqueId = (key, length = 17) => {
         .substr(0, length);
 };
 
-
 /**
  * Returns a random integer between 0 and max (excluded, unless it is also 0).
  * @param maxExcluded
