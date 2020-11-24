@@ -1,3 +1,8 @@
+xxxxxxxxxxxxxxxxxx
+==================
+- Packages updated
+- Code linted to match the new set of rules
+
 0.5.2 / 2020/11/12
 ==================
 - Replaced deprecated methods insert and remove of collection for mongoDb package

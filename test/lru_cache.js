@@ -212,7 +212,6 @@ describe('lru_cache', () => {
         });
     });
 
-
     describe('#clear()', () => {
         it('just works', () => {
             const lru = new LruCache({ maxLength: 1000 });

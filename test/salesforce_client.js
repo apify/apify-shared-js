@@ -1260,7 +1260,6 @@ describe('SalesforceClient', () => {
         });
     });
 
-
     describe('createLead()', () => {
         it('create lead works', async () => {
             const salesforceClient = new SalesforceClient(BASE_CONFIG);

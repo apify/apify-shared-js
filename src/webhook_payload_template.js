@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 const { JsonVariable, jsonStringifyExtended } = require('./utilities.client');
 
 class WebhookPayloadTemplateError extends Error {

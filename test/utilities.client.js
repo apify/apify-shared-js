@@ -7,7 +7,6 @@ import brokenClone from 'clone';
 
 import * as utils from '../build/utilities.client';
 
-
 const clone = function (obj) {
     return _.isArray(obj) ? obj.slice(0) : brokenClone(obj);
 };
@@ -128,7 +127,6 @@ const BAD_IRREVERSIBLE_OBJECTS = [
 
 const BAD_OBJECTS = _.union(BAD_REVERSIBLE_OBJECTS, BAD_IRREVERSIBLE_OBJECTS);
 
-
 // this effectively tests _escapePropertyName() and _unescapePropertyName()
 const KNOWN_ESCAPES = [
     {
@@ -195,14 +193,12 @@ const KNOWN_ESCAPES = [
     },
 ];
 
-
 const testIsBadForMongo = function (obj, expectedResult) {
     // ensure the function doesn't change the object!!!
     const objClone = clone(obj);
     assert.equal(utils.isBadForMongo(obj), expectedResult);
     assert.deepEqual(obj, objClone);
 };
-
 
 // tests escapeForBson() or unescapeFromBson() function whether it converts objects as expected
 const testEscape = function (escapeFunc, src, trg) {
@@ -221,7 +217,7 @@ const testEscape = function (escapeFunc, src, trg) {
     const isDate = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Date]';
     };
-    const isDateOrBuffer = obj => isDate(obj) || Buffer.isBuffer(obj);
+    const isDateOrBuffer = (obj) => isDate(obj) || Buffer.isBuffer(obj);
 
     // ensure srcClone didn't change
     if (
@@ -236,7 +232,6 @@ const testEscape = function (escapeFunc, src, trg) {
     assert.deepEqual(srcClone, trgClone);
     assert.deepEqual(trgClone, trg);
 };
-
 
 describe('utilities.client', () => {
     describe('#traverseObject()', () => {
@@ -614,7 +609,6 @@ describe('utilities.client', () => {
                 'http://example.com',
             );
 
-
             assert.equal(
                 utils.normalizeUrl('https://www.example.com#keyB=val1&keyA=val2', true),
                 'https://www.example.com#keyB=val1&keyA=val2',
@@ -690,7 +684,7 @@ describe('utilities.client', () => {
         };
         const ajv = new Ajv({ cache: false });
         const buildInputSchema = (properties) => {
-            const inputSchema = Object.assign({}, baseInputSchema, { properties });
+            const inputSchema = { ...baseInputSchema, properties };
             const validator = ajv.compile(inputSchema);
             return { inputSchema, validator };
         };
@@ -715,8 +709,8 @@ describe('utilities.client', () => {
             ];
 
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 3 invalid inputs
             expect(results.length).to.be.equal(3);
@@ -750,8 +744,8 @@ describe('utilities.client', () => {
                 { field: 'aA0' }, // Valid pattern and length
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 4 invalid inputs
             expect(results.length).to.be.equal(4);
@@ -785,8 +779,8 @@ describe('utilities.client', () => {
                 { field: [{ url: 'http://example.com' }, { url: 'http://www.example.com' }] },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
             expect(results.length).to.be.equal(5);
@@ -826,8 +820,8 @@ describe('utilities.client', () => {
                 { field: [{ key: 'aA0', value: 'aA0' }, { key: 'aA1', value: 'aA1' }] },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 6 invalid inputs
             expect(results.length).to.be.equal(6);
@@ -865,8 +859,8 @@ describe('utilities.client', () => {
                 { field: ['aA0', 'aA1'] },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
             expect(results.length).to.be.equal(5);
@@ -906,8 +900,8 @@ describe('utilities.client', () => {
             ];
 
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 6 invalid inputs
             expect(results.length).to.be.equal(6);
@@ -935,8 +929,8 @@ describe('utilities.client', () => {
             ];
 
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input))
+                .filter((errors) => errors.length > 0);
 
             // There should be 1 invalid inputs
             expect(results.length).to.be.equal(1);
@@ -970,8 +964,8 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyGroups: ['A', 'B', 'C'] } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter((errors) => errors.length > 0);
 
             // There should be 3 invalid inputs
             expect(results.length).to.be.equal(3);
@@ -1005,8 +999,8 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyGroups: ['A'] } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter((errors) => errors.length > 0);
 
             // There should be 3 invalid inputs
             expect(results.length).to.be.equal(3);
@@ -1040,8 +1034,8 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyGroups: ['RESIDENTIAL'] } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter((errors) => errors.length > 0);
 
             // There should be 3 invalid inputs
             expect(results.length).to.be.equal(3);
@@ -1051,7 +1045,6 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).to.be.equal('field');
             });
         });
-
 
         it('should validate custom proxy urls with regexp', () => {
             const { inputSchema, validator } = buildInputSchema({
@@ -1077,8 +1070,8 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: false, proxyUrls: ['http://asd:qweqe@127.0.0.1:5555'] } }, // with IP address
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
             expect(results.length).to.be.equal(5);
@@ -1115,8 +1108,8 @@ describe('utilities.client', () => {
                 { field: { useApifyProxy: true, apifyProxyCountry: 'US' } },
             ];
             const results = inputs
-                .map(input => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
-                .filter(errors => errors.length > 0);
+                .map((input) => utils.validateInputUsingValidator(validator, inputSchema, input, { proxy }))
+                .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
             expect(results.length).to.be.equal(5);

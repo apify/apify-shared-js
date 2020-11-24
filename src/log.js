@@ -15,7 +15,7 @@ const getDefaultOptions = () => ({
 
 class Log {
     constructor(options = {}) {
-        options = Object.assign({}, getDefaultOptions(), options);
+        options = { ...getDefaultOptions(), ...options };
 
         if (!LEVEL_TO_STRING[options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
@@ -46,7 +46,7 @@ class Log {
     internal(level, message, data, exception) {
         if (level > this.options.level) return;
 
-        data = Object.assign({}, this.options.data, data);
+        data = { ...this.options.data, ...data };
         data = this._limitDepth(data);
         exception = this._limitDepth(exception);
 
@@ -57,11 +57,11 @@ class Log {
     }
 
     setOptions(options) {
-        this.options = Object.assign({}, this.options, options);
+        this.options = { ...this.options, ...options };
     }
 
     getOptions() {
-        return Object.assign({}, this.options);
+        return { ...this.options };
     }
 
     child(options) {
@@ -74,14 +74,15 @@ class Log {
         }
 
         const data = options.data
-            ? Object.assign({}, this.options.data, options.data)
+            ? { ...this.options.data, ...options.data }
             : this.options.data;
 
-
-        const newOptions = Object.assign({}, this.options, options, {
+        const newOptions = {
+            ...this.options,
+            ...options,
             prefix,
             data,
-        });
+        };
 
         return new Log(newOptions);
     }
