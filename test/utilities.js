@@ -14,6 +14,20 @@ describe('utilities', () => {
         });
     });
 
+    describe('#deterministicUniqueId()', () => {
+        it('should work with default length', () => {
+            expect(utils.deterministicUniqueId('some-key').length).to.be.eql(17);
+            expect(utils.deterministicUniqueId('some-key')).to.be.eql(utils.deterministicUniqueId('some-key'));
+            expect(utils.deterministicUniqueId('some-key')).to.be.eql('aC9mlxqT7KbIAaIyU');
+        });
+
+        it('should work with custom length', () => {
+            expect(utils.deterministicUniqueId('some-key', 5).length).to.be.eql(5);
+            expect(utils.deterministicUniqueId('some-key', 5)).to.be.eql(utils.deterministicUniqueId('some-key', 5));
+            expect(utils.deterministicUniqueId('some-key', 5)).to.be.eql('aC9ml');
+        });
+    });
+
     describe('#getRandomInt()', () => {
         it('returns 0 for max 0', () => {
             assert(utils.getRandomInt(0) === 0);

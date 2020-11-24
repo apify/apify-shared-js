@@ -37,6 +37,23 @@ exports.cryptoRandomObjectId = function cryptoRandomObjectId(length) {
 };
 
 /**
+ * Generates unique, deterministic record ID from the provided key with given length (defaults to 17).
+ * @param {string} key
+ * @param {number} length
+ * @returns {string}
+ */
+exports.deterministicUniqueId = (key, length = 17) => {
+    length = length || 17;
+    return crypto
+        .createHash('sha256')
+        .update(key)
+        .digest('base64')
+        .replace(/(\+|\/|=)/g, 'x')
+        .substr(0, length);
+};
+
+
+/**
  * Returns a random integer between 0 and max (excluded, unless it is also 0).
  * @param maxExcluded
  * @returns {number}

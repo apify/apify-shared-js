@@ -1,3 +1,7 @@
+0.5.4 / 2020/11/24
+==================
+- Added function `deterministicUniqueId` for ID generation.
+
 0.5.3 / 2020/11/24
 ==================
 - Packages updated
