@@ -1,3 +1,7 @@
+0.5.5 / 2020/12/08
+==================
+- Added new images with fixed version of Apify SDK
+
 0.5.4 / 2020/11/24
 ==================
 - Added function `deterministicUniqueId` for ID generation.
