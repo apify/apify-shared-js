@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import createHmac from 'create-hmac';
 import querystring from 'querystring';
 
 /**
@@ -26,7 +26,7 @@ export default class ImageProxyClient {
     }
 
     _createDigest(string) {
-        const hmac = crypto.createHmac('sha1', this.hmacKey).update(string);
+        const hmac = createHmac('sha1', this.hmacKey).update(string);
         return hmac.digest('hex');
     }
 
