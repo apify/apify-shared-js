@@ -1,3 +1,7 @@
+0.5.6 / 2020/12/10
+==================
+- Replaced `crypto` in favor of `create-hmac` in ImageProxyClient so it can be used in browsers as well
+
 0.5.5 / 2020/12/08
 ==================
 - Added new images with fixed version of Apify SDK
