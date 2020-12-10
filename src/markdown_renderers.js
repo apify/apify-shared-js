@@ -17,10 +17,7 @@ export const customHeadingRenderer = (text, level, raw) => {
     if (!idTag) idTag = formatIdTag(raw);
     // If the custom ID is badly formatted, throw error
     if (idTags && idTag !== idTags[0]) {
-        log.warning(
-            new Error('apifyMarked: badly formatted heading ID passed to customHeadingRenderer'),
-            { id: idTags[0] },
-        );
+        log.warning('apifyMarked: badly formatted heading ID passed to customHeadingRenderer', { id: idTags[0] });
     }
 
     const titleText = text.split('{')[0].trim();
