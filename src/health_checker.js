@@ -41,7 +41,7 @@ class HealthChecker {
         } = options;
 
         if (!_.isArray(checks)) throw new Error('Parameter "check" must be an array');
-        checks.map(check => this._validateCheck(check));
+        checks.map((check) => this._validateCheck(check));
 
         this.checks = checks;
         this.redisPrefix = redisPrefix;
@@ -90,14 +90,14 @@ class HealthChecker {
         const collection = client.collection(this.mongoDbWriteTestCollection);
 
         // Remove old test items.
-        await collection.remove({
+        await collection.deleteMany({
             createdAt: {
                 $lt: new Date(Date.now() - this.mongoDbWriteTestRemoveOlderThanSecs * 1000),
             },
         });
 
         // Insert and read some item.
-        await collection.insert({
+        await collection.insertOne({
             _id: id,
             createdAt: new Date(),
         });

@@ -37,6 +37,22 @@ exports.cryptoRandomObjectId = function cryptoRandomObjectId(length) {
 };
 
 /**
+ * Generates unique, deterministic record ID from the provided key with given length (defaults to 17).
+ * @param {string} key
+ * @param {number} length
+ * @returns {string}
+ */
+exports.deterministicUniqueId = (key, length = 17) => {
+    length = length || 17;
+    return crypto
+        .createHash('sha256')
+        .update(key)
+        .digest('base64')
+        .replace(/(\+|\/|=)/g, 'x')
+        .substr(0, length);
+};
+
+/**
  * Returns a random integer between 0 and max (excluded, unless it is also 0).
  * @param maxExcluded
  * @returns {number}
@@ -384,7 +400,7 @@ exports.checkParamPrototypeOrThrow = (paramVal, paramName, prototypes, prototype
     if (isOptional && (paramVal === undefined || paramVal === null)) return;
 
     const hasCorrectPrototype = prototypes instanceof Array
-        ? _.some(prototypes, prototype => paramVal instanceof prototype)
+        ? _.some(prototypes, (prototype) => paramVal instanceof prototype)
         : paramVal instanceof prototypes;
 
     if (!hasCorrectPrototype) throw new Error(`Parameter "${paramName}" must be an instance of ${prototypeName}`);
@@ -450,7 +466,7 @@ exports.timeoutPromise = (promise, timeoutMillis, errorMessage = 'Promise has ti
             resolve(result);
         };
 
-        promise.then(result => callback(null, result), callback);
+        promise.then((result) => callback(null, result), callback);
         timeout = setTimeout(() => callback(new Error(errorMessage)), timeoutMillis);
     });
 };

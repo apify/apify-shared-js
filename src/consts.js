@@ -114,6 +114,22 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
         displayName: '[DEPRECATED] BETA: Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
         copyChown: 'node:node',
     },
+    // These are here because we made breaking changes in the client that could break existing single file actors.
+    // We will get a rid of this along with the whole single file logic.
+    {
+        name: 'apify/actor-node-basic:v0.21.10',
+        displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux (Apify SDK v0.21.10)',
+    },
+    {
+        name: 'apify/actor-node-chrome:v0.21.10',
+        displayName: '[DEPRECATED]: Node.js 12 + Chrome on Debian (Apify SDK v0.21.10)',
+        copyChown: 'myuser:myuser',
+    },
+    {
+        name: 'apify/actor-node-chrome-xvfb:v0.21.10',
+        displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian (Apify SDK v0.21.10)',
+        copyChown: 'myuser:myuser',
+    },
 ];
 
 /**

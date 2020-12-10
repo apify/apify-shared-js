@@ -185,7 +185,6 @@ export const buildOrVersionNumberIntToStr = (int) => {
     return str;
 };
 
-
 // escaped variants for various strings
 const ESCAPE_DOT = '\uFF0E'; // "."
 const ESCAPE_DOLLAR = '\uFF04'; // "$"
@@ -199,7 +198,6 @@ const REGEXP_DOT = new RegExp(ESCAPE_DOT, 'g');
 const REGEXP_DOLLAR = new RegExp(`^${ESCAPE_DOLLAR}`);
 const REGEXP_TO_BSON = new RegExp(`^${ESCAPE_TO_BSON}$`);
 const REGEXP_BSON_TYPE = new RegExp(`^${ESCAPE_BSON_TYPE}$`);
-
 
 /**
  * If a property name is invalid for MongoDB or BSON, the function transforms
@@ -297,7 +295,6 @@ export const traverseObject = function (obj, clone, transformFunc) {
     return result;
 };
 
-
 /**
  * Transforms an object so that it can be stored to MongoDB or serialized to BSON.
  * It does so by transforming prohibited property names (e.g. names starting with "$",
@@ -311,7 +308,6 @@ exports.escapeForBson = function (obj, clone) {
     return traverseObject(obj, clone, (key, value) => [escapePropertyName(key), value]);
 };
 
-
 /**
  * Reverts a transformation of object property names performed by escapeForBson().
  * Note that the reverse transformation might not be 100% equal to the original object
@@ -323,7 +319,6 @@ exports.escapeForBson = function (obj, clone) {
 exports.unescapeFromBson = function (obj, clone) {
     return traverseObject(obj, clone, (key, value) => [unescapePropertyName(key), value]);
 };
-
 
 /**
  * Determines whether an object contains property names that cannot be stored to MongoDB.
@@ -419,7 +414,7 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {};
     (options.availableProxyGroups || []).forEach((group) => { availableProxyGroupsById[group] = true; });
-    const unavailableProxyGroups = selectedProxyGroups.filter(group => !availableProxyGroupsById[group]);
+    const unavailableProxyGroups = selectedProxyGroups.filter((group) => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
         fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
@@ -431,9 +426,11 @@ function validateProxyField(fieldKey, value, isRequired = false, options = null)
 
     // Check if any of the proxy groups are blocked and if yes then output the associated message
     const blockedProxyGroupsById = options.disabledProxyGroups || {};
-    selectedProxyGroups.filter(group => blockedProxyGroupsById[group]).forEach((blockedGroup) => {
-        fieldErrors.push(blockedProxyGroupsById[blockedGroup]);
-    });
+    selectedProxyGroups
+        .filter((group) => blockedProxyGroupsById[group])
+        .forEach((blockedGroup) => {
+            fieldErrors.push(blockedProxyGroupsById[blockedGroup]);
+        });
 
     return fieldErrors;
 }
@@ -456,8 +453,8 @@ exports.validateInputUsingValidator = function (validator, inputSchema, input, o
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors
-            .map(error => parseAjvError(error, 'input', properties, input))
-            .filter(error => !!error);
+            .map((error) => parseAjvError(error, 'input', properties, input))
+            .filter((error) => !!error);
     }
 
     Object.keys(properties).forEach((property) => {
@@ -627,7 +624,6 @@ exports.jsonStringifyExtended = (value, replacer, space) => {
 
     return stringifiedValue;
 };
-
 
 /**
  * Splits a full name into the first name and last name, trimming all internal and external spaces.

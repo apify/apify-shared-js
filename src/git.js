@@ -1,6 +1,5 @@
 import gitUrlParse from 'git-url-parse';
 
-
 /**
  * This replaces all relative image paths (starting with './') in markdown readme
  * by appropriate absolute paths so they can be correctly rendered on the website.

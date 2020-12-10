@@ -14,7 +14,7 @@ export default class Logger extends EventEmitter {
     }
 
     setOptions(options) {
-        this.options = Object.assign({}, this.options, options);
+        this.options = { ...this.options, ...options };
     }
 
     getOptions() {

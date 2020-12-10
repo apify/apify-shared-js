@@ -1,3 +1,20 @@
+0.5.5 / 2020/12/08
+==================
+- Added new images with fixed version of Apify SDK
+
+0.5.4 / 2020/11/24
+==================
+- Added function `deterministicUniqueId` for ID generation.
+
+0.5.3 / 2020/11/24
+==================
+- Packages updated
+- Code linted to match the new set of rules
+
+0.5.2 / 2020/11/12
+==================
+- Replaced deprecated methods insert and remove of collection for mongoDb package
+
 0.5.1 / 2020/10/27
 ==================
 - Added function to convert relative URL paths in git README files to absolute paths
