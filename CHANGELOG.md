@@ -1,3 +1,8 @@
+0.5.7 / 2020/12/16
+==================
+- Improve replacement of relative paths in git READMEs. All paths not starting with "http://", "https://" or "www." are considered relative.
+  Such relative paths with or without leading ./ are replaced correctly.
+
 0.5.6 / 2020/12/10
 ==================
 - Replaced `crypto` in favor of `create-hmac` in ImageProxyClient so it can be used in browsers as well

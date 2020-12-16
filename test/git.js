@@ -146,4 +146,63 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         })).to.eql(testMarkdown)
     });
 
+    it('works for markdown style relative paths without leading ./', () => {
+        const testMarkdown = `
+            # Heading
+            ![img2](relative-path-to-img.jpg)
+        `;
+        const expectedResult = `
+            # Heading
+            ![img2](https://raw.githubusercontent.com/apify/test-repo/main/relative-path-to-img.jpg)
+        `;
+
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            gitBranchName: 'main',
+        })).to.eql(expectedResult)
+    });
+
+    it('works for image style relative paths without leading ./', () => {
+        const testMarkdown = `
+            # Heading
+            <img alt="Some alt text" src="relative-path-to-img.jpg" width="500"/>
+            <img alt="Some alt text" src='relative-path-to-img.jpg' width="500"/>
+        `;
+        const expectedResult = `
+            # Heading
+            <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/main/relative-path-to-img.jpg" width="500"/>
+            <img alt="Some alt text" src='https://raw.githubusercontent.com/apify/test-repo/main/relative-path-to-img.jpg' width="500"/>
+        `;
+
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            gitBranchName: 'main',
+        })).to.eql(expectedResult)
+    });
+
+    it('works for image style and markdown style absolute paths starting with http:// or https:// or www.', () => {
+        const testMarkdown = `
+            # Heading
+            ![img1](http://www.apify-awesome-test-image.com)
+            ![img1](https://www.apify-awesome-test-image.com)
+            ![img1](www.apify-awesome-test-image.com)
+
+            <img alt="Some alt text" src="http://www.apify-awesome-test-image.com" width="500"/>
+            <img alt="Some alt text" src="https://www.apify-awesome-test-image.com" width="500"/>
+            <img alt="Some alt text" src="www.apify-awesome-test-image.com" width="500"/>
+
+            <img alt="Some alt text" src='http://www.apify-awesome-test-image.com' width="500"/>
+            <img alt="Some alt text" src='https://www.apify-awesome-test-image.com' width="500"/>
+            <img alt="Some alt text" src='www.apify-awesome-test-image.com' width="500"/>
+        `;
+
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            gitBranchName: 'main',
+        })).to.eql(testMarkdown)
+    });
+
 });

@@ -25,12 +25,35 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
     const branchName = parsedRepoUrl.hash || gitBranchName || 'master';
 
     // Images in markdown have syntax ![alt text](image url)
-    const relativeImageMarkdownRegex = /(!\[.*?\])\(\.\/(.*?)\)/g;
+    // This is regular expression matching relative image paths
+    // The image path must not start with any of ['http://', 'https://', 'www']
+    // Alt text is captured in capturing group 1 and the path itself in capturing group 4.
+    // If the relative path starts with ./, it's ignored and not part of the capturing group.
+    //
+    // Examples
+    // ![example](relative_path) - matches with "example" in group 1 and "relative_path" in group 4
+    // ![example](./relative_path) - matches with "example" in group 1 and "relative_path" in group 4
+    // ![example](http://relative_path) - doesn't match
+    // ![example](https://relative_path) - doesn't match
+    // ![example](www.relative_path) - doesn't match
+    const relativeImgMdRegex = /(!\[.*?\])\((?!(https?:\/\/|www\.))(\.\/)?(.*?)\)/g;
 
     // HTML image references of type <img src="..." /> can be also embedded in markdown (e.g. in HTML table)
     // We provide 2 regular expression for cases where src attribute is wrapped in double or single quotes
-    const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")\.\/(.*?)(".*?\/>)/g;
-    const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')\.\/(.*?)('.*?\/>)/g;
+    // As in the example above, relative path is matched if it doesn't start with any of ['http://', 'https://', 'www.'].
+    // Also, if the path starts with "./", these characters are not part of the capture.
+    //
+    // Examples
+    // Text                              | Group 1               | Group 2 | Group 3 | Group 4 | Group 5
+    // <img src="path" key="val"/>       | <img alt="txt" src="  |         |         | path    | " key="val"/>
+    // <img src="./path" key="val"/      | <img alt="txt" src="  |         |  ./     | path    | " key="val"/>
+    // <img src="http://path" key="val"/      no match
+    // <img src="https://path" key="val"/     no match
+    // <img src="www.path" key="val"/         no match
+    const relativeImgHtmlRegexWithDoubleQuotes = /(<img.*?src=")(?!(https?:\/\/|www\.))(\.\/)?(.*?)(".*?\/>)/g;
+
+    // Same as for double quotes just all the src attribute is wrapped in single quote
+    const relativeImgHtmlRegexWithSingleQuotes = /(<img.*?src=')(?!(https?:\/\/|www\.))(\.\/)?(.*?)('.*?\/>)/g;
 
     let urlPrefix = null;
     if (parsedRepoUrl.resource === 'github.com') {
@@ -44,8 +67,8 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
 
     return urlPrefix
         ? readme
-            .replace(relativeImageMarkdownRegex, `$1(${urlPrefix}/$2)`)
-            .replace(relativeImageHtmlRegexWithDoubleQuotes, `$1${urlPrefix}/$2$3`)
-            .replace(relativeImageHtmlRegexWithSingleQuotes, `$1${urlPrefix}/$2$3`)
+            .replace(relativeImgMdRegex, `$1(${urlPrefix}/$4)`)
+            .replace(relativeImgHtmlRegexWithDoubleQuotes, `$1${urlPrefix}/$4$5`)
+            .replace(relativeImgHtmlRegexWithSingleQuotes, `$1${urlPrefix}/$4$5`)
         : readme;
 };
