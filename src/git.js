@@ -25,12 +25,12 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
     const branchName = parsedRepoUrl.hash || gitBranchName || 'master';
 
     // Images in markdown have syntax ![alt text](image url)
-    const relativeImageMarkdownRegex = /(!\[.*?\])\(\.\/(.*?)\)/g;
+    const relativeImageMarkdownRegex = /(!\[.*?\])\((?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)\)/g;
 
     // HTML image references of type <img src="..." /> can be also embedded in markdown (e.g. in HTML table)
     // We provide 2 regular expression for cases where src attribute is wrapped in double or single quotes
-    const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")\.\/(.*?)(".*?\/>)/g;
-    const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')\.\/(.*?)('.*?\/>)/g;
+    const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)(".*?\/>)/g;
+    const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)('.*?\/>)/g;
 
     let urlPrefix = null;
     if (parsedRepoUrl.resource === 'github.com') {
