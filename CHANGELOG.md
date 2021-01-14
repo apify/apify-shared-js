@@ -1,3 +1,7 @@
+0.5.7 / 2021/01/14
+==================
+- Updated function to convert relative image paths in git README files to absolute paths to support more URL formats
+
 0.5.6 / 2020/12/10
 ==================
 - Replaced `crypto` in favor of `create-hmac` in ImageProxyClient so it can be used in browsers as well
