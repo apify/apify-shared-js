@@ -55,6 +55,19 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         })).to.eql(testMarkdown)
     });
 
+    it('does not convert <img> tags with mismatched quotes', () => {
+        const testMarkdown = `
+            # Heading
+            <img src='path/to/img.jpg" />
+            <img src="path/to/img.jpg' />
+        `;
+
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git',
+        })).to.eql(testMarkdown)
+    });
+
     it('does not convert Base64 encoded images', () => {
         const testMarkdown = `
             # Heading

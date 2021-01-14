@@ -1,7 +1,7 @@
 import gitUrlParse from 'git-url-parse';
 
 /**
- * This replaces all relative image paths (starting with './') in markdown readme
+ * This replaces all relative image paths in markdown readme
  * by appropriate absolute paths so they can be correctly rendered on the website.
  * At the moment, the conversion works for 3 major repo systems, namely Github, Gitlab and Bitbucket and
  * also works if the user opted to use custom branch for deploying their actor to Apify.
@@ -24,11 +24,24 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
     // Prior to that, all default branches were 'master', hence we default to that as a backup.
     const branchName = parsedRepoUrl.hash || gitBranchName || 'master';
 
+    // We want to replace relative paths (all paths which are not absolute, so anything not starting with http://, https://, ftp:// or data:)
+    // with absolute paths, which is done by these fancy regular expressions
+
     // Images in markdown have syntax ![alt text](image url)
+    // (!\[.*?\])\( matches the start of the image code
+    // (?!(?:(?:https?|ftp):\/\/|data:)) lookahead matches if the next part of the string is not http://, https://, ftp:// or data:
+    // (?:\.?\/) matches the starting ./ or / in a relative or root-relative URL, which can be ignored when converting to absolute link
+    // (.*?) matches the actual relative URL
+    // \) matches the end parenthesis
     const relativeImageMarkdownRegex = /(!\[.*?\])\((?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)\)/g;
 
     // HTML image references of type <img src="..." /> can be also embedded in markdown (e.g. in HTML table)
     // We provide 2 regular expression for cases where src attribute is wrapped in double or single quotes
+    // (<img.*?src=") or (<img.*?src=') matches the start of the image code
+    // (?!(?:(?:https?|ftp):\/\/|data:)) lookahead matches if the next part of the string is not http://, https://, ftp:// or data:
+    // (?:\.?\/) matches the starting ./ or / in a relative or root-relative URL, which can be ignored when converting to absolute link
+    // (.*?) matches the actual relative URL
+    // (".*?\/>) or ('.*?\/>) matches the end of the image code
     const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)(".*?\/>)/g;
     const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)('.*?\/>)/g;
 
