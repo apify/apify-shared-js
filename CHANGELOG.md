@@ -1,3 +1,8 @@
+0.5.8 / 2021/02/03
+==================
+- Updated packages dependencies
+- Bump axios to 0.21.1 because https://www.npmjs.com/advisories/1594
+
 0.5.7 / 2021/01/14
 ==================
 - Updated function to convert relative image paths in git README files to absolute paths to support more URL formats
