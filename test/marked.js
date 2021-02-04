@@ -55,8 +55,10 @@ This is footer text.
 const EXPECTED_HTML =   '\n' +
 '            <h1 id="title">Title</h1>\n' +
 '            <h2 id="code-block-with-tabs">Code block with tabs</h2>[apify-code-tabs]0[/apify-code-tabs]\n' +
-'            <h2 id="code-block-without-tabs">Code block without tabs</h2>[apify-code-tabs]1[/apify-code-tabs]<pre><code>console.log(&#39;Fenced block with no language&#39;)</code></pre>\n' +
-'<pre><code>console.log(&#39;Tab indented block&#39;)</code></pre>\n' +
+'            <h2 id="code-block-without-tabs">Code block without tabs</h2>[apify-code-tabs]1[/apify-code-tabs]<pre><code>console.log(&#39;Fenced block with no language&#39;)\n' +
+'</code></pre>\n' +
+'<pre><code>console.log(&#39;Tab indented block&#39;)\n' +
+'</code></pre>\n' +
 '\n' +
 '            <h2 id="second-block-with-tabs">Second block with tabs</h2>[apify-code-tabs]2[/apify-code-tabs]\n' +
 '            <h2 id="footer">Footer</h2><p>This is footer text.</p>\n';
