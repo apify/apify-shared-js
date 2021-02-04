@@ -1,3 +1,7 @@
+0.5.9 / 2021/02/04
+==================
+- Added `PROXY_STATUS_URL` environment variable to the constants file
+
 0.5.8 / 2021/02/03
 ==================
 - Updated packages dependencies
