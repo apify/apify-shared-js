@@ -1,6 +1,6 @@
 {
   "name": "apify-shared",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "Tools and constants shared across Apify projects.",
   "main": "build/index.js",
   "keywords": [
@@ -44,7 +44,7 @@
     "create-hmac": "^1.1.7",
     "git-url-parse": "^11.4.4",
     "is-buffer": "^2.0.5",
-    "marked": "^1.2.4",
+    "marked": "^2.0.0",
     "match-all": "^1.2.6",
     "moment": "^2.29.1",
     "request": "^2.88.0",

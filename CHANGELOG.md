@@ -1,3 +1,8 @@
+0.6.0 / 2021/02/11
+==================
+- Reworked custom heading renderer in `apifyMarked`
+- Updated `marked` to 2.0.0 because of https://github.com/advisories/GHSA-4r62-v4vq-hr96
+
 0.5.9 / 2021/02/04
 ==================
 - Added `PROXY_STATUS_URL` environment variable to the constants file

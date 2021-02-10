@@ -12,20 +12,20 @@ describe('apifyMarked custom renderer works', () => {
 
 
     it('uses the custom ID if provided', () => {
-        const renderedTitle = marked('# Welcome to Apify {welcome-title-id}', { renderer });
+        const renderedTitle = marked('# [](#welcome-title-id) Welcome to Apify', { renderer });
         expect(renderedTitle).to.equal(`
-            <h1 id="welcome-title-id">Welcome to Apify</h1>`);
+            <h1 id="welcome-title-id"><a href="#welcome-title-id"></a>Welcome to Apify</h1>`);
     });
 
     it('generates ID from text if no ID provided', () => {
         const renderedTitle = marked('## Welcome to Apify', { renderer });
         expect(renderedTitle).to.eql(`
-            <h2 id="welcome-to-apify">Welcome to Apify</h2>`);
+            <h2 id="welcome-to-apify"><a href="#welcome-to-apify"></a>Welcome to Apify</h2>`);
     });
 
-    it('trims whitespace, inserts dashes between words, converts to lowercase, removes punctuation and trailing dash', () => {
-        const renderedTitle = marked('# Welcome to Apify { #  .Welcome -title-id . - ? -}', { renderer });
-        expect(renderedTitle).to.eql(`
-            <h1 id="welcome-title-id">Welcome to Apify</h1>`);
+    it('converts to lowercase, removes punctuation, multiple continuous dashes and leading and trailing dash', () => {
+        const renderedTitle = marked('### [](#?--welCOme-title-.?id---) Welcome to Apify', { renderer });
+        expect(renderedTitle).to.equal(`
+            <h3 id="welcome-title-id"><a href="#welcome-title-id"></a>Welcome to Apify</h3>`);
     });
 });
