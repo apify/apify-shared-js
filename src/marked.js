@@ -56,9 +56,9 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
  *
  * It parses the given markdown and treats some headings and code blocks in a custom way
  * -----------------------------------------------------------------------------------------------
- * 0. Heading with {custom-id} in text will have id="custom-id" property on reasulting <h...> tag.
+ * 0. Heading with [](#custom-id) before the text will have id="custom-id" property on reasulting <h...> tag.
  * E.g.
- * # Welcome to Apify {welcome-title-id}
+ * # [](#welcome-title-id) Welcome to Apify
  * is turned to
  * <h1 id="welcome-title-id">Welcome to Apify</h1>
  * -----------------------------------------------------------------------------------------------
