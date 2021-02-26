@@ -68,54 +68,110 @@ export const META_ORIGINS = {
 export const ACTOR_BASE_DOCKER_IMAGES = [
     // Latest:
     {
+        name: 'apify/actor-node',
+        displayName: 'Node.js 14 on Alpine Linux',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-puppeteer-chrome',
+        displayName: 'Node.js 14 + Puppeteer + Chrome on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-playwright-chrome',
+        displayName: 'Node.js 14 + Playwright + Chrome on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-playwright-firefox',
+        displayName: 'Node.js 14 + Playwright + Firefox on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-playwright-webkit',
+        displayName: 'Node.js 14 + Playwright + WebKit on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+    {
+        name: 'apify/actor-node-playwright',
+        displayName: 'Node.js 14 + Playwright + All Browsers on Ubuntu',
+        copyChown: 'myuser:myuser',
+        prePull: true,
+    },
+
+
+    // Beta:
+    {
+        name: 'apify/actor-node',
+        displayName: 'BETA: Node.js 14 on Alpine Linux:beta',
+    },
+    {
+        name: 'apify/actor-node-puppeteer-chrome:beta',
+        displayName: 'BETA: Node.js 14 + Puppeteer + Chrome on Debian',
+        copyChown: 'myuser:myuser',
+    },
+    {
+        name: 'apify/actor-node-playwright-chrome:beta',
+        displayName: 'BETA: Node.js 14 + Playwright + Chrome on Debian',
+        copyChown: 'myuser:myuser',
+    },
+    {
+        name: 'apify/actor-node-playwright-firefox:beta',
+        displayName: 'BETA: Node.js 14 + Playwright + Firefox on Debian',
+        copyChown: 'myuser:myuser',
+    },
+    {
+        name: 'apify/actor-node-playwright-webkit:beta',
+        displayName: 'BETA: Node.js 14 + Playwright + WebKit on Debian',
+        copyChown: 'myuser:myuser',
+    },
+    {
+        name: 'apify/actor-node-playwright:beta',
+        displayName: 'Node.js 14 + Playwright + All Browsers on Ubuntu',
+        copyChown: 'myuser:myuser',
+    },
+
+    // Deprecated:
+    // These are here because we made breaking changes in the client that could break existing single file actors.
+    // We will get a rid of this along with the whole single file logic.
+    {
         name: 'apify/actor-node-basic',
-        displayName: 'Node.js 12 on Alpine Linux',
+        displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome',
-        displayName: 'Node.js 12 + Chrome on Debian',
+        displayName: '[DEPRECATED]: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
         name: 'apify/actor-node-chrome-xvfb',
-        displayName: 'Node.js 12 + Chrome + Xvfb on Debian',
+        displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
-
-    // Beta:
     {
         name: 'apify/actor-node-basic:beta',
-        displayName: 'BETA: Node.js 12 on Alpine Linux',
+        displayName: '[DEPRECATED] BETA: Node.js 12 on Alpine Linux',
+        prePull: true,
     },
     {
         name: 'apify/actor-node-chrome:beta',
-        displayName: 'BETA: Node.js 12 + Chrome on Debian',
+        displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-chrome-xvfb:beta',
-        displayName: 'BETA: Node.js 12 + Chrome + Xvfb on Debian',
-        copyChown: 'myuser:myuser',
-    },
-
-    // Deprecated:
-    // TODO: Keep the for some time and then migrate acts to recommended images.
-    {
-        name: 'apify/actor-node-puppeteer',
-        displayName: '[DEPRECATED] Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
-        copyChown: 'node:node',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-puppeteer:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 12 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
-        copyChown: 'node:node',
+        name: 'apify/actor-node-chrome-xvfb:beta',
+        displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome + Xvfb on Debian',
+        copyChown: 'myuser:myuser',
+        prePull: true,
     },
-    // These are here because we made breaking changes in the client that could break existing single file actors.
-    // We will get a rid of this along with the whole single file logic.
     {
         name: 'apify/actor-node-basic:v0.21.10',
         displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux (Apify SDK v0.21.10)',
