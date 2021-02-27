@@ -103,7 +103,6 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
         prePull: true,
     },
 
-
     // Beta:
     {
         name: 'apify/actor-node',
