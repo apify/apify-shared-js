@@ -30,7 +30,7 @@
     "build-local-dev": "npm run build && cp package.json build && pushd build/ && npm i && popd",
     "test": "npm run build && mocha --timeout 5000 --require @babel/register --recursive",
     "test-cov": "npm run build && babel-node node_modules/isparta/bin/isparta cover --report text --report html node_modules/mocha/bin/_mocha -- --reporter dot",
-    "prepublishOnly": "test $RUNNING_FROM_SCRIPT || (echo \"You must use publish.sh instead of 'npm publish' directly!\"; exit 1)",
+    "prepublishOnly": "(test $CI || (echo \"Publishing is reserved to CI!\"; exit 1))",
     "clean": "rm -rf build && rm -rf docs",
     "lint": "npm run build && eslint src test",
     "lint:fix": "eslint src test --fix"
