@@ -82,23 +82,36 @@ describe('parse_jsonl_stream', () => {
         parseJsonl.write(json);
     });
 
-    it('fails on invalid JSON', () => {
+    it('fails on invalid JSON', async () => {
         const parseJsonl = new ParseJsonlStream();
 
-        parseJsonl.on('object', () => {
-            assert.fail();
+        let success;
+        let failTest;
+        // It seems that the ParseJsonlStream is implemented in a way that emits
+        // events in a sync fashion (i.e. not using nextTick or setImmediate).
+        // This makes all the other tests pass, but not this one, because some Node 14
+        // internals decided here that the error event should be emitted "later" anyway.
+        // We need this Promise magic because of that. It would be great to rewrite the
+        // stream to handle events properly, but given it's been like this since 2018,
+        // I guess it would bring more trouble than benefit.
+        const finishPromise = new Promise((resolve, reject) => {
+            success = resolve;
+            failTest = reject;
         });
 
-        let failed = false;
+        parseJsonl.on('object', () => {
+            failTest();
+        });
+
         parseJsonl.on('error', (err) => {
             assert(err.message.indexOf('Cannot parse JSON stream data') >= 0);
-            failed = true;
+            success();
         });
 
         parseJsonl.write('');
         parseJsonl.write('{"invalid: json}\n');
 
-        assert.ok(failed);
+        await finishPromise;
     });
 
     it('fails on unfinished JSON', () => {
