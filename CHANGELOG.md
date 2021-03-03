@@ -1,3 +1,7 @@
+0.6.1 / 2021/02/27
+==================
+- Updated the list of Docker images with SDK v1 images. Deprecated old ones.
+
 0.6.0 / 2021/02/11
 ==================
 - Reworked custom heading renderer in `apifyMarked`
