@@ -269,7 +269,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'welcome.action', 'echo', 'proxy', 'super-proxy', 'gdpr', 'case-studies', 'use-cases', 'how-to',
     'kb', 'cookies', 'cookie-policy', 'cookies-policy', 'powered-by', 'run', 'runs', 'actor', 'actors',
     'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace', 'presskit', 'press-kit', 'covid-19',
-    'covid', 'covid19', 'matfyz',
+    'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
