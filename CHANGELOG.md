@@ -1,3 +1,7 @@
+0.6.2 / 2021/03/05
+==================
+- Added `ACTOR_RUN_RESURRECTED` to `WEBHOOK_EVENT_TYPES` constant
+
 0.6.1 / 2021/02/27
 ==================
 - Updated the list of Docker images with SDK v1 images. Deprecated old ones.
