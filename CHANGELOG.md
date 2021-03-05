@@ -1,3 +1,7 @@
+0.6.3 / 2021/03/05
+==================
+- Fix invalid published package structure.
+
 0.6.2 / 2021/03/05
 ==================
 - Added `ACTOR_RUN_RESURRECTED` to `WEBHOOK_EVENT_TYPES` constant
