@@ -1,3 +1,7 @@
+0.7.0 / 2021/03/25
+==================
+- Adding new actor categories. This needs to be reflected in both app and web.
+
 0.6.3 / 2021/03/05
 ==================
 - Fix invalid published package structure.
