@@ -1,5 +1,4 @@
-function interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } // eslint-disable-line
-const gitUrlParse = interopRequireDefault(require('git-url-parse'));
+import gitUrlParse from 'git-url-parse';
 
 export const formatHeadingId = (headingId) => {
     // Replace non-word characters with dashes
@@ -53,13 +52,20 @@ export const customHeadingRenderer = (text, level, raw) => {
     return headingToReturn;
 };
 
-export const generateGitRepoUrlPrefix = (repoUrl, branchName) => {
-    let urlPrefix;
+export const parseRepoName = (repoUrl) => {
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
-    const parsedRepoUrl = (0, gitUrlParse.default)(repoUrl);
-
+    const parsedRepoUrl = gitUrlParse(repoUrl);
     const repoNameParts = parsedRepoUrl.full_name.split('/');
     const repoFullName = `${repoNameParts[0]}/${repoNameParts[1]}`;
+    return repoFullName;
+};
+
+/* *
+ * Generates URLs for RAW content such as images
+*/
+export const generateRawGitRepoUrlPrefix = (repoUrl, branchName) => {
+    let urlPrefix;
+    const repoFullName = parseRepoName(repoUrl);
 
     if (repoUrl.includes('github.com')) {
         urlPrefix = `https://raw.githubusercontent.com/${repoFullName}/${branchName}`;
@@ -68,6 +74,29 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName) => {
     } else if (repoUrl.includes('bitbucket.org')) {
         // Note: bytebucket is a raw content serving service by Bitbucket
         urlPrefix = `https://bytebucket.org/${repoFullName}/raw/${branchName}`;
+    }
+    return urlPrefix;
+};
+
+/* *
+ * Generates URLs for files and folders
+*/
+export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
+    let urlPrefix;
+    const repoFullName = parseRepoName(repoUrl);
+
+    const hrefParts = href.split('/');
+    const lastHrefPart = hrefParts[hrefParts.length - 1];
+    // If the last part of the URL has a dot, it's a file with an extension or .gitignore (blob), otherwise we assume the link is for a directory (tree)
+    const isTreeOrBlob = lastHrefPart.includes('.') ? 'blob' : 'tree';
+
+    if (repoUrl.includes('github.com')) {
+        urlPrefix = `https://github.com/${repoFullName}/${isTreeOrBlob}/${branchName}`;
+    } else if (repoUrl.includes('gitlab.com')) {
+        urlPrefix = `https://gitlab.com/${repoFullName}/-/${isTreeOrBlob}/${branchName}`;
+    } else if (repoUrl.includes('bitbucket.org')) {
+        // Note: bytebucket is a raw content serving service by Bitbucket
+        urlPrefix = `https://bitbucket.org/${repoFullName}/src/${branchName}`;
     }
     return urlPrefix;
 };
@@ -83,19 +112,17 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName) => {
  * @return {string}
 */
 export const customLinkRenderer = (href, text, repoUrl, branchName) => {
-    const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName);
-
     // Ensure that anchors have lowercase href
     if (href.startsWith('#')) {
         href = href.toLowerCase();
     }
-
-    // Replace relative URLs in README with absolute ones pointing to the actor's repo
+    // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     if (!href.startsWith('http') && !href.startsWith('ftp') && !href.startsWith('#')) {
+        const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
         href = `${urlPrefix}/${href}`;
     }
 
-    return `<a href=${href}>${text}</a>`;
+    return `<a href=${href} rel="nofollow noreferrer noopener">${text}</a>`;
 };
 
 /**
@@ -109,10 +136,8 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
  * @return {string}
 */
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
-    // Replace relative URLs in README with absolute ones pointing to the actor's repo
-    const urlPrefix = generateGitRepoUrlPrefix(repoUrl, gitBranchName);
-
     if (!href.startsWith('http') && !href.startsWith('ftp') && !href.startsWith('#')) {
+        const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
         href = `${urlPrefix}/${href}`;
     }
 
