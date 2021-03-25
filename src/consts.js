@@ -489,7 +489,6 @@ export const ALL_ACTOR_CATEGORIES = {
     ...LEGACY_ACTOR_CATEGORIES,
 };
 
-
 /**
  * Bases for converting version/build number to/from string/integer
  */
