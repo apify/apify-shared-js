@@ -87,7 +87,9 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
 
     const hrefParts = href.split('/');
     const lastHrefPart = hrefParts[hrefParts.length - 1];
-    // If the last part of the URL has a dot, it's a file with an extension or .gitignore (blob), otherwise we assume the link is for a directory (tree)
+
+    // If the last part of the URL has a dot, it's a file with an extension or .gitignore (blob),
+    // otherwise we assume the link is for a directory (tree)
     const isTreeOrBlob = lastHrefPart.includes('.') ? 'blob' : 'tree';
 
     if (repoUrl.includes('github.com')) {
