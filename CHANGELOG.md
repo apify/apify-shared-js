@@ -1,3 +1,7 @@
+0.7.1 / 2021/03/26
+==================
+- Adding JOBS to the list of actor categories
+
 0.7.0 / 2021/03/25
 ==================
 - Adding new actor categories. This needs to be reflected in both app and web.
