@@ -119,7 +119,8 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
         href = href.toLowerCase();
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    if (!href.startsWith('http') && !href.startsWith('ftp') && !href.startsWith('#')) {
+    const relativeUrlRegex = new RegExp('^(?:[a-z]+:)?//', 'i');
+    if (!relativeUrlRegex.test(href)) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
         href = `${urlPrefix}/${href}`;
     }
