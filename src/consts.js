@@ -449,6 +449,26 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
  * Categories for crawlers and actors
  */
 export const ACTOR_CATEGORIES = {
+    AUTOMATION: 'Automation',
+    BUSINESS: 'Business',
+    COVID_19: 'Covid-19',
+    DEVELOPER_EXAMPLES: 'Developer examples',
+    DEVELOPER_TOOLS: 'Developer tools',
+    ECOMMERCE: 'E-commerce',
+    GAMES: 'Games',
+    MARKETING: 'Marketing',
+    NEWS: 'News',
+    SEO_TOOLS: 'SEO tools',
+    SOCIAL_MEDIA: 'Social media',
+    TRAVEL: 'Travel',
+    VIDEOS: 'Videos',
+    OTHER: 'Other',
+};
+
+/**
+ * TODO: This will be used during the category migration and can be removed after that.
+ */
+export const LEGACY_ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     ECOMMERCE: 'E-commerce',
     ENTERTAINMENT: 'Entertainment',
@@ -463,6 +483,10 @@ export const ACTOR_CATEGORIES = {
     TOOLS: 'Tools',
     EXAMPLES: 'Examples',
     OTHER: 'Other',
+};
+export const ALL_ACTOR_CATEGORIES = {
+    ...ACTOR_CATEGORIES,
+    ...LEGACY_ACTOR_CATEGORIES,
 };
 
 /**

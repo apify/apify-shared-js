@@ -1,7 +1,12 @@
-0.6.4 / 2021/03/24
+0.7.1 / 2021/03/26
 ==================
 
 - Add custom image and link rendering functions for Markdown
+
+0.7.0 / 2021/03/25
+==================
+
+- Adding new actor categories. This needs to be reflected in both app and web.
 
 0.6.3 / 2021/03/05
 ==================
