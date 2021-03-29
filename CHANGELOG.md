@@ -1,7 +1,11 @@
-0.7.1 / 2021/03/26
+0.7.2 / 2021/03/29
 ==================
 
 - Add custom image and link rendering functions for Markdown
+
+0.7.1 / 2021/03/26
+==================
+
 - Adding JOBS to the list of actor categories
 
 0.7.0 / 2021/03/25
