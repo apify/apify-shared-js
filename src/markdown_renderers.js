@@ -1,6 +1,5 @@
 import gitUrlParse from 'git-url-parse';
-
-const relativeUrlRegex = new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*', 'i');
+import { isUrlRelative } from './utilities';
 
 export const formatHeadingId = (headingId) => {
     // Replace non-word characters with dashes
@@ -55,11 +54,10 @@ export const customHeadingRenderer = (text, level, raw) => {
 };
 
 export const parseRepoName = (repoUrl) => {
-    // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
     const parsedRepoUrl = gitUrlParse(repoUrl);
-    const repoNameParts = parsedRepoUrl.full_name.split('/');
-    const repoFullName = `${repoNameParts[0]}/${repoNameParts[1]}`;
-    return repoFullName;
+    // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
+    const repoName = parsedRepoUrl.full_name.split('/').slice(0, 2).join('/');
+    return repoName;
 };
 
 /* *
@@ -121,7 +119,8 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
         href = href.toLowerCase();
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    if (relativeUrlRegex.test(href)) {
+    const urlIsRelative = isUrlRelative(href);
+    if (urlIsRelative) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
         href = `${urlPrefix}/${href}`;
     }
@@ -141,7 +140,8 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
 */
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    if (relativeUrlRegex.test(href)) {
+    const urlIsRelative = isUrlRelative(href);
+    if (urlIsRelative) {
         const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
         href = `${urlPrefix}/${href}`;
     }
