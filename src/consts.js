@@ -456,6 +456,7 @@ export const ACTOR_CATEGORIES = {
     DEVELOPER_TOOLS: 'Developer tools',
     ECOMMERCE: 'E-commerce',
     GAMES: 'Games',
+    JOBS: 'Jobs',
     MARKETING: 'Marketing',
     NEWS: 'News',
     SEO_TOOLS: 'SEO tools',
