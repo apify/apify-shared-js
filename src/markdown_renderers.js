@@ -1,5 +1,7 @@
 import gitUrlParse from 'git-url-parse';
 
+const relativeUrlRegex = new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*', 'i');
+
 export const formatHeadingId = (headingId) => {
     // Replace non-word characters with dashes
     headingId = headingId.toLowerCase().trim().replace(/[^\w]+/g, '-');
@@ -119,8 +121,7 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
         href = href.toLowerCase();
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    const relativeUrlRegex = new RegExp('^(?:[a-z]+:)?//', 'i');
-    if (!relativeUrlRegex.test(href)) {
+    if (relativeUrlRegex.test(href)) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
         href = `${urlPrefix}/${href}`;
     }
@@ -139,7 +140,8 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
  * @return {string}
 */
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
-    if (!href.startsWith('http') && !href.startsWith('ftp') && !href.startsWith('#')) {
+    // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
+    if (relativeUrlRegex.test(href)) {
         const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
         href = `${urlPrefix}/${href}`;
     }
