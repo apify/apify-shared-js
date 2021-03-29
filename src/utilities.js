@@ -401,7 +401,7 @@ exports.checkParamPrototypeOrThrow = (paramVal, paramName, prototypes, prototype
     if (isOptional && (paramVal === undefined || paramVal === null)) return;
 
     const hasCorrectPrototype = prototypes instanceof Array
-        ? _.some(prototypes, (prototype) => paramVal instanceof prototype)
+        ? _.some(prototypes, prototype => paramVal instanceof prototype)
         : paramVal instanceof prototypes;
 
     if (!hasCorrectPrototype) throw new Error(`Parameter "${paramName}" must be an instance of ${prototypeName}`);
@@ -467,7 +467,7 @@ exports.timeoutPromise = (promise, timeoutMillis, errorMessage = 'Promise has ti
             resolve(result);
         };
 
-        promise.then((result) => callback(null, result), callback);
+        promise.then(result => callback(null, result), callback);
         timeout = setTimeout(() => callback(new Error(errorMessage)), timeoutMillis);
     });
 };
