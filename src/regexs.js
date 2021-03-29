@@ -107,3 +107,6 @@ export const GITHUB_GIST_URL_REGEX = new RegExp(`^https:\\/\\/gist\\.github\\.co
 
 // Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].
 export const SPLIT_PATH_REGEX = /[^/]+/g;
+
+// Check if a URL is relative, i.e. does not start with a protocol
+export const RELATIVE_URL_REGEX = new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*', 'i');
