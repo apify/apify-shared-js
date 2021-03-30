@@ -122,7 +122,9 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
     const urlIsRelative = utils.isUrlRelative(href);
     if (urlIsRelative) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
-        href = `${urlPrefix}/${href}`;
+        // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
+        const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
+        href = `${urlPrefix}/${cleanedHref}`;
     }
 
     return `<a href=${href} rel="nofollow noreferrer noopener">${text}</a>`;
@@ -143,7 +145,9 @@ export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
     const urlIsRelative = utils.isUrlRelative(href);
     if (urlIsRelative) {
         const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
-        href = `${urlPrefix}/${href}`;
+        // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
+        const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
+        href = `${urlPrefix}/${cleanedHref}`;
     }
 
     return `<img src=${href} alt=${text} />`;
