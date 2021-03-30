@@ -14,7 +14,6 @@ const cherow = require('cherow');
 const utilsClient = require('./utilities.client');
 const log = require('./log');
 const consts = require('./consts');
-const { RELATIVE_URL_REGEX } = require('./regexs');
 
 const { LoggerJson, LEVELS } = log;
 
@@ -540,13 +539,4 @@ exports.makeInputJsFieldsReadable = (json, jsFields, jsonSpacing = 4, globalSpac
     niceJson = niceJson.split('\n').join(`\n${globalSpaces}`);
 
     return niceJson;
-};
-
-/**
- * Perform a Regex test on a given URL to see if it is relative.
- * @param  {String} url
- * @return {boolean}
- */
-exports.isUrlRelative = (url) => {
-    return RELATIVE_URL_REGEX.test(url);
 };
