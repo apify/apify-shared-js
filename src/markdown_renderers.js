@@ -127,7 +127,7 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
         href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<a href=${href} rel="nofollow noreferrer noopener">${text}</a>`;
+    return `<a href="${href}" rel="nofollow noreferrer noopener">${text}</a>`;
 };
 
 /**
@@ -150,5 +150,5 @@ export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
         href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<img src=${href} alt=${text} />`;
+    return `<img src="${href}" alt=${text} />`;
 };

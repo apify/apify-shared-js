@@ -37,15 +37,24 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).to.equal('<a href=https://github.com/apify/actor-test-url/tree/main/src/foo/bar rel="nofollow noreferrer noopener">link to bar</a>')
+        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" rel="nofollow noreferrer noopener">link to bar</a>');
     })
 
     it('replaces relative URLs in images from GitHub repos with absolute URLs pointing to raw files', () => {
-        const href = './src/foo/bar.jpeg'
+        const href = './src/foo/bar.jpeg';
         const text = 'link to bar.jpeg';
         const repoUrl = `https://gitlab.com/${repoFullName}`;
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).to.equal(`<img src=https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg alt=link to bar.jpeg />`)
+        expect(renderedLink).to.equal(`<img src="https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg" alt=link to bar.jpeg />`);
+    })
+
+    it('does not replace absolute URLs', () => {
+        const href = 'https://github.com/apify/actor-test-url/do-not-change';
+        const text = 'absolute-link';
+        const repoUrl = `https://github.com/${repoFullName}`;
+        const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
+
+        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/do-not-change" rel="nofollow noreferrer noopener">absolute-link</a>');
     })
 });
