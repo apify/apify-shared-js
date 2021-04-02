@@ -58,7 +58,7 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
         "@babel/preset-env": "^7.12.13",
         "@babel/register": "^7.12.13",
-        "ajv": "^6.12.6",
+        "ajv": "^8.0.3",
         "apify-jsdoc-template": "github:apifytech/apify-jsdoc-template",
         "babel-plugin-add-module-exports": "^1.0.4",
         "chai": "^4.2.0",
