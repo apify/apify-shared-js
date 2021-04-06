@@ -644,3 +644,12 @@ exports.splitFullName = function (fullName) {
     }
     return [names[0], nonEmptyNames.slice(1).join(' ')];
 };
+
+/**
+ * Perform a Regex test on a given URL to see if it is relative.
+ * @param  {String} url
+ * @return {boolean}
+ */
+export const isUrlRelative = (url) => {
+    return regex.RELATIVE_URL_REGEX.test(url);
+};

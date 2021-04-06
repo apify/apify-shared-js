@@ -1,5 +1,5 @@
 import gitUrlParse from 'git-url-parse';
-import { isUrlRelative } from './utilities';
+import * as utils from './utilities.client';
 
 export const formatHeadingId = (headingId) => {
     // Replace non-word characters with dashes
@@ -119,13 +119,15 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
         href = href.toLowerCase();
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    const urlIsRelative = isUrlRelative(href);
+    const urlIsRelative = utils.isUrlRelative(href);
     if (urlIsRelative) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
-        href = `${urlPrefix}/${href}`;
+        // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
+        const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
+        href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<a href=${href} rel="nofollow noreferrer noopener">${text}</a>`;
+    return `<a href="${href}" rel="nofollow noreferrer noopener">${text}</a>`;
 };
 
 /**
@@ -140,11 +142,13 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
 */
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
-    const urlIsRelative = isUrlRelative(href);
+    const urlIsRelative = utils.isUrlRelative(href);
     if (urlIsRelative) {
         const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
-        href = `${urlPrefix}/${href}`;
+        // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
+        const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
+        href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<img src=${href} alt=${text} />`;
+    return `<img src="${href}" alt=${text} />`;
 };

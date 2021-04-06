@@ -1,3 +1,8 @@
+0.7.3 / 2021/03/30
+==================
+
+- Fix isUrlRelative function placement - it was in the wrong file before.
+
 0.7.2 / 2021/03/29
 ==================
 
