@@ -26,7 +26,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "rm -rf build types && babel src --out-dir build && cp src/*.json build && tsc ./src/*.js --allowJs --declaration --emitDeclarationOnly --declarationDir types --skipLibCheck",
+        "build": "rm -rf build types && babel src --out-dir build && cp src/*.json build && tsc ./src/*.js --allowJs --declaration --emitDeclarationOnly --declarationDir build --skipLibCheck",
         "build-doc": "npm run clean && npm run build && node ./node_modules/jsdoc/jsdoc.js --package ./package.json -c ./jsdoc/conf.json -d docs",
         "build-local-dev": "npm run build && cp package.json build && pushd build/ && npm i && popd",
         "test": "npm run build && mocha --timeout 5000 --require @babel/register --recursive",
