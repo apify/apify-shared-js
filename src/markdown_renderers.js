@@ -117,8 +117,7 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
     // Ensure that anchors have lowercase href
     // Return Apify links without special rels
     if (href.startsWith('#') || href.includes('apify.com')) {
-        href = href.toLowerCase();
-        return `<a href="${href}">${text}</a>`;
+        return `<a href="${href.toLowerCase()}">${text}</a>`;
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     const urlIsRelative = utils.isUrlRelative(href);
