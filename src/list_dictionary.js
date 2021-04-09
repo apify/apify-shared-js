@@ -28,6 +28,10 @@ export default class ListDictionary {
     /**
      * Adds an item to the list. If there is already an item with same key, the function
      * returns false and doesn't make any changes. Otherwise, it returns true.
+     *
+     * @param {string} key
+     * @param {*} item
+     * @param {boolean} [toFirstPosition]
      */
     add(key, item, toFirstPosition) {
         if (typeof (key) !== 'string') throw new Error('Parameter "key" must be a string.');
@@ -108,6 +112,8 @@ export default class ListDictionary {
     /**
      * Removes an item identified by a key. The function returns the
      * object if it was found or null if it wasn't.
+     *
+     * @param {string} key
      */
     remove(key) {
         if (typeof (key) !== 'string') throw new Error('Parameter "key" must be a string.');
@@ -124,6 +130,8 @@ export default class ListDictionary {
 
     /**
      * Finds a request based on the URL.
+     *
+     * @param {string} key
      */
     get(key) {
         if (typeof (key) !== 'string') throw new Error('Parameter "key" must be a string.');

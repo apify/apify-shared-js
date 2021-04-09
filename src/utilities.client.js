@@ -26,8 +26,8 @@ export const isNullOrUndefined = function isNullOrUndefined(obj) {
 
 /**
  * Converts Date object to ISO string.
- * @param date
- * @param middleT
+ * @param {Date} date
+ * @param {boolean} middleT
  * @returns {*}
  */
 export const dateToString = function dateToString(date, middleT) {
@@ -54,9 +54,9 @@ export const dateToString = function dateToString(date, middleT) {
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not,
  * appending a specific suffix to it.
- * @param str
- * @param maxLength
- * @param suffix Suffix to be appended to truncated string. If null or undefined, it defaults to "...[truncated]".
+ * @param {string} str
+ * @param {number} [maxLength]
+ * @param {string} [suffix] Suffix to be appended to truncated string. If null or undefined, it defaults to "...[truncated]".
  */
 export const truncate = function (str, maxLength, suffix) {
     maxLength |= 0; // eslint-disable-line no-bitwise
@@ -69,6 +69,8 @@ export const truncate = function (str, maxLength, suffix) {
 
 /**
  * Gets ordinal suffix for a number (e.g. "nd" for 2).
+ *
+ * @param {number} num
  */
 export const getOrdinalSuffix = function (num) {
     // code from https://ecommerce.shopify.com/c/ecommerce-design/t/ordinal-number-in-javascript-1st-2nd-3rd-4th-29259
@@ -228,8 +230,7 @@ export const escapePropertyName = (name) => {
  * Reverses a string transformed using escapePropertyName() back to its original form.
  * Note that the reverse transformation might not be 100% correct for certain unlikely-to-occur strings
  * (e.g. string contain null chars).
- * @param key
- * @returns {*}
+ * @param {string} name
  * @private
  */
 export const unescapePropertyName = function (name) {

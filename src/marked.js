@@ -32,7 +32,7 @@ const DEFAULT_MARKED_RENDERER = new marked.Renderer();
 
 /**
  * @param {string} markdown
- * @return { Object.<string, {language: string, code: string}> } tabs
+ * @returns {Record<string, { language: string, code: string }>} tabs
  */
 const codeTabObjectFromCodeTabMarkdown = (markdown) => {
     const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
@@ -43,11 +43,16 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
         nextMatch = matchesIterator.nextRaw();
     }
 
+    /**
+     * @type {Record<string, { language: string, code: string }>}
+     */
     const tabs = {};
+
     for (const match of matches) {
         const { header, lang } = match.groups;
         tabs[header] = { language: lang, code: match.groups.code.trim() };
     }
+
     return tabs;
 };
 
@@ -123,7 +128,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown) => {
  * Each [apify-code-tabs]$INDEX[/apify-code-tabs] is meant to be later replaced be a react component
  * rendering the appropriate codeTabBlockObject returned by this function.
  * @param {string} markdown
- * @return {{ html: string, codeTabsObjectPerIndex: Object.<number, Object.<string, {language: string, code: string}>> }}
+ * @return {{ html: string, codeTabsObjectPerIndex: Record<number, Record<string, { language: string, code: string }>> }}
  */
 export const apifyMarked = (markdown) => {
     const renderer = new marked.Renderer();

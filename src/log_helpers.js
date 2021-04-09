@@ -6,6 +6,8 @@ import { LEVELS } from './log_consts';
 /**
  * Gets log level from env variable.
  * Both integers and strings (WARNING) are supported.
+ *
+ * @returns {number}
  */
 export const getLevelFromEnv = () => {
     const envVar = process.env[ENV_VARS.LOG_LEVEL];
@@ -17,11 +19,15 @@ export const getLevelFromEnv = () => {
 };
 
 /**
-* Limits given object to given depth.
-*
-* ie. Replaces object's content by '[object]' and array's content
-* by '[array]' when the value is nested more than given limit.
-*/
+ * Limits given object to given depth.
+ *
+ * ie. Replaces object's content by '[object]' and array's content
+ * by '[array]' when the value is nested more than given limit.
+ *
+ * @param {*} record
+ * @param {number} depth
+ * @param {number} [maxStringLength]
+ */
 export const limitDepth = (record, depth, maxStringLength) => {
     // handle common cases quickly
     const type = typeof (record);

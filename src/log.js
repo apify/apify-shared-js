@@ -37,6 +37,9 @@ class Log {
         return this.options.level;
     }
 
+    /**
+     * @param {'OFF' | 'ERROR' | 'SOFT_FAIL' | 'WARNING' | 'INFO' | 'DEBUG' | 'PERF'} level
+     */
     setLevel(level) {
         if (!LEVEL_TO_STRING[level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
 
@@ -87,30 +90,59 @@ class Log {
         return new Log(newOptions);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     error(message, data) {
         this.internal(LEVELS.ERROR, message, data);
     }
 
+    /**
+     * @param {*} exception
+     * @param {string} message
+     * @param {*} [data]
+     */
     exception(exception, message, data) {
         this.internal(LEVELS.ERROR, message, data, exception);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     softFail(message, data) {
         this.internal(LEVELS.SOFT_FAIL, message, data);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     warning(message, data) {
         this.internal(LEVELS.WARNING, message, data);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     info(message, data) {
         this.internal(LEVELS.INFO, message, data);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     debug(message, data) {
         this.internal(LEVELS.DEBUG, message, data);
     }
 
+    /**
+     * @param {string} message
+     * @param {*} [data]
+     */
     perf(message, data) {
         this.internal(LEVELS.PERF, message, data);
     }
@@ -118,6 +150,8 @@ class Log {
     /**
      * Logs given message only once as WARNING. It's used to warn user that some feature he is using
      * has been deprecated.
+     *
+     * @param {string} message
      */
     deprecated(message) {
         if (this.deprecationsReported[message]) return;

@@ -9,6 +9,9 @@ export class RetryableError extends Error {
     }
 }
 
+/**
+ * @param {{ func: Function, expBackoffMillis: number, expBackoffMaxRepeats: number }} params
+ */
 export const retryWithExpBackoff = async (params = {}) => {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
     if (typeof func !== 'function') {
