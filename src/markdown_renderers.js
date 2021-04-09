@@ -114,9 +114,9 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
  * @return {string}
 */
 export const customLinkRenderer = (href, text, repoUrl, branchName) => {
-    // Handle anchor links and local Apify links
+    // Handle anchor links, local Apify links, and mailto
     // Return Apify domain links without rel="nofollow" for SEO
-    if (href.startsWith('#') || href.includes('apify.com')) {
+    if (href.startsWith('#') || href.includes('apify.com') || href.startsWith('mailto')) {
         // Ensure that anchors have lowercase href
         return `<a href="${href.toLowerCase()}">${text}</a>`;
     }
