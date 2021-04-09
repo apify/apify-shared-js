@@ -12,9 +12,10 @@ import querystring from 'querystring';
  */
 export default class ImageProxyClient {
     /**
-     * @param domain - Domain name of proxy image server
-     * @param hmacKey - Key for create Hmac hash
-     * @param [protocol] - By default https is used
+     * @param {Object} options
+     * @param {string} options.domain - Domain name of proxy image server
+     * @param {string} options.hmacKey - Key for create Hmac hash
+     * @param {string} [options.protocol="https"] - By default https is used
      */
     constructor({ domain, hmacKey, protocol = 'https' }) {
         if (!domain) throw new Error('ImageProxyClient: Parameter domain is required!');
@@ -30,15 +31,14 @@ export default class ImageProxyClient {
         return hmac.digest('hex');
     }
 
-    // eslint-disable-next-line class-methods-use-this
     _createHex(string) {
         return Buffer.from(string, 'utf8').toString('hex');
     }
 
     /**
      * Generates image URL in format:
-     * http://example.com/<digest of image url>?url=<url encoded image url>
-     * @param url
+     * `http://example.com/<digest of image url>?url=<url encoded image url>`
+     * @param {string} url
      * @return {string}
      */
     generateUrlWithParam(url) {
@@ -49,8 +49,8 @@ export default class ImageProxyClient {
 
     /**
      * Generates image URL in format:
-     * http://example.com/<digest of image url>/<hex string of image url>
-     * @param url
+     * `http://example.com/<digest of image url>/<hex string of image url>`
+     * @param {string} url
      * @return {string}
      */
     generateUrl(url) {
@@ -61,8 +61,8 @@ export default class ImageProxyClient {
 
     /**
      * Finds all images in HTML and updates src attributes with image proxy URL
-     * @param html - string HTML
-     * @return {string} - Updated HTML
+     * @param {string} html String HTML
+     * @return {string} Updated HTML
      */
     updateImagesInHtml(html) {
         const allImgElements = html.match(/<\s*img[^>]*>/gi);
@@ -83,10 +83,10 @@ export default class ImageProxyClient {
 
     /**
      * Creates HTML of image element with image proxy URL
-     * @param src -  Used for src attribute
-     * @param title - Used for title attribute
-     * @param alt - Used for alt attribute
-     * @return {string} - Image element
+     * @param {string} src Used for src attribute
+     * @param {string} title Used for title attribute
+     * @param {string} alt Used for alt attribute
+     * @return {string} Image element
      */
     createImageHtml(src, title, alt) {
         return `<img src="${this.generateUrl(src)}" alt="${alt}" title="${title}">`;

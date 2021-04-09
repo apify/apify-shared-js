@@ -40,6 +40,9 @@ export default class LinkedList {
 
     /**
       * Appends a new node with specific data to the end of the linked list.
+      *
+      * @param {*} data
+      * @param {boolean} [toFirstPosition]
       */
     add(data, toFirstPosition) {
         const node = new LinkedListNode(data);
@@ -50,6 +53,9 @@ export default class LinkedList {
 
     /**
      * Appends a new node to the end of the linked list or the beginning if firstPosition is true-ish.
+     *
+     * @param {LinkedListNode} node
+     * @param {boolean} [toFirstPosition]
      */
     addNode(node, toFirstPosition) {
         if (typeof (node) !== 'object' || node === null) throw new Error('Parameter "node" must be an object');
@@ -77,6 +83,8 @@ export default class LinkedList {
     /**
      * Finds a first node that holds a specific data object. See 'dataEqual' function for a description
      * how the object equality is tested. Function returns null if the data cannot be found.
+     *
+     * @param {*} data
      */
     find(data) {
         for (let node = this.head; node !== null; node = node.next) {
@@ -86,6 +94,9 @@ export default class LinkedList {
         return null;
     }
 
+    /**
+     * @param {LinkedListNode} node
+     */
     removeNode(node) {
         if (typeof (node) !== 'object' || node === null) throw new Error('Parameter "node" must be an object');
 

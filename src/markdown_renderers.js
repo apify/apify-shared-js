@@ -1,6 +1,9 @@
 import gitUrlParse from 'git-url-parse';
 import * as utils from './utilities.client';
 
+/**
+ * @param {string} headingId
+ */
 export const formatHeadingId = (headingId) => {
     // Replace non-word characters with dashes
     headingId = headingId.toLowerCase().trim().replace(/[^\w]+/g, '-');
@@ -12,6 +15,10 @@ export const formatHeadingId = (headingId) => {
     return headingId;
 };
 
+/**
+ * @param {string} text
+ * @param {string} raw
+ */
 export const extractHeadingIdAndText = (text, raw) => {
     // Check if there is a custom fragment link with the custom heading ID present in the heading
     // The heading text already comes rendered from Markdown to HTML to the renderer, so we have to look for an <a> tag instead of the Markdown source
@@ -44,6 +51,10 @@ export const extractHeadingIdAndText = (text, raw) => {
  *   ### [](#custom-id) Heading text
  *     becomes
  *   <h3 id="custom-id"><a href="#custom-id"></a>Heading text</h3>
+ *
+ * @param {string} text
+ * @param {1 | 2 | 3 | 4 | 5 | 6} level
+ * @param {string} raw
 */
 export const customHeadingRenderer = (text, level, raw) => {
     const { headingId, headingText } = extractHeadingIdAndText(text, raw);
@@ -53,6 +64,9 @@ export const customHeadingRenderer = (text, level, raw) => {
     return headingToReturn;
 };
 
+/**
+ * @param {string} repoUrl
+ */
 export const parseRepoName = (repoUrl) => {
     const parsedRepoUrl = gitUrlParse(repoUrl);
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
@@ -60,9 +74,12 @@ export const parseRepoName = (repoUrl) => {
     return repoName;
 };
 
-/* *
+/**
  * Generates URLs for RAW content such as images
-*/
+ *
+ * @param {string} repoUrl
+ * @param {string} branchName
+ */
 export const generateRawGitRepoUrlPrefix = (repoUrl, branchName) => {
     let urlPrefix;
     const repoFullName = parseRepoName(repoUrl);
@@ -78,9 +95,13 @@ export const generateRawGitRepoUrlPrefix = (repoUrl, branchName) => {
     return urlPrefix;
 };
 
-/* *
+/**
  * Generates URLs for files and folders
-*/
+ *
+ * @param {string} repoUrl
+ * @param {string} branchName
+ * @param {string} href
+ */
 export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
     let urlPrefix;
     const repoFullName = parseRepoName(repoUrl);
@@ -139,7 +160,7 @@ export const customLinkRenderer = (href, text, repoUrl, branchName) => {
  * @param {string} href
  * @param {string} text
  * @param {string} repoUrl
- * @param {string} branchName
+ * @param {string} gitBranchName
  * @return {string}
 */
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
