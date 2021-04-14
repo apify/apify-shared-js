@@ -110,3 +110,6 @@ export const SPLIT_PATH_REGEX = /[^/]+/g;
 
 // Check if a URL is relative, i.e. does not start with a protocol
 export const RELATIVE_URL_REGEX = new RegExp('^(?!www.|(?:http|ftp)s?://|[A-Za-z]:\\|//).*', 'i');
+
+// Check if a link is a mailto/tel/sms type
+export const CONTACT_LINK_REGEX = new RegExp('^(mailto|tel|sms):.*$', 'i');

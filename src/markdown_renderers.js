@@ -1,6 +1,8 @@
 import gitUrlParse from 'git-url-parse';
 import * as utils from './utilities.client';
 
+const regex = require('./regexs');
+
 /**
  * @param {string} headingId
  */
@@ -78,11 +80,14 @@ export const parseRepoName = (repoUrl) => {
  * Generates URLs for RAW content such as images
  *
  * @param {string} repoUrl
- * @param {string} branchName
+ * @param {string} gitBranchName
  */
-export const generateRawGitRepoUrlPrefix = (repoUrl, branchName) => {
+export const generateRawGitRepoUrlPrefix = (repoUrl, gitBranchName) => {
     let urlPrefix;
     const repoFullName = parseRepoName(repoUrl);
+
+    // Avoid errors created by missing branch name / badly formed URLs
+    const branchName = gitBranchName || 'main';
 
     if (repoUrl.includes('github.com')) {
         urlPrefix = `https://raw.githubusercontent.com/${repoFullName}/${branchName}`;
@@ -99,10 +104,10 @@ export const generateRawGitRepoUrlPrefix = (repoUrl, branchName) => {
  * Generates URLs for files and folders
  *
  * @param {string} repoUrl
- * @param {string} branchName
+ * @param {string} gitBranchName
  * @param {string} href
  */
-export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
+export const generateGitRepoUrlPrefix = (repoUrl, gitBranchName, href) => {
     let urlPrefix;
     const repoFullName = parseRepoName(repoUrl);
 
@@ -112,6 +117,9 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
     // If the last part of the URL has a dot, it's a file with an extension or .gitignore (blob),
     // otherwise we assume the link is for a directory (tree)
     const isTreeOrBlob = lastHrefPart.includes('.') ? 'blob' : 'tree';
+
+    // Avoid errors created by missing branch name / badly formed URLs
+    const branchName = gitBranchName || 'main';
 
     if (repoUrl.includes('github.com')) {
         urlPrefix = `https://github.com/${repoFullName}/${isTreeOrBlob}/${branchName}`;
@@ -127,25 +135,27 @@ export const generateGitRepoUrlPrefix = (repoUrl, branchName, href) => {
 /**
  * Replaces relative links with absolute ones that point to the actor's git repo.
  * Mainly for use in actor READMES
- * Parses the actor's repo URL to extract the repo name and owner name.
+ * The flow:
+ * 1) handle anchors, Apify links, and contact links (these don't point to a git repo and shouldn't have rel=nofollow).
+ * 2) handle relative links for the Git repo and convert them to absolute
+ * 3) handle absolute links
  * @param {string} href
  * @param {string} text
  * @param {string} repoUrl
- * @param {string} branchName
+ * @param {string} gitBranchName
  * @return {string}
 */
-export const customLinkRenderer = (href, text, repoUrl, branchName) => {
+export const customLinkRenderer = (href, text, repoUrl, gitBranchName) => {
     // Handle anchor links, local Apify links, and mailto
     // Return Apify domain links without rel="nofollow" for SEO
-    const contactLinkRegex = new RegExp('^(mailto|tel|sms):.*$', 'i');
-    if (href.startsWith('#') || href.includes('apify.com') || contactLinkRegex.test(href)) {
+    if (href.startsWith('#') || href.includes('apify.com') || regex.CONTACT_LINK_REGEX.test(href)) {
         // Ensure that anchors have lowercase href
         return `<a href="${href.toLowerCase()}">${text}</a>`;
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     const urlIsRelative = utils.isUrlRelative(href);
     if (urlIsRelative) {
-        const urlPrefix = generateGitRepoUrlPrefix(repoUrl, branchName, href);
+        const urlPrefix = generateGitRepoUrlPrefix(repoUrl, gitBranchName, href);
         // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
         const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
         href = `${urlPrefix}/${cleanedHref}`;
