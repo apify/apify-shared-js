@@ -154,7 +154,7 @@ export const customLinkRenderer = (href, text, repoUrl, gitBranchName) => {
     }
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     const urlIsRelative = utils.isUrlRelative(href);
-    if (urlIsRelative) {
+    if (urlIsRelative && repoUrl) {
         const urlPrefix = generateGitRepoUrlPrefix(repoUrl, gitBranchName, href);
         // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
         const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
@@ -177,7 +177,7 @@ export const customLinkRenderer = (href, text, repoUrl, gitBranchName) => {
 export const customImageRenderer = (href, text, repoUrl, gitBranchName) => {
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     const urlIsRelative = utils.isUrlRelative(href);
-    if (urlIsRelative) {
+    if (urlIsRelative && repoUrl) {
         const urlPrefix = generateRawGitRepoUrlPrefix(repoUrl, gitBranchName);
         // Since the README will always be in the root, the hrefs will have the same prefix, which needs to be taken off for the URL
         const cleanedHref = href.startsWith('./') ? href.replace('./', '') : href;
