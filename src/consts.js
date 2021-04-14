@@ -603,3 +603,5 @@ export const MARKETPLACE_USER_ROLES = {
     DATA_EXPERT: 'DATA_EXPERT',
     CUSTOMER: 'CUSTOMER',
 };
+
+export const GIT_MAIN_BRANCH = 'main';
