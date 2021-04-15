@@ -483,9 +483,10 @@ exports.timeoutPromise = (promise, timeoutMillis, errorMessage = 'Promise has ti
  * @param  {Array<String>} jsFields
  * @param  {Number} [jsonSpacing=4]
  * @param  {Number} [globalSpacing=4]
+ * @param  {Boolean} [functionAsTemplateLiteral=false] if true, then formatted functions will be wrapped in backticks
  * @return {String}
  */
-exports.makeInputJsFieldsReadable = (json, jsFields, jsonSpacing = 4, globalSpacing = 0) => {
+exports.makeInputJsFieldsReadable = (json, jsFields, jsonSpacing = 4, globalSpacing = 0, functionAsTemplateLiteral = false) => {
     const parsedJson = JSON.parse(json);
     const replacements = {};
 
@@ -520,6 +521,15 @@ exports.makeInputJsFieldsReadable = (json, jsFields, jsonSpacing = 4, globalSpac
         maybeFunction = maybeFunction
             .split('\n').join(`\n${spaces}`) // This prefixes each line with spaces.
             .trim(); // Trim whitespace on both sides
+
+        if (functionAsTemplateLiteral) {
+            // Escape backticks
+            maybeFunction = maybeFunction.replace(/`/g, '\\`');
+            // Escape expression placeholders
+            maybeFunction = maybeFunction.replace(/\${/g, '\\${');
+            // Wrap the function in backticks
+            maybeFunction = `\`${maybeFunction}\``;
+        }
 
         const replacementValue = isSingleFunction
             ? maybeFunction.replace(/[;]+$/g, '') // Remove trailing semicolons
