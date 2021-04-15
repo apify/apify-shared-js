@@ -19,6 +19,8 @@ export default class LruCache {
 
     /**
      * Get item from Cache and move to last position
+     *
+     * @param {string} key
      */
     get(key) {
         if (typeof (key) !== 'string') throw new Error('Parameter "key" must be a string.');
@@ -32,6 +34,9 @@ export default class LruCache {
 
     /**
      * Add new item to cache, remove least used item if length exceeds maxLength
+     *
+     * @param {string} key
+     * @param {*} value
      */
     add(key, value) {
         const added = this.listDictionary.add(key, value);
@@ -44,6 +49,8 @@ export default class LruCache {
 
     /**
      * Remove item with key
+     *
+     * @param {string} key
      */
     remove(key) {
         return this.listDictionary.remove(key);

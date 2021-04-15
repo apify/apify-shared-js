@@ -102,7 +102,8 @@ jobs:
         run: node ./.github/scripts/before-beta-release.js
       -
         name: Publish to NPM
-        run: NODE_AUTH_TOKEN=${{secrets.NPM_TOKEN}} npm publish --tag ${{ env.RELEASE_TAG }}
+        # Hotfix copying of built files to top level (this code is from old publish file). We need a better way.
+        run: cp package.json .npmignore README.md LICENSE build/ && cd build && ls && npm i && NODE_AUTH_TOKEN=${{secrets.NPM_TOKEN}} npm publish --tag ${{ env.RELEASE_TAG }}
       -
         # Latest version is tagged by the release process so we only tag beta here.
         name: Tag Version

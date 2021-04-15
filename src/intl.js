@@ -33,7 +33,12 @@ const intlStrings = {
 };
 /* eslint-enable max-len,quotes,quote-props */
 
-// Helper function to simulate intl formatMessage function
+/**
+ * Helper function to simulate intl formatMessage function
+ * @param {string} stringId
+ * @param {Record<string, any>} [variables]
+ * @returns
+ */
 exports.m = function (stringId, variables) {
     let text = intlStrings[stringId];
     if (!text) return stringId;
