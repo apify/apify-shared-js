@@ -1,3 +1,8 @@
+0.7.7 / 2021/04/15
+==================
+
+- Added an option `functionAsTemplateLiteral` to `utilities.makeInputJsFieldsReadable`, which return the formatted JS functions as template literals
+
 0.7.6 / 2021/04/14
 ==================
 
