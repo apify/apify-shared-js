@@ -1,6 +1,6 @@
 {
     "name": "apify-shared",
-    "version": "0.7.6",
+    "version": "0.7.7",
     "description": "Tools and constants shared across Apify projects.",
     "main": "build/index.js",
     "types": "types/index.d.ts",
