@@ -1,6 +1,4 @@
-/* eslint-disable no-underscore-dangle */
-
-import { URLSearchParams } from 'url';
+/* eslint-disable no-underscore-dangle, no-unused-expressions */
 import _ from 'underscore';
 import moment from 'moment';
 import { expect } from 'chai';
@@ -82,7 +80,7 @@ describe('cleanAndCompareWithSchema', () => {
         const expectedData = {
             someString: 'someString',
             someNumber: 1234,
-            someDate: JSON.stringify(testingDate).replace(/"/g, ''),
+            someDate: JSON.stringify(testingDate).replace(/'/g, ''),
             someBoolean: false,
             someObject: {
                 hasSubObject: {
@@ -237,35 +235,35 @@ describe('HubspotClient', () => {
             const contactId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "email",
-                        "operator": "EQ",
-                        "value": email
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: email,
+                        operator: 'EQ',
+                        value: email,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 1,
-                "results": [{
-                    "id": contactId,
-                    "properties": {
-                        "createdate": "2021-04-01T12:30:57.056Z",
-                        "email": email,
-                        "firstname": "Some",
-                        "hs_object_id": contactId,
-                        "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                        "lastname": "User"
+                total: 1,
+                results: [{
+                    id: contactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        email,
+                        firstname: 'Some',
+                        hs_object_id: contactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        lastname: 'User',
                     },
-                    "createdAt": "2021-04-01T12:30:57.056Z",
-                    "updatedAt": "2021-04-14T13:16:49.951Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
+                }],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
@@ -279,22 +277,22 @@ describe('HubspotClient', () => {
             const email = 'some@contact.com';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "email",
-                        "operator": "EQ",
-                        "value": email
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: email,
+                        operator: 'EQ',
+                        value: email,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
@@ -321,35 +319,35 @@ describe('HubspotClient', () => {
             const contactId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": apifyUserId
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: apifyUserId,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 1,
-                "results": [{
-                    "id": contactId,
-                    "properties": {
-                        "createdate": "2021-04-01T12:30:57.056Z",
-                        "email": "some@email.cz",
-                        "firstname": "Some",
-                        "hs_object_id": contactId,
-                        "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                        "lastname": "User"
+                total: 1,
+                results: [{
+                    id: contactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        email: 'some@email.cz',
+                        firstname: 'Some',
+                        hs_object_id: contactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        lastname: 'User',
                     },
-                    "createdAt": "2021-04-01T12:30:57.056Z",
-                    "updatedAt": "2021-04-14T13:16:49.951Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
+                }],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
@@ -363,22 +361,22 @@ describe('HubspotClient', () => {
             const apifyUserId = 'as4d564a6s5d46asd';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": apifyUserId
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: apifyUserId,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
@@ -409,35 +407,35 @@ describe('HubspotClient', () => {
             const contactId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": user._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: user._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 1,
-                "results": [{
-                    "id": contactId,
-                    "properties": {
-                        "createdate": "2021-04-01T12:30:57.056Z",
-                        "email": user.emails[0].address,
-                        "firstname": "Some",
-                        "hs_object_id": contactId,
-                        "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                        "lastname": "User"
+                total: 1,
+                results: [{
+                    id: contactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        email: user.emails[0].address,
+                        firstname: 'Some',
+                        hs_object_id: contactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        lastname: 'User',
                     },
-                    "createdAt": "2021-04-01T12:30:57.056Z",
-                    "updatedAt": "2021-04-14T13:16:49.951Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
+                }],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
@@ -450,54 +448,54 @@ describe('HubspotClient', () => {
             const contactId = '100';
 
             const expectedIdPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": user._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: user._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const expectedEmailPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "email",
-                        "operator": "EQ",
-                        "value": user.emails[0].address,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'email',
+                        operator: 'EQ',
+                        value: user.emails[0].address,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const idNetworkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
             const emailNetworkReply = {
-                "total": 1,
-                "results": [{
-                    "id": contactId,
-                    "properties": {
-                        "createdate": "2021-04-01T12:30:57.056Z",
-                        "email": user.emails[0].address,
-                        "firstname": "Some",
-                        "hs_object_id": contactId,
-                        "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                        "lastname": "User"
+                total: 1,
+                results: [{
+                    id: contactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        email: user.emails[0].address,
+                        firstname: 'Some',
+                        hs_object_id: contactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        lastname: 'User',
                     },
-                    "createdAt": "2021-04-01T12:30:57.056Z",
-                    "updatedAt": "2021-04-14T13:16:49.951Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
+                }],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData).reply(200, idNetworkReply);
@@ -509,41 +507,41 @@ describe('HubspotClient', () => {
 
         it('outputs null if contact is not found', async () => {
             const expectedIdPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": user._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: user._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const expectedEmailPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "email",
-                        "operator": "EQ",
-                        "value": user.emails[0].address,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'email',
+                        operator: 'EQ',
+                        value: user.emails[0].address,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const idNetworkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
             const emailNetworkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData).reply(200, idNetworkReply);
@@ -559,18 +557,18 @@ describe('HubspotClient', () => {
         it('outputs contact info for existing contact', async () => {
             const contactId = '301';
             const networkReply = {
-                "id": contactId,
-                "properties": {
-                    "createdate": "2021-04-01T12:30:57.056Z",
-                    "email": "random@user.com",
-                    "firstname": "Random",
-                    "hs_object_id": contactId,
-                    "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                    "lastname": "User"
+                id: contactId,
+                properties: {
+                    createdate: '2021-04-01T12:30:57.056Z',
+                    email: 'random@user.com',
+                    firstname: 'Random',
+                    hs_object_id: contactId,
+                    lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                    lastname: 'User',
                 },
-                "createdAt": "2021-04-01T12:30:57.056Z",
-                "updatedAt": "2021-04-14T13:16:49.951Z",
-                "archived": false
+                createdAt: '2021-04-01T12:30:57.056Z',
+                updatedAt: '2021-04-14T13:16:49.951Z',
+                archived: false,
             };
 
             nock(HUBSPOT_URL, {}).get(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`).reply(200, networkReply);
@@ -621,17 +619,17 @@ describe('HubspotClient', () => {
             };
 
             const networkReply = {
-                "id": "801",
-                "properties": {
-                    "createdate": "2021-04-18T21:23:09.435Z",
-                    "hs_is_unworked": "true",
-                    "hs_marketable_status": "false",
-                    "hs_marketable_until_renewal": "false",
-                    "lastmodifieddate": "2021-04-18T21:23:09.435Z"
+                id: '801',
+                properties: {
+                    createdate: '2021-04-18T21:23:09.435Z',
+                    hs_is_unworked: 'true',
+                    hs_marketable_status: 'false',
+                    hs_marketable_until_renewal: 'false',
+                    lastmodifieddate: '2021-04-18T21:23:09.435Z',
                 },
-                "createdAt": "2021-04-18T21:23:09.435Z",
-                "updatedAt": "2021-04-18T21:23:09.435Z",
-                "archived": false
+                createdAt: '2021-04-18T21:23:09.435Z',
+                updatedAt: '2021-04-18T21:23:09.435Z',
+                archived: false,
             };
 
             const transformedData = hubspotClient._transformUser(userData, true);
@@ -672,26 +670,28 @@ describe('HubspotClient', () => {
             const contactId = 801;
 
             const networkReply = {
-                "id": "801",
-                "properties": {
-                    "apify_id__c": "TEST",
-                    "closedate": "2021-04-19T08:32:14.893Z",
-                    "email": "test@test.cz",
-                    "firstname": "Test",
-                    "hs_lifecyclestage_customer_date": "2021-04-19T08:32:14.893Z",
-                    "lastmodifieddate": "2021-04-19T08:32:14.894Z",
-                    "lastname": "Test",
-                    "lifecyclestage": "customer",
-                    "segment_paying_user": "true",
-                    "subscription_plan": "CUSTOM"
+                id: '801',
+                properties: {
+                    apify_id__c: 'TEST',
+                    closedate: '2021-04-19T08:32:14.893Z',
+                    email: 'test@test.cz',
+                    firstname: 'Test',
+                    hs_lifecyclestage_customer_date: '2021-04-19T08:32:14.893Z',
+                    lastmodifieddate: '2021-04-19T08:32:14.894Z',
+                    lastname: 'Test',
+                    lifecyclestage: 'customer',
+                    segment_paying_customer: 'true',
+                    subscription_plan: 'CUSTOM',
                 },
-                "createdAt": "2021-04-18T21:23:09.435Z",
-                "updatedAt": "2021-04-19T08:32:14.894Z",
-                "archived": false
+                createdAt: '2021-04-18T21:23:09.435Z',
+                updatedAt: '2021-04-19T08:32:14.894Z',
+                archived: false,
             };
 
             const transformedData = hubspotClient._transformUser(userData);
-            nock(HUBSPOT_URL).patch(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData }).reply(200, networkReply);
+            nock(HUBSPOT_URL)
+                .patch(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(200, networkReply);
 
             let err = null;
             try {
@@ -712,13 +712,15 @@ describe('HubspotClient', () => {
             const contactId = 801;
 
             const networkReply = {
-                "status": "error",
-                "message": "resource not found",
-                "correlationId": "cc669b6e-ba23-41c7-afde-a25e0f1e9a51"
+                status: 'error',
+                message: 'resource not found',
+                correlationId: 'cc669b6e-ba23-41c7-afde-a25e0f1e9a51',
             };
 
             const transformedData = hubspotClient._transformUser(userData);
-            nock(HUBSPOT_URL).patch(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData }).reply(404, networkReply);
+            nock(HUBSPOT_URL)
+                .patch(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(404, networkReply);
 
             let err = null;
             try {
@@ -761,35 +763,37 @@ describe('HubspotClient', () => {
             const invoiceId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "invoice_number",
-                        "operator": "EQ",
-                        "value": invoiceNumber
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'invoice_number',
+                        operator: 'EQ',
+                        value: invoiceNumber,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 1,
-                "results": [{
-                    "id": invoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": invoiceId
+                total: 1,
+                results: [{
+                    id: invoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: invoiceId,
                     },
-                    "createdAt": "2021-04-21T08:14:38.702Z",
-                    "updatedAt": "2021-04-21T08:14:38.702Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-21T08:14:38.702Z',
+                    updatedAt: '2021-04-21T08:14:38.702Z',
+                    archived: false,
+                }],
             };
 
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData)
+                .reply(200, networkReply);
 
             const data = await hubspotClient.searchInvoiceByNumber(invoiceNumber);
             expect(data.id).to.be.deep.equal(invoiceId);
@@ -800,25 +804,27 @@ describe('HubspotClient', () => {
             const invoiceNumber = 'INVOICE_NUMBER';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "invoice_number",
-                        "operator": "EQ",
-                        "value": invoiceNumber
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'invoice_number',
+                        operator: 'EQ',
+                        value: invoiceNumber,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData)
+                .reply(200, networkReply);
 
             const data = await hubspotClient.searchInvoiceByNumber(invoiceNumber);
             expect(data).to.be.null;
@@ -842,35 +848,37 @@ describe('HubspotClient', () => {
             const invoiceId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": apifyInvoiceId
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: apifyInvoiceId,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 1,
-                "results": [{
-                    "id": invoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": invoiceId
+                total: 1,
+                results: [{
+                    id: invoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: invoiceId,
                     },
-                    "createdAt": "2021-04-21T08:14:38.702Z",
-                    "updatedAt": "2021-04-21T08:14:38.702Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-21T08:14:38.702Z',
+                    updatedAt: '2021-04-21T08:14:38.702Z',
+                    archived: false,
+                }],
             };
 
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData)
+                .reply(200, networkReply);
 
             const data = await hubspotClient.searchInvoiceByApifyInvoiceId(apifyInvoiceId);
             expect(data.id).to.be.deep.equal(invoiceId);
@@ -881,25 +889,27 @@ describe('HubspotClient', () => {
             const apifyInvoiceId = 'APIFY_INVOICE_ID';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": apifyInvoiceId
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: apifyInvoiceId,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const networkReply = {
-                "total": 0,
-                "results": []
+                total: 0,
+                results: [],
             };
 
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData)
+                .reply(200, networkReply);
 
             const data = await hubspotClient.searchInvoiceByApifyInvoiceId(apifyInvoiceId);
             expect(data).to.be.null;
@@ -927,32 +937,32 @@ describe('HubspotClient', () => {
             const invoiceId = '100';
 
             const expectedPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": invoice._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: invoice._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, {
-                "total": 1,
-                "results": [{
-                    "id": invoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": invoiceId
+                total: 1,
+                results: [{
+                    id: invoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: invoiceId,
                     },
-                    "createdAt": "2021-04-21T08:14:38.702Z",
-                    "updatedAt": "2021-04-21T08:14:38.702Z",
-                    "archived": false
-                }]
+                    createdAt: '2021-04-21T08:14:38.702Z',
+                    updatedAt: '2021-04-21T08:14:38.702Z',
+                    archived: false,
+                }],
             });
 
             const data = await hubspotClient.lookupInvoiceId(invoice);
@@ -963,54 +973,58 @@ describe('HubspotClient', () => {
             const invoiceId = '100';
 
             const expectedIdPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": invoice._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: invoice._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const expectedNumberPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "invoice_number",
-                        "operator": "EQ",
-                        "value": invoice.number,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'invoice_number',
+                        operator: 'EQ',
+                        value: invoice.number,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             // Query by _id should not return any results
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData).reply(200,  {
-                "total": 0,
-                "results": []
-            });
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData)
+                .reply(200, {
+                    total: 0,
+                    results: [],
+                });
 
             // Query by number returns valid response
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedNumberPostData).reply(200, {
-                "total": 1,
-                "results": [{
-                    "id": invoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": invoiceId
-                    },
-                    "createdAt": "2021-04-21T08:14:38.702Z",
-                    "updatedAt": "2021-04-21T08:14:38.702Z",
-                    "archived": false
-                }]
-            });
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedNumberPostData)
+                .reply(200, {
+                    total: 1,
+                    results: [{
+                        id: invoiceId,
+                        properties: {
+                            hs_createdate: '2021-04-21T08:14:38.702Z',
+                            hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                            hs_object_id: invoiceId,
+                        },
+                        createdAt: '2021-04-21T08:14:38.702Z',
+                        updatedAt: '2021-04-21T08:14:38.702Z',
+                        archived: false,
+                    }],
+                });
 
             const data = await hubspotClient.lookupInvoiceId(invoice);
             expect(data).to.be.deep.equal(invoiceId);
@@ -1018,41 +1032,45 @@ describe('HubspotClient', () => {
 
         it('outputs null if invoice is not found', async () => {
             const expectedIdPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "apify_id__c",
-                        "operator": "EQ",
-                        "value": invoice._id,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'apify_id__c',
+                        operator: 'EQ',
+                        value: invoice._id,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
             const expectedNumberPostData = {
-                "filterGroups": [{
-                    "filters": [{
-                        "propertyName": "invoice_number",
-                        "operator": "EQ",
-                        "value": invoice.number,
-                    }]
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'invoice_number',
+                        operator: 'EQ',
+                        value: invoice.number,
+                    }],
                 }],
-                "sorts": [],
-                "properties": [],
-                "limit": 1,
-                "after": 0
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
             };
 
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData).reply(200, {
-                "total": 0,
-                "results": []
-            });
-            nock(HUBSPOT_URL, {}).post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedNumberPostData).reply(200, {
-                "total": 0,
-                "results": []
-            });
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedIdPostData)
+                .reply(200, {
+                    total: 0,
+                    results: [],
+                });
+            nock(HUBSPOT_URL, {})
+                .post(`/objects/${BASE_CONFIG.invoiceObjectId}/search?hapikey=${BASE_CONFIG.apiKey}`, expectedNumberPostData)
+                .reply(200, {
+                    total: 0,
+                    results: [],
+                });
 
             const data = await hubspotClient.lookupInvoiceId(invoice);
             expect(data).to.be.null;
@@ -1063,18 +1081,20 @@ describe('HubspotClient', () => {
         it('outputs invoice info for existing invoice', async () => {
             const expectedInvoiceId = '301';
             const networkReply = {
-                "id": expectedInvoiceId,
-                "properties": {
-                    "hs_createdate": "2021-04-21T08:14:38.702Z",
-                    "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                    "hs_object_id": expectedInvoiceId
+                id: expectedInvoiceId,
+                properties: {
+                    hs_createdate: '2021-04-21T08:14:38.702Z',
+                    hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                    hs_object_id: expectedInvoiceId,
                 },
-                "createdAt": "2021-04-21T08:14:38.702Z",
-                "updatedAt": "2021-04-21T08:14:38.702Z",
-                "archived": false
+                createdAt: '2021-04-21T08:14:38.702Z',
+                updatedAt: '2021-04-21T08:14:38.702Z',
+                archived: false,
             };
 
-            nock(HUBSPOT_URL, {}).get(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`).reply(200, networkReply);
+            nock(HUBSPOT_URL, {})
+                .get(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`)
+                .reply(200, networkReply);
 
             const data = await hubspotClient.getInvoice(expectedInvoiceId);
             expect(data.id).to.be.deep.equal(expectedInvoiceId);
@@ -1120,34 +1140,34 @@ describe('HubspotClient', () => {
             nock(HUBSPOT_URL, {})
                 .get(`/objects/contacts/${expectedContactId}?hapikey=${BASE_CONFIG.apiKey}`)
                 .reply(200, {
-                    "id": expectedContactId,
-                    "properties": {
-                        "createdate": "2021-04-01T12:30:57.056Z",
-                        "email": "random@user.com",
-                        "firstname": "Random",
-                        "hs_object_id": expectedContactId,
-                        "lastmodifieddate": "2021-04-14T13:16:49.951Z",
-                        "lastname": "User"
+                    id: expectedContactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        email: 'random@user.com',
+                        firstname: 'Random',
+                        hs_object_id: expectedContactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        lastname: 'User',
                     },
-                    "createdAt": "2021-04-01T12:30:57.056Z",
-                    "updatedAt": "2021-04-14T13:16:49.951Z",
-                    "archived": false
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
                 });
 
             // Simulate createInvoice api response
             nock(HUBSPOT_URL)
                 .post(`/objects/${BASE_CONFIG.invoiceObjectId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
                 .reply(200, {
-                    "id": expectedInvoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": expectedInvoiceId,
+                    id: expectedInvoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: expectedInvoiceId,
                         ...transformedData,
                     },
-                    "createdAt": "2021-04-18T21:23:09.435Z",
-                    "updatedAt": "2021-04-18T21:23:09.435Z",
-                    "archived": false
+                    createdAt: '2021-04-18T21:23:09.435Z',
+                    updatedAt: '2021-04-18T21:23:09.435Z',
+                    archived: false,
                 });
 
             // Simulate associate contact with invoice
@@ -1155,23 +1175,23 @@ describe('HubspotClient', () => {
             nock(HUBSPOT_URL)
                 .put(`/objects/${BASE_CONFIG.invoiceObjectId}/${associationUrl}?hapikey=${BASE_CONFIG.apiKey}`)
                 .reply(200, {
-                    "id": expectedInvoiceId,
-                    "properties": {
-                        "hs_createdate": "2021-04-21T08:14:38.702Z",
-                        "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                        "hs_object_id": expectedInvoiceId
+                    id: expectedInvoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: expectedInvoiceId,
                     },
-                    "createdAt": "2021-04-21T08:14:38.702Z",
-                    "updatedAt": "2021-04-21T08:14:38.702Z",
-                    "archived": false,
-                    "associations": {
-                        "contacts": {
-                            "results": [{
-                                "id": expectedContactId,
-                                "type": "platform_invoice_to_contact"
-                            }]
-                        }
-                    }
+                    createdAt: '2021-04-21T08:14:38.702Z',
+                    updatedAt: '2021-04-21T08:14:38.702Z',
+                    archived: false,
+                    associations: {
+                        contacts: {
+                            results: [{
+                                id: expectedContactId,
+                                type: 'platform_invoice_to_contact',
+                            }],
+                        },
+                    },
                 });
 
             const invoiceId = await hubspotClient.createInvoice(invoiceData, expectedContactId);
@@ -1239,18 +1259,20 @@ describe('HubspotClient', () => {
 
             const transformedData = hubspotClient._transformInvoice(invoiceData);
 
-            nock(HUBSPOT_URL).patch(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData }).reply(200, {
-                "id": expectedInvoiceId,
-                "properties": {
-                    "hs_createdate": "2021-04-21T08:14:38.702Z",
-                    "hs_lastmodifieddate": "2021-04-21T08:14:38.702Z",
-                    "hs_object_id": expectedInvoiceId,
-                    ...transformedData,
-                },
-                "createdAt": "2021-04-18T21:23:09.435Z",
-                "updatedAt": "2021-04-18T21:23:09.435Z",
-                "archived": false
-            });
+            nock(HUBSPOT_URL)
+                .patch(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(200, {
+                    id: expectedInvoiceId,
+                    properties: {
+                        hs_createdate: '2021-04-21T08:14:38.702Z',
+                        hs_lastmodifieddate: '2021-04-21T08:14:38.702Z',
+                        hs_object_id: expectedInvoiceId,
+                        ...transformedData,
+                    },
+                    createdAt: '2021-04-18T21:23:09.435Z',
+                    updatedAt: '2021-04-18T21:23:09.435Z',
+                    archived: false,
+                });
 
             let err = null;
             try {
@@ -1271,11 +1293,13 @@ describe('HubspotClient', () => {
             const expectedInvoiceId = 801;
 
             const transformedData = hubspotClient._transformUser(invoiceData);
-            nock(HUBSPOT_URL).patch(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData }).reply(404, {
-                "status": "error",
-                "message": "resource not found",
-                "correlationId": "cc669b6e-ba23-41c7-afde-a25e0f1e9a51"
-            });
+            nock(HUBSPOT_URL)
+                .patch(`/objects/${BASE_CONFIG.invoiceObjectId}/${expectedInvoiceId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(404, {
+                    status: 'error',
+                    message: 'resource not found',
+                    correlationId: 'cc669b6e-ba23-41c7-afde-a25e0f1e9a51',
+                });
 
             let err = null;
             try {
@@ -1320,7 +1344,7 @@ describe('HubspotClient', () => {
                 lastName: 'bar',
                 company: 'example company',
                 email: 'foo@example.com',
-                mobile: '888666999'
+                mobile: '888666999',
             };
 
             const expectedPostLeadData = {
@@ -1329,30 +1353,30 @@ describe('HubspotClient', () => {
                 lastname: 'bar',
                 company: 'example company',
                 email: 'foo@example.com',
-                mobilephone: '888666999'
+                mobilephone: '888666999',
             };
 
             nock(HUBSPOT_URL).post(`/objects/contacts?hapikey=${BASE_CONFIG.apiKey}`, {
-                properties: expectedPostLeadData
+                properties: expectedPostLeadData,
             }).reply(200, {
-                "id": expectedLeadId,
-                "properties": {
-                    "company": "example company",
-                    "createdate": "2021-04-21T18:40:41.876Z",
-                    "email": "foo@example.com",
-                    "firstname": "foo",
-                    "hs_is_unworked": "true",
-                    "hs_lifecyclestage_lead_date": "2021-04-21T18:40:41.876Z",
-                    "hs_marketable_status": "false",
-                    "hs_marketable_until_renewal": "false",
-                    "lastmodifieddate": "2021-04-21T18:40:41.876Z",
-                    "lastname": "bar",
-                    "lifecyclestage": "lead",
-                    "mobilephone": "888666999"
+                id: expectedLeadId,
+                properties: {
+                    company: 'example company',
+                    createdate: '2021-04-21T18:40:41.876Z',
+                    email: 'foo@example.com',
+                    firstname: 'foo',
+                    hs_is_unworked: 'true',
+                    hs_lifecyclestage_lead_date: '2021-04-21T18:40:41.876Z',
+                    hs_marketable_status: 'false',
+                    hs_marketable_until_renewal: 'false',
+                    lastmodifieddate: '2021-04-21T18:40:41.876Z',
+                    lastname: 'bar',
+                    lifecyclestage: 'lead',
+                    mobilephone: '888666999',
                 },
-                "createdAt": "2021-04-21T18:40:41.876Z",
-                "updatedAt": "2021-04-21T18:40:41.876Z",
-                "archived": false
+                createdAt: '2021-04-21T18:40:41.876Z',
+                updatedAt: '2021-04-21T18:40:41.876Z',
+                archived: false,
             });
 
             const contactId = await hubspotClient.createLead(leadData);
