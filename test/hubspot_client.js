@@ -80,7 +80,7 @@ describe('cleanAndCompareWithSchema', () => {
         const expectedData = {
             someString: 'someString',
             someNumber: 1234,
-            someDate: JSON.stringify(testingDate).replace(/'/g, ''),
+            someDate: JSON.stringify(testingDate).replace(/"/g, ''),
             someBoolean: false,
             someObject: {
                 hasSubObject: {
@@ -237,7 +237,7 @@ describe('HubspotClient', () => {
             const expectedPostData = {
                 filterGroups: [{
                     filters: [{
-                        propertyName: email,
+                        propertyName: 'email',
                         operator: 'EQ',
                         value: email,
                     }],
@@ -279,7 +279,7 @@ describe('HubspotClient', () => {
             const expectedPostData = {
                 filterGroups: [{
                     filters: [{
-                        propertyName: email,
+                        propertyName: 'email',
                         operator: 'EQ',
                         value: email,
                     }],
