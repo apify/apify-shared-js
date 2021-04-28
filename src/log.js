@@ -13,7 +13,15 @@ const getDefaultOptions = () => ({
     data: {},
 });
 
-class Log {
+export class Log {
+    Log = Log;
+
+    LEVELS = LEVELS;
+
+    LoggerText = LoggerText;
+
+    LoggerJson = LoggerJson;
+
     constructor(options = {}) {
         options = { ...getDefaultOptions(), ...options };
 
@@ -163,10 +171,6 @@ class Log {
 
 const log = new Log();
 
-log.Log = Log;
-log.LEVELS = LEVELS;
-log.LoggerText = LoggerText;
-log.LoggerJson = LoggerJson;
-
 // Default export is an initialized instance of logger.
 export default log;
+module.exports = log;

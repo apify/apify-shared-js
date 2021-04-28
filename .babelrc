@@ -1,13 +1,17 @@
 {
-    "presets": [
-      ["@babel/preset-env", {
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
         "targets": {
           "node": "10.17.0"
         }
-      }]
-    ],
-    "plugins": [
-        "add-module-exports",
-        "@babel/plugin-proposal-object-rest-spread"
+      }
     ]
+  ],
+  "plugins": [
+    "add-module-exports",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties"
+  ]
 }
