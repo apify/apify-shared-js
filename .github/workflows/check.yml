@@ -13,8 +13,9 @@ jobs:
         runs-on: ubuntu-latest
 
         strategy:
+            fail-fast: false
             matrix:
-                node-version: [10, 12, 14]
+                node-version: [12, 14, 15, 16]
 
         steps:
             -
@@ -33,6 +34,9 @@ jobs:
                         node_modules
                         build
                     key: cache-${{ github.run_id }}-v14
+            -
+                name: Upgrade NPM to have workspaces support
+                run: npm i -G npm@latest
             -
                 name: Install Dependencies
                 run: npm install
