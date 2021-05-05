@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "include": ["**/*", "../packages/*/src/**/*"],
   "compilerOptions": {
+    "sourceMap": true,
     "resolveJsonModule": true
   }
 }
