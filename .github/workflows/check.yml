@@ -39,7 +39,7 @@ jobs:
                 run: npm i -G npm@latest
             -
                 name: Install Dependencies
-                run: npm install
+                run: npm install && npx lerna link convert
             -
                 name: Run Tests
                 run: npm test
