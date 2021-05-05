@@ -25,21 +25,21 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: ${{ matrix.node-version }}
-            -
-                name: Cache Node Modules
-                if: ${{ matrix.node-version == 14 }}
-                uses: actions/cache@v2
-                with:
-                    path: |
-                        node_modules
-                        build
-                    key: cache-${{ github.run_id }}-v14
-            -
-                name: Upgrade NPM to have workspaces support
-                run: npm i -G npm@latest
+#            -
+#                name: Cache Node Modules
+#                if: ${{ matrix.node-version == 14 }}
+#                uses: actions/cache@v2
+#                with:
+#                    path: |
+#                        node_modules
+#                        build
+#                    key: cache-${{ github.run_id }}-v14
+#            -
+#                name: Upgrade NPM to have workspaces support
+#                run: npm i -G npm
             -
                 name: Install Dependencies
-                run: npm install && npx lerna link convert
+                run: npm install
             -
                 name: Run Tests
                 run: npm test
@@ -57,13 +57,13 @@ jobs:
                 uses: actions/setup-node@v1
                 with:
                     node-version: 14
-            -
-                name: Load Cache
-                uses: actions/cache@v2
-                with:
-                    path: |
-                        node_modules
-                        build
-                    key: cache-${{ github.run_id }}-v14
+#            -
+#                name: Load Cache
+#                uses: actions/cache@v2
+#                with:
+#                    path: |
+#                        node_modules
+#                        build
+#                    key: cache-${{ github.run_id }}-v14
             -
                 run: npm run lint

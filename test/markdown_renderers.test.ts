@@ -1,8 +1,8 @@
-import marked from 'marked';
+import marked, { Renderer } from 'marked';
 import { customHeadingRenderer, customLinkRenderer, customImageRenderer } from '@apify/markdown';
 
 describe('apifyMarked custom renderers work', () => {
-    const renderer = new marked.Renderer();
+    const renderer = new Renderer();
     renderer.heading = customHeadingRenderer;
 
     const branchName = 'main';
