@@ -44,7 +44,6 @@
     },
     "dependencies": {
         "@hubspot/api-client": "^3.4.1",
-        "axios": "^0.21.1",
         "underscore": "^1.11.0"
     }
 }
