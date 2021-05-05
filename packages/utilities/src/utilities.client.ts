@@ -22,7 +22,7 @@ export function isNullOrUndefined(obj: unknown): boolean {
 /**
  * Converts Date object to ISO string.
  */
-export function dateToString(date: Date, middleT: boolean) {
+export function dateToString(date: Date, middleT: boolean): string {
     if (!(date instanceof Date)) { return ''; }
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // January is 0, February is 1, and so on.
@@ -32,8 +32,9 @@ export function dateToString(date: Date, middleT: boolean) {
     const seconds = date.getSeconds();
     const millis = date.getMilliseconds();
 
-    const pad = (num: number) => num < 10 ? `0${num}` : num;
+    const pad = (num: number) => (num < 10 ? `0${num}` : num);
     const datePart = `${year}-${pad(month)}-${pad(day)}`;
+    // eslint-disable-next-line no-nested-ternary
     const millisPart = millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis);
     const timePart = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${millisPart}`;
 
@@ -96,7 +97,8 @@ export function parseUrl(str: string): Uri {
             loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
         },
     };
-    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str); // eslint-disable-line no-shadow
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str);
     const uri: Uri = {};
     let i = o.key.length;
 
@@ -111,9 +113,10 @@ export function parseUrl(str: string): Uri {
     // this format is used by many websites
     uri.fragmentKey = {};
     if (uri.fragment) {
+        // casting as any, as the usage seems invalid, replacer should always return something (but keeping as is to mitigate unwanted BCs)
         uri.fragment.replace(o.q.parser, (($0: any, $1: any, $2: any) => {
             if ($1) uri.fragmentKey![$1] = $2;
-        }) as any); // casting as any, as the usage seems invalid, replacer should always return something (but keeping as is to mitigate unwanted BCs)
+        }) as any);
     }
 
     return uri;

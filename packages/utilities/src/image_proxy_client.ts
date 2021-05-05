@@ -12,7 +12,9 @@ import querystring from 'querystring';
  */
 export class ImageProxyClient {
     private readonly domain: string;
+
     private readonly hmacKey: string;
+
     private readonly protocol: string;
 
     /**

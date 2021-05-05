@@ -13,8 +13,8 @@ import { LinkedList, LinkedListNode } from './linked_list';
  * The main ListDictionary class.
  */
 export class ListDictionary<T = unknown> {
-
     private linkedList = new LinkedList<T>();
+
     dictionary: Record<string, LinkedListNode<T>> = {};
 
     /**

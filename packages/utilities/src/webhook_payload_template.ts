@@ -63,6 +63,7 @@ export class InvalidVariableError extends Error {
  */
 export class WebhookPayloadTemplate {
     private payload = this.template;
+
     readonly replacedVariables: { variableName: string, replacement: string }[] = [];
 
     constructor(private readonly template: string,

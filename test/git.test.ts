@@ -31,7 +31,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('does not convert absolute paths', () => {
@@ -48,7 +48,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown)
+        })).toEqual(testMarkdown);
     });
 
     it('does not convert <img> tags with mismatched quotes', () => {
@@ -61,7 +61,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown)
+        })).toEqual(testMarkdown);
     });
 
     it('does not convert Base64 encoded images', () => {
@@ -74,7 +74,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown)
+        })).toEqual(testMarkdown);
     });
 
     it('works correctly for Github repo with explicit branch name', () => {
@@ -93,7 +93,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
             gitBranchName: 'main',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for Bitbucket repo with explicit branch name', () => {
@@ -111,7 +111,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             readme: testMarkdown,
             gitRepoUrl: 'git@bitbucket.org:apify/test-repo.git',
             gitBranchName: 'main',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for Gitlab repo with explicit branch name', () => {
@@ -130,7 +130,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             readme: testMarkdown,
             gitRepoUrl: 'git@gitlab.com:apify/test-repo.git',
             gitBranchName: 'main',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo with branch name in hash', () => {
@@ -148,7 +148,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo without explicit branch name', () => {
@@ -166,7 +166,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo without explicit branch name and <img src=... /> tags', () => {
@@ -200,7 +200,7 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult)
+        })).toEqual(expectedResult);
     });
 
     it('works correctly for unknown repo', () => {
@@ -213,7 +213,6 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         expect(convertRelativeImagePathsToAbsoluteInReadme({
             readme: testMarkdown,
             gitRepoUrl: 'git@some-unknown-git-site.com:apify/test-repo.git',
-        })).toEqual(testMarkdown)
+        })).toEqual(testMarkdown);
     });
-
 });

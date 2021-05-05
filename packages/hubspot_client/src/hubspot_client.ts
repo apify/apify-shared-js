@@ -364,7 +364,7 @@ export class HubspotClient {
     async updateContact(hubspotContactId: number | string, modifier: any) {
         try {
             const data = this._transformUser(modifier);
-            await this.client.crm.contacts.basicApi.update('' + hubspotContactId, {
+            await this.client.crm.contacts.basicApi.update(`${hubspotContactId}`, {
                 properties: data,
             });
         } catch (error) {
@@ -380,7 +380,7 @@ export class HubspotClient {
      * @return undefined
      */
     async deleteContact(hubspotContactId: number | string) {
-        await this.client.crm.contacts.basicApi.archive('' + hubspotContactId);
+        await this.client.crm.contacts.basicApi.archive(`${hubspotContactId}`);
     }
 
     /**
@@ -558,7 +558,7 @@ export class HubspotClient {
     async updateInvoice(hubspotInvoiceId: number | string, modifier: any) {
         try {
             const data = this._transformInvoice(modifier);
-            await this.client.crm.objects.basicApi.update(this.config.invoiceObjectId, '' + hubspotInvoiceId, {
+            await this.client.crm.objects.basicApi.update(this.config.invoiceObjectId, `${hubspotInvoiceId}`, {
                 properties: data,
             });
         } catch (error) {
@@ -574,7 +574,7 @@ export class HubspotClient {
      * @return {void}
      */
     async deleteInvoice(hubspotInvoiceId: number | string) {
-        await this.client.crm.objects.basicApi.archive(this.config.invoiceObjectId, '' + hubspotInvoiceId);
+        await this.client.crm.objects.basicApi.archive(this.config.invoiceObjectId, `${hubspotInvoiceId}`);
     }
 
     async getLeadByEmail(email: string): Promise<hubspot.contactsModels.SimplePublicObject | null> {

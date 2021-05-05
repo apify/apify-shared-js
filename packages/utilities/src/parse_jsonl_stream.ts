@@ -23,6 +23,7 @@ import { Transform, TransformCallback, TransformOptions } from 'stream';
  */
 export class ParseJsonlStream extends Transform {
     private pendingChunk: string | null = null;
+
     constructor(options?: TransformOptions) {
         super(options);
     }

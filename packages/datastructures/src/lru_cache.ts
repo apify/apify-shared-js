@@ -8,8 +8,8 @@ export interface LruCacheOptions {
  * Least recently used cache.
  */
 export class LruCache<T = any> {
-
     listDictionary = new ListDictionary<T>();
+
     maxLength = this.options.maxLength;
 
     constructor(private options: LruCacheOptions) {

@@ -42,10 +42,15 @@ export class HealthChecker {
     static readonly CHECK_TYPES = CHECK_TYPES;
 
     checks: CheckType[];
+
     redisPrefix: string;
+
     redisTtlSecs: number;
+
     checkTimeoutMillis: number;
+
     mongoDbWriteTestCollection: string;
+
     mongoDbWriteTestRemoveOlderThanSecs: number;
 
     constructor(private readonly options: HealthCheckerOptions) {

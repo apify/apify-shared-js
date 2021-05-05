@@ -27,7 +27,7 @@ export function getLevelFromEnv(): number {
     const envVar = process.env[ENV_VARS.LOG_LEVEL];
 
     if (!envVar) return LogLevel.INFO;
-    if (isFinite(+envVar)) return +envVar;
+    if (Number.isFinite(+envVar)) return +envVar;
     if (LogLevel[envVar]) return LogLevel[envVar];
 
     return +envVar;
@@ -56,16 +56,18 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
         record = { name, message, stack, ...rest } as unknown as T;
     }
 
-    const nextCall = (record: T) => limitDepth(record, depth - 1, maxStringLength);
+    const nextCall = (rec: T) => limitDepth(rec, depth - 1, maxStringLength);
 
     if (Array.isArray(record)) {
         return (depth ? record.map(nextCall) : '[array]') as unknown as T;
     }
 
     if (typeof record === 'object' && record !== null) {
-        const mapObject = <T> (obj: T) => {
-            const res = {} as T;
-            Object.keys(obj).forEach(key => res[key] = nextCall(obj[key]))
+        const mapObject = <U> (obj: U) => {
+            const res = {} as U;
+            Object.keys(obj).forEach((key) => {
+                res[key] = nextCall(obj[key]);
+            });
             return res;
         };
 

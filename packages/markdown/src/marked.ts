@@ -1,5 +1,6 @@
 import { Renderer, lexer, parser } from 'marked';
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore no typings for this dependency
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 

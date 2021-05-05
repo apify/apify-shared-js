@@ -3,6 +3,7 @@ import { delayPromise } from './utilities';
 
 export class RetryableError extends Error {
     readonly error: Exception;
+
     constructor(error: Error | Exception, ...args: unknown[]) {
         super(...args as [string]);
         this.error = error as Exception;
@@ -10,12 +11,12 @@ export class RetryableError extends Error {
 }
 
 // extend the error with added properties
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface RetryableError extends Exception {}
 
-/**
- * @param {{ func: Function, expBackoffMillis: number, expBackoffMaxRepeats: number }} params
- */
-export const retryWithExpBackoff = async (params: { func?: Function, expBackoffMillis?: number, expBackoffMaxRepeats?: number } = {}) => {
+export async function retryWithExpBackoff<T>(
+    params: { func?: (...args: unknown[]) => T, expBackoffMillis?: number, expBackoffMaxRepeats?: number } = {},
+): Promise<T> {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
 
     if (typeof func !== 'function') {
@@ -60,4 +61,4 @@ export const retryWithExpBackoff = async (params: { func?: Function, expBackoffM
 
         await delayPromise(randomizedWaitMillis);
     }
-};
+}

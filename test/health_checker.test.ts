@@ -78,7 +78,7 @@ describe('HealthChecker', () => {
         mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
 
         // Throws an error
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem') });
+        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some problem"');
 
@@ -116,7 +116,7 @@ describe('HealthChecker', () => {
         mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
 
         // Throws an error
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem') });
+        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some problem"');
 
@@ -131,7 +131,7 @@ describe('HealthChecker', () => {
     it('should fail when mongo cannot read', async () => {
         redis.get.mockReturnValueOnce('OK');
         mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some-problem') });
+        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some-problem'); });
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some-problem"');
 

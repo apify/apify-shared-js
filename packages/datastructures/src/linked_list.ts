@@ -21,22 +21,23 @@ const dataEqual = <T> (data1: T, data2: T): boolean => {
 };
 
 export class LinkedListNode<T> {
-
     prev?: LinkedListNode<T> | null = null;
+
     next?: LinkedListNode<T> | null = null;
+
     dictKey?: string;
 
     constructor(readonly data: T) {}
-
 }
 
 /**
  * A class representing a doubly-linked list.
  */
 export class LinkedList<T = any> {
-
     head?: LinkedListNode<T> | null = null;
+
     tail?: LinkedListNode<T> | null = null;
+
     length = 0;
 
     /**

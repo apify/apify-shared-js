@@ -25,7 +25,9 @@ const getDefaultOptions = () => ({
 
 export class Log {
     readonly LEVELS = LogLevel; // for BC
+
     private options: LoggerOptions;
+
     private readonly deprecationsReported: Record<string, boolean> = {};
 
     constructor(options: Partial<LoggerOptions> = {}) {

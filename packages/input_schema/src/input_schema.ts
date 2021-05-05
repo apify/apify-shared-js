@@ -1,8 +1,8 @@
+import { AdditionalPropertiesParams, Ajv, ErrorObject, RequiredParams } from 'ajv';
 import schema from './schema.json';
 import { m } from './intl';
-import { AdditionalPropertiesParams, Ajv, ErrorObject, RequiredParams } from 'ajv';
 
-export const inputSchema = schema;
+export { schema as inputSchema };
 const { definitions } = schema;
 
 /**
@@ -14,14 +14,19 @@ const { definitions } = schema;
  * @param input (Used only when parsing input errors) Actual input that is being parsed.
  * @returns {null|{fieldKey: *, message: *}}
  */
-export function parseAjvError(error: ErrorObject, rootName: string, properties: Record<string, { nullable?: boolean }> = {}, input: Record<string, unknown> = {}) {
+export function parseAjvError(
+    error: ErrorObject,
+    rootName: string,
+    properties: Record<string, { nullable?: boolean }> = {},
+    input: Record<string, unknown> = {},
+): { fieldKey: string; message: string } | null {
     // There are 3 possible errors comming from validation:
     // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
     // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
     // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
 
-    let fieldKey;
-    let message;
+    let fieldKey: string;
+    let message: string;
 
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
@@ -39,7 +44,7 @@ export function parseAjvError(error: ErrorObject, rootName: string, properties: 
         fieldKey = (error.params as AdditionalPropertiesParams).additionalProperty;
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
     } else {
-        fieldKey = error.dataPath.split('.').pop();
+        fieldKey = error.dataPath.split('.').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     }
 
@@ -113,7 +118,7 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
  *
  * This way we get the most accurate error message for user.
  */
-export function validateInputSchema<T extends Record<string, any>> (validator: Ajv, inputSchema: T) {
+export function validateInputSchema<T extends Record<string, any>>(validator: Ajv, inputSchema: T) {
     // First validate just basic structure without fields.
     validateBasicStructure(validator, inputSchema);
 

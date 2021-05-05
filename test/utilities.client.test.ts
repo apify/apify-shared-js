@@ -213,7 +213,7 @@ const testIsBadForMongo = function (obj: any, expectedResult: any) {
 };
 
 // tests escapeForBson() or unescapeFromBson() function whether it converts objects as expected
-const testEscape = function (escapeFunc: Function, src: any, trg: any) {
+const testEscape = function (escapeFunc: any, src: any, trg: any) {
     // don't change input parameters!
 
     // console.dir(src);
@@ -233,8 +233,8 @@ const testEscape = function (escapeFunc: Function, src: any, trg: any) {
 
     // ensure srcClone didn't change
     if (
-        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone)) ||
-        (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
+        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone))
+        || (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
     ) {
         expect(srcClone).not.toBe(trgClone);
     }
@@ -520,7 +520,8 @@ describe('utilities.client', () => {
                 + '&utm_campaign=Notebooky'
                 + '&utm_term=Dell_XPS_15_9550_Touch_stribrna')).toEqual('https://www.czc.cz/dell-xps-15-9550-touch-stribrna_3/183874/produkt');
 
-            expect(normalizeUrl('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580/')).toEqual('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580');
+            const expected = 'http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580';
+            expect(normalizeUrl('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580/')).toEqual(expected);
         });
 
         it('should trim all parts of URL', () => {

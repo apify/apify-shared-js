@@ -37,6 +37,7 @@ export class Logger extends EventEmitter {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _log(level: LogLevel, message: string, data?: any, exception?: Exception, opts: Record<string, any> = {}) {
         throw new Error('log() method must be implemented!');
     }

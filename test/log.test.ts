@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import _ from 'underscore';
 import { Log, LEVELS, Logger } from '@apify/log';
 import { ENV_VARS } from '@apify/consts';
@@ -22,11 +23,11 @@ describe('log', () => {
     });
 
     it('correctly sets log level based on ENV_VAR', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = '' + LEVELS.SOFT_FAIL;
+        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
         const log = new Log();
         expect(log.getOptions().level).toBe(LEVELS.SOFT_FAIL);
 
-        process.env[ENV_VARS.LOG_LEVEL] = '' + LEVELS.ERROR;
+        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.ERROR}`;
         const log2 = new Log();
         expect(log2.getOptions().level).toBe(LEVELS.ERROR);
 
@@ -34,7 +35,7 @@ describe('log', () => {
     });
 
     it('should allow to retrieve and modify level using get|setLevel()', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = '' + LEVELS.SOFT_FAIL;
+        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
 
         const log = new Log();
         expect(log.getLevel()).toBe(LEVELS.SOFT_FAIL);
@@ -95,7 +96,7 @@ describe('log', () => {
     });
 
     it('should support debug() method', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = '' + LEVELS.DEBUG;
+        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.DEBUG}`;
 
         const log = new Log();
         log.debug('Something to be debugged happened', { foo: 'bar' });
@@ -105,7 +106,7 @@ describe('log', () => {
     });
 
     it('should support perf() method', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = '' + LEVELS.PERF;
+        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.PERF}`;
 
         const log = new Log();
         log.perf('Some perf info', { foo: 'bar' });

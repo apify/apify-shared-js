@@ -8,10 +8,13 @@
  */
 
 import crypto from 'crypto';
-const cherow = require('cherow'); // due to invalid typings inside the library we need to use good old require here
 import request, { CoreOptions, Response } from 'request';
 import log, { Logger, LoggerJson, LogLevel } from '@apify/log';
 import { ANONYMOUS_USERNAME } from '@apify/consts';
+
+// due to invalid typings inside the library we need to use good old require here
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const cherow = require('cherow');
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -105,7 +108,7 @@ export function http404Route(req: RequestLike, res: ResponseLike) {
 /**
  * Default error handler of Express API endpoints.
  */
-export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseLike, next: Function) {
+export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseLike, next: (...a: unknown[]) => unknown) {
     log.warning('Client HTTP request failed', { url: req.url, errMsg: err.message });
     if (res.headersSent) { return next(err); }
     res.status(505);
@@ -121,8 +124,8 @@ export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseL
  * @param delay The number of milliseconds to wait to next invocation of the function.
  * @returns Object that can be passed to betterClearInterval()
  */
-export function betterSetInterval(func: Function, delay: number): { _betterClearInterval: () => void } {
-    let callback: Function;
+export function betterSetInterval(func: (...a: unknown[]) => unknown, delay: number): { _betterClearInterval: () => void } {
+    let callback: (...a: unknown[]) => unknown;
     let timeoutId: number;
     let isRunning = true;
     const funcWrapper = function () {
@@ -350,7 +353,7 @@ export async function sequentializePromises<T>(promises: (Promise<T> | (() => Pr
 
     for (const promiseOrFunc of promises) {
         const promise = promiseOrFunc instanceof Function ? promiseOrFunc() : promiseOrFunc;
-        results.push(await promise)
+        results.push(await promise);
     }
 
     return results;
@@ -469,7 +472,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
             && (
                 // Normal function ...
                 ast.body[0].type === 'FunctionDeclaration'
-                // @ts-ignore or arrow function
+                // or arrow function
                 || (ast.body[0].expression && ast.body[0].expression.type === 'ArrowFunctionExpression')
             );
 
