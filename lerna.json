@@ -1,6 +1,19 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "0.7.7"
+    "packages": [
+        "packages/*"
+    ],
+    "version": "independent",
+    "command": {
+        "version": {
+            "conventionalCommits": true,
+            "granularPathspec": false,
+            "createRelease": "github",
+            "message": "chore: release [skip ci]"
+        }
+    },
+    "useWorkspaces": true,
+    "ignoreChanges": [
+        "**/test/**",
+        "**/*.md"
+    ]
 }

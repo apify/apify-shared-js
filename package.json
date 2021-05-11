@@ -1,7 +1,7 @@
 {
     "name": "apify-shared",
     "private": true,
-    "version": "0.7.8",
+    "version": "0.0.0",
     "description": "Tools and constants shared across Apify projects.",
     "main": "build/index.js",
     "types": "types/index.d.ts",
@@ -30,13 +30,11 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "bootstrap": "lerna bootstrap",
-        "postinstall": "npm run bootstrap",
         "clean": "lerna run clean",
         "build": "lerna run build",
         "test": "jest --silent",
         "test-cov": "jest --coverage",
-        "prepublishOnly": "(test $CI || (echo \"Publishing is reserved to CI!\"; exit 1))",
+        "release": "npm run build && lerna version patch && lerna publish from-package --contents dist",
         "lint": "eslint packages/*/src test",
         "lint:fix": "eslint packages/*/src test --fix"
     },

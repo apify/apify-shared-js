@@ -11,3 +11,4 @@ logs
 pids
 .idea
 yarn.lock
+.npmrc
