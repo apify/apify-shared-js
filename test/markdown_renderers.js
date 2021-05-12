@@ -37,7 +37,7 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" rel="nofollow noreferrer noopener">link to bar</a>');
+        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" target="_blank" rel="nofollow noreferrer noopener">link to bar</a>');
     })
 
     it('replaces relative URLs in images from GitHub repos with absolute URLs pointing to raw files', () => {
@@ -55,6 +55,6 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/do-not-change" rel="nofollow noreferrer noopener">absolute-link</a>');
+        expect(renderedLink).to.equal('<a href="https://github.com/apify/actor-test-url/do-not-change" target="_blank" rel="nofollow noreferrer noopener">absolute-link</a>');
     })
 });
