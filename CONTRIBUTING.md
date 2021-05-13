@@ -21,7 +21,7 @@ When contributing to this repository, please first discuss the change you wish t
 - Commit your changes using a descriptive commit message that follows defined
   [commit message conventions](#commit-message-guidelines). Adherence to these conventions is necessary because release notes are automatically generated from these messages.
 - Push the code to your forked repository and create a pull request on GitHub.
-- If somebody from project contributors suggest changes then:
+- If somebody from project contributors suggests changes then:
     - Make the required updates.
     - Re-run all test suites to ensure tests are still passing.
     - Push the changes. No need to rebase/squash at this point, as the whole PR will be squash merged.
@@ -31,7 +31,7 @@ That's it! Thank you for your contribution!
 
 ## Commit Message Guidelines
 
-The project have very precise rules over how git commit messages can be formatted. This leads to
+The project has very precise rules over how git commit messages can be formatted. This leads to
 **more readable messages** that are easy to follow when looking through the **project history**. But also, git history is used to **generate the change log**.
 
 The commit message format is borrowed from Angular projects, you can find
@@ -43,7 +43,7 @@ In a nutshell, all commit messages need to start with a commit type, that will t
 - `feat: ...` will trigger a minor bump (1.x.0)
 - any commit with `BREAKING CHANGE: ...` in the footer will trigger a major bump (x.0.0)
     - the colon and the BC description is important, without it, it won't be considered a BC
-- use can also use other types as `chore/build/test`, those will never trigger the publishing and won't be part of
+- we can also use other types as `chore/build/test`, those will never trigger the publishing and won't be part of
   the changelog
 
 Commit message itself should always be imperative (e.g. `add new logger`), and without trailing dot.
