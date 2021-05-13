@@ -83,7 +83,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
                 with:
-                    token: ${{ secrets.GITHUB_TOKEN }}
+                    token: ${{ secrets.GH_TOKEN }}
                     fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
                     ref: master
             -   uses: actions/setup-node@v2
@@ -115,6 +115,6 @@ jobs:
                     git push
                 env:
                     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-                    GIT_USER: "noreply@apify.com:${{ secrets.GITHUB_TOKEN }}"
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    GIT_USER: "noreply@apify.com:${{ secrets.GH_TOKEN }}"
+                    GH_TOKEN: ${{ secrets.GH_TOKEN }}
                     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
