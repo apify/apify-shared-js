@@ -162,7 +162,7 @@ export const customLinkRenderer = (href, text, gitRepoUrl, gitBranchName) => {
         href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<a href="${href}" rel="nofollow noreferrer noopener">${text}</a>`;
+    return `<a href="${href}" target="_blank" rel="nofollow noreferrer noopener">${text}</a>`;
 };
 
 /**
