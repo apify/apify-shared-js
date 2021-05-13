@@ -7,7 +7,7 @@ module.exports = {
         '<rootDir>/packages/*/src/**/*.ts',
     ],
     moduleNameMapper: {
-        '@lerna-test-v1/(.*)': '<rootDir>/packages/$1/src',
+        '@apify/(.*)': '<rootDir>/packages/$1/src',
     },
     modulePathIgnorePatterns: [
         'dist/package.json',
