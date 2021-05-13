@@ -20,7 +20,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
             -   name: Use Node.js ${{ matrix.node-version }}
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v2
                 with:
                     node-version: ${{ matrix.node-version }}
             -   name: Cache node_modules
@@ -31,7 +31,7 @@ jobs:
             -   name: Update NPM
                 run: npm install --no-audit -g npm@latest
             -   name: Install Dependencies
-                run: npm install --no-audit
+                run: npm ci --no-audit
             -   name: Run Tests
                 run: npm test
 
@@ -42,7 +42,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
             -   name: Use Node.js 16
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v2
                 with:
                     node-version: 16
             -   name: Cache node_modules
@@ -53,7 +53,7 @@ jobs:
             -   name: Update NPM
                 run: npm install --no-audit -g npm@latest
             -   name: Install Dependencies
-                run: npm install --no-audit
+                run: npm ci --no-audit
             -   run: npm run build
 
     lint:
@@ -63,7 +63,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
             -   name: Use Node.js 16
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@v2
                 with:
                     node-version: 16
             -   name: Cache node_modules
@@ -72,7 +72,7 @@ jobs:
                     path: '**/node_modules'
                     key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
             -   name: Install Dependencies
-                run: npm install --no-audit
+                run: npm ci --no-audit
             -   run: npm run lint
 
     publish:
@@ -83,13 +83,12 @@ jobs:
         steps:
             -   uses: actions/checkout@v2
                 with:
-                    token: ${{ secrets.GH_TOKEN }}
+                    token: ${{ secrets.GITHUB_TOKEN }}
                     fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
                     ref: master
-            -   uses: actions/setup-node@v1
+            -   uses: actions/setup-node@v2
                 with:
                     node-version: 16
-                    registry-url: https://registry.npmjs.org/
             -   name: Cache node_modules
                 uses: actions/cache@v2
                 with:
@@ -106,16 +105,16 @@ jobs:
                     git config --global user.email 'noreply@apify.com'
                     echo "access=public" >> .npmrc
                     echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-                    npm install --no-audit
+                    npm ci --no-audit
                     npm run build
                     git checkout -- .
                     npx lerna publish --contents dist --yes --no-verify-access
-                    npm install --no-audit # reinstall to have updated lock file
+                    npm ci --no-audit # reinstall to have updated lock file
                     npx lerna ls --json | npx ts-node -T scripts/sync-root-changelog.ts
                     git commit -am 'chore: update root lock file and changelog [skip ci]'
                     git push
                 env:
                     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-                    GIT_USER: "noreply@apify.com:${{ secrets.GH_TOKEN }}"
-                    GH_TOKEN: ${{ secrets.GH_TOKEN }}
+                    GIT_USER: "noreply@apify.com:${{ secrets.GITHUB_TOKEN }}"
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
