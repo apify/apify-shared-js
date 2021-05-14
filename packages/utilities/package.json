@@ -49,12 +49,9 @@
         "ajv": "^6.12.6",
         "countries-list": "^2.6.1",
         "create-hmac": "^1.1.7",
-        "cherow": "^1.6.9",
-        "is-buffer": "^2.0.5",
-        "request": "^2.88.2"
+        "cherow": "^1.6.9"
     },
     "devDependencies": {
-        "@types/create-hmac": "^1.1.0",
-        "@types/request": "^2.48.5"
+        "@types/create-hmac": "^1.1.0"
     }
 }

@@ -6,7 +6,6 @@
  *
  */
 
-import isBuffer from 'is-buffer';
 import { countries } from 'countries-list';
 import { VERSION_INT_MAJOR_BASE, VERSION_INT_MINOR_BASE, PROXY_URL_REGEX, URL_REGEX, RELATIVE_URL_REGEX } from '@apify/consts';
 import { m, parseAjvError } from '@apify/input_schema';
@@ -17,6 +16,10 @@ import { ValidateFunction } from 'ajv';
  */
 export function isNullOrUndefined(obj: unknown): boolean {
     return obj == null;
+}
+
+export function isBuffer(obj: any): boolean {
+    return obj != null && obj.constructor != null && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj);
 }
 
 /**

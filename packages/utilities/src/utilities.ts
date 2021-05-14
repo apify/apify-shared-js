@@ -8,7 +8,6 @@
  */
 
 import crypto from 'crypto';
-import request, { CoreOptions, Response } from 'request';
 import log, { Logger, LoggerJson, LogLevel } from '@apify/log';
 import { ANONYMOUS_USERNAME } from '@apify/consts';
 
@@ -188,31 +187,6 @@ export function leftpad(str: string, len: number, ch: string | number = ' ') {
  */
 export function weightedAverage(val1: number, weight1: number, val2: number, weight2: number) {
     return (val1 * weight1 + val2 * weight2) / (weight1 + weight2);
-}
-
-/**
- * Promised version of request() library.
- * @param opts Options object for request() function.
- * @param failOnHttpError If true-ish, the function rejects the promise
- * if HTTP status is in the range 4XX or 5XX.
- * @return
- */
-export function requestPromised(opts: CoreOptions, failOnHttpError?: boolean): Promise<any> {
-    // TODO: Add unit test for this !!!
-    //  (edit: better to get rid of deprecated `request` and pick something with promise support baked in)
-    return new Promise(((resolve, reject) => {
-        request(opts as any, (error: Error, response: Response, body: any) => {
-            if (error) return reject(error);
-            if (failOnHttpError && response.statusCode >= 400 && response.statusCode <= 599) {
-                const err = new Error(`Received HTTP error response status ${response.statusCode}`) as any;
-                err.statusCode = response.statusCode;
-                err.body = body;
-
-                return reject(err);
-            }
-            resolve({ body, response, statusCode: response.statusCode });
-        });
-    }));
 }
 
 /**
