@@ -46,7 +46,7 @@
         "@apify/consts": "^1.0.0",
         "@apify/log": "^1.0.0",
         "create-hmac": "^1.1.7",
-        "cherow": "^1.6.9"
+        "escaya": "^0.0.61"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"

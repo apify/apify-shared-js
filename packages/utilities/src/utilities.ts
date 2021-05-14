@@ -10,10 +10,7 @@
 import crypto from 'crypto';
 import log, { Logger, LoggerJson, LogLevel } from '@apify/log';
 import { ANONYMOUS_USERNAME } from '@apify/consts';
-
-// due to invalid typings inside the library we need to use good old require here
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const cherow = require('cherow');
+import { parseScript } from 'escaya';
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -432,7 +429,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
 
         let ast;
         try {
-            ast = cherow.parse(maybeFunction);
+            ast = parseScript(maybeFunction, { cst: true });
         } catch (err) {
             // Don't do anything in a case of invalid JS code.
             return;
@@ -440,14 +437,17 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
 
         const isMultiline = maybeFunction.includes('\n');
         const isSingleFunction = ast
-            && ast.body
-            && ast.body.length === 1 // Must have only one expression inside!
-            && ast.body[0]
+            && ast.leafs
+            && ast.leafs.length === 1 // Must have only one expression inside!
+            && ast.leafs[0]
             && (
                 // Normal function ...
-                ast.body[0].type === 'FunctionDeclaration'
+                ast.leafs[0].type === 'FunctionDeclaration'
                 // or arrow function
-                || (ast.body[0].expression && ast.body[0].expression.type === 'ArrowFunctionExpression')
+                || (
+                    ast.leafs[0].type === 'ExpressionStatement'
+                    && (ast.leafs[0] as { expression: { type: string } }).expression.type === 'ArrowFunction'
+                )
             );
 
         // If it's not a function declaration or multiline JS code then we do nothing.
