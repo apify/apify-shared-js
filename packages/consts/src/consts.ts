@@ -377,7 +377,6 @@ export const ENV_VARS = {
     FACT: 'APIFY_FACT',
     DEDICATED_CPUS: 'APIFY_DEDICATED_CPUS',
     SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
-    INTERNAL_PORT: 'APIFY_INTERNAL_PORT',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
@@ -385,7 +384,6 @@ export const ENV_VARS = {
 };
 export const INTEGER_ENV_VARS = [
     ENV_VARS.PROXY_PORT,
-    ENV_VARS.INTERNAL_PORT,
     ENV_VARS.MEMORY_MBYTES,
     ENV_VARS.CONTAINER_PORT,
 ];
