@@ -15,8 +15,8 @@ import {
     splitFullName,
     traverseObject,
     unescapeFromBson,
-    validateInputUsingValidator,
 } from '@apify/utilities';
+import { validateInputUsingValidator } from '@apify/input_schema';
 
 const clone = function (obj: any) {
     return Array.isArray(obj) ? obj.slice(0) : brokenClone(obj);

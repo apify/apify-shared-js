@@ -44,10 +44,7 @@
     },
     "dependencies": {
         "@apify/consts": "^1.0.0",
-        "@apify/input_schema": "^1.0.0",
         "@apify/log": "^1.0.0",
-        "ajv": "^6.12.6",
-        "countries-list": "^2.6.1",
         "create-hmac": "^1.1.7",
         "cherow": "^1.6.9"
     },

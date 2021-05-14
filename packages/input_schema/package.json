@@ -43,6 +43,8 @@
         "access": "public"
     },
     "dependencies": {
-        "ajv": "^6.12.6"
+        "@apify/consts": "^1.0.0",
+        "ajv": "^6.12.6",
+        "countries-list": "^2.6.1"
     }
 }
