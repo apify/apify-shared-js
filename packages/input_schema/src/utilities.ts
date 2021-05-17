@@ -6,7 +6,7 @@ import { m } from './intl';
 import { parseAjvError } from './input_schema';
 
 /**
- * Validate's input field configured with proxy editor
+ * Validates input field configured with proxy editor
  * @param fieldKey Proxy field value
  * @param value Proxy field value
  * @param [isRequired] Whether the field is required or not

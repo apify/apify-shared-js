@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import c from 'ansi-colors';
 import { Logger } from './logger';
 import { LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
 
@@ -59,7 +59,7 @@ export class LoggerText extends Logger {
         prefix = prefix ? ` ${prefix}${PREFIX_DELIMITER}` : '';
         suffix = suffix ? ` ${suffix}` : '';
 
-        const line = chalk`{gray ${maybeDate}}{${color} ${levelStr}}${levelIndent}{yellow ${prefix}} ${message || ''}{gray ${dataStr}}{yellow ${suffix}}${errStack}`; // eslint-disable-line
+        const line = `${c.gray(maybeDate)}${c[color](levelStr)}${levelIndent}${c.yellow(prefix)} ${message || ''}${c.gray(dataStr)}${c.yellow(suffix)}${errStack}`; // eslint-disable-line
         this._outputWithConsole(level, line);
 
         return line;
@@ -81,7 +81,7 @@ export class LoggerText extends Logger {
         const errorLines = errorString.split('\n');
 
         // Add details to a first line.
-        if (errDetails.length) errorLines[0] += chalk`{gray (details: ${errDetails.join(', ')})}`;
+        if (errDetails.length) errorLines[0] += c.gray(`(details: ${errDetails.join(', ')})`);
 
         // Compose it back.
         errStack = errorLines.map((line) => `  ${line}`).join('\n');

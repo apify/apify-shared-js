@@ -9,6 +9,7 @@ package | version
 `@apify/git` | [![NPM version](https://img.shields.io/npm/v/@apify/git.svg)](https://www.npmjs.com/package/@apify/git)
 `@apify/hubspot_client` | [![NPM version](https://img.shields.io/npm/v/@apify/hubspot_client.svg)](https://www.npmjs.com/package/@apify/hubspot_client)
 `@apify/input_schema` | [![NPM version](https://img.shields.io/npm/v/@apify/input_schema.svg)](https://www.npmjs.com/package/@apify/input_schema)
+`@apify/image_proxy_client` | [![NPM version](https://img.shields.io/npm/v/@apify/image_proxy_client.svg)](https://www.npmjs.com/package/@apify/image_proxy_client)
 `@apify/log` | [![NPM version](https://img.shields.io/npm/v/@apify/log.svg)](https://www.npmjs.com/package/@apify/log)
 `@apify/markdown` | [![NPM version](https://img.shields.io/npm/v/@apify/markdown.svg)](https://www.npmjs.com/package/@apify/markdown)
 `@apify/salesforce_client` | [![NPM version](https://img.shields.io/npm/v/@apify/salesforce_client.svg)](https://www.npmjs.com/package/@apify/salesforce_client)

@@ -1,4 +1,4 @@
-import { ImageProxyClient } from '@apify/utilities';
+import { ImageProxyClient } from '@apify/image_proxy_client';
 
 const IMAGE_PROXY_KEY = '2345DFGHCVBNGHJ';
 const IMAGE_PROXY_DOMAIN = 'localhost:3000';
