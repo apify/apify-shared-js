@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import * as http from 'http';
 import * as utils from '@apify/utilities';
+import { makeInputJsFieldsReadable } from '@apify/input_schema';
 
 describe('utilities', () => {
     describe('#cryptoRandomObjectId()', () => {
@@ -259,7 +260,7 @@ describe('timeoutPromise()', () => {
             }`;
             /* eslint-enable */
 
-            const given = utils.makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
+            const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
             const expected = `{
     "cookiesPersistence": "PER_PROCESS",
     "disableWebSecurity": true,
@@ -294,7 +295,7 @@ describe('timeoutPromise()', () => {
             }`;
             /* eslint-enable */
 
-            const given = utils.makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
+            const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
             /* eslint-disable */
             const expected = `{
     "cookiesPersistence": "PER_PROCESS",
@@ -314,7 +315,7 @@ describe('timeoutPromise()', () => {
                 "loadCss": false
             }`;
 
-            const given = utils.makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4, 4);
+            const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4, 4);
             const expected = `{
         "cookiesPersistence": "PER_PROCESS",
         "arrowFunction": async (a, b) => a + b,

@@ -45,8 +45,7 @@
     "dependencies": {
         "@apify/consts": "^1.0.0",
         "@apify/log": "^1.0.0",
-        "create-hmac": "^1.1.7",
-        "escaya": "^0.0.61"
+        "create-hmac": "^1.1.7"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"
