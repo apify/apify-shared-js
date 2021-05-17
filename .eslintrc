@@ -1,13 +1,3 @@
 {
-    "extends": ["@apify/ts"],
-    "overrides": [
-        {
-            "files": ["packages/*/src/**/*.ts"],
-            "rules": {
-                "no-useless-constructor": 0,
-                "@typescript-eslint/no-useless-constructor": ["error"],
-                "@typescript-eslint/no-non-null-assertion": 0
-            }
-        }
-    ]
+    "extends": ["@apify/ts"]
 }

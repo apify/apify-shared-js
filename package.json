@@ -50,8 +50,7 @@
         ]
     },
     "devDependencies": {
-        "@apify/eslint-config": "^0.1.4",
-        "@apify/eslint-config-ts": "^0.1.1",
+        "@apify/eslint-config-ts": "^0.1.2",
         "@commitlint/config-conventional": "^12.1.1",
         "@types/git-url-parse": "^9.0.0",
         "@types/jest": "^26.0.23",
