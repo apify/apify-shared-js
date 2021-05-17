@@ -1,4 +1,4 @@
-import { Transform, TransformCallback, TransformOptions } from 'stream';
+import { Transform, TransformCallback } from 'stream';
 
 // TODO: Fix the issue with the separate 'data' and 'object' event - see below.
 // For example, we could just have 'data' and it would just pass the object.
@@ -23,10 +23,6 @@ import { Transform, TransformCallback, TransformOptions } from 'stream';
  */
 export class ParseJsonlStream extends Transform {
     private pendingChunk: string | null = null;
-
-    constructor(options?: TransformOptions) {
-        super(options);
-    }
 
     parseLineAndEmitObject(line: string): void {
         line = line.trim();
