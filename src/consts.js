@@ -20,6 +20,7 @@ export const ACTOR_EVENT_NAMES = {
     SYSTEM_INFO: 'systemInfo',
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
+    ABORTING: 'aborting',
 };
 
 /**
