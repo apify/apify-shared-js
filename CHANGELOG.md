@@ -1,3 +1,8 @@
+0.7.8 / 2021/05/20
+==================
+
+- Added aborting event under ACTOR_EVENT_NAMES const
+
 0.7.7 / 2021/04/22
 ==================
 
