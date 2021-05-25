@@ -43,7 +43,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^1.0.0",
+        "@apify/consts": "^0.7.8",
         "ajv": "^6.12.6",
         "countries-list": "^2.6.1",
         "escaya": "^0.0.61"
