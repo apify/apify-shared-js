@@ -1,0 +1,52 @@
+{
+    "name": "@apify/markdown",
+    "version": "1.0.0",
+    "description": "Tools and constants shared across Apify projects.",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "keywords": [
+        "apify"
+    ],
+    "author": {
+        "name": "Apify",
+        "email": "support@apify.com",
+        "url": "https://apify.com"
+    },
+    "contributors": [
+        "Jan Curn <jan@apify.com>",
+        "Marek Trunkát <marek@apify.com>"
+    ],
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/apify/apify-shared-js"
+    },
+    "bugs": {
+        "url": "https://github.com/apify/apify-shared-js/issues"
+    },
+    "homepage": "https://apify.com",
+    "scripts": {
+        "build": "npm run clean && npm run compile && npm run copy",
+        "postbuild": "npx gen-esm-wrapper dist/index.js dist/index.mjs",
+        "clean": "rimraf ./dist",
+        "compile": "tsc -p tsconfig.build.json",
+        "copy": "ts-node -T ../../scripts/copy.ts"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@apify/consts": "^1.0.0",
+        "@apify/utilities": "^1.0.0",
+        "git-url-parse": "^11.4.4",
+        "marked": "^2.0.0",
+        "match-all": "^1.2.6"
+    }
+}

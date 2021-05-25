@@ -1,4 +1,4 @@
-build
+dist
 docs
 node_modules
 *.log
@@ -11,5 +11,4 @@ logs
 pids
 .idea
 yarn.lock
-package-lock.json
-types/
+.npmrc

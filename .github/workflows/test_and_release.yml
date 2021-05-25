@@ -1,0 +1,120 @@
+name: Check & Release
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    test:
+        name: Test
+        if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                node-version: [ 12, 14, 15, 16 ]
+
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js ${{ matrix.node-version }}
+                uses: actions/setup-node@v2
+                with:
+                    node-version: ${{ matrix.node-version }}
+            -   name: Cache node_modules
+                uses: actions/cache@v2
+                with:
+                    path: '**/node_modules'
+                    key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+            -   name: Update NPM
+                run: npm install --no-audit -g npm@latest
+            -   name: Install Dependencies
+                run: npm ci --no-audit
+            -   name: Run Tests
+                run: npm test
+
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js 16
+                uses: actions/setup-node@v2
+                with:
+                    node-version: 16
+            -   name: Cache node_modules
+                uses: actions/cache@v2
+                with:
+                    path: '**/node_modules'
+                    key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+            -   name: Update NPM
+                run: npm install --no-audit -g npm@latest
+            -   name: Install Dependencies
+                run: npm ci --no-audit
+            -   run: npm run build
+
+    lint:
+        name: Lint
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Use Node.js 16
+                uses: actions/setup-node@v2
+                with:
+                    node-version: 16
+            -   name: Cache node_modules
+                uses: actions/cache@v2
+                with:
+                    path: '**/node_modules'
+                    key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+            -   name: Install Dependencies
+                run: npm ci --no-audit
+            -   run: npm run lint
+
+    publish:
+        name: Publish to NPM
+        if: github.ref == 'refs/heads/master'
+        needs: [ test, build, lint ]
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+                with:
+                    token: ${{ secrets.GH_TOKEN }}
+                    fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
+                    ref: master
+            -   uses: actions/setup-node@v2
+                with:
+                    node-version: 16
+            -   name: Cache node_modules
+                uses: actions/cache@v2
+                with:
+                    path: '**/node_modules'
+                    key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+            -   name: Check for changes
+                id: changed_packages
+                run: |
+                    echo "::set-output name=changed_packages::$(npx lerna changed -p | wc -l | xargs)"
+            -   name: Release
+                if: steps.changed_packages.outputs.changed_packages != '0'
+                run: |
+                    git config --global user.name 'Apify Release Bot'
+                    git config --global user.email 'noreply@apify.com'
+                    echo "access=public" >> .npmrc
+                    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
+                    npm ci --no-audit
+                    npm run build
+                    git checkout -- .
+                    npx lerna publish --contents dist --yes --no-verify-access
+                    npm ci --no-audit # reinstall to have updated lock file
+                    npx lerna ls --json | npx ts-node -T scripts/sync-root-changelog.ts
+                    git commit -am 'chore: update root lock file and changelog [skip ci]'
+                    git push
+                env:
+                    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                    GIT_USER: "noreply@apify.com:${{ secrets.GH_TOKEN }}"
+                    GH_TOKEN: ${{ secrets.GH_TOKEN }}
+                    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

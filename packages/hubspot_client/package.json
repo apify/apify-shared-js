@@ -1,0 +1,49 @@
+{
+    "name": "@apify/hubspot_client",
+    "version": "1.0.0",
+    "description": "Tools and constants shared across Apify projects.",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "typings": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
+    "keywords": [
+        "apify"
+    ],
+    "author": {
+        "name": "Apify",
+        "email": "support@apify.com",
+        "url": "https://apify.com"
+    },
+    "contributors": [
+        "Jan Curn <jan@apify.com>",
+        "Marek Trunkát <marek@apify.com>"
+    ],
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/apify/apify-shared-js"
+    },
+    "bugs": {
+        "url": "https://github.com/apify/apify-shared-js/issues"
+    },
+    "homepage": "https://apify.com",
+    "scripts": {
+        "build": "npm run clean && npm run compile && npm run copy",
+        "postbuild": "yarn gen-esm-wrapper dist/index.js dist/index.mjs",
+        "clean": "rimraf ./dist",
+        "compile": "tsc -p tsconfig.build.json",
+        "copy": "ts-node -T ../../scripts/copy.ts"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@hubspot/api-client": "^3.4.1",
+        "underscore": "^1.11.0"
+    }
+}
