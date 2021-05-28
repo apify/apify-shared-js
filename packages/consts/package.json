@@ -1,6 +1,6 @@
 {
     "name": "@apify/consts",
-    "version": "1.0.0-alpha.0",
+    "version": "1.0.0",
     "description": "Tools and constants shared across Apify projects.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -42,7 +42,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {},
     "devDependencies": {
         "gen-esm-wrapper": "^1.1.1"
     }
