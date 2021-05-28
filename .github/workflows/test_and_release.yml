@@ -108,7 +108,7 @@ jobs:
                     npm ci --no-audit
                     npm run build
                     git checkout -- .
-                    npx lerna publish --contents dist --yes --no-verify-access
+                    npx lerna publish --contents dist --yes --no-verify-access --conventional-graduate=*
                     npm ci --no-audit # reinstall to have updated lock file
                     npx lerna ls --json | npx ts-node -T scripts/sync-root-changelog.ts
                     git commit -am 'chore: update root lock file and changelog [skip ci]'
