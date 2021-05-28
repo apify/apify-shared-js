@@ -1,15 +1,20 @@
 # `apify-shared` monorepo
 
-`apify-shared` is now an independently versioned monorepo. See the changelogs of each package:
+`apify-shared` is now an independently versioned monorepo.
 
-package | changelog
---------|----------
-`@apify/consts` | [CHANGELOG](./packages/consts/CHANGELOG.md)
-`@apify/datastructures` | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
-`@apify/git` | [CHANGELOG](./packages/git/CHANGELOG.md)
-`@apify/hubspot_client` | [CHANGELOG](./packages/hubspot_client/CHANGELOG.md)
-`@apify/input_schema` | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
-`@apify/log` | [CHANGELOG](./packages/log/CHANGELOG.md)
-`@apify/markdown` | [CHANGELOG](./packages/markdown/CHANGELOG.md)
-`@apify/salesforce_client` | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
-`@apify/utilities` | [CHANGELOG](./packages/utilities/CHANGELOG.md)
+> This file is generated.
+
+See the changelogs of each package:
+
+package | version | changelog
+--------|---------|----------
+`@apify/consts` | 1.0.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
+`@apify/datastructures` | 1.0.0 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
+`@apify/git` | 1.0.0 | [CHANGELOG](./packages/git/CHANGELOG.md)
+`@apify/hubspot_client` | 1.0.0 | [CHANGELOG](./packages/hubspot_client/CHANGELOG.md)
+`@apify/image_proxy_client` | 1.0.0 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
+`@apify/input_schema` | 1.0.0 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/log` | 1.0.0 | [CHANGELOG](./packages/log/CHANGELOG.md)
+`@apify/markdown` | 1.0.0 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
+`@apify/salesforce_client` | 1.0.0 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
+`@apify/utilities` | 1.0.0 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
