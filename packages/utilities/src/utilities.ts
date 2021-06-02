@@ -8,7 +8,7 @@
  */
 
 import crypto from 'crypto';
-import log, { Logger, LoggerJson, LogLevel } from '@apify/log';
+import log, { Log, LoggerJson, LogLevel } from '@apify/log';
 import { ANONYMOUS_USERNAME } from '@apify/consts';
 
 /**
@@ -378,7 +378,7 @@ export function promisifyServerListen<T extends Server>(server: T) {
     };
 }
 
-export function configureLogger(givenLog: Logger, isProduction?: boolean) {
+export function configureLogger(givenLog: Log, isProduction?: boolean) {
     if (isProduction) {
         givenLog.setOptions({
             level: LogLevel.INFO,
