@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.0.0...@apify/utilities@1.0.1) (2021-06-02)
+
+
+### Bug Fixes
+
+* make `configureLogger` accept `Log` instance instead of `Logger` ([#173](https://github.com/apify/apify-shared-js/issues/173)) ([39acce3](https://github.com/apify/apify-shared-js/commit/39acce31f9bb0a22523a23907b68c07908deafe0))
+
+
+
+
+
 # 1.0.0 (2021-05-28)
 
 
