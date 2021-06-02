@@ -234,7 +234,7 @@ export const USERNAME = {
  */
 export const ACTOR_NAME = {
     MIN_LENGTH: 3,
-    MAX_LENGTH: 30,
+    MAX_LENGTH: 120,
     REGEX: DNS_SAFE_NAME_REGEX,
 };
 
