@@ -141,36 +141,30 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
     {
         name: 'apify/actor-node-basic',
         displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-chrome',
         displayName: '[DEPRECATED]: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-chrome-xvfb',
         displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-basic:beta',
         displayName: '[DEPRECATED] BETA: Node.js 12 on Alpine Linux',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-chrome:beta',
         displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome on Debian',
         copyChown: 'myuser:myuser',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-chrome-xvfb:beta',
         displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome + Xvfb on Debian',
         copyChown: 'myuser:myuser',
-        prePull: true,
     },
     {
         name: 'apify/actor-node-basic:v0.21.10',
