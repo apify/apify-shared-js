@@ -1,6 +1,6 @@
 {
     "name": "@apify/utilities",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Tools and constants shared across Apify projects.",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
@@ -44,7 +44,7 @@
     },
     "dependencies": {
         "@apify/consts": "^1.1.1",
-        "@apify/log": "^1.0.2"
+        "@apify/log": "^1.0.3"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"
