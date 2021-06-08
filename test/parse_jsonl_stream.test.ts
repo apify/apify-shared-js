@@ -81,7 +81,7 @@ describe('parse_jsonl_stream', () => {
         parseJsonl.write(json);
     });
 
-    it('fails on invalid JSON', async (done) => {
+    it('fails on invalid JSON', (done) => {
         const parseJsonl = new ParseJsonlStream();
 
         parseJsonl.on('error', (err) => {
@@ -103,7 +103,7 @@ describe('parse_jsonl_stream', () => {
         });
     });
 
-    it('fails on unfinished JSON', async (done) => {
+    it('fails on unfinished JSON', (done) => {
         const parseJsonl = new ParseJsonlStream();
 
         let failed = false;
