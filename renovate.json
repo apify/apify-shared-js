@@ -1,22 +1,18 @@
 {
-    "extends": [
-        "config:base"
-    ],
+    "extends": ["config:base"],
     "pinVersions": false,
     "semanticCommits": "enabled",
     "packageRules": [
         {
-            "depTypeList": [
-                "devDependencies"
-            ],
+            "matchDepTypes": ["devDependencies"],
+            "matchUpdateTypes": ["patch", "minor"],
+            "groupName": "devDependencies (non-major)",
             "automerge": true
         },
         {
-          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-          "automerge": true
+            "matchUpdateTypes": ["patch", "minor", "digest"],
+            "automerge": true
         }
     ],
-    "schedule": [
-        "every weekday"
-    ]
+    "schedule": ["every weekday"]
 }
