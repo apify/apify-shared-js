@@ -44,7 +44,7 @@
     },
     "dependencies": {
         "@apify/consts": "^1.1.2",
-        "ajv": "^6.12.6",
+        "ajv": "^8.6.0",
         "countries-list": "^2.6.1",
         "escaya": "^0.0.61"
     }
