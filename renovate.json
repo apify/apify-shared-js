@@ -1,5 +1,22 @@
 {
-  "extends": [
-    "config:base"
-  ]
+    "extends": [
+        "config:base"
+    ],
+    "pinVersions": false,
+    "semanticCommits": "enabled",
+    "packageRules": [
+        {
+            "depTypeList": [
+                "devDependencies"
+            ],
+            "automerge": true
+        },
+        {
+          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+          "automerge": true
+        }
+    ],
+    "schedule": [
+        "every weekday"
+    ]
 }
