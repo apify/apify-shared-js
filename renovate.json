@@ -1,17 +1,23 @@
 {
     "extends": ["config:base"],
     "pinVersions": false,
+    "separateMajorMinor": false,
     "semanticCommits": "enabled",
     "packageRules": [
         {
             "matchDepTypes": ["devDependencies"],
             "matchUpdateTypes": ["patch", "minor"],
             "groupName": "devDependencies (non-major)",
-            "automerge": true
+            "groupSlug": "dev-non-major",
+            "automerge": true,
+            "automergeType": "branch"
         },
         {
-            "matchUpdateTypes": ["patch", "minor", "digest"],
-            "automerge": true
+            "matchUpdateTypes": ["patch", "minor"],
+            "groupName": "dependencies (patch)",
+            "groupSlug": "all-non-major",
+            "automerge": true,
+            "automergeType": "branch"
         }
     ],
     "schedule": ["every weekday"]
