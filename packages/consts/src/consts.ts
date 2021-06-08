@@ -224,11 +224,16 @@ export const USERNAME = {
 };
 
 /**
+ * Max length for DNS safe string
+ */
+export const DNS_SAFE_NAME_MAX_LENGTH = 63;
+
+/**
  * Actor name constraints.
  */
 export const ACTOR_NAME = {
     MIN_LENGTH: 3,
-    MAX_LENGTH: 63, // DNS-safe string length
+    MAX_LENGTH: DNS_SAFE_NAME_MAX_LENGTH, // DNS-safe string length
     REGEX: DNS_SAFE_NAME_REGEX,
 };
 
