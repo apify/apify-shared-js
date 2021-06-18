@@ -1,6 +1,6 @@
 {
     "name": "@apify/image_proxy_client",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Tools and constants shared across Apify projects.",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",

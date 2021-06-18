@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/apify/apify-shared-js/compare/@apify/log@1.0.4...@apify/log@1.0.5) (2021-06-18)
+
+
+### Bug Fixes
+
+* remove ESM support ([#199](https://github.com/apify/apify-shared-js/issues/199)) ([c9252e3](https://github.com/apify/apify-shared-js/commit/c9252e326923d6cbb568a474b78d046380cba119))
+
+
+
+
+
 ## [1.0.4](https://github.com/apify/apify-shared-js/compare/@apify/log@1.0.3...@apify/log@1.0.4) (2021-06-08)
 
 **Note:** Version bump only for package @apify/log
