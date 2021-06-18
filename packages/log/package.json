@@ -3,14 +3,7 @@
     "version": "1.0.4",
     "description": "Tools and constants shared across Apify projects.",
     "main": "dist/index.js",
-    "module": "dist/index.mjs",
     "typings": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
-        }
-    },
     "keywords": [
         "apify"
     ],
@@ -34,7 +27,6 @@
     "homepage": "https://apify.com",
     "scripts": {
         "build": "npm run clean && npm run compile && npm run copy",
-        "postbuild": "npx gen-esm-wrapper dist/index.js dist/index.mjs",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.build.json",
         "copy": "ts-node -T ../../scripts/copy.ts"
