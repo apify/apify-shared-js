@@ -200,6 +200,10 @@ const KNOWN_ESCAPES: { irreversible?: boolean, src: any, trg: any}[] = [
         trg: { xxxyyy: null },
     },
     {
+        src: { aaa: { bbb: { ccc: 'nothing wrong with one' } } },
+        trg: { aaa: { bbb: { ccc: 'nothing wrong with one' } } },
+    },
+    {
         src: { _ｔｏＳｔｒｉｎｇ: { test: 'test' } },
         trg: { _ｔｏＳｔｒｉｎｇ: { test: 'test' } },
     },
