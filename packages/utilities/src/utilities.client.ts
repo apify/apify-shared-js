@@ -195,14 +195,16 @@ export function buildOrVersionNumberIntToStr(int: number): string | null {
 const ESCAPE_DOT = '\uFF0E'; // "."
 const ESCAPE_DOLLAR = '\uFF04'; // "$"
 const ESCAPE_TO_BSON = '\uFF54\uFF4F\uFF22\uFF33\uFF2F\uFF2E'; // "toBSON"
+const ESCAPE_TO_STRING = '\uFF54\uFF4F\uFF33\uFF54\uFF52\uFF49\uFF4E\uFF47'; // "toString"
 const ESCAPE_BSON_TYPE = '\uFF3F\uFF42\uFF53\uFF4F\uFF4E\uFF54\uFF59\uFF50\uFF45'; // "_bsontype"
 const ESCAPE_NULL = ''; // "\0" (null chars are removed completely, they won't be recovered)
 
-const REGEXP_IS_ESCAPED = new RegExp(`(${ESCAPE_DOT}|^${ESCAPE_DOLLAR}|^${ESCAPE_TO_BSON}$|^${ESCAPE_BSON_TYPE}$)`);
+const REGEXP_IS_ESCAPED = new RegExp(`(${ESCAPE_DOT}|^${ESCAPE_DOLLAR}|^${ESCAPE_TO_BSON}$|^${ESCAPE_BSON_TYPE}|^${ESCAPE_TO_STRING}$)`);
 
 const REGEXP_DOT = new RegExp(ESCAPE_DOT, 'g');
 const REGEXP_DOLLAR = new RegExp(`^${ESCAPE_DOLLAR}`);
 const REGEXP_TO_BSON = new RegExp(`^${ESCAPE_TO_BSON}$`);
+const REGEXP_TO_STRING = new RegExp(`^${ESCAPE_TO_STRING}$`);
 const REGEXP_BSON_TYPE = new RegExp(`^${ESCAPE_BSON_TYPE}$`);
 
 /**
@@ -217,12 +219,15 @@ export function escapePropertyName(name: string) {
     // a dollar sign (i.e. $). See faq-dollar-sign-escaping for an alternate approach."
     // Moreover, the name cannot be "toBSON" and "_bsontype" because they have a special meaning in BSON serialization.
     // Other special BSON properties like $id and $db are covered thanks to $ escape.
+    // 2021-06-25: The `toString` string was added as a property to escape because
+    // it generates issues due to a bug in mongo bson-ext package https://jira.mongodb.org/browse/NODE-3375.
 
     // pre-test to improve performance
-    if (/(\.|^\$|^toBSON$|^_bsontype$|\0)/.test(name)) {
+    if (/(\.|^\$|^toBSON$|^_bsontype$|^toString$|\0)/.test(name)) {
         name = name.replace(/\./g, ESCAPE_DOT);
         name = name.replace(/^\$/, ESCAPE_DOLLAR);
         name = name.replace(/^toBSON$/, ESCAPE_TO_BSON);
+        name = name.replace(/^toString$/, ESCAPE_TO_STRING);
         name = name.replace(/^_bsontype$/, ESCAPE_BSON_TYPE);
         name = name.replace(/\0/g, ESCAPE_NULL);
     }
@@ -242,6 +247,7 @@ export function unescapePropertyName(name: string) {
         name = name.replace(REGEXP_DOT, '.');
         name = name.replace(REGEXP_DOLLAR, '$');
         name = name.replace(REGEXP_TO_BSON, 'toBSON');
+        name = name.replace(REGEXP_TO_STRING, 'toString');
         name = name.replace(REGEXP_BSON_TYPE, '_bsontype');
     }
 
