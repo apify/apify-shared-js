@@ -15,6 +15,6 @@ package | version | changelog
 `@apify/image_proxy_client` | 1.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 1.0.4 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/log` | 1.0.5 | [CHANGELOG](./packages/log/CHANGELOG.md)
-`@apify/markdown` | 1.0.6 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
+`@apify/markdown` | 1.0.7 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/salesforce_client` | 1.0.1 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
-`@apify/utilities` | 1.0.6 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
+`@apify/utilities` | 1.1.0 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
