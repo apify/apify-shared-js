@@ -2,7 +2,7 @@ import _ from 'underscore';
 import Ajv from 'ajv';
 
 // @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
-import brokenClone from 'clone';
+import brokenClone from 'clone-deep';
 
 import {
     buildOrVersionNumberIntToStr,
@@ -97,6 +97,9 @@ const BAD_REVERSIBLE_OBJECTS = [
         _bsontype: 'whatever',
     },
     {
+        toString: 'test',
+    },
+    {
         prop1: {
             prop2: {
                 prop3: {
@@ -111,8 +114,9 @@ const BAD_REVERSIBLE_OBJECTS = [
         'xxx.yyy.zzz': undefined,
         toBSON: undefined,
         _bsontype: undefined,
+        toString: undefined,
     },
-];
+] as any[];
 
 // these contain null chars and cannot be reversed
 const BAD_IRREVERSIBLE_OBJECTS = [
@@ -133,6 +137,7 @@ const BAD_IRREVERSIBLE_OBJECTS = [
         'xxx.yyy.zzz': undefined,
         toBSON: undefined,
         _bsontype: undefined,
+        toString: undefined,
         '\0': undefined,
     },
 ] as any;
@@ -140,7 +145,7 @@ const BAD_IRREVERSIBLE_OBJECTS = [
 const BAD_OBJECTS = _.union(BAD_REVERSIBLE_OBJECTS, BAD_IRREVERSIBLE_OBJECTS);
 
 // this effectively tests _escapePropertyName() and _unescapePropertyName()
-const KNOWN_ESCAPES = [
+const KNOWN_ESCAPES: { irreversible?: boolean, src: any, trg: any }[] = [
     {
         src: { $test: 1 },
         trg: { '\uFF04test': 1 },
@@ -202,6 +207,18 @@ const KNOWN_ESCAPES = [
     {
         src: { aaa: { bbb: { ccc: 'nothing wrong with one' } } },
         trg: { aaa: { bbb: { ccc: 'nothing wrong with one' } } },
+    },
+    {
+        src: { _ｔｏＳｔｒｉｎｇ: { test: 'test' } },
+        trg: { _ｔｏＳｔｒｉｎｇ: { test: 'test' } },
+    },
+    {
+        src: { toString: {} },
+        trg: { ｔｏＳｔｒｉｎｇ: {} },
+    },
+    {
+        src: { child: { child2: { toString: 'test' } } },
+        trg: { child: { child2: { ｔｏＳｔｒｉｎｇ: 'test' } } },
     },
 ];
 
