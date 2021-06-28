@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.0.6...@apify/utilities@1.1.0) (2021-06-28)
+
+
+### Features
+
+* added toString object property into escape property names for BSON ([#208](https://github.com/apify/apify-shared-js/issues/208)) ([8cce24a](https://github.com/apify/apify-shared-js/commit/8cce24a9b1ddabcbaf27e55fec775e6feb4c2c89))
+
+
+
+
+
 ## [1.0.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.0.5...@apify/utilities@1.0.6) (2021-06-18)
 
 
