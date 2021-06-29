@@ -69,36 +69,36 @@ export const META_ORIGINS = {
 export const ACTOR_BASE_DOCKER_IMAGES = [
     // Latest:
     {
-        name: 'apify/actor-node',
+        name: 'apify/actor-node:latest',
         displayName: 'Node.js 14 on Alpine Linux',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-puppeteer-chrome',
+        name: 'apify/actor-node-puppeteer-chrome:latest',
         displayName: 'Node.js 14 + Puppeteer + Chrome on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-playwright-chrome',
+        name: 'apify/actor-node-playwright-chrome:latest',
         displayName: 'Node.js 14 + Playwright + Chrome on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-playwright-firefox',
+        name: 'apify/actor-node-playwright-firefox:latest',
         displayName: 'Node.js 14 + Playwright + Firefox on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-playwright-webkit',
+        name: 'apify/actor-node-playwright-webkit:latest',
         displayName: 'Node.js 14 + Playwright + WebKit on Debian',
         copyChown: 'myuser:myuser',
         prePull: true,
     },
     {
-        name: 'apify/actor-node-playwright',
+        name: 'apify/actor-node-playwright:latest',
         displayName: 'Node.js 14 + Playwright + All Browsers on Ubuntu',
         copyChown: 'myuser:myuser',
         prePull: true,
