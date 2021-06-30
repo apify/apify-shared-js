@@ -34,7 +34,7 @@ export function getLevelFromEnv(): number {
 }
 
 /**
- * Limits given object to given depth.
+ * Limits given object to given depth and escapes function with [function] string.
  *
  * ie. Replaces object's content by '[object]' and array's content
  * by '[array]' when the value is nested more than given limit.
@@ -72,6 +72,11 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
         };
 
         return depth ? mapObject(record) : '[object]' as unknown as T;
+    }
+
+    // Replaces all function with [function] string
+    if (typeof record === 'function') {
+        return '[function]' as unknown as T;
     }
 
     // this shouldn't happen
