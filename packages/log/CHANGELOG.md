@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.0.5...@apify/log@1.1.0) (2021-07-02)
+
+
+### Features
+
+* adds escaping of functions into logger ([#216](https://github.com/apify/apify-shared-js/issues/216)) ([0d34090](https://github.com/apify/apify-shared-js/commit/0d34090346d15f56f7e67ee4a1b11b1ea2802065))
+
+
+
+
+
 ## [1.0.5](https://github.com/apify/apify-shared-js/compare/@apify/log@1.0.4...@apify/log@1.0.5) (2021-06-18)
 
 
