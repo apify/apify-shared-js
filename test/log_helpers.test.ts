@@ -108,4 +108,35 @@ describe('limitDepth()', () => {
             foo: 'abcd...[truncated]',
         });
     });
+
+    it('should omit function with [function]', () => {
+        // Object
+        const object = {
+            foo: {
+                arrow: () => true,
+                fce() {},
+            },
+            rest: 'bla bla',
+        };
+
+        expect(limitDepth(object, 2, 18)).toEqual({
+            foo: {
+                arrow: '[function]',
+                fce: '[function]',
+            },
+            rest: 'bla bla',
+        });
+
+        // Error
+        const error = new Error('My Error') as any;
+        error.injectedArrow = () => {};
+        error.injectedFce = function () {};
+        expect(limitDepth(error, 2)).toEqual({
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+            injectedArrow: '[function]',
+            injectedFce: '[function]',
+        });
+    });
 });
