@@ -1,4 +1,3 @@
-import gitUrlParse from 'git-url-parse';
 import { CONTACT_LINK_REGEX, GIT_MAIN_BRANCH } from '@apify/consts';
 import { isUrlRelative } from '@apify/utilities';
 
@@ -52,9 +51,10 @@ export function customHeadingRenderer(text: string, level: 1 | 2 | 3 | 4 | 5 | 6
 }
 
 export function parseRepoName(gitRepoUrl: string): string {
-    const parsedRepoUrl = gitUrlParse(gitRepoUrl);
+    const parsedRepoUrl = new URL(gitRepoUrl);
+    const path = parsedRepoUrl.pathname.substr(1);
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
-    return parsedRepoUrl.full_name.split('/').slice(0, 2).join('/');
+    return path.split('/').slice(0, 2).join('/');
 }
 
 /**
