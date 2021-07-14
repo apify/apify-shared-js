@@ -50,7 +50,7 @@ export function customHeadingRenderer(text: string, level: 1 | 2 | 3 | 4 | 5 | 6
     return `\n${' '.repeat(12)}<h${level} id="${headingId}"><a href="#${headingId}"></a>${headingText}</h${level}>`;
 }
 
-export function getRepoFullName(gitRepoUrl: string): string {
+export function parseRepoName(gitRepoUrl: string): string {
     const parsedRepoUrl = new URL(gitRepoUrl);
     const path = parsedRepoUrl.pathname.substr(1);
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
@@ -62,7 +62,7 @@ export function getRepoFullName(gitRepoUrl: string): string {
  */
 export function generateRawGitRepoUrlPrefix(gitRepoUrl: string, gitBranchName: string): string | undefined {
     let urlPrefix;
-    const repoFullName = getRepoFullName(gitRepoUrl);
+    const repoFullName = parseRepoName(gitRepoUrl);
 
     // Avoid errors created by missing branch name / badly formed URLs
     const branchName = gitBranchName || GIT_MAIN_BRANCH;
@@ -84,7 +84,7 @@ export function generateRawGitRepoUrlPrefix(gitRepoUrl: string, gitBranchName: s
  */
 export function generateGitRepoUrlPrefix(gitRepoUrl: string, gitBranchName: string, href: string): string | undefined {
     let urlPrefix;
-    const repoFullName = getRepoFullName(gitRepoUrl);
+    const repoFullName = parseRepoName(gitRepoUrl);
 
     const hrefParts = href.split('/');
     const lastHrefPart = hrefParts[hrefParts.length - 1];
