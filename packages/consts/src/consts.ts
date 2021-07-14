@@ -604,3 +604,18 @@ export const MARKETPLACE_USER_ROLES = {
 };
 
 export const GIT_MAIN_BRANCH = 'main';
+
+// List of fee email providers
+export const FREE_MAIL_PROVIDERS = [
+    'gmail',
+    'yahoo',
+    '163.com',
+    'icloud.com',
+    'outlook',
+    'live',
+    'hotmail',
+    'seznam.cz',
+    'mailgun',
+    'protonmail',
+    'fmlcat',
+];
