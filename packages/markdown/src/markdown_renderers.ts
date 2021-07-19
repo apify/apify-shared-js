@@ -51,9 +51,15 @@ export function customHeadingRenderer(text: string, level: 1 | 2 | 3 | 4 | 5 | 6
 }
 
 export function parseRepoName(gitRepoUrl: string): string {
-    const parsedRepoUrl = new URL(gitRepoUrl);
-    const path = parsedRepoUrl.pathname.substr(1);
-    // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
+    // Handling for SSH URLs
+    const normalizedUrl = gitRepoUrl.includes('git@')
+        ? gitRepoUrl.replace(':', '/').replace('git@', 'https://')
+        : gitRepoUrl;
+    const parsedRepoUrl = new URL(normalizedUrl);
+    const cleanedPath = parsedRepoUrl.pathname.replace('.git', '');
+    // Do not use the initial slash in the path
+    const path = cleanedPath.substr(1);
+    // Can't use "path" on it's own as Bitbucket adds irrelevant path suffix to the end of it
     return path.split('/').slice(0, 2).join('/');
 }
 
