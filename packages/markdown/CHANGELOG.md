@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.11](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.10...@apify/markdown@1.0.11) (2021-07-19)
+
+
+### Bug Fixes
+
+* include SSH URL handling in repo name parser ([#237](https://github.com/apify/apify-shared-js/issues/237)) ([ffe4ad7](https://github.com/apify/apify-shared-js/commit/ffe4ad799c9ab5590ac8cb450dcb58f7a5e6102b))
+
+
+
+
+
 ## [1.0.10](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.9...@apify/markdown@1.0.10) (2021-07-19)
 
 **Note:** Version bump only for package @apify/markdown
