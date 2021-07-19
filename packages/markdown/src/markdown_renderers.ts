@@ -59,7 +59,7 @@ export function parseRepoName(gitRepoUrl: string): string {
     const cleanedPath = parsedRepoUrl.pathname.replace('.git', '');
     // Do not use the initial slash in the path
     const path = cleanedPath.substr(1);
-    // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
+    // Can't use "path" on it's own as Bitbucket adds irrelevant path suffix to the end of it
     return path.split('/').slice(0, 2).join('/');
 }
 
