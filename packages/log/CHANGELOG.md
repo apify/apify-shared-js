@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.0...@apify/log@1.1.1) (2021-07-19)
+
+
+### Bug Fixes
+
+* do not print empty data in logger ([#236](https://github.com/apify/apify-shared-js/issues/236)) ([7a39f62](https://github.com/apify/apify-shared-js/commit/7a39f621244eaa0225a56c85949d3b2c3e8e4ad2))
+
+
+
+
+
 # [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.0.5...@apify/log@1.1.0) (2021-07-02)
 
 

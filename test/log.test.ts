@@ -128,9 +128,21 @@ describe('log', () => {
         log.deprecated('Message 2');
         log.deprecated('Message 3');
 
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 1', {}, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 2', {}, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 3', {}, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 1', undefined, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 2', undefined, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 3', undefined, undefined, { prefix: null, suffix: null });
+    });
+
+    it('should not pass empty objects in data', () => {
+        const log = new Log();
+
+        log.warning('no data');
+        log.warning('empty data object', {});
+        log.warning('non-empty data object', { foo: 123 });
+
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'no data', undefined, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'empty data object', undefined, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'non-empty data object', { foo: 123 }, undefined, { prefix: null, suffix: null });
     });
 
     it('should support data', () => {
