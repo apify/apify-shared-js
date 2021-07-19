@@ -1,5 +1,5 @@
 import marked, { Renderer } from 'marked';
-import { customHeadingRenderer, customLinkRenderer, customImageRenderer } from '@apify/markdown';
+import { customHeadingRenderer, customLinkRenderer, customImageRenderer, parseRepoName } from '@apify/markdown';
 
 describe('apifyMarked custom renderers work', () => {
     const renderer = new Renderer();
@@ -53,5 +53,47 @@ describe('apifyMarked custom renderers work', () => {
 
         // eslint-disable-next-line max-len
         expect(renderedLink).toEqual('<a href="https://github.com/apify/actor-test-url/do-not-change" target="_blank" rel="nofollow noreferrer noopener">absolute-link</a>');
+    });
+
+    it('works with SSH URLs', () => {
+        const href = 'https://gitlab.com/tugkan/crunchbase-scraper.git';
+        const text = 'SSH link';
+        const repoUrl = `git@gitlab.com:${repoFullName}.git`;
+        const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
+
+        // eslint-disable-next-line max-len
+        expect(renderedLink).toEqual('<a href="https://gitlab.com/tugkan/crunchbase-scraper.git" target="_blank" rel="nofollow noreferrer noopener">SSH link</a>');
+    });
+
+    describe('repo name parser works', () => {
+        test('works as expected with GitHub URLs', () => {
+            const githubUrl = 'https://github.com/apify/apify-docs';
+            const expectedRepoName = 'apify/apify-docs';
+            expect(parseRepoName(githubUrl)).toEqual(expectedRepoName);
+        });
+
+        test('works as expected with GitLab URLs', () => {
+            const gitlabUrl = 'https://gitlab.com/apify-public/wiki/-/wikis/public-actors/input';
+            const expectedRepoName = 'apify-public/wiki';
+            expect(parseRepoName(gitlabUrl)).toEqual(expectedRepoName);
+        });
+
+        test('works as expected with BitBucket URLs', () => {
+            const bitbucketUrl = 'https://bitbucket.org/apifyteam/apify-system/src/master/';
+            const expectedRepoName = 'apifyteam/apify-system';
+            expect(parseRepoName(bitbucketUrl)).toEqual(expectedRepoName);
+        });
+
+        test('works as expected with URLs containing directories', () => {
+            const urlWithDirectory = 'https://github.com/apify/apify-docs.git#my-branch:some/directory';
+            const expectedRepoName = 'apify/apify-docs';
+            expect(parseRepoName(urlWithDirectory)).toEqual(expectedRepoName);
+        });
+
+        test('works as expected with SSH URLs', () => {
+            const urlWithDirectory = 'git@github.com:zscrape/craigslist-scraper.git';
+            const expectedRepoName = 'zscrape/craigslist-scraper';
+            expect(parseRepoName(urlWithDirectory)).toEqual(expectedRepoName);
+        });
     });
 });
