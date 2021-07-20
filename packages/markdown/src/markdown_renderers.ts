@@ -159,5 +159,5 @@ export function customImageRenderer(href: string, text: string, gitRepoUrl: stri
         href = `${urlPrefix}/${cleanedHref}`;
     }
 
-    return `<img src="${href}" alt=${text} />`;
+    return `<img src="${href}" alt="${text}" />`;
 }
