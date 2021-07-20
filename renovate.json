@@ -5,16 +5,8 @@
     "semanticCommits": "enabled",
     "packageRules": [
         {
-            "matchDepTypes": ["devDependencies"],
             "matchUpdateTypes": ["patch", "minor"],
-            "groupName": "devDependencies (non-major)",
-            "groupSlug": "dev-non-major",
-            "automerge": true,
-            "automergeType": "branch"
-        },
-        {
-            "matchUpdateTypes": ["patch", "minor"],
-            "groupName": "dependencies (patch)",
+            "groupName": "patch/minor dependencies",
             "groupSlug": "all-non-major",
             "automerge": true,
             "automergeType": "branch"
