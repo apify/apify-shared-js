@@ -3,9 +3,15 @@
     "pinVersions": false,
     "separateMajorMinor": false,
     "semanticCommits": "enabled",
+    "lockFileMaintenance": {
+        "enabled": true,
+        "automerge": true,
+        "automergeType": "branch"
+    },
     "packageRules": [
         {
             "matchUpdateTypes": ["patch", "minor"],
+            "matchCurrentVersion": "!/^0/",
             "groupName": "patch/minor dependencies",
             "groupSlug": "all-non-major",
             "automerge": true,
