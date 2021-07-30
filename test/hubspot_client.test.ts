@@ -1382,6 +1382,287 @@ describe('HubspotClient', () => {
         });
     });
 
+    // //
+    // //    COMPANIES
+    // //
+    describe('searchCompanyByName()', () => {
+        const hubspotClient = new HubspotClient(BASE_CONFIG);
+        it('returns company info', async () => {
+            const name = 'Apify';
+            const expectedPostData = {
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'name',
+                        operator: 'EQ',
+                        value: name,
+                    }],
+                }],
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
+            };
+
+            const companyId = '5695300523';
+            const networkReply = {
+                total: 1,
+                results: [{
+                    id: companyId,
+                    properties: {
+                        createdate: '2021-03-23T18:03:33.781Z',
+                        domain: 'apify.com',
+                        hs_lastmodifieddate: '2021-07-25T14:59:54.176Z',
+                        hs_object_id: companyId,
+                        name,
+                    },
+                    createdAt: '2021-03-23T18:03:33.781Z',
+                    updatedAt: '2021-07-25T14:59:54.176Z',
+                    associations: undefined,
+                    archived: false,
+                    archivedAt: undefined,
+                }],
+            };
+
+            nock(HUBSPOT_URL, {}).post(`/objects/companies/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+
+            const data = await hubspotClient.searchCompanyByName(name);
+
+            expect(data!.id).toEqual(companyId);
+            expect(data!.properties).toEqual(networkReply.results[0].properties);
+        });
+        it('returns null when nothing is found', async () => {
+            const name = 'FOOOOO';
+
+            const expectedPostData = {
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'name',
+                        operator: 'EQ',
+                        value: name,
+                    }],
+                }],
+                sorts: [],
+                properties: [],
+                limit: 1,
+                after: 0,
+            };
+
+            const networkReply = {
+                total: 0,
+                results: [],
+            };
+
+            nock(HUBSPOT_URL, {}).post(`/objects/companies/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+
+            const data = await hubspotClient.searchCompanyByName(name);
+            expect(data).toBeNull();
+        });
+        it('throws without company name', async () => {
+            try {
+                await hubspotClient.searchCompanyByName('');
+                // we should not get here
+                expect(true).toEqual(false);
+            } catch (error) {
+                expect(error.message).toEqual('Arg "name" is required in HubspotClient.searchCompanyByName');
+            }
+        });
+    });
+
+    describe('createCompany()', () => {
+        const hubspotClient = new HubspotClient(BASE_CONFIG);
+        it('creates new company and return its id', async () => {
+            const companyData = {
+                name: 'TESTING COMPANY',
+                domain: 'example.com',
+                industry: 'Information Technology and Services',
+                city: 'Prague',
+                country: 'Czech Republic',
+                description: 'Some long\nDescription',
+                numberOfEmployees: 2,
+                zip: '11100',
+                address: 'test',
+                foundedYear: '2015',
+                state: '',
+                annualRevenue: 150,
+                website: '',
+                aboutUs: 'Best company in a world',
+            };
+
+            const companyId = '6651071273';
+            const networkReply = {
+                id: companyId,
+                properties: {
+                    about_us: 'Best company in a world',
+                    annualrevenue: '150',
+                    city: 'Prague',
+                    country: 'Czech Republic',
+                    createdate: '2021-07-29T06:39:34.605Z',
+                    description: 'Some long\nDescription',
+                    domain: 'example.com',
+                    founded_year: '2015',
+                    hs_lastmodifieddate: '2021-07-29T06:39:34.605Z',
+                    hs_object_id: '6651071273',
+                    industry: 'Information Technology and Services',
+                    name: 'TESTING COMPANY',
+                    numberofemployees: '2',
+                    state: null,
+                    website: 'example.com',
+                    zip: '11100',
+                },
+                createdAt: '2021-07-29T06:39:34.605Z',
+                updatedAt: '2021-07-29T06:39:34.605Z',
+                associations: undefined,
+                archived: false,
+                archivedAt: undefined,
+            };
+
+            const transformedData = hubspotClient._transformCompany(companyData);
+            nock(HUBSPOT_URL).post(`/objects/companies?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData }).reply(200, networkReply);
+
+            const createdCompanyId = await hubspotClient.createCompany(companyData);
+            expect(createdCompanyId).toEqual(networkReply.id);
+        });
+    });
+
+    describe('updateCompany()', () => {
+        const hubspotClient = new HubspotClient(BASE_CONFIG);
+        it('updates company', async () => {
+            const modifier = {
+                numberOfEmployees: 10,
+                annualRevenue: 15000,
+            };
+
+            const companyId = '6651071273';
+            const networkReply = {
+                id: '6651071273',
+                properties: {
+                    annualrevenue: '15000',
+                    createdate: '2021-07-29T06:39:34.605Z',
+                    hs_lastmodifieddate: '2021-07-29T06:41:30.879Z',
+                    hs_object_id: '6651071273',
+                    numberofemployees: '10',
+                },
+                createdAt: '2021-07-29T06:39:34.605Z',
+                updatedAt: '2021-07-29T06:41:30.879Z',
+                associations: undefined,
+                archived: false,
+                archivedAt: undefined,
+            };
+
+            const transformedData = hubspotClient._transformCompany(modifier);
+            nock(HUBSPOT_URL).patch(`/objects/companies/${companyId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(200, networkReply);
+
+            let err = null;
+            try {
+                await hubspotClient.updateCompany(companyId, modifier);
+            } catch (error) {
+                err = error;
+            }
+            expect(err).toBeNull();
+        });
+        it('correctly handles not found error', async () => {
+            const modifier = {
+                numberOfEmployees: 10,
+                annualRevenue: 15000,
+            };
+
+            const companyId = 665107127999;
+
+            const networkReply = {
+                status: 'error',
+                message: 'resource not found',
+                correlationId: 'ce66224e-809e-4161-ae99-e8cd86905b97',
+            };
+
+            const transformedData = hubspotClient._transformUser(modifier);
+            nock(HUBSPOT_URL)
+                .patch(`/objects/companies/${companyId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
+                .reply(404, networkReply);
+
+            let err = null;
+            try {
+                await hubspotClient.updateCompany(companyId, modifier);
+            } catch (error) {
+                err = error;
+            }
+
+            expect(err).not.toBeNull();
+            expect(err.message).toEqual('Hubspot record not found');
+        });
+    });
+
+    describe('associateContactWithCompany', () => {
+        const hubspotClient = new HubspotClient(BASE_CONFIG);
+        it('creates association', async () => {
+            const companyId = 6651071273;
+            const contactId = 6251;
+
+            const networkReply = {
+                id: '6651071273',
+                properties: {
+                    createdate: '2021-07-29T06:39:34.605Z',
+                    hs_lastmodifieddate: '2021-07-29T06:41:30.879Z',
+                    hs_object_id: '6651071273',
+                },
+                createdAt: '2021-07-29T06:39:34.605Z',
+                updatedAt: '2021-07-29T06:41:30.879Z',
+                associations: {
+                    contacts: {
+                        results: [
+                            {
+                                id: '6251',
+                                type: 'contact_to_company',
+                            },
+                        ],
+                    },
+                },
+                archived: false,
+                archivedAt: undefined,
+            };
+            const path = `/objects/companies/${companyId}/associations/contacts/${contactId}/company_to_contact?hapikey=${BASE_CONFIG.apiKey}`;
+            nock(HUBSPOT_URL).put(path).reply(200, networkReply);
+
+            let err = null;
+            try {
+                await hubspotClient.associateContactWithCompany(contactId, companyId);
+            } catch (e) {
+                err = e;
+            }
+
+            expect(err).toBeNull();
+        });
+        it('correctly handles not found error', async () => {
+            const companyId = 6651071273;
+            const contactId = 666251;
+
+            const networkReply = {
+                status: 'error',
+                message: `No contact with ID ${contactId} exists`,
+                correlationId: '715247cb-58d0-4bc9-b965-336fb1f7c03e',
+                context: {
+                    objectType: ['contact'],
+                    id: [`${contactId}`],
+                },
+                category: 'OBJECT_NOT_FOUND',
+                subCategory: 'crm.associations.TO_OBJECT_NOT_FOUND',
+            };
+
+            const path = `/objects/companies/${companyId}/associations/contacts/${contactId}/company_to_contact?hapikey=${BASE_CONFIG.apiKey}`;
+            nock(HUBSPOT_URL).put(path).reply(404, networkReply);
+
+            let err = null;
+            try {
+                await hubspotClient.associateContactWithCompany(contactId, companyId);
+            } catch (error) {
+                err = error;
+            }
+
+            expect(err).not.toBeNull();
+            expect(err.message).toEqual('Hubspot record not found');
+        });
+    });
+
     /*
 
     describe('createEmailEvent()', () => {

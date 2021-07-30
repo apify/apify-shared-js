@@ -60,6 +60,23 @@ const ALLOWED_INVOICE_FIELDS = {
     cancel_date: _.isDate,
 };
 
+const ALLOWED_COMPANY_FIELDS = {
+    name: _.isString,
+    domain: _.isString,
+    industry: _.isString,
+    city: _.isString,
+    country: _.isString,
+    description: _.isString,
+    numberofemployees: _.isNumber,
+    zip: _.isString,
+    address: _.isString,
+    website: _.isString,
+    founded_year: _.isString,
+    state: _.isString,
+    about_us: _.isString,
+    annualrevenue: _.isNumber,
+};
+
 // TODO: The helper function can be replaced with JSON schema validator (AJV)
 // but then we need another function which replaces dates with their stringified versions
 
@@ -135,6 +152,23 @@ export interface Lead {
     company: string;
     email: string;
     mobile: string;
+}
+
+export interface Company {
+    name?: string,
+    domain?: string,
+    industry?: string,
+    city?: string,
+    country?: string,
+    description?: string,
+    numberOfEmployees?: number,
+    zip?: string,
+    address?: string,
+    website?: string,
+    foundedYear?: string,
+    state?: string,
+    annualRevenue?: number,
+    aboutUs?: string,
 }
 
 export class HubspotClient {
@@ -600,6 +634,120 @@ export class HubspotClient {
             properties: data,
         });
         return response.body.id;
+    }
+
+    /**
+     * Transforms Company object to object suitable for hubspot API
+     *
+     * @param company
+     * @return {Object}
+     */
+    _transformCompany(company: Company) {
+        const data = {};
+
+        const companyToHubspotCompany = {
+            name: 'name',
+            domain: 'domain',
+            industry: 'industry',
+            city: 'city',
+            country: 'country',
+            description: 'description',
+            numberOfEmployees: 'numberofemployees',
+            zip: 'zip',
+            street: 'string',
+            website: 'website',
+            foundedYear: 'founded_year',
+            state: 'state',
+            annualRevenue: 'annualrevenue',
+            aboutUs: 'about_us',
+        };
+
+        Object.keys(companyToHubspotCompany).forEach((companyKey) => {
+            if (typeof company[companyKey] === 'undefined') return;
+            const hubspotCompanyKey = companyToHubspotCompany[companyKey];
+            data[hubspotCompanyKey] = company[companyKey];
+        });
+
+        return cleanAndCompareWithSchema(data, ALLOWED_COMPANY_FIELDS);
+    }
+
+    /**
+     * Searches for company by company name, returns firs result
+     *
+     * @param {String} name Company name
+     * @return {Object|null}
+     */
+    async searchCompanyByName(name: string): Promise<hubspot.companiesModels.SimplePublicObject | null> {
+        if (!name) throw new Error('Arg "name" is required in HubspotClient.searchCompanyByName');
+
+        const filter = {
+            propertyName: 'name',
+            operator: 'EQ' as any,
+            value: name,
+        };
+        const companySearchRequest = {
+            filterGroups: [{
+                filters: [filter],
+            }],
+            sorts: [],
+            properties: [],
+            limit: 1,
+            after: 0,
+        };
+        const response = await this.client.crm.companies.searchApi.doSearch(companySearchRequest);
+        const { body } = response;
+        return body && body.results && body.results.length ? body.results[0] : null;
+    }
+
+    /**
+     * Creates new company and returns it's id
+     *
+     * @param company
+     * @return {String|number}
+     */
+    async createCompany(company: Company): Promise<string | number> {
+        const response = await this.client.crm.companies.basicApi.create({
+            properties: this._transformCompany(company),
+        });
+        return response.body.id;
+    }
+
+    /**
+     * Updates company
+     *
+     * @param {String|number} hubspotCompanyId
+     * @param modifier
+     */
+    async updateCompany(hubspotCompanyId: string | number, modifier: Company): Promise<void> {
+        try {
+            const data = this._transformCompany(modifier);
+            await this.client.crm.companies.basicApi.update(`${hubspotCompanyId}`, {
+                properties: data,
+            });
+        } catch (error) {
+            if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
+            throw error;
+        }
+    }
+
+    /**
+     * Creates association between contact and company
+     *
+     * @param {String|number} hubspotContactId
+     * @param {String|number} hubspotCompanyId
+     */
+    async associateContactWithCompany(hubspotContactId: string | number, hubspotCompanyId: string | number): Promise<void> {
+        try {
+            await this.client.crm.companies.associationsApi.create(
+                `${hubspotCompanyId}`,
+                'contacts',
+                `${hubspotContactId}`,
+                'company_to_contact',
+            );
+        } catch (error) {
+            if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
+            throw error;
+        }
     }
 
     /*
