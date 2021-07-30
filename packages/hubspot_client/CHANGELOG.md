@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.0.1...@apify/hubspot_client@1.1.0) (2021-07-30)
+
+
+### Features
+
+* added methods for working with companies ([#240](https://github.com/apify/apify-shared-js/issues/240)) ([0e9a418](https://github.com/apify/apify-shared-js/commit/0e9a418a73cbaf44ebc73f1b2f079e2c4c8bd34b))
+
+
+
+
+
 ## [1.0.1](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.0.0...@apify/hubspot_client@1.0.1) (2021-06-18)
 
 
