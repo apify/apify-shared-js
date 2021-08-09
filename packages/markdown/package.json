@@ -1,6 +1,6 @@
 {
     "name": "@apify/markdown",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "description": "Tools and constants shared across Apify projects.",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
