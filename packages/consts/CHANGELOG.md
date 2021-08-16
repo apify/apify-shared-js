@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.1.3...@apify/consts@1.2.0) (2021-08-16)
+
+
+### Features
+
+* add APIFY_API_PUBLIC_BASE_URL ([#244](https://github.com/apify/apify-shared-js/issues/244)) ([3ca39b4](https://github.com/apify/apify-shared-js/commit/3ca39b46c9d66e9e8b564ebb32b74077b9962932))
+
+
+
+
+
 ## [1.1.3](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.1.2...@apify/consts@1.1.3) (2021-06-18)
 
 
