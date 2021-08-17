@@ -6,4 +6,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [0.0.1]
 
 ### Features
-* todo
+* Add basic functionality for creating QR code for CZK domestic payments.
