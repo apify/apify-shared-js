@@ -12,7 +12,7 @@ interface CzkQRCodeInputData {
  * The protocol is issued by Czech Bank Association and can be found
  * at https://cbaonline.cz/upload/1645-standard-qr-v1-2-cerven-2021.pdf
  */
-export function encodeInputDateToRawQrCodeInputString(data: CzkQRCodeInputData): string {
+export function encodeInputDataToRawQrCodeInputString(data: CzkQRCodeInputData): string {
     const { iban, amount, currencyCode, message, beneficiaryName } = data;
     return `SPD*1.0*RN:${beneficiaryName}*ACC:${iban}*AM:${amount}*CC:${currencyCode.toUpperCase()}*MSG:${message}`;
 }
@@ -22,6 +22,6 @@ export function encodeInputDateToRawQrCodeInputString(data: CzkQRCodeInputData):
  * It returns the QR code encoded as data URL that can be directly viewed in browser or used in <img> tag.
  */
 export async function generateCzkPaymentQrCodeDataUrl(data: CzkQRCodeInputData): Promise<string> {
-    const code = qrcode.create(encodeInputDateToRawQrCodeInputString(data), {});
+    const code = qrcode.create(encodeInputDataToRawQrCodeInputString(data), {});
     return qrcode.toDataURL(code.segments);
 }
