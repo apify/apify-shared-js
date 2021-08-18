@@ -5,6 +5,7 @@ interface CzkQRCodeInputData {
     amount: number;
     currencyCode: string; // 3 letter currency code
     message: string; // e.g. invoice number
+    beneficiaryName: string;
 }
 /*
  * This function encodes provided data into a single string complying with CZK QR code payment protocol.
@@ -12,8 +13,8 @@ interface CzkQRCodeInputData {
  * at https://cbaonline.cz/upload/1645-standard-qr-v1-2-cerven-2021.pdf
  */
 export function encodeInputDateToRawQrCodeInputString(data: CzkQRCodeInputData): string {
-    const { iban, amount, currencyCode, message } = data;
-    return `SPD*1.0*ACC:${iban}*AM:${amount}*CC:${currencyCode.toUpperCase()}*MSG:${message}`;
+    const { iban, amount, currencyCode, message, beneficiaryName } = data;
+    return `SPD*1.0*RN:${beneficiaryName}*ACC:${iban}*AM:${amount}*CC:${currencyCode.toUpperCase()}*MSG:${message}`;
 }
 
 /**
