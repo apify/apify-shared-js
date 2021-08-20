@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.1.3...@apify/utilities@1.1.4) (2021-08-20)
+
+
+### Bug Fixes
+
+* add more forbidden usernames ([#246](https://github.com/apify/apify-shared-js/issues/246)) ([02d75f1](https://github.com/apify/apify-shared-js/commit/02d75f14adffbdb85360cf0ad20305ffc4c39c9a))
+
+
+
+
+
 ## [1.1.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.1.2...@apify/utilities@1.1.3) (2021-08-16)
 
 **Note:** Version bump only for package @apify/utilities
