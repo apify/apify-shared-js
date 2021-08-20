@@ -216,6 +216,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'kb', 'cookies', 'cookie-policy', 'cookies-policy', 'powered-by', 'run', 'runs', 'actor', 'actors',
     'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace', 'presskit', 'press-kit', 'covid-19',
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
+    'industries', 'web-scraping', 'custom-solutions', 'solution-provider',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
