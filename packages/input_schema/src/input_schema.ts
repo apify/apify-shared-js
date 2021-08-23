@@ -1,4 +1,4 @@
-import { AdditionalPropertiesParams, Ajv, ErrorObject, RequiredParams } from 'ajv';
+import Ajv, { ErrorObject } from 'ajv';
 import schema from './schema.json';
 import { m } from './intl';
 
@@ -6,7 +6,7 @@ export { schema as inputSchema };
 const { definitions } = schema;
 
 /**
- * This function parses AJV error and transformes it into a redable string.
+ * This function parses AJV error and transforms it into a readable string.
  *
  * @param error An error as returned from AJV.
  * @param rootName Usually 'input' or 'schema' based on if we are passing the input or schema.
@@ -21,9 +21,9 @@ export function parseAjvError(
     input: Record<string, unknown> = {},
 ): { fieldKey: string; message: string } | null {
     // There are 3 possible errors comming from validation:
-    // - either { keword: 'anything', dataPath: '.someField', message: 'error message that we can use' }
-    // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'should NOT have additional properties' }
-    // - or { keyword: 'required', dataPath: '', params.missingProperty: 'someField' }
+    // - either { keword: 'anything', instancePath: '/someField', message: 'error message that we can use' }
+    // - or { keyword: 'additionalProperties', params: { additionalProperty: 'field' }, message: 'must NOT have additional properties' }
+    // - or { keyword: 'required', instancePath: '', params.missingProperty: 'someField' }
 
     let fieldKey: string;
     let message: string;
@@ -31,20 +31,20 @@ export function parseAjvError(
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
     if (error.keyword === 'type') {
-        fieldKey = error.dataPath.split('.').pop()!;
+        fieldKey = error.instancePath.split('/').pop()!;
         // Check if value is null and field is nullable, if yes, then skip this error
         if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
             return null;
         }
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     } else if (error.keyword === 'required') {
-        fieldKey = (error.params as RequiredParams).missingProperty;
+        fieldKey = error.params.missingProperty;
         message = m('inputSchema.validation.required', { rootName, fieldKey });
     } else if (error.keyword === 'additionalProperties') {
-        fieldKey = (error.params as AdditionalPropertiesParams).additionalProperty;
+        fieldKey = error.params.additionalProperty;
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
     } else {
-        fieldKey = error.dataPath.split('.').pop()!;
+        fieldKey = error.instancePath.split('/').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     }
 
@@ -102,7 +102,7 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
     if (fieldSchema.enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.enum`);
         return;
     }
     // Otherwise we use the other definition.

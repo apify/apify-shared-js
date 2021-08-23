@@ -2,7 +2,7 @@ import Ajv from 'ajv';
 import { validateInputSchema } from '@apify/input_schema';
 
 describe('input_schema.json', () => {
-    const validator = new Ajv();
+    const validator = new Ajv({ strict: false });
 
     describe('type any', () => {
         it('should not throw on valid schema', () => {
@@ -58,7 +58,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema2)).toThrow(
-                'Input schema is not valid (Field schema.schemaVersion should be <= 1)',
+                'Input schema is not valid (Field schema.schemaVersion must be <= 1)',
             );
         });
 
@@ -78,7 +78,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor should be equal to one of the allowed values)',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values)',
             );
         });
 
@@ -140,7 +140,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor should be equal to one of the allowed values)',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values)',
             );
         });
 
@@ -160,7 +160,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.enum[0] should be string)',
+                'Input schema is not valid (Field schema.properties.myField.enum.0 must be string)',
             );
         });
     });

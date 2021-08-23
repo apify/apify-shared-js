@@ -9,13 +9,13 @@ const intlStrings = {
     'inputSchema.validation.requestListSourcesInvalid':
         'Items in {rootName}.{fieldKey} at positions [{invalidIndexes}] do not contain valid URLs',
     'inputSchema.validation.arrayKeysInvalid':
-        'Keys in {rootName}.{fieldKey} at positions [{invalidIndexes}] should match regular expression "{pattern}"',
+        'Keys in {rootName}.{fieldKey} at positions [{invalidIndexes}] must match regular expression "{pattern}"',
     'inputSchema.validation.arrayValuesInvalid':
-        'Values in {rootName}.{fieldKey} at positions [{invalidIndexes}] should match regular expression "{pattern}"',
+        'Values in {rootName}.{fieldKey} at positions [{invalidIndexes}] must match regular expression "{pattern}"',
     'inputSchema.validation.objectKeysInvalid':
-        'Keys [{invalidKeys}] in {rootName}.{fieldKey} should match regular expression "{pattern}',
+        'Keys [{invalidKeys}] in {rootName}.{fieldKey} must match regular expression "{pattern}',
     'inputSchema.validation.objectValuesInvalid':
-        'Keys [{invalidKeys}] in {rootName}.{fieldKey} should have string value which matches regular expression "{pattern}"',
+        'Keys [{invalidKeys}] in {rootName}.{fieldKey} must have string value which matches regular expression "{pattern}"',
     'inputSchema.validation.additionalProperty':
         'Property {rootName}.{fieldKey} is not allowed.',
     'inputSchema.validation.proxyGroupsNotAvailable':
