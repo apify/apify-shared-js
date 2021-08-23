@@ -565,7 +565,7 @@ describe('utilities.client', () => {
             properties: {},
             required: ['field'],
         };
-        const ajv = new Ajv();
+        const ajv = new Ajv({ strict: false });
         const buildInputSchema = (properties: any) => {
             const inputSchema = { ...baseInputSchema, properties };
             const validator = ajv.compile(inputSchema);

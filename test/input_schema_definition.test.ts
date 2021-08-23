@@ -1,8 +1,25 @@
 import Ajv from 'ajv';
 import { inputSchema } from '@apify/input_schema';
 
+/**
+ * Temporarily replace console.warn with implementation that throws error instead
+ * of logging the warning.
+ *
+ * @returns {() => void} Function that will turn this behavior off.
+ */
+const setThrowErrorOnConsoleWarn = (): () => void => {
+    const consoleWarn = console.warn;
+    console.warn = () => {
+        throw new Error('Console.warn has been called!');
+    };
+    const turnOff = () => {
+        console.warn = consoleWarn;
+    };
+    return turnOff;
+};
+
 describe('input_schema.json', () => {
-    const ajv = new Ajv();
+    const ajv = new Ajv({ strict: false });
 
     describe('type any', () => {
         it('should allow to compile only a valid type any', () => {
@@ -122,10 +139,73 @@ describe('input_schema.json', () => {
             };
 
             test({ foo: 'bar' });
-            expect(() => test([1, 2, 'foo'])).toThrow('data.myField should be object,string,boolean');
+            expect(() => test([1, 2, 'foo'])).toThrow('data/myField must be object,string,boolean');
             test('something');
-            expect(() => test(324567)).toThrow('data.myField should be object,string,boolean');
+            expect(() => test(324567)).toThrow('data/myField must be object,string,boolean');
             test(true);
+        });
+
+        it('should not generate console warnings for schema containing `id` (1)', () => {
+            const turnOffConsoleWarnErrors = setThrowErrorOnConsoleWarn();
+
+            expect(() => console.warn('OK')).toThrow('Console.warn has been called!');
+
+            const schema = {
+                $id: 'http://mydomain/schemas/node.json',
+                type: 'object',
+                properties: {
+                    id: {
+                        description: 'The unique identifier for a node',
+                        type: 'string',
+                    },
+                },
+                required: ['id'],
+                example: {
+                    id: 'test',
+                },
+            };
+
+            const test = (data: unknown) => {
+                if (!ajv.validate(schema, data)) throw new Error(ajv.errorsText());
+            };
+
+            test({ id: 'test' });
+
+            turnOffConsoleWarnErrors();
+        });
+
+        it('should not generate console warnings for schema containing `id` (2)', () => {
+            const turnOffConsoleWarnErrors = setThrowErrorOnConsoleWarn();
+
+            expect(() => console.warn('OK')).toThrow('Console.warn has been called!');
+
+            const schema = {
+                title: 'Status dashboard',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    test: {
+                        title: 'Test',
+                        description: '',
+                        type: 'object',
+                        editor: 'json',
+                        prefill: {
+                            id: 'KubaTestPrefill',
+                            apiKey: 'aaa',
+                            workspace: 'aaa',
+                            title: 'aaaa',
+                        },
+                    },
+                },
+            };
+
+            const test = (data: unknown) => {
+                if (!ajv.validate(schema, data)) throw new Error(ajv.errorsText());
+            };
+
+            test({ test: { id: 1 } });
+
+            turnOffConsoleWarnErrors();
         });
     });
 });
