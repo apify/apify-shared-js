@@ -116,7 +116,6 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
  * This function validates given input schema first just for basic structure then each field one by one and
  * finally fully against the whole schema.
  *
-                    q: {},
  * This way we get the most accurate error message for user.
  */
 export function validateInputSchema<T extends Record<string, any>>(validator: Ajv, inputSchema: T) {

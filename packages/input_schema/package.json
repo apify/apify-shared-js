@@ -40,6 +40,6 @@
         "escaya": "^0.0.61"
     },
     "peerDependencies": {
-        "ajv": "^8.6.2"
+        "ajv": "^8.0.0"
     }
 }
