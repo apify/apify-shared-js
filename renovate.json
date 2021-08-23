@@ -8,6 +8,9 @@
         "automerge": true,
         "automergeType": "branch"
     },
+    "constraints": {
+        "npm": "^7.0.0"
+    },
     "packageRules": [
         {
             "matchUpdateTypes": ["patch", "minor"],
