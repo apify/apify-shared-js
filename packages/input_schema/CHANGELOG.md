@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@1.0.5...@apify/input_schema@2.0.0) (2021-08-23)
+
+
+### Features
+
+* update input schema to use ajv v8 ([#247](https://github.com/apify/apify-shared-js/issues/247)) ([e7693f3](https://github.com/apify/apify-shared-js/commit/e7693f35d12c0545d3597a2bb9fbfd696bfab77a))
+
+
+### BREAKING CHANGES
+
+* update ajv to v8 and set it as peerDependency
+
+
+
+
+
 ## [1.0.5](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@1.0.4...@apify/input_schema@1.0.5) (2021-08-16)
 
 **Note:** Version bump only for package @apify/input_schema
