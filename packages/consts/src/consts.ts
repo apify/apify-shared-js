@@ -377,6 +377,7 @@ export const ENV_VARS = {
     FACT: 'APIFY_FACT',
     DEDICATED_CPUS: 'APIFY_DEDICATED_CPUS',
     SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
+    DISABLE_OUTDATED_WARNING: 'APIFY_DISABLE_OUTDATED_WARNING',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
