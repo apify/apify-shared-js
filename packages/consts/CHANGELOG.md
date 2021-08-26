@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.2.0...@apify/consts@1.3.0) (2021-08-26)
+
+
+### Features
+
+* Add APIFY_DISABLE_OUTDATED_WARNING to available env vars in consts ([#249](https://github.com/apify/apify-shared-js/issues/249)) ([741727a](https://github.com/apify/apify-shared-js/commit/741727a37584568d6b8a47822ec61f08e2ec0433))
+
+
+
+
+
 # [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.1.3...@apify/consts@1.2.0) (2021-08-16)
 
 
