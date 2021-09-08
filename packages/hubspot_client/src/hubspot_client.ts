@@ -443,7 +443,7 @@ export class HubspotClient {
             limit: 1,
             after: 0,
         };
-        const response = await this.client.crm.objects.searchApi.search(this.config.invoiceObjectId, publicObjectSearchRequest);
+        const response = await this.client.crm.objects.searchApi.doSearch(this.config.invoiceObjectId, publicObjectSearchRequest);
         const { body } = response;
         return body && body.results && body.results.length ? body.results[0] : null;
     }
@@ -471,7 +471,7 @@ export class HubspotClient {
             limit: 1,
             after: 0,
         };
-        const response = await this.client.crm.objects.searchApi.search(this.config.invoiceObjectId, publicObjectSearchRequest);
+        const response = await this.client.crm.objects.searchApi.doSearch(this.config.invoiceObjectId, publicObjectSearchRequest);
         const { body } = response;
         return body && body.results && body.results.length ? body.results[0] : null;
     }

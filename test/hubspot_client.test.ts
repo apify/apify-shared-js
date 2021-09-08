@@ -304,7 +304,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.searchContactByEmail('');
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Arg "email" is required in HubspotClient.searchContactByEmail');
             }
         });
@@ -388,7 +389,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.searchContactByApifyUserId('');
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Arg "apifyUserId" is required in HubspotClient.searchContactByApifyUserId');
             }
         });
@@ -720,11 +722,11 @@ describe('HubspotClient', () => {
                 .patch(`/objects/contacts/${contactId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
                 .reply(404, networkReply);
 
-            let err = null;
+            let err: Error = null!;
             try {
                 await hubspotClient.updateContact(contactId, userData);
             } catch (error) {
-                err = error;
+                err = error as Error;
             }
 
             expect(err).not.toBeNull();
@@ -833,7 +835,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.searchInvoiceByNumber('');
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Arg "invoiceNumber" is required in HubspotClient.searchInvoiceByNumber');
             }
         });
@@ -918,7 +921,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.searchInvoiceByApifyInvoiceId('');
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Arg "apifyInvoiceId" is required in HubspotClient.searchInvoiceByApifyInvoiceId');
             }
         });
@@ -1226,7 +1230,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.createInvoice(invoiceData, expectedContactId);
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(`Hubspot with contact ID ${expectedContactId} does not exist`);
             }
         });
@@ -1299,11 +1304,11 @@ describe('HubspotClient', () => {
                     correlationId: 'cc669b6e-ba23-41c7-afde-a25e0f1e9a51',
                 });
 
-            let err = null;
+            let err: Error = null!;
             try {
                 await hubspotClient.updateInvoice(expectedInvoiceId, invoiceData);
             } catch (error) {
-                err = error;
+                err = error as Error;
             }
 
             expect(err).not.toBeNull();
@@ -1462,7 +1467,8 @@ describe('HubspotClient', () => {
                 await hubspotClient.searchCompanyByName('');
                 // we should not get here
                 expect(true).toEqual(false);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Arg "name" is required in HubspotClient.searchCompanyByName');
             }
         });
@@ -1580,11 +1586,11 @@ describe('HubspotClient', () => {
                 .patch(`/objects/companies/${companyId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: transformedData })
                 .reply(404, networkReply);
 
-            let err = null;
+            let err: Error = null!;
             try {
                 await hubspotClient.updateCompany(companyId, modifier);
             } catch (error) {
-                err = error;
+                err = error as Error;
             }
 
             expect(err).not.toBeNull();
@@ -1651,11 +1657,11 @@ describe('HubspotClient', () => {
             const path = `/objects/companies/${companyId}/associations/contacts/${contactId}/company_to_contact?hapikey=${BASE_CONFIG.apiKey}`;
             nock(HUBSPOT_URL).put(path).reply(404, networkReply);
 
-            let err = null;
+            let err: Error = null!;
             try {
                 await hubspotClient.associateContactWithCompany(contactId, companyId);
             } catch (error) {
-                err = error;
+                err = error as Error;
             }
 
             expect(err).not.toBeNull();
