@@ -146,7 +146,7 @@ export function betterClearInterval(intervalID: { _betterClearInterval: () => vo
             // eslint-disable-next-line no-underscore-dangle
             intervalID._betterClearInterval();
         } catch (e) {
-            log.exception(e, '_betterClearInterval() threw an exception!?');
+            log.exception(e as Error, '_betterClearInterval() threw an exception!?');
         }
     }
 }

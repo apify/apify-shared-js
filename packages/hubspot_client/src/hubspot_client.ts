@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import hubspot, { Client } from '@hubspot/api-client';
+import hubspot, { Client, HttpError } from '@hubspot/api-client';
 
 // If customer does not have name anywhere, this is used as placeholder when creating user
 export const MISSING_NAME_PLACEHOLDER = '[UNNAMED_CUSTOMER]';
@@ -274,7 +274,8 @@ export class HubspotClient {
         try {
             const response = await this.client.crm.contacts.basicApi.getById(hubspotContactId);
             return response.body;
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) return null;
             throw error;
         }
@@ -401,7 +402,8 @@ export class HubspotClient {
             await this.client.crm.contacts.basicApi.update(`${hubspotContactId}`, {
                 properties: data,
             });
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
             throw error;
         }
@@ -500,7 +502,8 @@ export class HubspotClient {
         try {
             const response = await this.client.crm.objects.basicApi.getById(this.config.invoiceObjectId, hubspotInvoiceId);
             return response.body;
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) return null;
             throw error;
         }
@@ -595,7 +598,8 @@ export class HubspotClient {
             await this.client.crm.objects.basicApi.update(this.config.invoiceObjectId, `${hubspotInvoiceId}`, {
                 properties: data,
             });
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
             throw error;
         }
@@ -724,7 +728,8 @@ export class HubspotClient {
             await this.client.crm.companies.basicApi.update(`${hubspotCompanyId}`, {
                 properties: data,
             });
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
             throw error;
         }
@@ -744,7 +749,8 @@ export class HubspotClient {
                 `${hubspotContactId}`,
                 'company_to_contact',
             );
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as HttpError;
             if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
             throw error;
         }

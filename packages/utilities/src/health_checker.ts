@@ -79,7 +79,8 @@ export class HealthChecker {
             try {
                 const checkPromise = this._performCheck(check);
                 await timeoutPromise(checkPromise, this.checkTimeoutMillis, 'Check has timed-out');
-            } catch (err) {
+            } catch (_err) {
+                const err = _err as Error;
                 throw new Error(`Health check test "${check.type}" failed with an error: ${err.message}"`);
             }
         }

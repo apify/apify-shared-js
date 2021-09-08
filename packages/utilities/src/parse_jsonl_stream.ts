@@ -61,7 +61,7 @@ export class ParseJsonlStream extends Transform {
                 this.parseLineAndEmitObject(lines[i]);
             }
         } catch (err) {
-            callback(err, null);
+            callback(err as Error, null);
             return;
         }
 
@@ -76,7 +76,7 @@ export class ParseJsonlStream extends Transform {
                 this.parseLineAndEmitObject(this.pendingChunk);
                 this.pendingChunk = null;
             } catch (err) {
-                callback(err, null);
+                callback(err as Error, null);
                 return;
             }
         }
