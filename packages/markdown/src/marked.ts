@@ -131,11 +131,11 @@ interface MarkedResponse {
 export const apifyMarked = (markdown: string): MarkedResponse => {
     const renderer = new Renderer();
     renderer.heading = customHeadingRenderer;
-    renderer.code = (code, language) => {
+    renderer.code = function (code, language) {
         if (language) {
             return code;
         }
-        return DEFAULT_MARKED_RENDERER.code(code, language, false);
+        return DEFAULT_MARKED_RENDERER.code.call(this, code, language, false);
     };
     const tokens = lexer(markdown);
 

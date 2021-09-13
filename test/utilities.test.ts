@@ -208,7 +208,8 @@ describe('timeoutPromise()', () => {
         try {
             await timeoutPromise;
             throw new Error('This should have failed!');
-        } catch (err) {
+        } catch (_err) {
+            const err = _err as Error;
             expect(err.message).toBe('some-fail');
         }
     });
@@ -223,7 +224,8 @@ describe('timeoutPromise()', () => {
         try {
             await timeoutPromise;
             throw new Error('This should have failed!');
-        } catch (err) {
+        } catch (_err) {
+            const err = _err as Error;
             expect(err.message).toBe('Promise has timed-out');
         }
     });
@@ -238,7 +240,8 @@ describe('timeoutPromise()', () => {
         try {
             await timeoutPromise;
             throw new Error('This should have failed!');
-        } catch (err) {
+        } catch (_err) {
+            const err = _err as Error;
             expect(err.message).toBe('Custom error message');
         }
     });

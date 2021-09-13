@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import axios, { Method } from 'axios';
+import axios, { AxiosError, Method } from 'axios';
 import { URLSearchParams } from 'url';
 
 const AUTH_RETRY_ATTEMPTS = 5;
@@ -230,14 +230,16 @@ export class SalesforceClient {
             });
 
             return response.data;
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as AxiosError;
+
             const maybeStatus = error.response && error.response.status
                 ? error.response && error.response.status
                 : null;
 
             // NOTE: Multiple choices, it is not an error
             if (maybeStatus === 300) {
-                return error.response.data;
+                return error.response!.data;
             }
 
             // Catch authentication error this means that token expired and we need a new one
@@ -279,7 +281,8 @@ export class SalesforceClient {
     async getAccount(userId: string): Promise<Record<string, any> | null> {
         try {
             return await this._callApexrestApi(`ApifyAccount/${userId}`, 'GET');
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as Error;
             if (error.message === NOT_FOUND_MESSAGE) {
                 return null;
             }
@@ -368,7 +371,9 @@ export class SalesforceClient {
     async getInvoice(invoiceId: string): Promise<Record<string, any> | null> {
         try {
             return await this._callApexrestApi(`ApifyInvoice/${invoiceId}`, 'GET');
-        } catch (error) {
+        } catch (_error) {
+            const error = _error as Error;
+
             if (error.message === NOT_FOUND_MESSAGE) {
                 return null;
             }
@@ -443,11 +448,12 @@ export class SalesforceClient {
                 lead = await this._callApi(lead[0], 'GET');
             }
             return lead;
-        } catch (err) {
-            if (err.message === NOT_FOUND_MESSAGE) {
+        } catch (_error) {
+            const error = _error as Error;
+            if (error.message === NOT_FOUND_MESSAGE) {
                 return null;
             }
-            throw err;
+            throw error;
         }
     }
 
