@@ -23,6 +23,7 @@ const ALLOWED_USER_FIELDS = {
     subscription_plan: _.isString,
     subscription_price: _.isNumber,
     segment_paying_user: _.isString,
+    customer_segment: _.isString,
 
     firstname: _.isString,
     lastname: _.isString,
@@ -349,6 +350,7 @@ export class HubspotClient {
         data.subscription_plan = (user.subscription && user.subscription.plan) ? user.subscription.plan.id : '';
         data.subscription_price = (user.subscription && user.subscription.plan) ? user.subscription.plan.monthlyBasePriceUsd : 0;
         data.segment_paying_user = (!!data.subscription_plan || (user.admin && user.admin.isPayingCustomer)) ? 'true' : 'false';
+        data.customer_segment = (user.admin && user.admin.customerSegment) ? user.admin.customerSegment : '';
 
         const cleanedObject = cleanAndCompareWithSchema(data, ALLOWED_USER_FIELDS);
         return cleanedObject;

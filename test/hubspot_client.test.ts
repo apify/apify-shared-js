@@ -157,6 +157,7 @@ describe('HubspotClient', () => {
                 subscription_plan: '',
                 subscription_price: 0,
                 segment_paying_user: 'false',
+                customer_segment: '',
             };
             const transformedData = hubspotClient._transformUser(userData);
             expect(transformedData).toEqual(expectedData);
@@ -184,6 +185,7 @@ describe('HubspotClient', () => {
                 subscription_plan: '',
                 subscription_price: 0,
                 segment_paying_user: 'false',
+                customer_segment: '',
             };
             const transformedData = hubspotClient._transformUser(userData, true);
             expect(transformedData).toEqual(expectedData);
@@ -199,6 +201,7 @@ describe('HubspotClient', () => {
                 subscription_plan: '',
                 subscription_price: 0,
                 segment_paying_user: 'false',
+                customer_segment: '',
             };
             const transformedData = hubspotClient._transformUser(userData, true);
             expect(transformedData).toEqual(expectedData);
