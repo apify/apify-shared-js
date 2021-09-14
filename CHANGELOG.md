@@ -11,7 +11,7 @@ package | version | changelog
 `@apify/consts` | 1.3.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 1.0.1 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/git` | 1.0.2 | [CHANGELOG](./packages/git/CHANGELOG.md)
-`@apify/hubspot_client` | 1.1.1 | [CHANGELOG](./packages/hubspot_client/CHANGELOG.md)
+`@apify/hubspot_client` | 1.2.0 | [CHANGELOG](./packages/hubspot_client/CHANGELOG.md)
 `@apify/image_proxy_client` | 1.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 2.0.1 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/log` | 1.1.3 | [CHANGELOG](./packages/log/CHANGELOG.md)
