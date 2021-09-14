@@ -118,7 +118,8 @@ describe('WebhookPayloadTemplate', () => {
         try {
             WebhookPayloadTemplate.parse(invalidJson);
             throw new Error('Wrong error.');
-        } catch (err) {
+        } catch (_err) {
+            const err = _err as Error;
             expect(err.message).toBe('Unexpected token , in JSON at position 68');
             expect(err).toBeInstanceOf(InvalidJsonError);
         }
@@ -129,7 +130,8 @@ describe('WebhookPayloadTemplate', () => {
         try {
             WebhookPayloadTemplate.parse(validTemplate, allowedVars);
             throw new Error('Wrong error.');
-        } catch (err) {
+        } catch (_err) {
+            const err = _err as Error;
             expect(err.message).toBe('Invalid payload template variable: eventType');
             expect(err).toBeInstanceOf(InvalidVariableError);
         }

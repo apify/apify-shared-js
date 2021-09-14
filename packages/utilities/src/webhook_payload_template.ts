@@ -136,7 +136,7 @@ export class WebhookPayloadTemplate {
                 } else {
                     // When we catch an error from JSON.parse, but there's
                     // no variable, we must have an invalid JSON.
-                    throw new InvalidJsonError(err);
+                    throw new InvalidJsonError(err as Error);
                 }
             }
         }

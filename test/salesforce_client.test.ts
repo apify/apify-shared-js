@@ -3,6 +3,7 @@
 import { URLSearchParams } from 'url';
 import _ from 'underscore';
 import nock from 'nock';
+import { AxiosError } from 'axios';
 
 import { SalesforceClient, cleanAndCompareWithSchema, MISSING_NAME_PLACEHOLDER } from '@apify/salesforce_client';
 
@@ -215,10 +216,11 @@ describe('SalesforceClient', () => {
             try {
                 await salesforceClient.getToken();
                 throw new Error('Line above is supposed to throw');
-            } catch (error) {
-                expect(error.response.status).toEqual(400);
-                expect(error.response.data).toBeInstanceOf(Object);
-                expect(error.response.data.error).toEqual('invalid_grant');
+            } catch (_error) {
+                const error = _error as AxiosError;
+                expect(error.response!.status).toEqual(400);
+                expect(error.response!.data).toBeInstanceOf(Object);
+                expect(error.response!.data.error).toEqual('invalid_grant');
             }
         });
     });
@@ -605,7 +607,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.createAccount(userData);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record already exists');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record already exists');
             }
         });
@@ -659,7 +662,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.createAccount(userData);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });
@@ -742,7 +746,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.updateAccount('TEST', userData);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record not found');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record not found');
             }
         });
@@ -782,7 +787,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.updateAccount('TEST', userData);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });
@@ -831,7 +837,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.deleteAccount(userId);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record not found');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record not found');
             }
         });
@@ -858,7 +865,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.deleteAccount(userId);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });
@@ -1034,7 +1042,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.createInvoice(invoiceData);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record already exists');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record already exists');
             }
         });
@@ -1080,7 +1089,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.createInvoice(invoiceData);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });
@@ -1146,7 +1156,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.updateInvoice(invoiceId, invoiceData);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record not found');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record not found');
             }
         });
@@ -1181,7 +1192,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.updateInvoice(invoiceId, invoiceData);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });
@@ -1230,7 +1242,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.deleteInvoice(invoiceId);
                 // Method above should throw error
                 expect('').toEqual('Salesforce record not found');
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual('Salesforce record not found');
             }
         });
@@ -1259,7 +1272,8 @@ describe('SalesforceClient', () => {
                 await salesforceClient.deleteInvoice(invoiceId);
                 // Method above should throw error
                 expect('').toEqual(expectedReply.message);
-            } catch (error) {
+            } catch (_error) {
+                const error = _error as Error;
                 expect(error.message).toEqual(expectedReply.message);
             }
         });

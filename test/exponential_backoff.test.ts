@@ -37,7 +37,8 @@ describe('exponential_backoff', () => {
                 expBackoffMaxRepeats: 5,
                 expBackoffMillis: 100,
             });
-        } catch (e) {
+        } catch (_e) {
+            const e = _e as Error;
             expect(e.message).toBe(ERROR_MESSAGE);
             expect(funcCalledTimes).toBe(1);
         }
@@ -59,7 +60,7 @@ describe('exponential_backoff', () => {
                 expBackoffMillis: 50,
             });
         } catch (e) {
-            error = e;
+            error = e as Error;
         }
         expect(error.message).toBe(ERROR_MESSAGE);
         expect(error instanceof Error).toBe(true);
@@ -67,34 +68,34 @@ describe('exponential_backoff', () => {
     }, 15e3);
 
     it('should validate func param', async () => {
-        let error;
+        let error!: Error;
         try {
             // @ts-expect-error
             await retryWithExpBackoff({ func: 'String', expBackoffMaxRepeats: 10, expBackoffMillis: 100 });
         } catch (e) {
-            error = e;
+            error = e as Error;
         }
         expect(error.message).toBe('Parameter "func" should be a function.');
     });
 
     it('should validate expBackoffMaxRepeats param', async () => {
-        let error;
+        let error!: Error;
         try {
             // @ts-expect-error
             await retryWithExpBackoff({ func: () => {}, expBackoffMaxRepeats: 'String', expBackoffMillis: 100 });
         } catch (e) {
-            error = e;
+            error = e as Error;
         }
         expect(error.message).toBe('Parameter "expBackoffMaxRepeats" should be a number.');
     });
 
     it('should validate expBackoffMillis param', async () => {
-        let error;
+        let error!: Error;
         try {
             // @ts-expect-error
             await retryWithExpBackoff({ func: () => {}, expBackoffMaxRepeats: 5, expBackoffMillis: 'String' });
         } catch (e) {
-            error = e;
+            error = e as Error;
         }
         expect(error.message).toBe('Parameter "expBackoffMillis" should be a number.');
     });
@@ -102,7 +103,7 @@ describe('exponential_backoff', () => {
     it('should display correct message after 1/2 of retries', async () => {
         const logWarningSpy = jest.spyOn(log, 'warning');
 
-        let error;
+        let error!: Exception;
         try {
             await retryWithExpBackoff({
                 func: async () => {
@@ -114,7 +115,7 @@ describe('exponential_backoff', () => {
                 expBackoffMillis: 10,
             });
         } catch (e) {
-            error = e;
+            error = e as Exception;
         }
         expect(error.message).toBe('Failed because of XXX');
         expect(error.details).toEqual({ foo: 'bar' });
