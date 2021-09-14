@@ -5,6 +5,7 @@
     "semanticCommits": "enabled",
     "lockFileMaintenance": {
         "enabled": true,
+        "schedule": ["before 2am"],
         "automerge": true,
         "automergeType": "branch"
     },
