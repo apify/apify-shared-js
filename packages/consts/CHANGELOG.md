@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.3.0...@apify/consts@1.4.0) (2021-09-28)
+
+
+### Features
+
+* add workflow key env variable ([#255](https://github.com/apify/apify-shared-js/issues/255)) ([d3ec398](https://github.com/apify/apify-shared-js/commit/d3ec39884076faf7be4d2c3b3ab1c9d8d82c94a2))
+
+
+
+
+
 # [1.3.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.2.0...@apify/consts@1.3.0) (2021-08-26)
 
 
