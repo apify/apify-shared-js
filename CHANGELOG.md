@@ -17,5 +17,5 @@ package | version | changelog
 `@apify/log` | 1.1.4 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 1.0.20 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.1.0 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
-`@apify/salesforce_client` | 1.0.2 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
+`@apify/salesforce_client` | 1.0.3 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
 `@apify/utilities` | 1.1.7 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
