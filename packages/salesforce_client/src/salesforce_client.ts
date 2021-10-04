@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import axios, { AxiosError, Method } from 'axios';
+import axios, { AxiosError, AxiosResponse, Method } from 'axios';
 import { URLSearchParams } from 'url';
 
 const AUTH_RETRY_ATTEMPTS = 5;
@@ -196,15 +196,17 @@ export class SalesforceClient {
         ]);
 
         // https://test.salesforce.com/services/oauth2/token?grant_type=password&client_id=&client_secret=&username=&password=
+        // eslint-disable-next-line camelcase
+        type Response = AxiosResponse<{ access_token: string; instance_url: string }>;
         const { data } = await axios({
             url: `${this.config.tokenUrl}?${query.toString()}`,
             method: 'post',
-        });
+        }) as Response;
 
         this.auth = {
             token: data.access_token,
             instanceUrl: data.instance_url,
-            // Tokens theoreticaly expire after 2 hours, but we refresh tokens after 1 hour to be safer
+            // Tokens theoretically expire after 2 hours, but we refresh tokens after 1 hour to be safer
             expiresAt: new Date(Date.now() + 60 * 60 * 1000),
         };
     }
@@ -231,7 +233,7 @@ export class SalesforceClient {
 
             return response.data;
         } catch (_error) {
-            const error = _error as AxiosError;
+            const error = _error as AxiosError<{ message: string }>;
 
             const maybeStatus = error.response && error.response.status
                 ? error.response && error.response.status

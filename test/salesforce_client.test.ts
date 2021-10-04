@@ -217,7 +217,7 @@ describe('SalesforceClient', () => {
                 await salesforceClient.getToken();
                 throw new Error('Line above is supposed to throw');
             } catch (_error) {
-                const error = _error as AxiosError;
+                const error = _error as AxiosError<{ error: string }>;
                 expect(error.response!.status).toEqual(400);
                 expect(error.response!.data).toBeInstanceOf(Object);
                 expect(error.response!.data.error).toEqual('invalid_grant');
