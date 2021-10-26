@@ -5,7 +5,7 @@ export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 export const ACT_JOB_TYPES = {
     BUILD: 'BUILD',
     RUN: 'RUN',
-};
+} as const;
 
 export const ACT_SOURCE_TYPES = {
     SOURCE_CODE: 'SOURCE_CODE',
@@ -13,7 +13,7 @@ export const ACT_SOURCE_TYPES = {
     GIT_REPO: 'GIT_REPO',
     TARBALL: 'TARBALL',
     GITHUB_GIST: 'GITHUB_GIST',
-};
+} as const;
 
 export const ACTOR_EVENT_NAMES = {
     CPU_INFO: 'cpuInfo',
@@ -21,7 +21,7 @@ export const ACTOR_EVENT_NAMES = {
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
     ABORTING: 'aborting',
-};
+} as const;
 
 /**
  * Dictionary of possible values for 'status' field of act2Builds or act2Runs collections.
@@ -35,7 +35,7 @@ export const ACT_JOB_STATUSES = {
     TIMED_OUT: 'TIMED-OUT', // timed out
     ABORTING: 'ABORTING', // being aborted by user
     ABORTED: 'ABORTED', // aborted by user
-};
+} as const;
 
 /**
  * An array of act jobs statuses that are final for the jobs.
@@ -52,7 +52,7 @@ export const ACT_JOB_TERMINAL_STATUSES = [
 export const WORKER_SERVICE_TYPES = {
     CRAWLING: 'crawling',
     ACTOR: 'actor',
-};
+} as const;
 
 export const META_ORIGINS = {
     DEVELOPMENT: 'DEVELOPMENT', // Job started from Developer console in Source section of actor
@@ -60,7 +60,7 @@ export const META_ORIGINS = {
     API: 'API', // Job started through API
     SCHEDULER: 'SCHEDULER', // Job started through Scheduler
     TEST: 'TEST', // Job started through test actor page
-};
+} as const;
 
 /**
  * Base Docker images for acts, in order in which they are displayed in UI.
@@ -196,7 +196,7 @@ export const DOCKER_LABELS = {
     // Kept for backwards compatibility, will be removed soon
     ACT_BUILD_ID: 'com.apify.actBuildId',
     ACT_RUN_ID: 'com.apify.actRunId',
-};
+} as const;
 
 /**
  * Acts types
@@ -204,7 +204,7 @@ export const DOCKER_LABELS = {
 export const ACT_TYPES = {
     ACT: 'acts',
     CRAWLER: 'crawlers',
-};
+} as const;
 
 /**
  * Username used when user is anonymous.
@@ -383,12 +383,13 @@ export const ENV_VARS = {
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
     ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
-};
+} as const;
+
 export const INTEGER_ENV_VARS = [
     ENV_VARS.PROXY_PORT,
     ENV_VARS.MEMORY_MBYTES,
     ENV_VARS.CONTAINER_PORT,
-];
+] as const;
 
 /**
  * Default value for APIFY_CONTAINER_PORT used both locally and at Apify platform.
@@ -402,7 +403,7 @@ export const LOCAL_STORAGE_SUBDIRS = {
     datasets: 'datasets',
     keyValueStores: 'key_value_stores',
     requestQueues: 'request_queues',
-};
+} as const;
 
 /**
  * Local defaults for of some of the environment variables.
@@ -424,7 +425,7 @@ export const LOCAL_ENV_VARS = {
 export const KEY_VALUE_STORE_KEYS = {
     INPUT: 'INPUT',
     OUTPUT: 'OUTPUT',
-};
+} as const;
 
 /**
  * Max length of Actor log in number of characters.
@@ -439,7 +440,7 @@ export const CUSTOMER_REQUEST_TYPES = {
     EXTRACT_DATA: 'EXTRACT_DATA',
     AUTOMATION: 'AUTOMATION',
     OTHER: 'OTHER',
-};
+} as const;
 
 /**
  * Represents the maximum size in bytes of a request body (decompressed)
@@ -466,7 +467,7 @@ export const ACTOR_CATEGORIES = {
     TRAVEL: 'Travel',
     VIDEOS: 'Videos',
     OTHER: 'Other',
-};
+} as const;
 
 /**
  * TODO: This will be used during the category migration and can be removed after that.
@@ -486,11 +487,12 @@ export const LEGACY_ACTOR_CATEGORIES = {
     TOOLS: 'Tools',
     EXAMPLES: 'Examples',
     OTHER: 'Other',
-};
+} as const;
+
 export const ALL_ACTOR_CATEGORIES = {
     ...ACTOR_CATEGORIES,
     ...LEGACY_ACTOR_CATEGORIES,
-};
+} as const;
 
 /**
  * Bases for converting version/build number to/from string/integer
@@ -525,7 +527,7 @@ export const WEBHOOK_EVENT_TYPES = {
     ACTOR_RUN_ABORTED: 'ACTOR.RUN.ABORTED',
     ACTOR_RUN_RESURRECTED: 'ACTOR.RUN.RESURRECTED',
     TEST: 'TEST',
-};
+} as const;
 
 export const WEBHOOK_EVENT_TYPE_GROUPS = {
     ACTOR_RUN: [
@@ -543,7 +545,7 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
     ],
-};
+} as const;
 
 export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
     "userId": {{userId}},
@@ -570,7 +572,7 @@ export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
 export const SOURCE_FILE_FORMATS = {
     TEXT: 'TEXT',
     BASE64: 'BASE64',
-};
+} as const;
 
 // Marketplace project statuses
 export const PROJECT_STATUSES = {
@@ -589,7 +591,7 @@ export const PROJECT_STATUSES = {
     DELIVERED: 'DELIVERED',
     CLOSED: 'CLOSED',
     FINISHED: 'FINISHED',
-};
+} as const;
 
 // Marketplace projects with status from this array is considered as successfully finished
 export const FINISHED_PROJECT_STATUSES = [
@@ -598,12 +600,12 @@ export const FINISHED_PROJECT_STATUSES = [
     PROJECT_STATUSES.PAID,
     PROJECT_STATUSES.DELIVERED,
     PROJECT_STATUSES.FINISHED,
-];
+] as const;
 
 export const MARKETPLACE_USER_ROLES = {
     DEVELOPER: 'DEVELOPER',
     DATA_EXPERT: 'DATA_EXPERT',
     CUSTOMER: 'CUSTOMER',
-};
+} as const;
 
 export const GIT_MAIN_BRANCH = 'main';
