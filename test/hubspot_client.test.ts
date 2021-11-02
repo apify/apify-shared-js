@@ -242,6 +242,12 @@ describe('HubspotClient', () => {
                         operator: 'EQ',
                         value: email,
                     }],
+                }, {
+                    filters: [{
+                        propertyName: 'hs_additional_emails',
+                        operator: 'EQ',
+                        value: email,
+                    }],
                 }],
                 sorts: [],
                 properties: [],
@@ -281,6 +287,12 @@ describe('HubspotClient', () => {
                 filterGroups: [{
                     filters: [{
                         propertyName: 'email',
+                        operator: 'EQ',
+                        value: email,
+                    }],
+                }, {
+                    filters: [{
+                        propertyName: 'hs_additional_emails',
                         operator: 'EQ',
                         value: email,
                     }],
@@ -471,6 +483,12 @@ describe('HubspotClient', () => {
                         operator: 'EQ',
                         value: user.emails[0].address,
                     }],
+                }, {
+                    filters: [{
+                        propertyName: 'hs_additional_emails',
+                        operator: 'EQ',
+                        value: user.emails[0].address,
+                    }],
                 }],
                 sorts: [],
                 properties: [],
@@ -527,6 +545,12 @@ describe('HubspotClient', () => {
                 filterGroups: [{
                     filters: [{
                         propertyName: 'email',
+                        operator: 'EQ',
+                        value: user.emails[0].address,
+                    }],
+                }, {
+                    filters: [{
+                        propertyName: 'hs_additional_emails',
                         operator: 'EQ',
                         value: user.emails[0].address,
                     }],

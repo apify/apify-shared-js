@@ -197,14 +197,26 @@ export class HubspotClient {
     async searchContactByEmail(email: string): Promise<hubspot.contactsModels.SimplePublicObject | null> {
         if (!email) throw new Error('Arg "email" is required in HubspotClient.searchContactByEmail');
 
-        const filter = {
+        const primaryEmailFilter = {
             propertyName: 'email',
             operator: 'EQ',
             value: email,
         };
+
+        const additionalEmailsFilter = {
+            propertyName: 'hs_additional_emails',
+            operator: 'EQ',
+            value: email,
+        };
+
+        // multiple filterGroups -> logical OR
+        // multiple filters -> logical AND
         const publicObjectSearchRequest = {
             filterGroups: [{
-                filters: [filter],
+                filters: [primaryEmailFilter],
+            },
+            {
+                filters: [additionalEmailsFilter],
             }],
             sorts: [],
             properties: [],
