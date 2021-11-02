@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.2.0...@apify/hubspot_client@1.3.0) (2021-11-02)
+
+
+### Features
+
+* look up hubspot contact by HS additional emails ([#260](https://github.com/apify/apify-shared-js/issues/260)) ([a2a30f2](https://github.com/apify/apify-shared-js/commit/a2a30f2a7ca119fb70602287ad539c595a93fd08))
+
+
+
+
+
 # [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.1.1...@apify/hubspot_client@1.2.0) (2021-09-14)
 
 
