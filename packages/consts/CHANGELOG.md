@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.4.0...@apify/consts@1.4.1) (2021-10-26)
+
+
+### Bug Fixes
+
+* use const assertions for object constants ([b91bd72](https://github.com/apify/apify-shared-js/commit/b91bd72be48c6f3e795211643212226dbb37e0b0))
+
+
+
+
+
 # [1.4.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.3.0...@apify/consts@1.4.0) (2021-09-28)
 
 
