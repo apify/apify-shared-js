@@ -591,8 +591,7 @@ export class HubspotClient {
 
         // Connect it to contact
         await this.client.crm.objects.associationsApi.create(
-            this.config.invoiceObjectId, hubspotInvoiceId, 'contact', hubspotContactId,
-            this.config.invoiceToContactAssociation,
+            this.config.invoiceObjectId, hubspotInvoiceId, 'contact', hubspotContactId, this.config.invoiceToContactAssociation,
         );
 
         return hubspotInvoiceId;

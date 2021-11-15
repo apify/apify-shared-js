@@ -15,7 +15,7 @@ export function formatHeadingId(headingId: string) {
 export function extractHeadingIdAndText(text: string, raw: string): { headingText: string; headingId: string } {
     // Check if there is a custom fragment link with the custom heading ID present in the heading
     // The heading text already comes rendered from Markdown to HTML to the renderer, so we have to look for an <a> tag instead of the Markdown source
-    const parsingRegExp = new RegExp('<a href="#([^"]+)"></a>(.*)');
+    const parsingRegExp = /<a href="#([^"]+)"><\/a>(.*)/;
     const regexMatch = text.match(parsingRegExp);
 
     let headingId = '';
