@@ -1,4 +1,8 @@
 describe('timeout with abort controller', () => {
+    it('empty', async () => {
+        // empty test so jest won't fail in node < 15 due to no tests being executed
+    });
+
     if (Number(process.version.match(/v(\d+)/)?.[1] ?? null) < 15) {
         // skip tests as this package requires node 15+
         return;
