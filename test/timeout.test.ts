@@ -1,4 +1,4 @@
-describe('SPLIT_PATH_REGEX', () => {
+describe('timeout with abort controller', () => {
     if (Number(process.version.match(/v(\d+)/)?.[1] ?? null) < 15) {
         // skip tests as this package requires node 15+
         return;
