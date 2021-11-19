@@ -68,4 +68,22 @@ describe('timeout with abort controller', () => {
         )).rejects.toThrowError(err);
         expect(position).toBe(3);
     });
+
+    it('timeouts with nesting', async () => {
+        // this will timeout and cause failure, but it will happen sooner than in 200ms, so err 1 will be thrown
+        async function handler2() {
+            await addTimeoutToPromise(
+                () => handler(),
+                100,
+                'err 1',
+            );
+        }
+
+        await expect(addTimeoutToPromise(
+            () => handler2(),
+            200,
+            'err 2',
+        )).rejects.toThrowError('err 1');
+        expect(position).toBe(3);
+    });
 });
