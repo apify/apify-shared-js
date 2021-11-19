@@ -14,6 +14,7 @@ package | version
 `@apify/markdown` | [![NPM version](https://img.shields.io/npm/v/@apify/markdown.svg)](https://www.npmjs.com/package/@apify/markdown)
 `@apify/salesforce_client` | [![NPM version](https://img.shields.io/npm/v/@apify/salesforce_client.svg)](https://www.npmjs.com/package/@apify/salesforce_client)
 `@apify/utilities` | [![NPM version](https://img.shields.io/npm/v/@apify/utilities.svg)](https://www.npmjs.com/package/@apify/utilities)
+`@apify/timeout` | [![NPM version](https://img.shields.io/npm/v/@apify/timeout.svg)](https://www.npmjs.com/package/@apify/timeout)
 
 Internal utilities and constants shared across <a href="https://www.apify.com">Apify</a> projects.
 Unless you work at Apify ([interested?](https://apify.com/jobs)), you shouldn't use this package directly,
