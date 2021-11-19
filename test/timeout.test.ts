@@ -1,11 +1,14 @@
-import { addTimeoutToPromise, tryCancel } from '@apify/timeout';
-import { setTimeout } from 'timers/promises';
-
 describe('SPLIT_PATH_REGEX', () => {
     if (Number(process.version.match(/v(\d+)/)?.[1] ?? null) < 15) {
         // skip tests as this package requires node 15+
         return;
     }
+
+    // we need to import via require after the above check to not fail on node < 15
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+    const { addTimeoutToPromise, tryCancel } = require('@apify/timeout');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+    const { setTimeout } = require('timers/promises');
 
     let position = 0;
 
