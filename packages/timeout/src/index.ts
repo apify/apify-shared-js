@@ -7,12 +7,14 @@ export interface AbortContext {
 }
 
 /**
- * AsyncLocalStorage instance that is used for baring the AbortContext inside user provided handler.
+ * `AsyncLocalStorage` instance that is used for baring the AbortContext inside user provided handler.
+ * We can use it to access the `AbortContext` instance via `storage.getStore()`, and there we can access
+ * both `cancelTimeout` and `cancelTask` instances of `AbortController`.
  */
 export const storage = new AsyncLocalStorage<AbortContext>();
 
 /**
- * Custom error class to handle tryCancel() checks.
+ * Custom error class to handle `tryCancel()` checks.
  * This should not be exposed to user land, as it will be caught in.
  */
 export class TimeoutError extends Error {
@@ -34,7 +36,7 @@ export class TimeoutError extends Error {
  * }
  * ```
  */
-export function tryCancel() {
+export function tryCancel(): void {
     const { signal } = storage.getStore()?.cancelTask ?? {};
 
     if (signal?.aborted) {
@@ -43,8 +45,8 @@ export function tryCancel() {
 }
 
 /**
- * Runs given handler and rejects with the given errorMessage (or Error instance)
- * after given timeoutMillis, unless the original promise resolves or rejects earlier.
+ * Runs given handler and rejects with the given `errorMessage` (or `Error` instance)
+ * after given `timeoutMillis`, unless the original promise resolves or rejects earlier.
  * Use `tryCancel()` function inside the handler after each await to finish its execution
  * early when the timeout appears.
  *
@@ -61,6 +63,8 @@ export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutM
     const cancelTask = new AbortController();
     let ret: T;
 
+    // calls handler, skips internal `TimeoutError`s that might have been thrown
+    // via `tryCancel()` and aborts the timeout promise after the handler finishes
     const wrap = async () => {
         try {
             ret = await handler();
@@ -74,13 +78,13 @@ export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutM
     };
 
     const timeout = async () => {
+        const store = storage.getStore();
+
         try {
-            await setTimeout(timeoutMillis, undefined, {
-                signal: storage.getStore()?.cancelTimeout.signal,
-            });
-            storage.getStore()?.cancelTask.abort();
-        } catch {
-            // ignore rejections (task finished and timeout has been cancelled
+            await setTimeout(timeoutMillis, undefined, { signal: store?.cancelTimeout.signal });
+            store?.cancelTask.abort();
+        } catch (e) {
+            // ignore rejections (task finished and timeout promise has been cancelled)
             return;
         }
 
