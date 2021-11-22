@@ -44,7 +44,7 @@ class InternalTimeoutError extends TimeoutError {
  * ```
  */
 export function tryCancel(): void {
-    const { signal } = storage.getStore()?.cancelTask ?? {};
+    const signal = storage.getStore()?.cancelTask.signal;
 
     if (signal?.aborted) {
         throw new InternalTimeoutError('Promise handler has been canceled due to a timeout');
@@ -71,13 +71,13 @@ export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutM
         cancelTimeout: new AbortController(),
         cancelTask: new AbortController(),
     };
-    let ret: T;
+    let returnValue: T;
 
     // calls handler, skips internal `TimeoutError`s that might have been thrown
     // via `tryCancel()` and aborts the timeout promise after the handler finishes
     const wrap = async () => {
         try {
-            ret = await handler();
+            returnValue = await handler();
         } catch (e) {
             if (!(e instanceof InternalTimeoutError)) {
                 throw e;
@@ -107,5 +107,5 @@ export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutM
         });
     });
 
-    return ret!;
+    return returnValue!;
 }
