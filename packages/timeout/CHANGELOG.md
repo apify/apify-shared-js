@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/apify/apify-shared-js/compare/@apify/timeout@0.2.0...@apify/timeout@0.2.1) (2021-11-24)
+
+**Note:** Version bump only for package @apify/timeout
+
+
+
+
+
 # 0.2.0 (2021-11-22)
 
 
