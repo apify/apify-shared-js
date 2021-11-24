@@ -89,7 +89,7 @@ export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutM
             reject(error);
         }, timeoutMillis);
 
-        exports.storage.run(context, () => {
+        storage.run(context, () => {
             wrap()
                 .then(() => resolve(returnValue))
                 .catch(reject)
