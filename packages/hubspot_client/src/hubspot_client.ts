@@ -38,6 +38,10 @@ const ALLOWED_USER_FIELDS = {
     billing_email__c: _.isString,
 
     lifecyclestage: _.isString,
+
+    actor_last_run_at: _.isDate,
+    registered_via_github: _.isString,
+    actor_public_count: _.isNumber,
 };
 
 // Same as above, but for invoice
@@ -363,6 +367,13 @@ export class HubspotClient {
         data.subscription_price = (user.subscription && user.subscription.plan) ? user.subscription.plan.monthlyBasePriceUsd : 0;
         data.segment_paying_user = (!!data.subscription_plan || (user.admin && user.admin.isPayingCustomer)) ? 'true' : 'false';
         data.customer_segment = (user.admin && user.admin.customerSegment) ? user.admin.customerSegment : '';
+
+        // Include some custom data if provided
+        if (user.customAttributes) {
+            data.actor_last_run_at = user.customAttributes.actor_last_run_at;
+            data.registered_via_github = user.customAttributes.registered_via_github ? 'true' : 'false';
+            data.actor_public_count = user.customAttributes.actor_public_count;
+        }
 
         const cleanedObject = cleanAndCompareWithSchema(data, ALLOWED_USER_FIELDS);
         return cleanedObject;

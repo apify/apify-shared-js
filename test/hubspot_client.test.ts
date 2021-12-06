@@ -206,6 +206,30 @@ describe('HubspotClient', () => {
             const transformedData = hubspotClient._transformUser(userData, true);
             expect(transformedData).toEqual(expectedData);
         });
+        it('correctly transforms custom attributes in user data', async () => {
+            const testDate = new Date();
+            const userData = {
+                _id: 'TEST',
+                customAttributes: {
+                    actor_last_run_at: testDate,
+                    registered_via_github: true,
+                    actor_public_count: 2,
+                },
+            };
+            const expectedData = {
+                apify_id__c: 'TEST',
+                subscription_plan: '',
+                subscription_price: 0,
+                segment_paying_user: 'false',
+                customer_segment: '',
+                // This format might look weird, but that's how it's supposed to be formatted
+                actor_last_run_at: JSON.stringify(testDate).replace(/"/g, ''),
+                registered_via_github: 'true',
+                actor_public_count: 2,
+            };
+            const transformedData = hubspotClient._transformUser(userData);
+            expect(transformedData).toEqual(expectedData);
+        });
     });
 
     describe('_transformInvoice()', () => {
