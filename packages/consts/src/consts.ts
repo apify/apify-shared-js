@@ -466,6 +466,9 @@ export const ACTOR_CATEGORIES = {
     SOCIAL_MEDIA: 'Social media',
     TRAVEL: 'Travel',
     VIDEOS: 'Videos',
+    REAL_ESTATE: 'Real estate',
+    SPORTS: 'Sports',
+    EDUCATION: 'Education',
     OTHER: 'Other',
 } as const;
 
