@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.4.2...@apify/consts@1.5.0) (2021-12-14)
+
+
+### Features
+
+* Added new actor store categories ([#271](https://github.com/apify/apify-shared-js/issues/271)) ([8b50716](https://github.com/apify/apify-shared-js/commit/8b50716cc3301411d94ef01c711ff515d5d6b152))
+
+
+
+
+
 ## [1.4.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.4.1...@apify/consts@1.4.2) (2021-11-15)
 
 **Note:** Version bump only for package @apify/consts
