@@ -126,7 +126,7 @@ const tests = {
             'test@localhost',
             'not an email',
             '@example.com',
-            'test..test@example.com' // more dots not allowed by mailgun
+            'test..test@example.com',
         ],
     },
 
