@@ -1,8 +1,11 @@
 /**
  * Email validation regexp adapted from https://html.spec.whatwg.org/multipage/forms.html#valid-e-mail-address
  * with our restriction that hostname must be a TLD! (will not match example@localhost)
+ * and two consecutive dots in name are not allowed (based on Mailgun convention, will not match ex..amle@example.com)
  */
-export const EMAIL_REGEX_STR = '[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+)*\\.{0,1}@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+'; // eslint-disable-line max-len
+const subRegexOne = 'a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-';
+const subRegexTwo = 'a-zA-Z0-9';
+export const EMAIL_REGEX_STR = `[${subRegexOne}]+(?:\\.[${subRegexOne}]+)*\\.{0,1}@[${subRegexTwo}](?:[${subRegexTwo}-]{0,61}[${subRegexTwo}])?(?:\\.[${subRegexTwo}](?:[${subRegexTwo}-]{0,61}[${subRegexTwo}])?)+`; // eslint-disable-line max-len
 
 /**
  * Matches a string containing valid email

@@ -119,6 +119,8 @@ const tests = {
             'a-b@example.at',
             'test@my.example.com',
             'test@my-super.example.com',
+            'a.b.c+123~@example.com',
+            'a.b.c.d@example.com',
         ],
         invalid: [
             ' test@example.com',
@@ -127,6 +129,8 @@ const tests = {
             'not an email',
             '@example.com',
             'test..test@example.com',
+            'test...test@exmaple.com',
+            'test.test.test..x@example.com',
         ],
     },
 
