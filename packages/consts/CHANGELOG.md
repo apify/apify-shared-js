@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.5.0...@apify/consts@1.5.1) (2022-01-11)
+
+
+### Bug Fixes
+
+* consecutive dots in email are not allowed ([#272](https://github.com/apify/apify-shared-js/issues/272)) ([25c4cbe](https://github.com/apify/apify-shared-js/commit/25c4cbe730ca9de7ac34f6fe368e63a58f4c0a67))
+
+
+
+
+
 # [1.5.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.4.2...@apify/consts@1.5.0) (2021-12-14)
 
 
