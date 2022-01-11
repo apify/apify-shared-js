@@ -3,15 +3,20 @@
  * with our restriction that hostname must be a TLD! (will not match example@localhost)
  * and two consecutive dots in name are not allowed (based on Mailgun convention, will not match ex..amle@example.com)
  */
-const subRegexOne = 'a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-';
-const subRegexTwo = 'a-zA-Z0-9';
-export const EMAIL_REGEX_STR = `[${subRegexOne}]+(?:\\.[${subRegexOne}]+)*\\.{0,1}@[${subRegexTwo}](?:[${subRegexTwo}-]{0,61}[${subRegexTwo}])?(?:\\.[${subRegexTwo}](?:[${subRegexTwo}-]{0,61}[${subRegexTwo}])?)+`; // eslint-disable-line max-len
 
-/**
- * Matches a string containing valid email
- * Hostname must be a TLD! (will not match example@localhost)
- */
-export const EMAIL_REGEX = new RegExp(`^${EMAIL_REGEX_STR}$`);
+// Parts for building an email regex (email will be constructed as `name@domain`)
+// name parts can be alnum + some special characters
+const namePartSubRegexStr = '[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+';
+// name is 1+ name parts joined by periods (no leading or dangling period, no consecutive periods)
+const nameSubRegexStr = `${namePartSubRegexStr}(?:\\.${namePartSubRegexStr})*`;
+// domain parts can be alnum and dash characters (no leading and dangling dashes, max 63 chars long)
+const domainPartSubRegexStr = '[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?'; //
+// doman is 2+ domain parts joined by periods (no leading or dangling period, no consecutive periods)
+const domainSubRegexStr = `${domainPartSubRegexStr}(?:\\.${domainPartSubRegexStr})+`;
+
+export const EMAIL_REGEX_STR = `^${nameSubRegexStr}@${domainSubRegexStr}$`;
+
+export const EMAIL_REGEX = new RegExp(EMAIL_REGEX_STR);
 
 /**
  * Comes from https://github.com/jonschlinkert/is-git-url/ but we have:

@@ -124,13 +124,16 @@ const tests = {
         ],
         invalid: [
             ' test@example.com',
+            'test@example.com ',
             'test@@example.com',
             'test@localhost',
             'not an email',
             '@example.com',
             'test..test@example.com',
-            'test...test@exmaple.com',
-            'test.test.test..x@example.com',
+            'test.@example.com',
+            '.test@example.com',
+            '...test@example.com',
+            'test@example_example.com',
         ],
     },
 
