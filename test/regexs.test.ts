@@ -133,6 +133,9 @@ const tests = {
             'test.@example.com',
             '.test@example.com',
             '...test@example.com',
+            'example@-test.com',
+            'example@.test.test.com',
+            // no underscore in domain name now but the standards are not 100% clear, might be reviewed
             'test@example_example.com',
         ],
     },
