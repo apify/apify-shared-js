@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.4...@apify/utilities@1.2.5) (2022-01-14)
+
+
+### Bug Fixes
+
+* improve types for `betterSetInterval` ([#274](https://github.com/apify/apify-shared-js/issues/274)) ([d641b80](https://github.com/apify/apify-shared-js/commit/d641b8066d9ed8ebe09e4732e72efc3305ee9448))
+
+
+
+
+
 ## [1.2.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.3...@apify/utilities@1.2.4) (2022-01-11)
 
 **Note:** Version bump only for package @apify/utilities
