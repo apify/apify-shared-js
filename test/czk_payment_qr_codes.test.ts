@@ -4,7 +4,7 @@ import {
 } from '@apify/payment_qr_codes';
 
 describe('CZK payment QR code generation', () => {
-    it('can encode payment data to QR cod estring', () => {
+    it('can encode payment data to QR code string', () => {
         expect(encodeInputDataToRawQrCodeInputString({
             iban: 'CZ6508000000192000145399', // testing IBAN from https://www.cnb.cz/cs/platebni-styk/iban/iban-mezinarodni-format-cisla-uctu/
             amount: 123.45,

@@ -34,9 +34,9 @@
         "access": "public"
     },
     "dependencies": {
-        "qrcode": "^1.4.4"
+        "qrcode": "1.4.4"
     },
     "devDependencies": {
-        "@types/qrcode": "^1.4.1"
+        "@types/qrcode": "^1.4.2"
     }
 }
