@@ -110,6 +110,8 @@ export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseL
     res.send('Internal server error');
 }
 
+export type BetterIntervalID = { _betterClearInterval: () => void };
+
 /**
  * Similar to setInterval() but with two important differences:
  * First, it assumes the function is asynchronous and only schedules its next invocation AFTER the asynchronous function finished.
@@ -119,7 +121,7 @@ export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseL
  * @param delay The number of milliseconds to wait to next invocation of the function.
  * @returns Object that can be passed to betterClearInterval()
  */
-export function betterSetInterval(func: (...a: unknown[]) => unknown, delay: number): { _betterClearInterval: () => void } {
+export function betterSetInterval(func: (a: (...args: unknown[]) => unknown) => void, delay: number): BetterIntervalID {
     let callback: (...a: unknown[]) => unknown;
     let timeoutId: number;
     let isRunning = true;
@@ -139,7 +141,7 @@ export function betterSetInterval(func: (...a: unknown[]) => unknown, delay: num
     };
 }
 
-export function betterClearInterval(intervalID: { _betterClearInterval: () => void }) {
+export function betterClearInterval(intervalID: BetterIntervalID) {
     // eslint-disable-next-line no-underscore-dangle
     if (intervalID && intervalID._betterClearInterval) {
         try {
