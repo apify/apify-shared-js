@@ -42,7 +42,7 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://gitlab.com/${repoFullName}`;
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual(`<img src="https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg" alt="link to image" />`);
+        expect(renderedLink).toEqual(`<img src="https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg" alt="link to image" loading="lazy" />`);
     });
 
     it('does not replace absolute URLs', () => {
@@ -72,7 +72,7 @@ describe('apifyMarked custom renderers work', () => {
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
         // eslint-disable-next-line max-len
-        expect(renderedLink).toEqual('<img src="https://gitlab.com/apify/actor-test-url/badges/master/pipeline.svg" alt="SSH link" />');
+        expect(renderedLink).toEqual('<img src="https://gitlab.com/apify/actor-test-url/badges/master/pipeline.svg" alt="SSH link" loading="lazy" />');
     });
 
     describe('repo name parser works', () => {
