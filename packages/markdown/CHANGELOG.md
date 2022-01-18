@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.26...@apify/markdown@1.1.0) (2022-01-18)
+
+
+### Features
+
+* add lazy loading to markdown images ([#276](https://github.com/apify/apify-shared-js/issues/276)) ([92a89bc](https://github.com/apify/apify-shared-js/commit/92a89bca93f94423a94f5826b1816914a2e1cff6))
+
+
+
+
+
 ## [1.0.26](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.25...@apify/markdown@1.0.26) (2022-01-14)
 
 **Note:** Version bump only for package @apify/markdown
