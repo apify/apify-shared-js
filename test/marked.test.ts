@@ -8,7 +8,7 @@ const MARKDOWN_UNDER_TEST = `
 
 ## Code block with tabs
 \`\`\`marked-tabs
-<marked-tab header="Node.js" lang="javascript">
+<marked-tab header="JavaScript" lang="javascript">
 console.log('Some JS code');
 </marked-tab>
 
