@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.8...@apify/log@1.1.9) (2022-01-21)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
 ## [1.1.8](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.7...@apify/log@1.1.8) (2022-01-11)
 
 **Note:** Version bump only for package @apify/log

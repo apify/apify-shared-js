@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.5.1...@apify/consts@1.6.0) (2022-01-21)
+
+
+### Features
+
+* **consts:** added deprecated base images still used by some actors ([#277](https://github.com/apify/apify-shared-js/issues/277)) ([e84e4b7](https://github.com/apify/apify-shared-js/commit/e84e4b7cc29a67f66d0bf1f6b1ecdf771c1d716a))
+
+
+
+
+
 ## [1.5.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.5.0...@apify/consts@1.5.1) (2022-01-11)
 
 
