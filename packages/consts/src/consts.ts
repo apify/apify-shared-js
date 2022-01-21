@@ -348,11 +348,6 @@ export const ME_USER_NAME_PLACEHOLDER = 'me';
 export const REQUEST_QUEUE_HEAD_MAX_LIMIT = 1000;
 
 /**
- * Throttling period for mongo increment updates
- */
-export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
-
-/**
  * Dictionary of APIFY_XXX environment variable names.
  */
 export const ENV_VARS = {
@@ -442,15 +437,6 @@ export const KEY_VALUE_STORE_KEYS = {
  * TODO: Remove this once it's no longer used anywhere.
  */
 export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
-
-/**
- * Types of customer request.
- */
-export const CUSTOMER_REQUEST_TYPES = {
-    EXTRACT_DATA: 'EXTRACT_DATA',
-    AUTOMATION: 'AUTOMATION',
-    OTHER: 'OTHER',
-} as const;
 
 /**
  * Represents the maximum size in bytes of a request body (decompressed)
@@ -574,9 +560,6 @@ export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
     'eventData',
     'resource',
 ]);
-
-// This client key is used in request queue to indentify requests from Apify app UI.
-export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
 
 // Max allowed size of files in multi-file editor
 export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
