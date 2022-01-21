@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.6.0...@apify/consts@1.7.0) (2022-01-21)
+
+
+### Features
+
+* **consts:** remove unused consts ([#279](https://github.com/apify/apify-shared-js/issues/279)) ([4663d0f](https://github.com/apify/apify-shared-js/commit/4663d0f05e6157dfb5571f2ceb451db70d834987))
+
+
+
+
+
 # [1.6.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.5.1...@apify/consts@1.6.0) (2022-01-21)
 
 
