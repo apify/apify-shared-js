@@ -8,7 +8,7 @@ const MARKDOWN_UNDER_TEST = `
 
 ## Code block with tabs
 \`\`\`marked-tabs
-<marked-tab header="Node.js" lang="javascript">
+<marked-tab header="JavaScript" lang="javascript">
 console.log('Some JS code');
 </marked-tab>
 
@@ -69,7 +69,7 @@ describe('apifyMarked custom renderer works', () => {
         expect(codeTabsObjectPerIndex).toEqual(
             {
                 '0': {
-                    'Node.js': { language: 'javascript', code: "console.log('Some JS code');" },
+                    'JavaScript': { language: 'javascript', code: "console.log('Some JS code');" },
                     Python: {
                         language: 'python',
                         code: "print('Some python code');\n" +
@@ -81,7 +81,7 @@ describe('apifyMarked custom renderer works', () => {
                     'Bash': { language: 'bash', code: 'echo "Some bash code"' }
                 },
                 '1': {
-                    'Node.js': { language: 'javascript', code: "console.log('Your standard javascript code block')" },
+                    'JavaScript': { language: 'javascript', code: "console.log('Your standard javascript code block')" },
                 },
                 '2': {
                     'Custom title': { language: 'javascript', code: "console.log('Some JS code 2');" },

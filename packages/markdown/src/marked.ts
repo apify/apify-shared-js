@@ -13,8 +13,8 @@ import { customHeadingRenderer } from './markdown_renderers';
  * In case tab title can't be resolved from language using this mapping, the language itself is used as a tab title.
  */
 const LANGUAGE_TO_TAB_TITLE = {
-    js: 'Node.JS',
-    javascript: 'Node.js',
+    js: 'JavaScript',
+    javascript: 'JavaScript',
     nodejs: 'Node.js',
     bash: 'Bash',
     curl: 'cURL',
