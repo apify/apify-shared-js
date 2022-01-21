@@ -180,6 +180,16 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
         displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian (Apify SDK v0.21.10)',
         copyChown: 'myuser:myuser',
     },
+    {
+        name: 'apify/actor-node-puppeteer',
+        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
+        copyChown: 'node:node',
+    },
+    {
+        name: 'apify/actor-node-puppeteer:beta',
+        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
+        copyChown: 'node:node',
+    },
 ];
 
 /**
