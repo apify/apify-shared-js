@@ -769,6 +769,24 @@ export class HubspotClient {
         }
     }
 
+    /**
+     * Updates existing deal with given data
+     *
+     * @param {String|number} hubspotDealId
+     * @param {Object} data
+     */
+    async updateDeal(hubspotDealId: string | number, data: any): Promise<void> {
+        try {
+            await this.client.crm.deals.basicApi.update(`${hubspotDealId}`, {
+                properties: data,
+            });
+        } catch (_error) {
+            const error = _error as HttpError;
+            if (error.statusCode && error.statusCode === 404) throw new Error('Hubspot record not found');
+            throw error;
+        }
+    }
+
     /*
     TODO: Not sure how this is used and if there is any equivalent. Closest I found is "conversation" or "ticket"
     which refers to request received from customer. If that is the case then it has "subject" and "content" fields
