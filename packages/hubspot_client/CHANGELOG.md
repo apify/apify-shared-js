@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.3.1...@apify/hubspot_client@1.4.0) (2022-02-03)
+
+
+### Features
+
+* **hubspot_client:** add updateDeal method ([#281](https://github.com/apify/apify-shared-js/issues/281)) ([df2e509](https://github.com/apify/apify-shared-js/commit/df2e50999b09cbda6c38561c448d7380bd82e87c))
+
+
+
+
+
 ## [1.3.1](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.3.0...@apify/hubspot_client@1.3.1) (2021-11-15)
 
 **Note:** Version bump only for package @apify/hubspot_client
