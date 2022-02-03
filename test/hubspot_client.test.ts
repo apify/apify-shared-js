@@ -1702,7 +1702,7 @@ describe('HubspotClient', () => {
         it('update deal works', async () => {
             const dealId = '7794475337';
             const modifier = {
-                amount: 250,
+                amount: '250',
             };
 
             const networkReply = {
@@ -1753,7 +1753,7 @@ describe('HubspotClient', () => {
         it('correctly handles not found error', async () => {
             const dealId = '111222';
             const modifier = {
-                amount: 250,
+                amount: '250',
             };
 
             const networkReply = {
