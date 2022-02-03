@@ -772,7 +772,7 @@ export class HubspotClient {
     /**
      * Updates existing deal with given data
      */
-    async updateDeal(hubspotDealId: string | number, data: any): Promise<void> {
+    async updateDeal(hubspotDealId: string | number, data: Record<string, unknown>): Promise<void> {
         try {
             await this.client.crm.deals.basicApi.update(`${hubspotDealId}`, {
                 properties: data,
