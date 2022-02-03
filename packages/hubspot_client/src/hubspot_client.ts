@@ -771,9 +771,6 @@ export class HubspotClient {
 
     /**
      * Updates existing deal with given data
-     *
-     * @param {String|number} hubspotDealId
-     * @param {Object} data
      */
     async updateDeal(hubspotDealId: string | number, data: any): Promise<void> {
         try {
