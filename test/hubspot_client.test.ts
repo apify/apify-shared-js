@@ -7,7 +7,8 @@ import { HubspotClient, cleanAndCompareWithSchema, MISSING_NAME_PLACEHOLDER } fr
 const HUBSPOT_URL = 'https://api.hubapi.com/crm/v3';
 
 const BASE_CONFIG = {
-    apiKey: '118d7732-273b-41c1-980b-9947f19b44e6',
+    // Use env variable in case of debugging tests so that you won't accidentally commit the API key!!!
+    apiKey: process.env.HUBSPOT_API_KEY || 'dummy-api-key',
     invoiceObjectId: 'p19562098_apify_invoice',
     invoiceToContactAssociation: 'platform_invoice_to_contact',
 };
@@ -1687,6 +1688,86 @@ describe('HubspotClient', () => {
             let err: Error = null!;
             try {
                 await hubspotClient.associateContactWithCompany(contactId, companyId);
+            } catch (error) {
+                err = error as Error;
+            }
+
+            expect(err).not.toBeNull();
+            expect(err.message).toEqual('Hubspot record not found');
+        });
+    });
+
+    describe('updateDeal()', () => {
+        const hubspotClient = new HubspotClient(BASE_CONFIG);
+        it('update deal works', async () => {
+            const dealId = '7794475337';
+            const modifier = {
+                amount: '250',
+            };
+
+            const networkReply = {
+                id: '7794475337',
+                properties: {
+                    amount: '250',
+                    amount_in_home_currency: '250',
+                    closedate: '2022-02-28T09:32:16.781Z',
+                    createdate: '2022-02-02T09:32:16.781Z',
+                    days_to_close: '26',
+                    dealstage: 'ef8031bf-96e6-4db8-a8ad-176582c59f71',
+                    hs_all_owner_ids: '119818406',
+                    hs_closed_amount: '0',
+                    hs_closed_amount_in_home_currency: '0',
+                    hs_created_by_user_id: '27227679',
+                    hs_deal_stage_probability: '0.1000000000000000055511151231257827021181583404541015625',
+                    hs_deal_stage_probability_shadow: '0.1000000000000000055511151231257827021181583404541015625',
+                    hs_forecast_amount: '250',
+                    hs_is_closed: 'false',
+                    hs_is_closed_won: 'false',
+                    hs_lastmodifieddate: '2022-02-02T10:16:07.597Z',
+                    hs_object_id: '7794475337',
+                    hs_projected_amount: '25.0000000000000013877787807814456755295395851135253906250',
+                    hs_projected_amount_in_home_currency: '25.0000000000000013877787807814456755295395851135253906250',
+                    hs_updated_by_user_id: '27227679',
+                    hs_user_ids_of_all_owners: '27227679',
+                    hubspot_owner_assigneddate: '2022-02-02T09:32:35.096Z',
+                    hubspot_owner_id: '119818406',
+                    pipeline: '05b8dec2-0ece-4d2c-b37e-13c609b5b3f5',
+                },
+                createdAt: '2022-02-02T09:32:16.781Z',
+                updatedAt: '2022-02-02T10:16:07.597Z',
+                archived: false,
+                archivedAt: undefined,
+            };
+
+            nock(HUBSPOT_URL).patch(`/objects/deals/${dealId}?hapikey=${BASE_CONFIG.apiKey}`, { properties: modifier })
+                .reply(200, networkReply);
+
+            let err: Error = null!;
+            try {
+                await hubspotClient.updateDeal(dealId, modifier);
+            } catch (error) {
+                err = error as Error;
+            }
+            expect(err).toBeNull();
+        });
+        it('correctly handles not found error', async () => {
+            const dealId = '111222';
+            const modifier = {
+                amount: '250',
+            };
+
+            const networkReply = {
+                status: 'error',
+                message: 'resource not found',
+                correlationId: '1a88e0d3-5126-49b6-8618-10af5b34f1ed',
+            };
+
+            const path = `/objects/deals/${dealId}?hapikey=${BASE_CONFIG.apiKey}`;
+            nock(HUBSPOT_URL).patch(path, { properties: modifier }).reply(404, networkReply);
+
+            let err: Error = null!;
+            try {
+                await hubspotClient.updateDeal(dealId, modifier);
             } catch (error) {
                 err = error as Error;
             }
