@@ -7,7 +7,8 @@ import { HubspotClient, cleanAndCompareWithSchema, MISSING_NAME_PLACEHOLDER } fr
 const HUBSPOT_URL = 'https://api.hubapi.com/crm/v3';
 
 const BASE_CONFIG = {
-    apiKey: '118d7732-273b-41c1-980b-9947f19b44e6',
+    // Use env variable in case of debugging tests so that you won't accidentally commit the API key!!!
+    apiKey: process.env.HUBSPOT_API_KEY || 'dummy-api-key',
     invoiceObjectId: 'p19562098_apify_invoice',
     invoiceToContactAssociation: 'platform_invoice_to_contact',
 };
