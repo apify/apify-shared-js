@@ -8,6 +8,9 @@
     "keywords": [
         "apify"
     ],
+    "engines": {
+        "npm": ">=7.0.0"
+    },
     "author": {
         "name": "Apify",
         "email": "support@apify.com",
