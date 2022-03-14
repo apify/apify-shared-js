@@ -2,9 +2,8 @@ import log from '@apify/log';
 import ow from 'ow';
 
 /**
- * Represents a pseudo-URL (PURL) - a URL pattern used by web crawlers
- * to specify which URLs should the crawler visit.
- * This class is used by the {@link utils.enqueueLinks} function.
+ * Represents a pseudo-URL (PURL) - a URL pattern used to find
+ * the matching URLs on a page or html document.
  *
  * A PURL is simply a URL with special directives enclosed in `[]` brackets.
  * Currently, the only supported directive is `[RegExp]`,
@@ -14,6 +13,9 @@ import ow from 'ow';
  * or a regular expression (an instance of the `RegExp` object).
  * With a pseudo-URL string, the matching is always case-insensitive.
  * If you need case-sensitive matching, use an appropriate `RegExp` object.
+ *
+ * Internally, `PseudoUrl` class is using `purlToRegExp` function which parses the provided PURL
+ * and converts it to an instance of the `RegExp` object (in case it's not).
  *
  * For example, a PURL `http://www.example.com/pages/[(\w|-)*]` will match all of the following URLs:
  *
@@ -39,10 +41,10 @@ import ow from 'ow';
  *
  * ```javascript
  * // Using a pseudo-URL string
- * const purl = new Apify.PseudoUrl('http://www.example.com/pages/[(\\w|-)+]');
+ * const purl = new PseudoUrl('http://www.example.com/pages/[(\\w|-)+]');
  *
  * // Using a regular expression
- * const purl2 = new Apify.PseudoUrl(/http:\/\/www\.example\.com\/pages\/(\w|-)+/);
+ * const purl2 = new PseudoUrl(/http:\/\/www\.example\.com\/pages\/(\w|-)+/);
  *
  * if (purl.matches('http://www.example.com/pages/my-awesome-page')) console.log('Match!');
  * ```
@@ -80,7 +82,6 @@ export class PseudoUrl {
  * Parses PURL into Regex string.
  */
 export function purlToRegExp(purl: string): RegExp {
-    log.deprecated('pseudoUrls usage is deprecated. Use globs istead.');
     const trimmedPurl = purl.trim();
     if (trimmedPurl.length === 0) throw new Error(`Cannot parse PURL '${trimmedPurl}': it must be an non-empty string`);
 
@@ -120,8 +121,4 @@ export function purlToRegExp(purl: string): RegExp {
     }
 
     return new RegExp(regex, 'i');
-}
-
-export interface PseudoUrlObject {
-    purl: string | RegExp;
 }

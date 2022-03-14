@@ -1,7 +1,7 @@
 {
     "name": "@apify/pseudo_url",
-    "version": "0.1.0",
-    "description": "Tool to specify which URLs should the crawler visit by providing a URL pattern.",
+    "version": "1.0.0",
+    "description": "Tool to find the matching URLs on a page (or html document) by providing a URL pattern.",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "keywords": [
