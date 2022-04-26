@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.10...@apify/log@1.2.0) (2022-04-26)
+
+
+### Features
+
+* allow `null` in additional log data ([#292](https://github.com/apify/apify-shared-js/issues/292)) ([f2f8350](https://github.com/apify/apify-shared-js/commit/f2f8350177ffc7593066c9415efa95a6db6da9b4))
+
+
+
+
+
 ## [1.1.10](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.9...@apify/log@1.1.10) (2022-01-21)
 
 **Note:** Version bump only for package @apify/log
