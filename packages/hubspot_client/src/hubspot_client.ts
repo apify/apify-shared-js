@@ -38,6 +38,7 @@ const ALLOWED_USER_FIELDS = {
     billing_email__c: _.isString,
 
     lifecyclestage: _.isString,
+    apify_kanban_link_: _.isString,
 };
 
 // Same as above, but for invoice
@@ -317,6 +318,12 @@ export class HubspotClient {
 
         if (user.admin && user.admin.yearlyRevenueUsd) {
             data.annualrevenue = user.admin.yearlyRevenueUsd;
+        }
+
+        // Sets link to latest MP project on MP kanban
+        if (user.kanbanUrl) {
+            // eslint-disable-next-line no-underscore-dangle
+            data.apify_kanban_link_ = user.kanbanUrl;
         }
 
         if (isNew) {
