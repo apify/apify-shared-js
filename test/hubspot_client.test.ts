@@ -693,6 +693,7 @@ describe('HubspotClient', () => {
                         engagementType: 'SALES_REP_MEDIUM_INVOLVEMENT',
                     },
                 ],
+                kanbanUrl: 'https://console-securitybyobscurity.apify.com/orders/iJuo3Rvyg5LTbsB6F',
             };
 
             const contactId = 801;
@@ -710,6 +711,7 @@ describe('HubspotClient', () => {
                     lifecyclestage: 'customer',
                     segment_paying_customer: 'true',
                     subscription_plan: 'CUSTOM',
+                    apify_kanban_link_: 'https://console-securitybyobscurity.apify.com/orders/iJuo3Rvyg5LTbsB6F',
                 },
                 createdAt: '2021-04-18T21:23:09.435Z',
                 updatedAt: '2021-04-19T08:32:14.894Z',
