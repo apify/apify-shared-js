@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.4.0...@apify/hubspot_client@1.5.0) (2022-04-28)
+
+
+### Features
+
+* **hubspot_client:** add support for kanban url to contact ([#293](https://github.com/apify/apify-shared-js/issues/293)) ([11f4fa8](https://github.com/apify/apify-shared-js/commit/11f4fa86bd9ada07ec69101c9cce286e359e63bd))
+
+
+
+
+
 # [1.4.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.3.1...@apify/hubspot_client@1.4.0) (2022-02-03)
 
 
