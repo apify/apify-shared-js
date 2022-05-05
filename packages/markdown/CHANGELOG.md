@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.4...@apify/markdown@1.2.0) (2022-05-05)
+
+
+### Features
+
+* remove lowercasing from markdown hrefs ([#295](https://github.com/apify/apify-shared-js/issues/295)) ([36ee364](https://github.com/apify/apify-shared-js/commit/36ee364d67049612841ca934cace927f5d40650b))
+
+
+
+
+
 ## [1.1.4](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.3...@apify/markdown@1.1.4) (2022-04-26)
 
 **Note:** Version bump only for package @apify/markdown
