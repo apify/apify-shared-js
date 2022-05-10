@@ -175,7 +175,6 @@ export interface Company {
 
 export interface SearchOptions {
     properties?: string[],
-    sorts?: string[],
 }
 
 export class HubspotClient {
@@ -225,7 +224,7 @@ export class HubspotClient {
             {
                 filters: [additionalEmailsFilter],
             }],
-            sorts: options?.sorts || [],
+            sorts: [],
             properties: options?.properties || [],
             limit: 1,
             after: 0,
@@ -255,7 +254,7 @@ export class HubspotClient {
             filterGroups: [{
                 filters: [filter],
             }],
-            sorts: options?.sorts || [],
+            sorts: [],
             properties: options?.properties || [],
             limit: 1,
             after: 0,
