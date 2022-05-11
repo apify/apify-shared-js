@@ -325,6 +325,53 @@ describe('HubspotClient', () => {
                 expect(error.message).toEqual('Arg "email" is required in HubspotClient.searchContactByEmail');
             }
         });
+
+        it('Fetches given properties', async () => {
+            const email = 'jan.novotny@apify.com';
+            const contactId = '1751';
+
+            const expectedPostData = {
+                filterGroups: [{
+                    filters: [{
+                        propertyName: 'email',
+                        operator: 'EQ',
+                        value: email,
+                    }],
+                }, {
+                    filters: [{
+                        propertyName: 'hs_additional_emails',
+                        operator: 'EQ',
+                        value: email,
+                    }],
+                }],
+                sorts: [],
+                properties: ['apify_kanban_link_'],
+                limit: 1,
+                after: 0,
+            };
+
+            const networkReply = {
+                total: 1,
+                results: [{
+                    id: contactId,
+                    properties: {
+                        createdate: '2021-04-01T12:30:57.056Z',
+                        hs_object_id: contactId,
+                        lastmodifieddate: '2021-04-14T13:16:49.951Z',
+                        apify_kanban_link_: 'https://console-securitybyobscurity.apify.com/admin/marketplace/kanban/26WuYqMMuatZT5QZP',
+                    },
+                    createdAt: '2021-04-01T12:30:57.056Z',
+                    updatedAt: '2021-04-14T13:16:49.951Z',
+                    archived: false,
+                }],
+            };
+
+            nock(HUBSPOT_URL, {}).post(`/objects/contacts/search?hapikey=${BASE_CONFIG.apiKey}`, expectedPostData).reply(200, networkReply);
+
+            const data = await hubspotClient.searchContactByEmail(email, { properties: ['apify_kanban_link_'] });
+            expect(data!.id).toEqual(contactId);
+            expect(data!.properties).toEqual(networkReply.results[0].properties);
+        });
     });
 
     describe('searchContactByApifyUserId()', () => {

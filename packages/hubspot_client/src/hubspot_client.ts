@@ -173,6 +173,10 @@ export interface Company {
     aboutUs?: string,
 }
 
+export interface SearchOptions {
+    properties?: string[],
+}
+
 export class HubspotClient {
     private readonly client: Client;
 
@@ -194,8 +198,9 @@ export class HubspotClient {
      * If contact is found this function returns it. If it's not found, this function returns null.
      *
      * @param email Primary email of the user
+     * @param options
      */
-    async searchContactByEmail(email: string): Promise<hubspot.contactsModels.SimplePublicObject | null> {
+    async searchContactByEmail(email: string, options?: SearchOptions): Promise<hubspot.contactsModels.SimplePublicObject | null> {
         if (!email) throw new Error('Arg "email" is required in HubspotClient.searchContactByEmail');
 
         const primaryEmailFilter = {
@@ -220,7 +225,7 @@ export class HubspotClient {
                 filters: [additionalEmailsFilter],
             }],
             sorts: [],
-            properties: [],
+            properties: options?.properties || [],
             limit: 1,
             after: 0,
         } as any;
@@ -234,9 +239,10 @@ export class HubspotClient {
      * If contact is found this function returns it. If it's not found, this function returns null.
      *
      * @param apifyUserId ID of the user document from mongodb
+     * @param options
      * @returns {SimpleHubspotContact|null}
      */
-    async searchContactByApifyUserId(apifyUserId: string): Promise<hubspot.contactsModels.SimplePublicObject | null> {
+    async searchContactByApifyUserId(apifyUserId: string, options?: SearchOptions): Promise<hubspot.contactsModels.SimplePublicObject | null> {
         if (!apifyUserId) throw new Error('Arg "apifyUserId" is required in HubspotClient.searchContactByApifyUserId');
 
         const filter = {
@@ -249,7 +255,7 @@ export class HubspotClient {
                 filters: [filter],
             }],
             sorts: [],
-            properties: [],
+            properties: options?.properties || [],
             limit: 1,
             after: 0,
         } as any;
