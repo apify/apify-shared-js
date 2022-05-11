@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.9](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.8...@apify/utilities@1.2.9) (2022-05-10)
+
+
+### Bug Fixes
+
+* add `platform` to `FORBIDDEN_USERNAMES_REGEXPS` ([#298](https://github.com/apify/apify-shared-js/issues/298)) ([6315962](https://github.com/apify/apify-shared-js/commit/6315962c1c56149b5371864589c9517bdf3004c8))
+
+
+
+
+
 ## [1.2.8](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.7...@apify/utilities@1.2.8) (2022-04-26)
 
 **Note:** Version bump only for package @apify/utilities
