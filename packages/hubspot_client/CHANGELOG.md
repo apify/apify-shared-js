@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.5.0...@apify/hubspot_client@1.6.0) (2022-05-11)
+
+
+### Features
+
+* **hubspot_client:** add options to search functions ([#297](https://github.com/apify/apify-shared-js/issues/297)) ([e1d6e21](https://github.com/apify/apify-shared-js/commit/e1d6e21c943008f79687b47861d598ec68422b30))
+
+
+
+
+
 # [1.5.0](https://github.com/apify/apify-shared-js/compare/@apify/hubspot_client@1.4.0...@apify/hubspot_client@1.5.0) (2022-04-28)
 
 
