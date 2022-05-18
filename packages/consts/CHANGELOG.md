@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.7.0...@apify/consts@1.8.0) (2022-05-18)
+
+
+### Features
+
+* **consts:** add env var consts for actor build ID and build number ([#301](https://github.com/apify/apify-shared-js/issues/301)) ([b6fcb02](https://github.com/apify/apify-shared-js/commit/b6fcb02b9c1ff4dcfc83e0752768182139bed1ac))
+
+
+
+
+
 # [1.7.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.6.0...@apify/consts@1.7.0) (2022-01-21)
 
 
