@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.8.0...@apify/consts@1.9.0) (2022-05-19)
+
+
+### Features
+
+* Adding build webhook types ([b630c46](https://github.com/apify/apify-shared-js/commit/b630c461e7cb8a89c401b304c4c8fa93b8c058b1))
+
+
+
+
+
 # [1.8.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.7.0...@apify/consts@1.8.0) (2022-05-18)
 
 
