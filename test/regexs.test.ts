@@ -140,6 +140,26 @@ const tests = {
         ],
     },
 
+    COMMA_SEPARATED_EMAILS_REGEX: {
+        valid: [
+            'test@example.com',
+            'test@example.com,foo@example.com',
+            'test@example.com, foo@example.com',
+            'test@example.com ,foo@example.com',
+            'test@example.com , foo@example.com,bar@example.com',
+            'test@example.com,a.b.c+123~@example.com,bar@example.com',
+        ],
+        invalid: [
+            'not-an-email,test@example.com',
+            'test@example.com, not-an-email',
+            ' test@example.com',
+            'test@example.com foo@example.com',
+            'test@example.comfoo@example.com',
+            ',test@example.com ,foo@example.com',
+            'test@example.com,foo@example.com,bar@example.com,',
+        ],
+    },
+
     // Test samples inspired by https://mathiasbynens.be/demo/url-regex
     HTTP_URL_REGEX: {
         valid: [
