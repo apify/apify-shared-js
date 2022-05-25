@@ -22,6 +22,12 @@ export const EMAIL_REGEX_STR = `${nameSubRegexStr}@${domainSubRegexStr}`;
 export const EMAIL_REGEX = new RegExp(`^${EMAIL_REGEX_STR}$`);
 
 /**
+ * Matches a string containing single email or multiple emails separated by comma
+ * Hostname must be a TLD! (will not match example@localhost)
+ */
+export const COMMA_SEPARATED_EMAILS_REGEX = new RegExp(`^(${EMAIL_REGEX_STR})( *, *${EMAIL_REGEX_STR})*$`, 'g');
+
+/**
  * Comes from https://github.com/jonschlinkert/is-git-url/ but we have:
  * - added support for ...:/dir/subdir syntax
  */
