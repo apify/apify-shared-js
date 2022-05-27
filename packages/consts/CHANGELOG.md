@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.9.0...@apify/consts@1.10.0) (2022-05-25)
+
+
+### Features
+
+* **consts:** adds regex for comma separated list of emails ([#302](https://github.com/apify/apify-shared-js/issues/302)) ([0f3a247](https://github.com/apify/apify-shared-js/commit/0f3a247c2ea6a22b65e07fec6ae02afb3eb4e10f))
+
+
+
+
+
 # [1.9.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.8.0...@apify/consts@1.9.0) (2022-05-19)
 
 
