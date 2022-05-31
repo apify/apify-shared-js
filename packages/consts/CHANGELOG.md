@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.10.0...@apify/consts@1.10.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **consts:** remove g flag from regex ([#305](https://github.com/apify/apify-shared-js/issues/305)) ([50f92ca](https://github.com/apify/apify-shared-js/commit/50f92ca82d7e78b43b7879641dcc2f708ac96626))
+
+
+
+
+
 # [1.10.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.9.0...@apify/consts@1.10.0) (2022-05-25)
 
 
