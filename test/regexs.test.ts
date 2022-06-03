@@ -1,5 +1,5 @@
 import * as REGEXS from '@apify/consts';
-import { SPLIT_PATH_REGEX } from '@apify/consts';
+import { COMMA_SEPARATED_EMAILS_REGEX, SPLIT_PATH_REGEX } from '@apify/consts';
 
 const tests = {
     GIT_REPO_REGEX: {
@@ -300,6 +300,11 @@ describe('regexps', () => {
                 expect(str).not.toMatch(REGEXS[key]);
             });
         });
+    });
+    // The 'g' flag causes RegExp object to keep track of last match occurrence in `lastIndex`.
+    // This test makes sure that it's not added in the future.
+    it('COMMA_SEPARATED_EMAILS_REGEX doesn\'t contain g flag', () => {
+        expect(COMMA_SEPARATED_EMAILS_REGEX.flags).toEqual('');
     });
 });
 
