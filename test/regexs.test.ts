@@ -295,7 +295,7 @@ describe('regexps', () => {
         it(`${key} works`, () => {
             defs.valid.forEach((str) => {
                 expect(str).toMatch(REGEXS[key]);
-                // The `test` or `exec` function sets `lastIndex` property of regexp with the `g` or `y` flag.
+                // The `test` or `exec` function sets `lastIndex` property of RegExp with the `g` or `y` flag.
                 // RegExp keeps the index of last match in this property.
                 // If lastIndex is greater than the length of the input, exec() or test() will not find a match.
                 // This could lead to confusing behaviour where e.g. test on email regexp result in false even with valid email.
