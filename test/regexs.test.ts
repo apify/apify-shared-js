@@ -1,5 +1,5 @@
 import * as REGEXS from '@apify/consts';
-import { COMMA_SEPARATED_EMAILS_REGEX, SPLIT_PATH_REGEX } from '@apify/consts';
+import { SPLIT_PATH_REGEX } from '@apify/consts';
 
 const tests = {
     GIT_REPO_REGEX: {
@@ -114,8 +114,8 @@ const tests = {
 
     EMAIL_REGEX: {
         valid: [
-            'test@example.com',
             'a.b+123~@example.com',
+            'test@example.com',
             'a-b@example.at',
             'test@my.example.com',
             'test@my-super.example.com',
@@ -142,11 +142,11 @@ const tests = {
 
     COMMA_SEPARATED_EMAILS_REGEX: {
         valid: [
+            'test@example.com , foo@example.com,bar@example.com',
             'test@example.com',
             'test@example.com,foo@example.com',
             'test@example.com, foo@example.com',
             'test@example.com ,foo@example.com',
-            'test@example.com , foo@example.com,bar@example.com',
             'test@example.com,a.b.c+123~@example.com,bar@example.com',
         ],
         invalid: [
@@ -295,16 +295,17 @@ describe('regexps', () => {
         it(`${key} works`, () => {
             defs.valid.forEach((str) => {
                 expect(str).toMatch(REGEXS[key]);
+                // The `test` or `exec` function sets `lastIndex` property of regexp with the `g` or `y` flag.
+                // RegExp keeps the index of last match in this property.
+                // If lastIndex is greater than the length of the input, exec() or test() will not find a match.
+                // This could lead to confusing behaviour where e.g. test on email regexp result in false even with valid email.
+                expect(REGEXS[key].test(str)).toEqual(true);
             });
             defs.invalid.forEach((str) => {
                 expect(str).not.toMatch(REGEXS[key]);
+                expect(REGEXS[key].test(str)).toEqual(false);
             });
         });
-    });
-    // The 'g' flag causes RegExp object to keep track of last match occurrence in `lastIndex`.
-    // This test makes sure that it's not added in the future.
-    it('COMMA_SEPARATED_EMAILS_REGEX doesn\'t contain g flag', () => {
-        expect(COMMA_SEPARATED_EMAILS_REGEX.flags).toEqual('');
     });
 });
 
