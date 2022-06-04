@@ -2,6 +2,9 @@
     "title": "JSON schema of Apify Actor INPUT_SCHEMA.json",
     "type": "object",
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "title": {
             "type": "string"
         },
