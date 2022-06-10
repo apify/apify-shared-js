@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@2.0.13...@apify/input_schema@2.1.0) (2022-06-10)
+
+
+### Features
+
+* Allow $schema prop in Input schema ([#310](https://github.com/apify/apify-shared-js/issues/310)) ([78385a6](https://github.com/apify/apify-shared-js/commit/78385a637e1e23e802a44b3dcc25e841131772ac))
+
+
+
+
+
 ## [2.0.13](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@2.0.12...@apify/input_schema@2.0.13) (2022-06-02)
 
 **Note:** Version bump only for package @apify/input_schema
