@@ -1,5 +1,7 @@
 import log from '@apify/log';
-import ow from 'ow';
+import { s } from '@sapphire/shapeshift';
+
+const inputPredicate = s.union(s.string, s.instance(RegExp));
 
 /**
  * Represents a pseudo-URL (PURL) - a URL pattern used to find
@@ -60,7 +62,7 @@ export class PseudoUrl {
      *   such as making the matching case-sensitive.
      */
     constructor(purl: string | RegExp) {
-        ow(purl, ow.any(ow.string, ow.regExp));
+        inputPredicate.parse(purl);
 
         if (purl instanceof RegExp) {
             this.regex = purl;

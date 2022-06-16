@@ -2,8 +2,16 @@
     "name": "@apify/timeout",
     "version": "0.2.1",
     "description": "Helper for adding timeouts to promises that support easy cancellation.",
-    "main": "dist/index.js",
-    "typings": "dist/index.d.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "typings": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "keywords": [
         "apify"
     ],
@@ -27,7 +35,7 @@
     "scripts": {
         "build": "npm run clean && npm run compile && npm run copy",
         "clean": "rimraf ./dist",
-        "compile": "tsc -p tsconfig.build.json",
+        "compile": "tsup && tsc -p tsconfig.build.json",
         "copy": "ts-node -T ../../scripts/copy.ts"
     },
     "publishConfig": {
