@@ -12,7 +12,7 @@ package | version | changelog
 `@apify/datastructures` | 1.0.1 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/git` | 1.0.2 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 1.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 2.0.13 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_schema` | 2.1.0 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/log` | 1.2.5 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 1.2.6 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.1.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
