@@ -40,6 +40,6 @@
     },
     "dependencies": {
         "@apify/log": "^1.2.5",
-        "@sapphire/shapeshift": "^3.2.0"
+        "@sapphire/shapeshift": "^3.3.0"
     }
 }
