@@ -4,15 +4,9 @@ import { defineConfig, type Options } from 'tsup';
 export const createTsupConfig = ({
     globalName = undefined,
     format = ['esm', 'cjs'],
-    target = 'es2021',
+    target = 'es2020',
     sourcemap = true,
-    esbuildOptions = (options, context) => {
-        if (context.format === 'cjs') {
-            options.banner = {
-                js: '"use strict";',
-            };
-        }
-    },
+    esbuildOptions = undefined,
 }: ConfigOptions = {}) => defineConfig({
     clean: true,
     dts: false,
