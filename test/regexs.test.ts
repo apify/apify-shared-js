@@ -114,8 +114,8 @@ const tests = {
 
     EMAIL_REGEX: {
         valid: [
-            'test@example.com',
             'a.b+123~@example.com',
+            'test@example.com',
             'a-b@example.at',
             'test@my.example.com',
             'test@my-super.example.com',
@@ -142,11 +142,11 @@ const tests = {
 
     COMMA_SEPARATED_EMAILS_REGEX: {
         valid: [
+            'test@example.com , foo@example.com,bar@example.com',
             'test@example.com',
             'test@example.com,foo@example.com',
             'test@example.com, foo@example.com',
             'test@example.com ,foo@example.com',
-            'test@example.com , foo@example.com,bar@example.com',
             'test@example.com,a.b.c+123~@example.com,bar@example.com',
         ],
         invalid: [
@@ -295,9 +295,15 @@ describe('regexps', () => {
         it(`${key} works`, () => {
             defs.valid.forEach((str) => {
                 expect(str).toMatch(REGEXS[key]);
+                // The `test` or `exec` function sets `lastIndex` property of RegExp with the `g` or `y` flag.
+                // RegExp keeps the index of last match in this property.
+                // If lastIndex is greater than the length of the input, exec() or test() will not find a match.
+                // This could lead to confusing behaviour where e.g. test on email regexp result in false even with valid email.
+                expect(REGEXS[key].test(str)).toEqual(true);
             });
             defs.invalid.forEach((str) => {
                 expect(str).not.toMatch(REGEXS[key]);
+                expect(REGEXS[key].test(str)).toEqual(false);
             });
         });
     });
