@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.6...@apify/markdown@1.3.0) (2022-06-20)
+
+
+### Features
+
+* **markdown:** add extra languages ([#313](https://github.com/apify/apify-shared-js/issues/313)) ([fc6bdc9](https://github.com/apify/apify-shared-js/commit/fc6bdc972ffc82be690134386136a5cf77655aef))
+
+
+
+
+
 ## [1.2.6](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.5...@apify/markdown@1.2.6) (2022-06-02)
 
 **Note:** Version bump only for package @apify/markdown
