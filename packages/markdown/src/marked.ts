@@ -1,6 +1,4 @@
 import { Renderer, lexer, parser } from 'marked';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore no typings for this dependency
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 
@@ -45,15 +43,15 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
     const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
-        matches.push(nextMatch);
+        matches.push(nextMatch as unknown as Match);
         nextMatch = matchesIterator.nextRaw();
     }
 
     const tabs: Record<string, { language: string, code: string }> = {};
 
     for (const match of matches) {
-        const { header, lang } = match.groups;
-        tabs[header] = { language: lang, code: match.groups.code.trim() };
+        const { header, lang, code } = match.groups!;
+        tabs[header] = { language: lang, code: code.trim() };
     }
 
     return tabs;
