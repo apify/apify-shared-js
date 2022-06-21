@@ -43,7 +43,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
     const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
-        matches.push(nextMatch);
+        matches.push(nextMatch as unknown as Match);
         nextMatch = matchesIterator.nextRaw();
     }
 
