@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.5...@apify/log@2.0.0) (2022-06-21)
+
+
+### Features
+
+* dual (native) ESM/CJS support all the packages ([#312](https://github.com/apify/apify-shared-js/issues/312)) ([daf882e](https://github.com/apify/apify-shared-js/commit/daf882ecdb3ff5b75975b92fc3528802a53bc736))
+
+
+### BREAKING CHANGES
+
+* All packages now have dual ESM/CJS build and require node 14+.
+
+
+
+
+
 ## [1.2.5](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.4...@apify/log@1.2.5) (2022-06-02)
 
 **Note:** Version bump only for package @apify/log

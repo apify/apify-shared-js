@@ -1,6 +1,6 @@
 {
     "name": "@apify/git",
-    "version": "1.0.2",
+    "version": "2.0.0",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
