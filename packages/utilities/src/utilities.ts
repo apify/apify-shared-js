@@ -219,6 +219,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace', 'presskit', 'press-kit', 'covid-19',
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
+    'freelancers', 'freelancer', 'partner',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
