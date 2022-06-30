@@ -263,4 +263,12 @@ export class Log {
         this.deprecationsReported[message] = true;
         this.warning(message);
     }
+
+    /**
+     * Logs a `WARNING` level message only once. This is an alias for log.deprecated(), which does exactly that,
+     * but ended up being used for other purposes
+     */
+    warningOnce(message: string) {
+        this.deprecated(message);
+    }
 }
