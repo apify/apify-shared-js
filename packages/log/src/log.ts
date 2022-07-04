@@ -265,7 +265,7 @@ export class Log {
     }
 
     /**
-     * Alias for log.warningOnce() kept for backwards compatibility
+     * Logs given message only once as WARNING. It's used to warn user that some feature he is using has been deprecated.
      */
     deprecated(message: string) {
         this.warningOnce(message);
