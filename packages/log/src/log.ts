@@ -108,7 +108,7 @@ export class Log {
 
     private options: Required<LoggerOptions>;
 
-    private readonly deprecationsReported: Record<string, boolean> = {};
+    private readonly warningsOnceLogged: Set<string> = new Set();
 
     constructor(options: Partial<LoggerOptions> = {}) {
         this.options = { ...getDefaultOptions(), ...options };
@@ -255,12 +255,19 @@ export class Log {
     }
 
     /**
+     * Logs a `WARNING` level message only once.
+     */
+    warningOnce(message: string) {
+        if (this.warningsOnceLogged.has(message)) return;
+
+        this.warningsOnceLogged.add(message);
+        this.warning(message);
+    }
+
+    /**
      * Logs given message only once as WARNING. It's used to warn user that some feature he is using has been deprecated.
      */
     deprecated(message: string) {
-        if (this.deprecationsReported[message]) return;
-
-        this.deprecationsReported[message] = true;
-        this.warning(message);
+        this.warningOnce(message);
     }
 }
