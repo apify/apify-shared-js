@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.0.0...@apify/log@2.1.0) (2022-07-04)
+
+
+### Features
+
+* **log:** provide a `warningOnce` alias for `log.deprecated` ([#316](https://github.com/apify/apify-shared-js/issues/316)) ([f270021](https://github.com/apify/apify-shared-js/commit/f2700217701953cae5bdfe54b120b6e5a8228bf1))
+
+
+
+
+
 # [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.5...@apify/log@2.0.0) (2022-06-21)
 
 
