@@ -38,6 +38,15 @@ export const ACT_JOB_STATUSES = {
 } as const;
 
 /**
+ * Dictionary of possible values for 'status' field of webhookDispatches collections.
+ */
+export const WEBHOOK_DISPATCH_STATUSES = {
+    ACTIVE: 'ACTIVE', // Attempting to deliver the webhook
+    SUCCEEDED: 'SUCCEEDED', // Webhook was delivered
+    FAILED: 'FAILED', // All calls to webhook target URL failed
+} as const;
+
+/**
  * An array of act jobs statuses that are final for the jobs.
  */
 export const ACT_JOB_TERMINAL_STATUSES = [
