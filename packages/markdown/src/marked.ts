@@ -1,6 +1,6 @@
-import { Renderer, lexer, parser } from 'marked';
-import matchAll from 'match-all';
-import { customHeadingRenderer } from './markdown_renderers';
+import { Renderer, lexer, parser } from "marked";
+import matchAll from "match-all";
+import { customHeadingRenderer } from "./markdown_renderers";
 
 /**
  * Map from the language of a fenced code block to the title of corresponding tab.
@@ -11,35 +11,44 @@ import { customHeadingRenderer } from './markdown_renderers';
  * In case tab title can't be resolved from language using this mapping, the language itself is used as a tab title.
  */
 const LANGUAGE_TO_TAB_TITLE = {
-    js: 'JavaScript',
-    javascript: 'JavaScript',
-    ts: 'TypeScript',
-    typescript: 'TypeScript',
-    rs: 'Rust',
-    rust: 'Rust',
-    go: 'Go',
-    golang: 'Go',
-    nodejs: 'Node.js',
-    bash: 'Bash',
-    curl: 'cURL',
-    dockerfile: 'Dockerfile',
-    php: 'PHP',
-    json: 'JSON',
-    xml: 'XML',
-    python: 'Python',
-    python2: 'Python 2',
-    python3: 'Python 3',
-    yml: 'YAML',
-    yaml: 'YAML',
+    js: "JavaScript",
+    javascript: "JavaScript",
+    ts: "TypeScript",
+    typescript: "TypeScript",
+    rs: "Rust",
+    rust: "Rust",
+    go: "Go",
+    golang: "Go",
+    nodejs: "Node.js",
+    bash: "Bash",
+    curl: "cURL",
+    dockerfile: "Dockerfile",
+    php: "PHP",
+    json: "JSON",
+    xml: "XML",
+    python: "Python",
+    python2: "Python 2",
+    python3: "Python 3",
+    yml: "YAML",
+    yaml: "YAML",
+    gql: "GraphQL",
+    graphql: "GraphQL",
 };
 
-const APIFY_CODE_TABS = 'apify-code-tabs';
+const APIFY_CODE_TABS = "apify-code-tabs";
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
-interface Match { groups: { header: string, lang: string, code: string } }
+interface Match {
+    groups: { header: string; lang: string; code: string };
+}
 
-const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string, code: string }> => {
-    const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
+const codeTabObjectFromCodeTabMarkdown = (
+    markdown: string
+): Record<string, { language: string; code: string }> => {
+    const matchesIterator = matchAll(
+        markdown,
+        /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs
+    );
     const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
@@ -47,7 +56,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
         nextMatch = matchesIterator.nextRaw();
     }
 
-    const tabs: Record<string, { language: string, code: string }> = {};
+    const tabs: Record<string, { language: string; code: string }> = {};
 
     for (const match of matches) {
         const { header, lang, code } = match.groups!;
@@ -59,7 +68,10 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
 
 interface MarkedResponse {
     html: string;
-    codeTabsObjectPerIndex: Record<number, Record<string, { language: string, code: string }>>;
+    codeTabsObjectPerIndex: Record<
+        number,
+        Record<string, { language: string; code: string }>
+    >;
 }
 
 /**
@@ -148,11 +160,13 @@ export const apifyMarked = (markdown: string): MarkedResponse => {
     let markedTabTokenIndex = 0;
     const codeTabsObjectPerIndex = {};
     tokens.forEach((token) => {
-        if (token.type === 'code' && token.lang) {
-            if (token.lang === 'marked-tabs') {
-                codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
+        if (token.type === "code" && token.lang) {
+            if (token.lang === "marked-tabs") {
+                codeTabsObjectPerIndex[markedTabTokenIndex] =
+                    codeTabObjectFromCodeTabMarkdown(token.text);
             } else {
-                const tabTitle = LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
+                const tabTitle =
+                    LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
                 codeTabsObjectPerIndex[markedTabTokenIndex] = {
                     [tabTitle]: {
                         language: token.lang,
