@@ -330,6 +330,12 @@ export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of webhooks per user
     MAX_WEBHOOKS_PER_USER: 100,
 
+    // Maximum number of concurrent actor runs per user for free accounts.
+    FREE_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 25,
+
+    // Maximum number of concurrent actor runs per user for paid accounts.
+    PAID_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 250,
+
     // Maximum number of actors per scheduler
     MAX_ACTORS_PER_SCHEDULER: 10,
 
