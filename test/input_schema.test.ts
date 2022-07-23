@@ -140,7 +140,8 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values)',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: '
+                + '"javascript", "python", "textfield", "textarea", "hidden")',
             );
         });
 
