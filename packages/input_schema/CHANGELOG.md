@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.0.1...@apify/input_schema@3.1.0) (2022-07-25)
+
+
+### Features
+
+* **input_schema:** better error message for wrong enum value ([#320](https://github.com/apify/apify-shared-js/issues/320)) ([b4ce146](https://github.com/apify/apify-shared-js/commit/b4ce146b076789488245e33ca7f0c66922825bf4))
+
+
+
+
+
 ## [3.0.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.0.0...@apify/input_schema@3.0.1) (2022-07-19)
 
 **Note:** Version bump only for package @apify/input_schema
