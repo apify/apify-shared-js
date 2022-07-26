@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.1.0...@apify/consts@2.2.0) (2022-07-26)
+
+
+### Features
+
+* add WEBHOOK_DISPATCH_STATUSES const ([#317](https://github.com/apify/apify-shared-js/issues/317)) ([0416c73](https://github.com/apify/apify-shared-js/commit/0416c73c95809a1b9c5b41e030a74fb981c51802))
+
+
+
+
+
 # [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.0.0...@apify/consts@2.1.0) (2022-07-19)
 
 
