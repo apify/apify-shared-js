@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.0.0...@apify/consts@2.1.0) (2022-07-19)
+
+
+### Features
+
+* **consts:** add a new platform limit for max concurrent actor runs ([#318](https://github.com/apify/apify-shared-js/issues/318)) ([630de0b](https://github.com/apify/apify-shared-js/commit/630de0b2169a48cac1f5b4a83a0d055d6a3a2b5d))
+
+
+
+
+
 # [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.11.0...@apify/consts@2.0.0) (2022-06-21)
 
 
