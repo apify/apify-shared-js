@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.2.0...@apify/consts@2.3.0) (2022-07-27)
+
+
+### Features
+
+* Increasing BUILD_DEFAULT_MEMORY_MBYTES to 2 GB ([#321](https://github.com/apify/apify-shared-js/issues/321)) ([e9bdf1f](https://github.com/apify/apify-shared-js/commit/e9bdf1fb81fa282b9bd616c6aabc546b592bf810))
+
+
+
+
+
 # [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.1.0...@apify/consts@2.2.0) (2022-07-26)
 
 
