@@ -295,7 +295,7 @@ export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
  */
 export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
-    BUILD_DEFAULT_MEMORY_MBYTES: 1024,
+    BUILD_DEFAULT_MEMORY_MBYTES: 2048,
 
     // Maximum duration of build in seconds.
     BUILD_TIMEOUT_SECS: 600,
