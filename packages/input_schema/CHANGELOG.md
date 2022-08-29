@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.1.2...@apify/input_schema@3.1.3) (2022-08-29)
+
+
+### Bug Fixes
+
+* enforce unique items in "enum" input schema properties ([#329](https://github.com/apify/apify-shared-js/issues/329)) ([e2ff9a4](https://github.com/apify/apify-shared-js/commit/e2ff9a4fda6170c1c4f74c1c68928513bee444bb)), closes [#133](https://github.com/apify/apify-shared-js/issues/133)
+
+
+
+
+
 ## [3.1.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.1.1...@apify/input_schema@3.1.2) (2022-07-27)
 
 **Note:** Version bump only for package @apify/input_schema
