@@ -1,9 +1,10 @@
 import crypto from 'crypto';
 import { cryptoRandomObjectId } from './utilities';
 
-const ENCRYPTION_ALGORITHM = 'aes-256-ctr';
+const ENCRYPTION_ALGORITHM = 'aes-256-gcm';
 const ENCRYPTION_KEY_LENGTH = 32;
 const ENCRYPTION_IV_LENGTH = 16;
+const ENCRYPTION_AUTH_TAG_LENGTH = 16;
 
 /**
  * It encrypts the given value using AES cipher and the password for encryption using the public key.
@@ -24,7 +25,8 @@ export function publicEncrypt(publicKey: Buffer, value: string) {
     const bufferFromInitVector = Buffer.from(initVector, 'utf-8');
     const passwordBuffer = Buffer.concat([bufferFromKey, bufferFromInitVector]);
 
-    const encryptedValue = Buffer.concat([cipher.update(bufferFromValue), cipher.final()]);
+    // NOTE: Auth Tag is appended to the end of the encrypted data, it has length of 16 bytes and ensures integrity of the data.
+    const encryptedValue = Buffer.concat([cipher.update(bufferFromValue), cipher.final(), cipher.getAuthTag()]);
     const encryptedPassword = crypto.publicEncrypt(publicKey, passwordBuffer);
 
     return {
@@ -53,9 +55,14 @@ export function privateDecrypt(privateKey: Buffer, passphrase: string, encrypted
         throw new Error('privateDecrypt: Decryption failed, invalid password length!');
     }
 
+    // Slice Auth tag from the final value cipher
+    const authTagBuffer = encryptedValueBuffer.slice(encryptedValueBuffer.length - ENCRYPTION_AUTH_TAG_LENGTH);
+    const encryptedDataBuffer = encryptedValueBuffer.slice(0, encryptedValueBuffer.length - ENCRYPTION_AUTH_TAG_LENGTH);
+
     const encryptedKeyBuffer = passwordBuffer.slice(0, ENCRYPTION_KEY_LENGTH);
     const initVectorBuffer = passwordBuffer.slice(ENCRYPTION_KEY_LENGTH);
     const decipher = crypto.createDecipheriv(ENCRYPTION_ALGORITHM, encryptedKeyBuffer, initVectorBuffer);
+    decipher.setAuthTag(authTagBuffer);
 
-    return Buffer.concat([decipher.update(encryptedValueBuffer), decipher.final()]).toString('utf-8');
+    return Buffer.concat([decipher.update(encryptedDataBuffer), decipher.final()]).toString('utf-8');
 }

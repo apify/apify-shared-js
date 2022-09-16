@@ -34,6 +34,13 @@ describe('publicEncrypt() and privateDecrypt()', () => {
         expect(() => utils.privateDecrypt(privateKey, passphrase, `bla${encryptedPassword}`, encryptedValue)).toThrow();
     });
 
+    it('throws if encrypted value is not valid', () => {
+        const randomString = utils.cryptoRandomObjectId(10);
+        const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, randomString);
+        expect(() => utils.privateDecrypt(privateKey, passphrase, encryptedPassword, encryptedValue.slice(2))).toThrow();
+        expect(() => utils.privateDecrypt(privateKey, passphrase, encryptedPassword, `bla${encryptedValue}`)).toThrow();
+    });
+
     it('should return different cipher for the same string', () => {
         const randomString = utils.cryptoRandomObjectId(100);
         const uniqueCiphers = new Set();
