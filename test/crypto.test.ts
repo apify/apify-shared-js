@@ -82,12 +82,12 @@ describe('publicEncrypt() and privateDecrypt()', () => {
         const uniqueCiphers = new Set();
         const uniqueCiphers16Bytes = new Set();
         for (let i = 0; i < 100; i++) {
-            const { encryptedPassword, encryptedValue } = utils.publicEncrypt({
+            const { encryptedValue } = utils.publicEncrypt({
                 publicKey,
                 value: randomString,
             });
             const theFirst16Bytes = Buffer.from(encryptedValue, 'base64').toString('utf-8').slice(0, 16);
-            expect(uniqueCiphers.has(encryptedPassword)).toBe(false);
+            expect(uniqueCiphers.has(encryptedValue)).toBe(false);
             expect(uniqueCiphers16Bytes.has(theFirst16Bytes)).toBe(false);
             uniqueCiphers.add(encryptedValue);
             uniqueCiphers16Bytes.add(theFirst16Bytes);
