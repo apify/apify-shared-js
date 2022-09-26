@@ -10,8 +10,16 @@ describe('publicEncrypt() and privateDecrypt()', () => {
     it('should decrypt encrypted random strings', () => {
         for (let i = 0; i < 100; i++) {
             const randomString = utils.cryptoRandomObjectId(10);
-            const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, randomString);
-            const decryptedValue = utils.privateDecrypt(privateKey, passphrase, encryptedPassword, encryptedValue);
+            const { encryptedPassword, encryptedValue } = utils.publicEncrypt({
+                publicKey,
+                value: randomString,
+            });
+            const decryptedValue = utils.privateDecrypt({
+                privateKey,
+                passphrase,
+                encryptedPassword,
+                encryptedValue,
+            });
             expect(randomString).toEqual(decryptedValue);
         }
     });
@@ -21,24 +29,52 @@ describe('publicEncrypt() and privateDecrypt()', () => {
         // eslint-disable-next-line max-len
         for (const char of ['👍', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', ']', '{', '}', '|', ';', ':', '"', "'", ',', '.', '<', '>', '?', '/', '~', '`']) {
             const stringWithSpecialChar = `${char}${randomString}${char}${randomString}${char}`;
-            const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, stringWithSpecialChar);
-            const decryptedValue = utils.privateDecrypt(privateKey, passphrase, encryptedPassword, encryptedValue);
+            const { encryptedPassword, encryptedValue } = utils.publicEncrypt({
+                publicKey,
+                value: stringWithSpecialChar,
+            });
+            const decryptedValue = utils.privateDecrypt({
+                privateKey,
+                passphrase,
+                encryptedPassword,
+                encryptedValue,
+            });
             expect(stringWithSpecialChar).toEqual(decryptedValue);
         }
     });
 
     it('throws if encrypted password is not valid', () => {
         const randomString = utils.cryptoRandomObjectId(10);
-        const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, randomString);
-        expect(() => utils.privateDecrypt(privateKey, passphrase, encryptedPassword.slice(2), encryptedValue)).toThrow();
-        expect(() => utils.privateDecrypt(privateKey, passphrase, `bla${encryptedPassword}`, encryptedValue)).toThrow();
+        const { encryptedPassword, encryptedValue } = utils.publicEncrypt({ publicKey, value: randomString });
+        expect(() => utils.privateDecrypt({
+            privateKey,
+            passphrase,
+            encryptedPassword: encryptedPassword.slice(2),
+            encryptedValue,
+        })).toThrow();
+        expect(() => utils.privateDecrypt({
+            privateKey,
+            passphrase,
+            encryptedPassword: `bla${encryptedPassword}`,
+            encryptedValue,
+        })).toThrow();
     });
 
     it('throws if encrypted value is not valid', () => {
         const randomString = utils.cryptoRandomObjectId(10);
-        const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, randomString);
-        expect(() => utils.privateDecrypt(privateKey, passphrase, encryptedPassword, encryptedValue.slice(2))).toThrow();
-        expect(() => utils.privateDecrypt(privateKey, passphrase, encryptedPassword, `bla${encryptedValue}`)).toThrow();
+        const { encryptedPassword, encryptedValue } = utils.publicEncrypt({ publicKey, value: randomString });
+        expect(() => utils.privateDecrypt({
+            privateKey,
+            passphrase,
+            encryptedPassword,
+            encryptedValue: encryptedValue.slice(2),
+        })).toThrow();
+        expect(() => utils.privateDecrypt({
+            privateKey,
+            passphrase,
+            encryptedPassword,
+            encryptedValue: `bla${encryptedValue}`,
+        })).toThrow();
     });
 
     it('should return different cipher for the same string', () => {
@@ -46,7 +82,10 @@ describe('publicEncrypt() and privateDecrypt()', () => {
         const uniqueCiphers = new Set();
         const uniqueCiphers16Bytes = new Set();
         for (let i = 0; i < 100; i++) {
-            const { encryptedPassword, encryptedValue } = utils.publicEncrypt(publicKey, randomString);
+            const { encryptedPassword, encryptedValue } = utils.publicEncrypt({
+                publicKey,
+                value: randomString,
+            });
             const theFirst16Bytes = Buffer.from(encryptedValue, 'base64').toString('utf-8').slice(0, 16);
             expect(uniqueCiphers.has(encryptedPassword)).toBe(false);
             expect(uniqueCiphers16Bytes.has(theFirst16Bytes)).toBe(false);

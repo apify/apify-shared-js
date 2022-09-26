@@ -6,6 +6,18 @@ const ENCRYPTION_KEY_LENGTH = 32;
 const ENCRYPTION_IV_LENGTH = 16;
 const ENCRYPTION_AUTH_TAG_LENGTH = 16;
 
+type DecryptOptions = {
+    privateKey: Buffer;
+    passphrase: string;
+    encryptedPassword: string;
+    encryptedValue: string;
+}
+
+type EncryptOptions = {
+    publicKey: Buffer;
+    value: string;
+}
+
 /**
  * It encrypts the given value using AES cipher and the password for encryption using the public key.
  * NOTE: The encryption password is a string of encryption key and initial vector used for cipher.
@@ -15,7 +27,7 @@ const ENCRYPTION_AUTH_TAG_LENGTH = 16;
  * @param value {string} Value to be encrypted
  * @returns {Object<encryptedPassword, encryptedValue>}
  */
-export function publicEncrypt(publicKey: Buffer, value: string) {
+export function publicEncrypt({ publicKey, value }: EncryptOptions) {
     const key = cryptoRandomObjectId(ENCRYPTION_KEY_LENGTH);
     const initVector = cryptoRandomObjectId(ENCRYPTION_IV_LENGTH);
     const cipher = crypto.createCipheriv(ENCRYPTION_ALGORITHM, key, initVector);
@@ -46,7 +58,12 @@ export function publicEncrypt(publicKey: Buffer, value: string) {
  * @param encryptedValue {string} Content in Base64 encrypted using AES cipher
  * @returns {string}
  */
-export function privateDecrypt(privateKey: Buffer, passphrase: string, encryptedPassword: string, encryptedValue: string): string {
+export function privateDecrypt({
+    privateKey,
+    passphrase,
+    encryptedPassword,
+    encryptedValue,
+}: DecryptOptions): string {
     const encryptedValueBuffer = Buffer.from(encryptedValue, 'base64');
     const encryptedPasswordBuffer = Buffer.from(encryptedPassword, 'base64');
 
@@ -59,9 +76,9 @@ export function privateDecrypt(privateKey: Buffer, passphrase: string, encrypted
     const authTagBuffer = encryptedValueBuffer.slice(encryptedValueBuffer.length - ENCRYPTION_AUTH_TAG_LENGTH);
     const encryptedDataBuffer = encryptedValueBuffer.slice(0, encryptedValueBuffer.length - ENCRYPTION_AUTH_TAG_LENGTH);
 
-    const encryptedKeyBuffer = passwordBuffer.slice(0, ENCRYPTION_KEY_LENGTH);
+    const encryptionKeyBuffer = passwordBuffer.slice(0, ENCRYPTION_KEY_LENGTH);
     const initVectorBuffer = passwordBuffer.slice(ENCRYPTION_KEY_LENGTH);
-    const decipher = crypto.createDecipheriv(ENCRYPTION_ALGORITHM, encryptedKeyBuffer, initVectorBuffer);
+    const decipher = crypto.createDecipheriv(ENCRYPTION_ALGORITHM, encryptionKeyBuffer, initVectorBuffer);
     decipher.setAuthTag(authTagBuffer);
 
     return Buffer.concat([decipher.update(encryptedDataBuffer), decipher.final()]).toString('utf-8');
