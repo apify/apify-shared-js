@@ -92,6 +92,7 @@
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
                 "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
+                "isSecret": { "type": "boolean" },
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" }
             },
