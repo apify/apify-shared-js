@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.5...@apify/utilities@2.2.0) (2022-09-27)
+
+
+### Features
+
+* **utilities:** add publicEncrypt() and privateDecrypt() method ([#334](https://github.com/apify/apify-shared-js/issues/334)) ([dead00c](https://github.com/apify/apify-shared-js/commit/dead00cf2a912f4a0c7742f4d2e080ab15466d33))
+
+
+
+
+
 ## [2.1.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.4...@apify/utilities@2.1.5) (2022-09-05)
 
 **Note:** Version bump only for package @apify/utilities
