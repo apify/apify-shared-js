@@ -114,18 +114,68 @@ const tests = {
 
     EMAIL_REGEX: {
         valid: [
-            'test@example.com',
             'a.b+123~@example.com',
+            'test@example.com',
             'a-b@example.at',
             'test@my.example.com',
             'test@my-super.example.com',
+            'a.b.c+123~@example.com',
+            'a.b.c.d@example.com',
         ],
         invalid: [
             ' test@example.com',
+            'test@example.com ',
             'test@@example.com',
             'test@localhost',
             'not an email',
             '@example.com',
+            'test..test@example.com',
+            'test.@example.com',
+            '.test@example.com',
+            '...test@example.com',
+            'example@-test.com',
+            'example@.test.test.com',
+            // no underscore in domain name now but the standards are not 100% clear, might be reviewed
+            'test@example_example.com',
+        ],
+    },
+
+    COMMA_SEPARATED_EMAILS_REGEX: {
+        valid: [
+            'test@example.com , foo@example.com,bar@example.com',
+            'test@example.com',
+            'test@example.com,foo@example.com',
+            'test@example.com, foo@example.com',
+            'test@example.com ,foo@example.com',
+            'test@example.com,a.b.c+123~@example.com,bar@example.com',
+        ],
+        invalid: [
+            '',
+            'not an email',
+            'not, an, email',
+            'not-an-email@',
+            'not-an-email@,',
+            'test@example.com ,@example.com',
+            'test@example.com,,foo@example.com',
+            'test@example.com,foo@example.com.',
+            'test@example.com,... foo@example.com',
+            'test@example.com, foo@example,com',
+            'test@example.com\n,foo@example.com',
+            'test@example.com,foo@example.com\n',
+            '\ntest@example.com,foo@example.com',
+            'test@example.com\t,foo@example.com',
+            'test@example.com ,foo@example.com ',
+            'not-an-email,test@example.com',
+            'test@example.com, not-an-email',
+            ' test@example.com',
+            'test@example.com foo@example.com',
+            'test@example.comfoo@example.com',
+            ',test@example.com ,foo@example.com',
+            'test@example.com,foo.@example.com',
+            'test@example.com,foo@example.com,bar@example.com,',
+            'test@example.com,foo@example.com,bar@example.com,fff@.com',
+            'test@example.com,a.b.c+123~@example.com,bar@@example.com',
+            'test@example.com,a.b.c+123~@example_foo.com,bar@@example.com',
         ],
     },
 
@@ -245,9 +295,15 @@ describe('regexps', () => {
         it(`${key} works`, () => {
             defs.valid.forEach((str) => {
                 expect(str).toMatch(REGEXS[key]);
+                // The `test` or `exec` function sets `lastIndex` property of RegExp with the `g` or `y` flag.
+                // RegExp keeps the index of last match in this property.
+                // If lastIndex is greater than the length of the input, exec() or test() will not find a match.
+                // This could lead to confusing behaviour where e.g. test on email regexp result in false even with valid email.
+                expect(REGEXS[key].test(str)).toEqual(true);
             });
             defs.invalid.forEach((str) => {
                 expect(str).not.toMatch(REGEXS[key]);
+                expect(REGEXS[key].test(str)).toEqual(false);
             });
         });
     });

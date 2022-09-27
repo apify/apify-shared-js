@@ -1,9 +1,17 @@
 {
     "name": "@apify/log",
-    "version": "1.1.6",
+    "version": "2.1.4",
     "description": "Tools and constants shared across Apify projects.",
-    "main": "dist/index.js",
-    "typings": "dist/index.d.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "typings": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
     "keywords": [
         "apify"
     ],
@@ -28,14 +36,14 @@
     "scripts": {
         "build": "npm run clean && npm run compile && npm run copy",
         "clean": "rimraf ./dist",
-        "compile": "tsc -p tsconfig.build.json",
+        "compile": "tsup && tsc -p tsconfig.build.json",
         "copy": "ts-node -T ../../scripts/copy.ts"
     },
     "publishConfig": {
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^1.4.2",
+        "@apify/consts": "^2.3.0",
         "ansi-colors": "^4.1.1"
     }
 }

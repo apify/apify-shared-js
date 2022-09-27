@@ -43,6 +43,10 @@ export function parseAjvError(
     } else if (error.keyword === 'additionalProperties') {
         fieldKey = error.params.additionalProperty;
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
+    } else if (error.keyword === 'enum') {
+        fieldKey = error.instancePath.split('/').pop()!;
+        const errorMessage = `${error.message}: "${error.params.allowedValues.join('", "')}"`;
+        message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
     } else {
         fieldKey = error.instancePath.split('/').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });

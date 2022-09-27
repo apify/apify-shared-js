@@ -2,6 +2,9 @@
     "title": "JSON schema of Apify Actor INPUT_SCHEMA.json",
     "type": "object",
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "title": {
             "type": "string"
         },
@@ -63,7 +66,8 @@
 
                 "enum": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": { "type": "string" },
+                    "uniqueItems": true
                 },
                 "enumTitles": {
                     "type": "array",

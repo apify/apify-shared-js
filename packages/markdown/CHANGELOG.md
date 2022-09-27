@@ -3,6 +3,210 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.6](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.5...@apify/markdown@2.0.6) (2022-09-05)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [2.0.5](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.4...@apify/markdown@2.0.5) (2022-07-27)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [2.0.4](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.3...@apify/markdown@2.0.4) (2022-07-26)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [2.0.3](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.2...@apify/markdown@2.0.3) (2022-07-19)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [2.0.2](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.1...@apify/markdown@2.0.2) (2022-07-04)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [2.0.1](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.0.0...@apify/markdown@2.0.1) (2022-06-27)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.3.0...@apify/markdown@2.0.0) (2022-06-21)
+
+
+### Features
+
+* dual (native) ESM/CJS support all the packages ([#312](https://github.com/apify/apify-shared-js/issues/312)) ([daf882e](https://github.com/apify/apify-shared-js/commit/daf882ecdb3ff5b75975b92fc3528802a53bc736))
+
+
+### BREAKING CHANGES
+
+* All packages now have dual ESM/CJS build and require node 14+.
+
+
+
+
+
+# [1.3.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.6...@apify/markdown@1.3.0) (2022-06-20)
+
+
+### Features
+
+* **markdown:** add extra languages ([#313](https://github.com/apify/apify-shared-js/issues/313)) ([fc6bdc9](https://github.com/apify/apify-shared-js/commit/fc6bdc972ffc82be690134386136a5cf77655aef))
+
+
+
+
+
+## [1.2.6](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.5...@apify/markdown@1.2.6) (2022-06-02)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.2.5](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.4...@apify/markdown@1.2.5) (2022-05-31)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.2.4](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.3...@apify/markdown@1.2.4) (2022-05-25)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.2.3](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.2...@apify/markdown@1.2.3) (2022-05-19)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.2.2](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.1...@apify/markdown@1.2.2) (2022-05-18)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.2.1](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.2.0...@apify/markdown@1.2.1) (2022-05-10)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.4...@apify/markdown@1.2.0) (2022-05-05)
+
+
+### Features
+
+* remove lowercasing from markdown hrefs ([#295](https://github.com/apify/apify-shared-js/issues/295)) ([36ee364](https://github.com/apify/apify-shared-js/commit/36ee364d67049612841ca934cace927f5d40650b))
+
+
+
+
+
+## [1.1.4](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.3...@apify/markdown@1.1.4) (2022-04-26)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.1.3](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.2...@apify/markdown@1.1.3) (2022-01-21)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.1.2](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.1...@apify/markdown@1.1.2) (2022-01-21)
+
+
+### Bug Fixes
+
+* **web:** md to tab title for Javascript ([#278](https://github.com/apify/apify-shared-js/issues/278)) ([cdfe15f](https://github.com/apify/apify-shared-js/commit/cdfe15fccd98c180ab57034ab94f4420a4d72105))
+
+
+
+
+
+## [1.1.1](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.1.0...@apify/markdown@1.1.1) (2022-01-21)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.26...@apify/markdown@1.1.0) (2022-01-18)
+
+
+### Features
+
+* add lazy loading to markdown images ([#276](https://github.com/apify/apify-shared-js/issues/276)) ([92a89bc](https://github.com/apify/apify-shared-js/commit/92a89bca93f94423a94f5826b1816914a2e1cff6))
+
+
+
+
+
+## [1.0.26](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.25...@apify/markdown@1.0.26) (2022-01-14)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.0.25](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.24...@apify/markdown@1.0.25) (2022-01-11)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [1.0.24](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.23...@apify/markdown@1.0.24) (2021-12-14)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
 ## [1.0.23](https://github.com/apify/apify-shared-js/compare/@apify/markdown@1.0.22...@apify/markdown@1.0.23) (2021-11-15)
 
 **Note:** Version bump only for package @apify/markdown

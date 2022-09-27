@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/salesforce_client@1.0.7...@apify/salesforce_client@2.0.0) (2022-06-21)
+
+
+### Features
+
+* dual (native) ESM/CJS support all the packages ([#312](https://github.com/apify/apify-shared-js/issues/312)) ([daf882e](https://github.com/apify/apify-shared-js/commit/daf882ecdb3ff5b75975b92fc3528802a53bc736))
+
+
+### BREAKING CHANGES
+
+* All packages now have dual ESM/CJS build and require node 14+.
+
+
+
+
+
+## [1.0.7](https://github.com/apify/apify-shared-js/compare/@apify/salesforce_client@1.0.6...@apify/salesforce_client@1.0.7) (2022-04-25)
+
+**Note:** Version bump only for package @apify/salesforce_client
+
+
+
+
+
+## [1.0.6](https://github.com/apify/apify-shared-js/compare/@apify/salesforce_client@1.0.5...@apify/salesforce_client@1.0.6) (2022-03-08)
+
+**Note:** Version bump only for package @apify/salesforce_client
+
+
+
+
+
 ## [1.0.5](https://github.com/apify/apify-shared-js/compare/@apify/salesforce_client@1.0.4...@apify/salesforce_client@1.0.5) (2021-10-25)
 
 **Note:** Version bump only for package @apify/salesforce_client

@@ -1,6 +1,4 @@
 import { Renderer, lexer, parser } from 'marked';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore no typings for this dependency
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 
@@ -13,8 +11,14 @@ import { customHeadingRenderer } from './markdown_renderers';
  * In case tab title can't be resolved from language using this mapping, the language itself is used as a tab title.
  */
 const LANGUAGE_TO_TAB_TITLE = {
-    js: 'Node.JS',
-    javascript: 'Node.js',
+    js: 'JavaScript',
+    javascript: 'JavaScript',
+    ts: 'TypeScript',
+    typescript: 'TypeScript',
+    rs: 'Rust',
+    rust: 'Rust',
+    go: 'Go',
+    golang: 'Go',
     nodejs: 'Node.js',
     bash: 'Bash',
     curl: 'cURL',
@@ -32,20 +36,22 @@ const LANGUAGE_TO_TAB_TITLE = {
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
+interface Match { groups: { header: string, lang: string, code: string } }
+
 const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string, code: string }> => {
     const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
-    const matches = [];
+    const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
-        matches.push(nextMatch);
+        matches.push(nextMatch as unknown as Match);
         nextMatch = matchesIterator.nextRaw();
     }
 
     const tabs: Record<string, { language: string, code: string }> = {};
 
     for (const match of matches) {
-        const { header, lang } = match.groups;
-        tabs[header] = { language: lang, code: match.groups.code.trim() };
+        const { header, lang, code } = match.groups!;
+        tabs[header] = { language: lang, code: code.trim() };
     }
 
     return tabs;

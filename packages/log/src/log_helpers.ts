@@ -63,10 +63,10 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
     }
 
     if (typeof record === 'object' && record !== null) {
-        const mapObject = <U> (obj: U) => {
+        const mapObject = <U extends Record<PropertyKey, any>> (obj: U) => {
             const res = {} as U;
-            Object.keys(obj).forEach((key) => {
-                res[key] = nextCall(obj[key]);
+            Object.keys(obj).forEach((key: keyof U) => {
+                res[key as keyof U] = nextCall(obj[key]) as U[keyof U];
             });
             return res;
         };

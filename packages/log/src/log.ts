@@ -36,6 +36,8 @@ const getDefaultOptions = () => ({
     data: {},
 });
 
+type AdditionalData = Record<string, any> | null;
+
 /**
  * The log instance enables level aware logging of messages and we advise
  * to use it instead of `console.log()` and its aliases in most development
@@ -106,7 +108,7 @@ export class Log {
 
     private options: Required<LoggerOptions>;
 
-    private readonly deprecationsReported: Record<string, boolean> = {};
+    private readonly warningsOnceLogged: Set<string> = new Set();
 
     constructor(options: Partial<LoggerOptions> = {}) {
         this.options = { ...getDefaultOptions(), ...options };
@@ -207,7 +209,7 @@ export class Log {
      * Logs an `ERROR` message. Use this method to log error messages that are not directly connected
      * to an exception. For logging exceptions, use the `log.exception` method.
      */
-    error(message: string, data?: Record<string, any>) {
+    error(message: string, data?: AdditionalData) {
         this.internal(LogLevel.ERROR, message, data);
     }
 
@@ -215,18 +217,18 @@ export class Log {
      * Logs an `ERROR` level message with a nicely formatted exception. Note that the exception is the first parameter
      * here and an additional message is only optional.
      */
-    exception(exception: Error, message: string, data?: Record<string, any>) {
+    exception(exception: Error, message: string, data?: AdditionalData) {
         this.internal(LogLevel.ERROR, message, data, exception);
     }
 
-    softFail(message: string, data?: Record<string, any>) {
+    softFail(message: string, data?: AdditionalData) {
         this.internal(LogLevel.SOFT_FAIL, message, data);
     }
 
     /**
      * Logs a `WARNING` level message. Data are stringified and appended to the message.
      */
-    warning(message: string, data?: Record<string, any>) {
+    warning(message: string, data?: AdditionalData) {
         this.internal(LogLevel.WARNING, message, data);
     }
 
@@ -234,7 +236,7 @@ export class Log {
      * Logs an `INFO` message. `INFO` is the default log level so info messages will be always logged,
      * unless the log level is changed. Data are stringified and appended to the message.
      */
-    info(message: string, data?: Record<string, any>) {
+    info(message: string, data?: AdditionalData) {
         this.internal(LogLevel.INFO, message, data);
     }
 
@@ -244,21 +246,28 @@ export class Log {
      * method or using the environment variable `APIFY_LOG_LEVEL=DEBUG`. Data are stringified and appended
      * to the message.
      */
-    debug(message: string, data?: Record<string, any>) {
+    debug(message: string, data?: AdditionalData) {
         this.internal(LogLevel.DEBUG, message, data);
     }
 
-    perf(message: string, data?: Record<string, any>) {
+    perf(message: string, data?: AdditionalData) {
         this.internal(LogLevel.PERF, message, data);
+    }
+
+    /**
+     * Logs a `WARNING` level message only once.
+     */
+    warningOnce(message: string) {
+        if (this.warningsOnceLogged.has(message)) return;
+
+        this.warningsOnceLogged.add(message);
+        this.warning(message);
     }
 
     /**
      * Logs given message only once as WARNING. It's used to warn user that some feature he is using has been deprecated.
      */
     deprecated(message: string) {
-        if (this.deprecationsReported[message]) return;
-
-        this.deprecationsReported[message] = true;
-        this.warning(message);
+        this.warningOnce(message);
     }
 }

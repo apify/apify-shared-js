@@ -38,6 +38,15 @@ export const ACT_JOB_STATUSES = {
 } as const;
 
 /**
+ * Dictionary of possible values for 'status' field of webhookDispatches collections.
+ */
+export const WEBHOOK_DISPATCH_STATUSES = {
+    ACTIVE: 'ACTIVE', // Attempting to deliver the webhook
+    SUCCEEDED: 'SUCCEEDED', // Webhook was delivered
+    FAILED: 'FAILED', // All calls to webhook target URL failed
+} as const;
+
+/**
  * An array of act jobs statuses that are final for the jobs.
  */
 export const ACT_JOB_TERMINAL_STATUSES = [
@@ -180,6 +189,16 @@ export const ACTOR_BASE_DOCKER_IMAGES = [
         displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian (Apify SDK v0.21.10)',
         copyChown: 'myuser:myuser',
     },
+    {
+        name: 'apify/actor-node-puppeteer',
+        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
+        copyChown: 'node:node',
+    },
+    {
+        name: 'apify/actor-node-puppeteer:beta',
+        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
+        copyChown: 'node:node',
+    },
 ];
 
 /**
@@ -276,7 +295,7 @@ export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
  */
 export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
-    BUILD_DEFAULT_MEMORY_MBYTES: 1024,
+    BUILD_DEFAULT_MEMORY_MBYTES: 2048,
 
     // Maximum duration of build in seconds.
     BUILD_TIMEOUT_SECS: 600,
@@ -320,6 +339,12 @@ export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of webhooks per user
     MAX_WEBHOOKS_PER_USER: 100,
 
+    // Maximum number of concurrent actor runs per user for free accounts.
+    FREE_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 25,
+
+    // Maximum number of concurrent actor runs per user for paid accounts.
+    PAID_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 250,
+
     // Maximum number of actors per scheduler
     MAX_ACTORS_PER_SCHEDULER: 10,
 
@@ -338,11 +363,6 @@ export const ME_USER_NAME_PLACEHOLDER = 'me';
 export const REQUEST_QUEUE_HEAD_MAX_LIMIT = 1000;
 
 /**
- * Throttling period for mongo increment updates
- */
-export const MONGO_INC_THROTTLED_INTERVAL_MILLIS = 5000;
-
-/**
  * Dictionary of APIFY_XXX environment variable names.
  */
 export const ENV_VARS = {
@@ -350,6 +370,8 @@ export const ENV_VARS = {
     ACTOR_ID: 'APIFY_ACTOR_ID',
     ACTOR_RUN_ID: 'APIFY_ACTOR_RUN_ID',
     ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
+    ACTOR_BUILD_ID: 'APIFY_ACTOR_BUILD_ID',
+    ACTOR_BUILD_NUMBER: 'APIFY_ACTOR_BUILD_NUMBER',
     INPUT_KEY: 'APIFY_INPUT_KEY',
     USER_ID: 'APIFY_USER_ID',
     TOKEN: 'APIFY_TOKEN',
@@ -434,15 +456,6 @@ export const KEY_VALUE_STORE_KEYS = {
 export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
 
 /**
- * Types of customer request.
- */
-export const CUSTOMER_REQUEST_TYPES = {
-    EXTRACT_DATA: 'EXTRACT_DATA',
-    AUTOMATION: 'AUTOMATION',
-    OTHER: 'OTHER',
-} as const;
-
-/**
  * Represents the maximum size in bytes of a request body (decompressed)
  * that will be accepted by the App and API servers.
  */
@@ -466,6 +479,9 @@ export const ACTOR_CATEGORIES = {
     SOCIAL_MEDIA: 'Social media',
     TRAVEL: 'Travel',
     VIDEOS: 'Videos',
+    REAL_ESTATE: 'Real estate',
+    SPORTS: 'Sports',
+    EDUCATION: 'Education',
     OTHER: 'Other',
 } as const;
 
@@ -526,6 +542,13 @@ export const WEBHOOK_EVENT_TYPES = {
     ACTOR_RUN_TIMED_OUT: 'ACTOR.RUN.TIMED_OUT',
     ACTOR_RUN_ABORTED: 'ACTOR.RUN.ABORTED',
     ACTOR_RUN_RESURRECTED: 'ACTOR.RUN.RESURRECTED',
+
+    ACTOR_BUILD_CREATED: 'ACTOR.BUILD.CREATED',
+    ACTOR_BUILD_SUCCEEDED: 'ACTOR.BUILD.SUCCEEDED',
+    ACTOR_BUILD_FAILED: 'ACTOR.BUILD.FAILED',
+    ACTOR_BUILD_TIMED_OUT: 'ACTOR.BUILD.TIMED_OUT',
+    ACTOR_BUILD_ABORTED: 'ACTOR.BUILD.ABORTED',
+
     TEST: 'TEST',
 } as const;
 
@@ -538,12 +561,25 @@ export const WEBHOOK_EVENT_TYPE_GROUPS = {
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_RESURRECTED,
     ],
+    ACTOR_BUILD: [
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_CREATED,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_SUCCEEDED,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_FAILED,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_TIMED_OUT,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_ABORTED,
+    ],
     // If one of these occurs then we can be sure that none other can occur for the same triggerer.
     ACTOR_RUN_TERMINAL: [
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_SUCCEEDED,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_FAILED,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_TIMED_OUT,
         WEBHOOK_EVENT_TYPES.ACTOR_RUN_ABORTED,
+    ],
+    ACTOR_BUILD_TERMINAL: [
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_SUCCEEDED,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_FAILED,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_TIMED_OUT,
+        WEBHOOK_EVENT_TYPES.ACTOR_BUILD_ABORTED,
     ],
 } as const;
 
@@ -561,9 +597,6 @@ export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
     'eventData',
     'resource',
 ]);
-
-// This client key is used in request queue to indentify requests from Apify app UI.
-export const APIFY_UI_CLIENT_KEY = 'apify-app-ui';
 
 // Max allowed size of files in multi-file editor
 export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB

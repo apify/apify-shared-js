@@ -3,6 +3,175 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.4...@apify/utilities@2.1.5) (2022-09-05)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.3...@apify/utilities@2.1.4) (2022-07-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.2...@apify/utilities@2.1.3) (2022-07-26)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.1...@apify/utilities@2.1.2) (2022-07-19)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.0...@apify/utilities@2.1.1) (2022-07-04)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.0.0...@apify/utilities@2.1.0) (2022-06-27)
+
+
+### Features
+
+* update `FORBIDDEN_USERNAMES_REGEXPS` ([#314](https://github.com/apify/apify-shared-js/issues/314)) ([e5d1041](https://github.com/apify/apify-shared-js/commit/e5d1041a8a9790886af184666eaaa5f051c77c3f))
+
+
+
+
+
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.14...@apify/utilities@2.0.0) (2022-06-21)
+
+
+### Features
+
+* dual (native) ESM/CJS support all the packages ([#312](https://github.com/apify/apify-shared-js/issues/312)) ([daf882e](https://github.com/apify/apify-shared-js/commit/daf882ecdb3ff5b75975b92fc3528802a53bc736))
+
+
+### BREAKING CHANGES
+
+* All packages now have dual ESM/CJS build and require node 14+.
+
+
+
+
+
+## [1.2.14](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.13...@apify/utilities@1.2.14) (2022-06-02)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.13](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.12...@apify/utilities@1.2.13) (2022-05-31)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.12](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.11...@apify/utilities@1.2.12) (2022-05-25)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.11](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.10...@apify/utilities@1.2.11) (2022-05-19)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.10](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.9...@apify/utilities@1.2.10) (2022-05-18)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.9](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.8...@apify/utilities@1.2.9) (2022-05-10)
+
+
+### Bug Fixes
+
+* add `platform` to `FORBIDDEN_USERNAMES_REGEXPS` ([#298](https://github.com/apify/apify-shared-js/issues/298)) ([6315962](https://github.com/apify/apify-shared-js/commit/6315962c1c56149b5371864589c9517bdf3004c8))
+
+
+
+
+
+## [1.2.8](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.7...@apify/utilities@1.2.8) (2022-04-26)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.7](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.6...@apify/utilities@1.2.7) (2022-01-21)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.5...@apify/utilities@1.2.6) (2022-01-21)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.4...@apify/utilities@1.2.5) (2022-01-14)
+
+
+### Bug Fixes
+
+* improve types for `betterSetInterval` ([#274](https://github.com/apify/apify-shared-js/issues/274)) ([d641b80](https://github.com/apify/apify-shared-js/commit/d641b8066d9ed8ebe09e4732e72efc3305ee9448))
+
+
+
+
+
+## [1.2.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.3...@apify/utilities@1.2.4) (2022-01-11)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [1.2.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.2...@apify/utilities@1.2.3) (2021-12-14)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
 ## [1.2.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@1.2.1...@apify/utilities@1.2.2) (2021-11-15)
 
 **Note:** Version bump only for package @apify/utilities

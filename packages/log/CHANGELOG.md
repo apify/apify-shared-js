@@ -3,6 +3,148 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.4](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.3...@apify/log@2.1.4) (2022-09-05)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.3](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.2...@apify/log@2.1.3) (2022-07-27)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.2](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.1...@apify/log@2.1.2) (2022-07-26)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.1](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.0...@apify/log@2.1.1) (2022-07-19)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.0.0...@apify/log@2.1.0) (2022-07-04)
+
+
+### Features
+
+* **log:** provide a `warningOnce` alias for `log.deprecated` ([#316](https://github.com/apify/apify-shared-js/issues/316)) ([f270021](https://github.com/apify/apify-shared-js/commit/f2700217701953cae5bdfe54b120b6e5a8228bf1))
+
+
+
+
+
+# [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.5...@apify/log@2.0.0) (2022-06-21)
+
+
+### Features
+
+* dual (native) ESM/CJS support all the packages ([#312](https://github.com/apify/apify-shared-js/issues/312)) ([daf882e](https://github.com/apify/apify-shared-js/commit/daf882ecdb3ff5b75975b92fc3528802a53bc736))
+
+
+### BREAKING CHANGES
+
+* All packages now have dual ESM/CJS build and require node 14+.
+
+
+
+
+
+## [1.2.5](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.4...@apify/log@1.2.5) (2022-06-02)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.2.4](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.3...@apify/log@1.2.4) (2022-05-31)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.2.3](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.2...@apify/log@1.2.3) (2022-05-25)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.2.2](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.1...@apify/log@1.2.2) (2022-05-19)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.2.1](https://github.com/apify/apify-shared-js/compare/@apify/log@1.2.0...@apify/log@1.2.1) (2022-05-18)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.10...@apify/log@1.2.0) (2022-04-26)
+
+
+### Features
+
+* allow `null` in additional log data ([#292](https://github.com/apify/apify-shared-js/issues/292)) ([f2f8350](https://github.com/apify/apify-shared-js/commit/f2f8350177ffc7593066c9415efa95a6db6da9b4))
+
+
+
+
+
+## [1.1.10](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.9...@apify/log@1.1.10) (2022-01-21)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.1.9](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.8...@apify/log@1.1.9) (2022-01-21)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.1.8](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.7...@apify/log@1.1.8) (2022-01-11)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [1.1.7](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.6...@apify/log@1.1.7) (2021-12-14)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
 ## [1.1.6](https://github.com/apify/apify-shared-js/compare/@apify/log@1.1.5...@apify/log@1.1.6) (2021-11-15)
 
 **Note:** Version bump only for package @apify/log

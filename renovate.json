@@ -23,5 +23,6 @@
             "automergeType": "branch"
         }
     ],
-    "schedule": ["every weekday"]
+    "schedule": ["every weekday"],
+    "ignoreDeps": ["qrcode"]
 }
