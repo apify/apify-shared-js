@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto, { KeyObject } from 'crypto';
 import { cryptoRandomObjectId } from './utilities';
 
 const ENCRYPTION_ALGORITHM = 'aes-256-gcm';
@@ -7,14 +7,13 @@ const ENCRYPTION_IV_LENGTH = 16;
 const ENCRYPTION_AUTH_TAG_LENGTH = 16;
 
 type DecryptOptions = {
-    privateKey: Buffer;
-    passphrase: string;
+    privateKey: KeyObject;
     encryptedPassword: string;
     encryptedValue: string;
 }
 
 type EncryptOptions = {
-    publicKey: Buffer;
+    publicKey: KeyObject;
     value: string;
 }
 
@@ -23,7 +22,7 @@ type EncryptOptions = {
  * NOTE: The encryption password is a string of encryption key and initial vector used for cipher.
  * It returns the encrypted password and encrypted value in BASE64 format.
  *
- * @param publicKey {Buffer} Public key used for encryption
+ * @param publicKey {KeyObject} Public key used for encryption
  * @param value {string} Value to be encrypted
  * @returns {Object<encryptedPassword, encryptedValue>}
  */
@@ -53,21 +52,19 @@ export function publicEncrypt({ publicKey, value }: EncryptOptions) {
  * to decrypt the encrypted value.
  *
  * @param privateKey {Buffer} Private key used for decryption
- * @param passphrase {string} Passphrase from private key
  * @param encryptedPassword {string} Password in Base64 encrypted using private key
  * @param encryptedValue {string} Content in Base64 encrypted using AES cipher
  * @returns {string}
  */
 export function privateDecrypt({
     privateKey,
-    passphrase,
     encryptedPassword,
     encryptedValue,
 }: DecryptOptions): string {
     const encryptedValueBuffer = Buffer.from(encryptedValue, 'base64');
     const encryptedPasswordBuffer = Buffer.from(encryptedPassword, 'base64');
 
-    const passwordBuffer = crypto.privateDecrypt({ key: privateKey, passphrase }, encryptedPasswordBuffer);
+    const passwordBuffer = crypto.privateDecrypt(privateKey, encryptedPasswordBuffer);
     if (passwordBuffer.length !== ENCRYPTION_KEY_LENGTH + ENCRYPTION_IV_LENGTH) {
         throw new Error('privateDecrypt: Decryption failed, invalid password length!');
     }
