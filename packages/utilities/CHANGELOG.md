@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.0...@apify/utilities@2.2.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **utilities:** use native node js class for public/private key pairs ([#337](https://github.com/apify/apify-shared-js/issues/337)) ([d675f52](https://github.com/apify/apify-shared-js/commit/d675f521e4d212af28a1d2c32658bd915c8e4ec5))
+
+
+
+
+
 # [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.5...@apify/utilities@2.2.0) (2022-09-27)
 
 

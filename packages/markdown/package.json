@@ -1,6 +1,6 @@
 {
     "name": "@apify/markdown",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -44,7 +44,7 @@
     },
     "dependencies": {
         "@apify/consts": "^2.3.0",
-        "@apify/utilities": "^2.2.0",
+        "@apify/utilities": "^2.2.1",
         "marked": "^3.0.2",
         "match-all": "^1.2.6"
     }
