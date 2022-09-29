@@ -51,7 +51,7 @@ export function publicEncrypt({ publicKey, value }: EncryptOptions) {
  * and uses the password(consists of encrypted key and initial vector)
  * to decrypt the encrypted value.
  *
- * @param privateKey {Buffer} Private key used for decryption
+ * @param privateKey {KeyObject} Private key used for decryption
  * @param encryptedPassword {string} Password in Base64 encrypted using private key
  * @param encryptedValue {string} Content in Base64 encrypted using AES cipher
  * @returns {string}
