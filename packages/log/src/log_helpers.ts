@@ -1,5 +1,5 @@
 import { ENV_VARS } from '@apify/consts';
-import { LogLevel } from './log_consts';
+import { LogLevel, LogFormat } from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -31,6 +31,25 @@ export function getLevelFromEnv(): number {
     if (LogLevel[envVar]) return LogLevel[envVar];
 
     return +envVar;
+}
+
+/**
+ * Gets log format from env variable. Currently, values 'JSON' and 'TEXT' are supported.
+ * Defaults to 'TEXT' if no value is specified.
+ */
+export function getFormatFromEnv(): LogFormat {
+    const envVar = process.env[ENV_VARS.LOG_FORMAT] || LogFormat.TEXT;
+
+    switch (envVar.toLowerCase()) {
+        case LogFormat.JSON.toLowerCase():
+            return LogFormat.JSON;
+        case LogFormat.TEXT.toLowerCase():
+            return LogFormat.TEXT;
+        default:
+            // eslint-disable-next-line no-console
+            console.warn(`Unknown value for environment variable ${ENV_VARS.LOG_FORMAT}: ${envVar}`);
+            return LogFormat.TEXT;
+    }
 }
 
 /**

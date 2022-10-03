@@ -13,6 +13,11 @@ export enum LogLevel {
     PERF = 6,
 }
 
+export enum LogFormat {
+    JSON = 'JSON',
+    TEXT = 'TEXT',
+}
+
 export const PREFIX_DELIMITER = ':';
 export const LEVELS = LogLevel;
 
