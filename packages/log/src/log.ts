@@ -1,7 +1,8 @@
 import { LoggerText } from './logger_text';
 import { Logger } from './logger';
-import { LogLevel, PREFIX_DELIMITER } from './log_consts';
-import { getLevelFromEnv, limitDepth } from './log_helpers';
+import { LogFormat, LogLevel, PREFIX_DELIMITER } from './log_consts';
+import { getFormatFromEnv, getLevelFromEnv, limitDepth } from './log_helpers';
+import { LoggerJson } from './logger_json';
 
 export interface LoggerOptions {
     /**
@@ -26,13 +27,23 @@ export interface LoggerOptions {
     data?: Record<string, unknown>,
 }
 
+const getLoggerForFormat = (format: LogFormat): Logger => {
+    switch (format) {
+        case LogFormat.JSON:
+            return new LoggerJson();
+        case LogFormat.TEXT:
+        default:
+            return new LoggerText();
+    }
+};
+
 const getDefaultOptions = () => ({
     level: getLevelFromEnv(),
     maxDepth: 4,
     maxStringLength: 2000,
     prefix: null,
     suffix: null,
-    logger: new LoggerText(),
+    logger: getLoggerForFormat(getFormatFromEnv()),
     data: {},
 });
 
