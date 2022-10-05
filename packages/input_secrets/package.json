@@ -1,7 +1,7 @@
 {
     "name": "@apify/input_secrets",
     "version": "1.0.0",
-    "description": "Tool to find the matching URLs on a page (or html document) by providing a URL pattern.",
+    "description": "Package to encrypt and decrypt apify actor input secrets.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "typings": "./dist/index.d.ts",
