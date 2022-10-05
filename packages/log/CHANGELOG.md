@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.4...@apify/log@2.2.0) (2022-10-05)
+
+
+### Features
+
+* **consts,log:** add support for reading log level from env var ([#338](https://github.com/apify/apify-shared-js/issues/338)) ([88795f0](https://github.com/apify/apify-shared-js/commit/88795f0c13550a8aefec868ef4d0004ff473c79d))
+
+
+
+
+
 ## [2.1.4](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.3...@apify/log@2.1.4) (2022-09-05)
 
 **Note:** Version bump only for package @apify/log
