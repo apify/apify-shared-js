@@ -145,6 +145,49 @@ describe('input_schema.json', () => {
             );
         });
 
+        it('should throw correct error on field in if/else definition', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'textfield',
+                        maxLength: true,
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.maxLength must be integer)',
+            );
+        });
+
+        it('should throw correct error in string type else definition', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        isSecret: true,
+                        description: 'Some description ...',
+                        editor: 'textfield',
+                        maxLength: true,
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Property schema.properties.myField.maxLength is not allowed.)',
+            );
+        });
+
         it('should throw error on field structure level for a type ENUM STRING', () => {
             const schema = {
                 title: 'Test input schema',
