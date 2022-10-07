@@ -1,10 +1,10 @@
 {
-    "name": "@apify/consts",
-    "version": "2.4.1",
-    "description": "Tools and constants shared across Apify projects.",
+    "name": "@apify/input_secrets",
+    "version": "1.1.1",
+    "description": "Package to encrypt and decrypt apify actor input secrets.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
-    "typings": "dist/index.d.ts",
+    "typings": "./dist/index.d.ts",
     "exports": {
         ".": {
             "import": "./dist/index.mjs",
@@ -20,10 +20,6 @@
         "email": "support@apify.com",
         "url": "https://apify.com"
     },
-    "contributors": [
-        "Jan Curn <jan@apify.com>",
-        "Marek Trunkát <marek@apify.com>"
-    ],
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
@@ -41,5 +37,10 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "dependencies": {
+        "@apify/log": "^2.2.1",
+        "@apify/utilities": "^2.2.3",
+        "ow": "^0.28.2"
     }
 }
