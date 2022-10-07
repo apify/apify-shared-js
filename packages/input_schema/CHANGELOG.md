@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.1.5...@apify/input_schema@3.2.0) (2022-10-07)
+
+
+### Features
+
+* **input_schema:** add isSecret flag into the sting property ([#335](https://github.com/apify/apify-shared-js/issues/335)) ([29be923](https://github.com/apify/apify-shared-js/commit/29be9234e7a2d93d48c99eea13548453789a1563))
+
+
+
+
+
 ## [3.1.5](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.1.4...@apify/input_schema@3.1.5) (2022-10-07)
 
 **Note:** Version bump only for package @apify/input_schema
