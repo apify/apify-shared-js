@@ -79,23 +79,58 @@
         "stringProperty": {
             "title": "String property",
             "type": "object",
-            "additionalProperties": false,
+            "additionalProperties": true,
             "properties": {
                 "type": { "enum": ["string"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
-                "default": { "type": "string" },
-                "prefill": { "type": "string" },
-                "example": { "type": "string" },
-                "pattern": { "type": "string" },
                 "nullable": { "type": "boolean" },
-                "minLength": { "type": "integer" },
-                "maxLength": { "type": "integer" },
                 "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "isSecret": { "type": "boolean" }
             },
-            "required": ["type", "title", "description", "editor"]
+            "required": ["type", "title", "description", "editor"],
+            "if": {
+                "properties": {
+                    "isSecret": {
+                        "not": {
+                            "const": true
+                        }
+                    }
+                }
+            },
+            "then": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["string"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "default": { "type": "string" },
+                    "prefill": { "type": "string" },
+                    "example": { "type": "string" },
+                    "pattern": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minLength": { "type": "integer" },
+                    "maxLength": { "type": "integer" },
+                    "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
+                    "isSecret": { "type": "boolean" },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" }
+                }
+            },
+            "else": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["string"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "example": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "editor": { "enum": ["textfield", "textarea", "hidden"] },
+                    "isSecret": { "type": "boolean" },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" }
+                }
+            }
         },
         "arrayProperty": {
             "title": "Array property",
