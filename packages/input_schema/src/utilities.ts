@@ -1,12 +1,12 @@
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
-import countriesList from "countries-list";
+import countriesList from 'countries-list';
 import { ValidateFunction } from 'ajv';
-import escaya from "escaya";
+import escaya from 'escaya';
 import { m } from './intl';
 import { parseAjvError } from './input_schema';
 
 const { countries } = countriesList;
-const { parseScript } = escaya;
+const { parseScript } = escaya.default;
 
 /**
  * Validates input field configured with proxy editor
