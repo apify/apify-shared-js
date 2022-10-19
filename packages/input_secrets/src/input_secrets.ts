@@ -15,10 +15,21 @@ export function getInputSchemaSecretFieldKeys(inputSchema: any): string[] {
 }
 
 /**
+ * Encrypts input secret value
+ */
+export function encryptInputSecretValue({ value, publicKey }: { value: string, publicKey: KeyObject }): string {
+    ow(value, ow.string);
+    ow(publicKey, ow.object.instanceOf(KeyObject));
+
+    const { encryptedValue, encryptedPassword } = publicEncrypt({ value, publicKey });
+    return `${ENCRYPTED_INPUT_VALUE_PREFIX}:${encryptedPassword}:${encryptedValue}`;
+}
+
+/**
  * Encrypts actor input secrets
  */
 export function encryptInputSecrets<T>(
-    { input, inputSchema, publicKey }: { input: T, inputSchema: object, publicKey: KeyObject},
+    { input, inputSchema, publicKey }: { input: T, inputSchema: object, publicKey: KeyObject },
 ): T {
     ow(input, ow.object);
     ow(inputSchema, ow.object);
@@ -33,8 +44,7 @@ export function encryptInputSecrets<T>(
         // NOTE: Skips already encrypted values. It can happens in case client already encrypted values, before
         // sending them using API. Or input was takes from task, run console or scheduler, where input is stored encrypted.
         if (value && ow.isValid(value, ow.string) && !ENCRYPTED_INPUT_VALUE_REGEXP.test(value)) {
-            const { encryptedValue, encryptedPassword } = publicEncrypt({ value: input[key], publicKey });
-            encryptedInput[key] = `${ENCRYPTED_INPUT_VALUE_PREFIX}:${encryptedPassword}:${encryptedValue}`;
+            encryptedInput[key] = encryptInputSecretValue({ value: input[key], publicKey });
         }
     }
 
