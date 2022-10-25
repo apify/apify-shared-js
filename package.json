@@ -59,7 +59,7 @@
         "@types/git-url-parse": "^9.0.1",
         "@types/jest": "^28.0.0",
         "@types/marked": "^3.0.2",
-        "@types/node": "^16.7.13",
+        "@types/node": "^18.0.0",
         "@types/request": "^2.48.7",
         "@types/underscore": "^1.11.3",
         "@typescript-eslint/eslint-plugin": "^5.3.1",
