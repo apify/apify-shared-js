@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.4.1...@apify/consts@2.5.0) (2022-10-31)
+
+
+### Features
+
+* **consts:** Adding new META_ORIGINS for jobs initiated by another actor or webhook ([#350](https://github.com/apify/apify-shared-js/issues/350)) ([15623cd](https://github.com/apify/apify-shared-js/commit/15623cd46e8d3324ff0ae94b9a92bdad86fcee79))
+
+
+
+
+
 ## [2.4.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.4.0...@apify/consts@2.4.1) (2022-10-07)
 
 **Note:** Version bump only for package @apify/consts
