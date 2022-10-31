@@ -69,6 +69,8 @@ export const META_ORIGINS = {
     API: 'API', // Job started through API
     SCHEDULER: 'SCHEDULER', // Job started through Scheduler
     TEST: 'TEST', // Job started through test actor page
+    WEBHOOK: 'WEBHOOK', // Job started by the webhook
+    ACTOR: 'ACTOR', // Job started by another actor run
 } as const;
 
 /**
