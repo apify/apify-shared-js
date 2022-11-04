@@ -207,5 +207,20 @@ describe('input_schema.json', () => {
                 'Input schema is not valid (Field schema.properties.myField.enum.0 must be string)',
             );
         });
+
+        it('should throw error when required field is not defined', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {},
+                required: ['something'],
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                // eslint-disable-next-line
+                'Field schema.properties.something does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
+            );
+        });
     });
 });
