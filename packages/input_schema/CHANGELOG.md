@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.2.1...@apify/input_schema@3.3.0) (2022-11-09)
+
+
+### Features
+
+* **input_schema:** new globs and datepicker editor, improved validation ([#351](https://github.com/apify/apify-shared-js/issues/351)) ([1610bf1](https://github.com/apify/apify-shared-js/commit/1610bf162aed4a035493a9bec6781f58436b2ae0))
+
+
+
+
+
 ## [3.2.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.2.0...@apify/input_schema@3.2.1) (2022-10-31)
 
 **Note:** Version bump only for package @apify/input_schema
