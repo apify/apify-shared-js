@@ -30,6 +30,8 @@ const intlStrings = {
         'Currently you do not have access to any proxy group usable in automatic mode.',
     'inputSchema.validation.noMatchingDefinition':
         'Field schema.properties.{fieldKey} is not matching any input schema type definition. Please make sure that it\'s type is valid.',
+    'inputSchema.validation.missingRequiredField':
+        'Field schema.properties.{fieldKey} does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
 };
 /* eslint-enable max-len,quotes,quote-props */
 
