@@ -646,4 +646,9 @@ export const MARKETPLACE_USER_ROLES = {
     CUSTOMER: 'CUSTOMER',
 } as const;
 
+export const USER_PERSONA_TYPES = {
+    DEVELOPER: 'DEVELOPER',
+    USER: 'USER',
+} as const;
+
 export const GIT_MAIN_BRANCH = 'main';
