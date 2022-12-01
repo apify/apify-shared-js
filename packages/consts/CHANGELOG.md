@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.5.0...@apify/consts@2.6.0) (2022-12-01)
+
+
+### Features
+
+* **consts:** add USER_PERSONA_TYPES const ([#352](https://github.com/apify/apify-shared-js/issues/352)) ([9a19ec1](https://github.com/apify/apify-shared-js/commit/9a19ec13bfc4089f3de5df4ac9036b790d3d2f11))
+
+
+
+
+
 # [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.4.1...@apify/consts@2.5.0) (2022-10-31)
 
 
