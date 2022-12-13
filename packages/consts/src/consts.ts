@@ -71,6 +71,7 @@ export const META_ORIGINS = {
     TEST: 'TEST', // Job started through test actor page
     WEBHOOK: 'WEBHOOK', // Job started by the webhook
     ACTOR: 'ACTOR', // Job started by another actor run
+    CLI: 'CLI', // Job started by apify CLI
 } as const;
 
 /**
