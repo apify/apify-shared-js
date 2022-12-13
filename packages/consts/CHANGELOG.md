@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.6.0...@apify/consts@2.7.0) (2022-12-13)
+
+
+### Features
+
+* **consts:** adding CLI to META_ORIGINS ([#354](https://github.com/apify/apify-shared-js/issues/354)) ([21b35d0](https://github.com/apify/apify-shared-js/commit/21b35d062c11b0f6da76d8c0099bbb2ad3e4903a))
+
+
+
+
+
 # [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.5.0...@apify/consts@2.6.0) (2022-12-01)
 
 
