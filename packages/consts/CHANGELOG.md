@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.7.0...@apify/consts@2.8.0) (2022-12-21)
+
+
+### Features
+
+* **consts:** increase max length of actor job log to 10 MB ([#355](https://github.com/apify/apify-shared-js/issues/355)) ([b859433](https://github.com/apify/apify-shared-js/commit/b8594336c5d01c6e5f6a29e9316b21dce9ecab75))
+
+
+
+
+
 # [2.7.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.6.0...@apify/consts@2.7.0) (2022-12-13)
 
 
