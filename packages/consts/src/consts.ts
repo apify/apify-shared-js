@@ -323,7 +323,7 @@ export const ACTOR_LIMITS = {
     INPUT_SCHEMA_MAX_BYTES: 100 * 1024,
 
     // Max length of run/build log in number of characters
-    LOG_MAX_CHARS: 5000000,
+    LOG_MAX_CHARS: 10 * 1024 * 1024,
 };
 
 /**
@@ -454,12 +454,6 @@ export const KEY_VALUE_STORE_KEYS = {
     INPUT: 'INPUT',
     OUTPUT: 'OUTPUT',
 } as const;
-
-/**
- * Max length of Actor log in number of characters.
- * TODO: Remove this once it's no longer used anywhere.
- */
-export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
 
 /**
  * Represents the maximum size in bytes of a request body (decompressed)
