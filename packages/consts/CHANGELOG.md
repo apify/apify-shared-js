@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.8.0...@apify/consts@2.9.0) (2023-01-31)
+
+
+### Features
+
+* increased actor build timeout ([#357](https://github.com/apify/apify-shared-js/issues/357)) ([67c7009](https://github.com/apify/apify-shared-js/commit/67c700939066ffed818958079ce4f39a2bd38c4d))
+
+
+
+
+
 # [2.8.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.7.0...@apify/consts@2.8.0) (2022-12-21)
 
 
