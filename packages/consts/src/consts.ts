@@ -301,7 +301,7 @@ export const ACTOR_LIMITS = {
     BUILD_DEFAULT_MEMORY_MBYTES: 2048,
 
     // Maximum duration of build in seconds.
-    BUILD_TIMEOUT_SECS: 600,
+    BUILD_TIMEOUT_SECS: 1800,
 
     // For each build or run container, set disk quota based on memory size
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
