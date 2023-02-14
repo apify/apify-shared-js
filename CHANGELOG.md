@@ -10,7 +10,7 @@ package | version | changelog
 --------|---------|----------
 `@apify/consts` | 2.9.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.0 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
-`@apify/git` | 2.0.0 | [CHANGELOG](./packages/git/CHANGELOG.md)
+`@apify/git` | 2.1.0 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.0 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 3.3.4 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.8 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
