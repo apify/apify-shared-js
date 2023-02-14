@@ -43,6 +43,6 @@
         "access": "public"
     },
     "dependencies": {
-        "git-url-parse": "^11.6.0"
+        "git-url-parse": "^13.1.0"
     }
 }
