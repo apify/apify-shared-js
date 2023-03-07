@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.9.0...@apify/consts@2.10.0) (2023-03-07)
+
+
+### Features
+
+* add max items to env variable names ([#363](https://github.com/apify/apify-shared-js/issues/363)) ([7fe15fc](https://github.com/apify/apify-shared-js/commit/7fe15fce9fef6e988161620300cd3f3f3e6564e9))
+
+
+
+
+
 # [2.9.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.8.0...@apify/consts@2.9.0) (2023-01-31)
 
 

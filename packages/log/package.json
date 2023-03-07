@@ -1,6 +1,6 @@
 {
     "name": "@apify/log",
-    "version": "2.2.6",
+    "version": "2.2.7",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -43,7 +43,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.9.0",
+        "@apify/consts": "^2.10.0",
         "ansi-colors": "^4.1.1"
     }
 }
