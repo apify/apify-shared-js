@@ -331,10 +331,10 @@ export const ACTOR_LIMITS = {
  */
 export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of actors per user
-    MAX_ACTORS_PER_USER: 100,
+    MAX_ACTORS_PER_USER: 500,
 
     // Maximum number of tasks per user
-    MAX_TASKS_PER_USER: 1000,
+    MAX_TASKS_PER_USER: 5000,
 
     // Maximum number of schedules per user
     MAX_SCHEDULES_PER_USER: 100,
