@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.10.0...@apify/consts@2.11.0) (2023-03-15)
+
+
+### Features
+
+* increase default number of actors and tasks ([#364](https://github.com/apify/apify-shared-js/issues/364)) ([dd20b18](https://github.com/apify/apify-shared-js/commit/dd20b186862d65c9e67be2268d3aa7d22bbdb9e0))
+
+
+
+
+
 # [2.10.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.9.0...@apify/consts@2.10.0) (2023-03-07)
 
 
