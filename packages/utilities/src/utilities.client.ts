@@ -82,6 +82,9 @@ interface Uri {
     fragmentKey?: Record<string, unknown>;
 }
 
+/**
+ * @deprecated use `new URL()` instead
+ */
 export function parseUrl(str: string): Uri {
     if (typeof str !== 'string') return {};
     const o = {
@@ -127,28 +130,31 @@ export function normalizeUrl(url: string, keepFragment?: boolean) {
         return null;
     }
 
-    const urlObj = parseUrl(url.trim());
-    if (!urlObj.protocol || !urlObj.host) {
+    let urlObj;
+
+    try {
+        urlObj = new URL(url.replace(/ +/g, ''));
+    } catch {
         return null;
     }
 
-    const path = urlObj.path!.replace(/\/$/, '');
-    const params = (urlObj.query
-        ? urlObj.query
-            .split('&')
-            .filter((param) => {
-                return !/^utm_/.test(param);
-            })
-            .sort()
-        : []
-    );
+    const { searchParams } = urlObj;
 
-    return `${urlObj.protocol.trim().toLowerCase()
-    }://${
-        urlObj.host.trim().toLowerCase()
-    }${path.trim()
-    }${params.length ? `?${params.join('&').trim()}` : ''
-    }${keepFragment && urlObj.fragment ? `#${urlObj.fragment.trim()}` : ''}`;
+    for (const key of [...searchParams.keys()]) {
+        if (key.startsWith('utm_')) {
+            searchParams.delete(key);
+        }
+    }
+
+    searchParams.sort();
+
+    const protocol = urlObj.protocol.toLowerCase();
+    const host = urlObj.host.toLowerCase();
+    const path = urlObj.pathname.replace(/\/$/, '');
+    const search = searchParams.toString() ? `?${searchParams}` : '';
+    const hash = keepFragment ? urlObj.hash : '';
+
+    return `${protocol}//${host}${path}${search}${hash}`;
 }
 
 // Helper function for markdown rendered marked

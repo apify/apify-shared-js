@@ -527,7 +527,12 @@ describe('utilities.client', () => {
         });
 
         it('should not touch invalid or empty params', () => {
-            expect(normalizeUrl('http://example.com/?neco=&dalsi')).toEqual('http://example.com?dalsi&neco=');
+            expect(normalizeUrl('http://example.com/?neco=&dalsi')).toEqual('http://example.com?dalsi=&neco=');
+        });
+
+        it('should work with @ inside query', () => {
+            expect(normalizeUrl('https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?foo=bar&aaa=bbb'))
+                .toEqual('https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?aaa=bbb&foo=bar');
         });
 
         it('should normalize real-world URLs', () => {
