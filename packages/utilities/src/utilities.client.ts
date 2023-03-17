@@ -133,7 +133,7 @@ export function normalizeUrl(url: string, keepFragment?: boolean) {
     let urlObj;
 
     try {
-        urlObj = new URL(url.replace(/ +/g, ''));
+        urlObj = new URL(url.trim());
     } catch {
         return null;
     }

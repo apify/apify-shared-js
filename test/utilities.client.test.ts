@@ -487,6 +487,16 @@ describe('utilities.client', () => {
             expect(normalizeUrl('https://example.com')).toEqual('https://example.com');
         });
 
+        it('edge cases', () => {
+            expect(normalizeUrl('a   https://example.com   b')).toEqual(null);
+            expect(normalizeUrl('https://example.com?q=foo bar')).toEqual('https://example.com?q=foo+bar');
+            expect(normalizeUrl('https://example.com?q=foo+bar')).toEqual('https://example.com?q=foo+bar');
+            expect(normalizeUrl('https://google.com/maps/search/restaurant prague/@39.1029725,39.5483593,4z'))
+                .toEqual('https://google.com/maps/search/restaurant%20prague/@39.1029725,39.5483593,4z');
+            expect(normalizeUrl('https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z'))
+                .toEqual('https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z');
+        });
+
         it('should lowercase hostname and protocols', () => {
             expect(normalizeUrl('httpS://EXAMPLE.cOm')).toEqual('https://example.com');
             expect(normalizeUrl('hTTp://www.EXAMPLE.com')).toEqual('http://www.example.com');
@@ -546,10 +556,12 @@ describe('utilities.client', () => {
             expect(normalizeUrl('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580/')).toEqual(expected);
         });
 
-        it('should trim all parts of URL', () => {
-            expect(normalizeUrl('    http    ://     test    # fragment   ')).toEqual('http://test');
-            expect(normalizeUrl('    http   ://     test    # fragment   ', true)).toEqual('http://test#fragment');
-        });
+        // this is no longer a valid URL and results in `null`, if we want to support it,
+        // we will need some regexp magic to first remove the spaces
+        // it('should trim all parts of URL', () => {
+        //     expect(normalizeUrl('    http    ://     test    # fragment   ')).toEqual('http://test');
+        //     expect(normalizeUrl('    http   ://     test    # fragment   ', true)).toEqual('http://test#fragment');
+        // });
     });
     describe('#buildOrVersionNumberIntToStr()', () => {
         it('should convert build number to string', () => {
