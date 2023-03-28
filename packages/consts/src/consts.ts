@@ -486,29 +486,10 @@ export const ACTOR_CATEGORIES = {
     OTHER: 'Other',
 } as const;
 
-/**
- * TODO: This will be used during the category migration and can be removed after that.
- */
-export const LEGACY_ACTOR_CATEGORIES = {
-    TRAVEL: 'Travel',
-    ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Entertainment',
-    SOCIAL: 'Social',
-    MARKETING: 'Marketing',
-    NEWS: 'News',
-    FINANCE: 'Finance',
-    LIFESTYLE: 'Lifestyle',
-    SEARCH_ENGINES: 'Search engines',
-    DATA: 'Data processing',
-    EGOVERNMENT: 'E-government',
-    TOOLS: 'Tools',
-    EXAMPLES: 'Examples',
-    OTHER: 'Other',
-} as const;
-
+// TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
 export const ALL_ACTOR_CATEGORIES = {
     ...ACTOR_CATEGORIES,
-    ...LEGACY_ACTOR_CATEGORIES,
+    // ...LEGACY_ACTOR_CATEGORIES,
 } as const;
 
 /**
