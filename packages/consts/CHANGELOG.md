@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.11.0...@apify/consts@2.12.0) (2023-03-28)
+
+
+### Features
+
+* **app:** AI actor category ([#370](https://github.com/apify/apify-shared-js/issues/370)) ([1f0dcfb](https://github.com/apify/apify-shared-js/commit/1f0dcfbc2a4404d8dadbac72260cfaf150cb1215))
+
+
+
+
+
 # [2.11.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.10.0...@apify/consts@2.11.0) (2023-03-15)
 
 
