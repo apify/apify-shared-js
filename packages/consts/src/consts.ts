@@ -505,6 +505,7 @@ export const ACTOR_CATEGORIES = {
 } as const;
 
 // TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
+/** @deprecated Use ACTOR_CATEGORIES instead! */
 export const ALL_ACTOR_CATEGORIES = {
     ...ACTOR_CATEGORIES,
     // ...LEGACY_ACTOR_CATEGORIES,
