@@ -484,6 +484,7 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
  * Categories for crawlers and actors
  */
 export const ACTOR_CATEGORIES = {
+    AI: 'AI',
     AUTOMATION: 'Automation',
     BUSINESS: 'Business',
     COVID_19: 'Covid-19',
