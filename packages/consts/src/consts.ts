@@ -2,12 +2,12 @@ import { DNS_SAFE_NAME_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
-export const ACT_JOB_TYPES = {
+export const ACTOR_JOB_TYPES = {
     BUILD: 'BUILD',
     RUN: 'RUN',
 } as const;
 
-export const ACT_SOURCE_TYPES = {
+export const ACTOR_SOURCE_TYPES = {
     SOURCE_CODE: 'SOURCE_CODE',
     SOURCE_FILES: 'SOURCE_FILES',
     GIT_REPO: 'GIT_REPO',
@@ -26,7 +26,7 @@ export const ACTOR_EVENT_NAMES = {
 /**
  * Dictionary of possible values for 'status' field of act2Builds or act2Runs collections.
  */
-export const ACT_JOB_STATUSES = {
+export const ACTOR_JOB_STATUSES = {
     READY: 'READY', // started but not allocated to any worker yet
     RUNNING: 'RUNNING', // running on worker
     SUCCEEDED: 'SUCCEEDED', // finished and all good
@@ -49,11 +49,11 @@ export const WEBHOOK_DISPATCH_STATUSES = {
 /**
  * An array of act jobs statuses that are final for the jobs.
  */
-export const ACT_JOB_TERMINAL_STATUSES = [
-    ACT_JOB_STATUSES.SUCCEEDED,
-    ACT_JOB_STATUSES.FAILED,
-    ACT_JOB_STATUSES.TIMED_OUT,
-    ACT_JOB_STATUSES.ABORTED,
+export const ACTOR_JOB_TERMINAL_STATUSES = [
+    ACTOR_JOB_STATUSES.SUCCEEDED,
+    ACTOR_JOB_STATUSES.FAILED,
+    ACTOR_JOB_STATUSES.TIMED_OUT,
+    ACTOR_JOB_STATUSES.ABORTED,
 ];
 
 // NOTE: for legacy reasons these are lower-case, maybe we should migrate to upper case later.
@@ -215,15 +215,18 @@ export const ACTOR_BASE_DOCKER_IMAGE_DEFAULT = ACTOR_BASE_DOCKER_IMAGES[0].name;
 export const DOCKER_LABELS = {
     ACTOR_BUILD_ID: 'com.apify.actBuildId',
     ACTOR_RUN_ID: 'com.apify.actRunId',
-    // Kept for backwards compatibility, will be removed soon
+
+    // Kept for backwards compatibility, will be removed soon (TODO: remove old usages!)
+    /** @deprecated Use ACTOR_BUILD_ID instead! */
     ACT_BUILD_ID: 'com.apify.actBuildId',
+    /** @deprecated Use ACTOR_RUN_ID instead! */
     ACT_RUN_ID: 'com.apify.actRunId',
 } as const;
 
 /**
  * Acts types
  */
-export const ACT_TYPES = {
+export const ACTOR_TYPES = {
     ACT: 'acts',
     CRAWLER: 'crawlers',
 } as const;
@@ -280,11 +283,26 @@ export const ACTOR_RESTART_ON_ERROR = {
     INTERVAL_MILLIS: 1 * 60 * 1000,
 };
 
-/**
- * Kept for backwards compatibility, will be removed soon.
- * TODO: Remove this once it's no longer used anywhere.
- */
+// The constants below are kept for backwards compatibility
+// TODO: Once all references to these are removed, remove these constants too
+
+/** @deprecated Use ACTOR_RESTART_ON_ERROR instead */
 export const ACT_RESTART_ON_ERROR = ACTOR_RESTART_ON_ERROR;
+
+/** @deprecated Use ACTOR_JOB_TYPES instead */
+export const ACT_JOB_TYPES = ACTOR_JOB_TYPES;
+
+/** @deprecated Use ACTOR_SOURCE_TYPES instead */
+export const ACT_SOURCE_TYPES = ACTOR_SOURCE_TYPES;
+
+/** @deprecated Use ACTOR_JOB_STATUSES instead */
+export const ACT_JOB_STATUSES = ACTOR_JOB_STATUSES;
+
+/** @deprecated Use ACTOR_JOB_TERMINAL_STATUSES instead */
+export const ACT_JOB_TERMINAL_STATUSES = ACTOR_JOB_TERMINAL_STATUSES;
+
+/** @deprecated Use ACTOR_TYPES instead */
+export const ACT_TYPES = ACTOR_TYPES;
 
 /**
  * 1 compute unit = 1GB * 1Hour.
@@ -487,29 +505,11 @@ export const ACTOR_CATEGORIES = {
     OTHER: 'Other',
 } as const;
 
-/**
- * TODO: This will be used during the category migration and can be removed after that.
- */
-export const LEGACY_ACTOR_CATEGORIES = {
-    TRAVEL: 'Travel',
-    ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Entertainment',
-    SOCIAL: 'Social',
-    MARKETING: 'Marketing',
-    NEWS: 'News',
-    FINANCE: 'Finance',
-    LIFESTYLE: 'Lifestyle',
-    SEARCH_ENGINES: 'Search engines',
-    DATA: 'Data processing',
-    EGOVERNMENT: 'E-government',
-    TOOLS: 'Tools',
-    EXAMPLES: 'Examples',
-    OTHER: 'Other',
-} as const;
-
+// TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
+/** @deprecated Use ACTOR_CATEGORIES instead! */
 export const ALL_ACTOR_CATEGORIES = {
     ...ACTOR_CATEGORIES,
-    ...LEGACY_ACTOR_CATEGORIES,
+    // ...LEGACY_ACTOR_CATEGORIES,
 } as const;
 
 /**
