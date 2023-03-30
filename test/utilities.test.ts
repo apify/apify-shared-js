@@ -121,7 +121,7 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('yZtyxMUADJHyInTId')).toBe(true);
             expect(utils.isForbiddenUsername('yZtyxMUADJHyInTI')).toBe(false);
 
-            // Some good ones
+            // Some correct ones
             expect(utils.isForbiddenUsername('karel')).toBe(false);
             expect(utils.isForbiddenUsername('karel1234')).toBe(false);
             expect(utils.isForbiddenUsername('karel.novak')).toBe(false);
