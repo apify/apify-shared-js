@@ -136,3 +136,11 @@ export const RELATIVE_URL_REGEX = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\|\/\/
 
 // Check if a link is a mailto/tel/sms type
 export const CONTACT_LINK_REGEX = /^(mailto|tel|sms):.*$/i;
+
+/**
+ * Regular expression to match valid ID - 17 alphanumeric chars including chars restricted by SimpleSchema.RegEx.Id (1,l,0,O),
+ * because we have user objects with that in database.
+ * @type {RegExp}
+ */
+// TODO: @fnesveda [2022-08-15] revert to stricter regex /^[a-zA-Z0-9]{17}$/ once we properly delete user yZtyxMUADJHyInTIdl
+export const APIFY_ID_REGEX = /[a-zA-Z0-9]{17}/;

@@ -116,6 +116,15 @@ describe('utilities', () => {
             expect(!utils.isForbiddenUsername('0123456789')).toBe(true);
             expect(!utils.isForbiddenUsername('01234.56789')).toBe(true);
             expect(!utils.isForbiddenUsername('1aaaaa5')).toBe(true);
+
+            // Apify ID
+            expect(utils.isForbiddenUsername('yZtyxMUADJHyInTId')).toBe(true);
+            expect(utils.isForbiddenUsername('yZtyxMUADJHyInTI')).toBe(false);
+
+            // Some correct ones
+            expect(utils.isForbiddenUsername('karel')).toBe(false);
+            expect(utils.isForbiddenUsername('karel1234')).toBe(false);
+            expect(utils.isForbiddenUsername('karel.novak')).toBe(false);
         });
     });
 
