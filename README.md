@@ -1,6 +1,6 @@
 # Apify shared library
 
-[![Build Status](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yml/badge.svg?branch=master)](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yml)
+[![Build Status](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yaml/badge.svg?branch=master)](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yaml)
 
 package | version
 --------|--------
