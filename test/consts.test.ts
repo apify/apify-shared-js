@@ -1,4 +1,4 @@
-import { USERNAME } from '@apify/consts';
+import { USERNAME, APIFY_ID_REGEX } from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 
 describe('consts', () => {
