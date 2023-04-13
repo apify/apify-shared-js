@@ -75,11 +75,6 @@ export const META_ORIGINS = {
 } as const;
 
 /**
- * Default Docker image used at various places.
- */
-export const ACTOR_BASE_DOCKER_IMAGE_DEFAULT = 'apify/actor-node';
-
-/**
  * Keys of labels applied to act Docker images and containers.
  */
 export const DOCKER_LABELS = {
