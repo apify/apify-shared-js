@@ -226,7 +226,7 @@ export const DEFAULT_PLATFORM_LIMITS = {
     MAX_WEBHOOKS_PER_USER: 100,
 
     // Maximum number of concurrent actor runs per user for free accounts.
-    FREE_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 25,
+    FREE_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 4,
 
     // Maximum number of concurrent actor runs per user for paid accounts.
     PAID_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 250,
