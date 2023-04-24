@@ -1,9 +1,12 @@
 import { cryptoRandomObjectId, timeoutPromise } from './utilities';
 
 export enum CHECK_TYPES {
+    MONGODB_PING = 'MONGODB_PING',
     MONGODB_READ = 'MONGODB_READ',
     MONGODB_WRITE = 'MONGODB_WRITE',
-    REDIS = 'REDIS',
+    REDIS = 'REDIS', // Old alias for 'REDIS_WRITE', deprecated
+    REDIS_PING = 'REDIS_PING',
+    REDIS_WRITE = 'REDIS_WRITE',
 }
 
 type CheckType<T extends Record<string, any> = Record<string, any>> = { client: T; type: CHECK_TYPES };
@@ -93,15 +96,25 @@ export class HealthChecker {
 
     _performCheck(check: CheckType): Promise<void> {
         switch (check.type) {
+            case CHECK_TYPES.MONGODB_PING:
+                return this._testMongoDbPing(check);
             case CHECK_TYPES.MONGODB_READ:
                 return this._testMongoDbRead(check);
             case CHECK_TYPES.MONGODB_WRITE:
                 return this._testMongoDbWrite(check);
+            case CHECK_TYPES.REDIS_PING:
+                return this._testRedisPing(check);
             case CHECK_TYPES.REDIS:
+            case CHECK_TYPES.REDIS_WRITE:
                 return this._testRedisWrite(check);
             default:
                 throw new Error('Unknown check type');
         }
+    }
+
+    async _testMongoDbPing({ client }: CheckType) {
+        const response = await client.command({ ping: 1 });
+        if (response.ok !== 1) throw new Error(`Got ${response.ok} instead of 1!`);
     }
 
     async _testMongoDbRead({ client }: CheckType) {
@@ -127,6 +140,11 @@ export class HealthChecker {
         });
         const retrieved = await collection.findOne({ _id: id });
         if (!retrieved) throw new Error(`Item with ID "${id}" not found!`);
+    }
+
+    async _testRedisPing({ client }: CheckType) {
+        const response = await client.ping();
+        if (response !== 'PONG') throw new Error(`Got "${response}" instead of "PONG"!`);
     }
 
     async _testRedisWrite({ client }: CheckType) {
