@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.3...@apify/consts@2.13.0) (2023-04-24)
+
+
+### Features
+
+* **app:** Lead generation actor category ([#378](https://github.com/apify/apify-shared-js/issues/378)) ([bbe4467](https://github.com/apify/apify-shared-js/commit/bbe446742384fef005fee98039f6784fb5eef93a))
+
+
+
+
+
 ## [2.12.3](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.2...@apify/consts@2.12.3) (2023-04-14)
 
 **Note:** Version bump only for package @apify/consts
