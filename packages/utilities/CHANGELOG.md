@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.9...@apify/utilities@2.4.0) (2023-04-24)
+
+
+### Features
+
+* **utilities:** add `MONGODB_PING` and `REDIS_PING` check types to `HealthChecker` ([#379](https://github.com/apify/apify-shared-js/issues/379)) ([4a55489](https://github.com/apify/apify-shared-js/commit/4a55489c8b39bcb66b9e6ded1f80f753fa7af127))
+
+
+
+
+
 ## [2.3.9](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.8...@apify/utilities@2.3.9) (2023-04-24)
 
 **Note:** Version bump only for package @apify/utilities
