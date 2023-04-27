@@ -258,7 +258,7 @@ export const ENV_VARS = {
     ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
     ACTOR_BUILD_ID: 'APIFY_ACTOR_BUILD_ID',
     ACTOR_BUILD_NUMBER: 'APIFY_ACTOR_BUILD_NUMBER',
-    ACTOR_MAX_ITEMS: 'APIFY_ACTOR_MAX_ITEMS',
+    ACTOR_MAX_PAID_DATASET_ITEMS: 'ACTOR_MAX_PAID_DATASET_ITEMS',
     INPUT_KEY: 'APIFY_INPUT_KEY',
     USER_ID: 'APIFY_USER_ID',
     TOKEN: 'APIFY_TOKEN',
@@ -295,6 +295,8 @@ export const ENV_VARS = {
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
     ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
+    // TODO: We can remove this one later, when we are sure that it's not used in our actors
+    ACTOR_MAX_ITEMS: 'APIFY_ACTOR_MAX_ITEMS',
 } as const;
 
 export const INTEGER_ENV_VARS = [
