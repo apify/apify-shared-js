@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.14.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.13.0...@apify/consts@2.14.0) (2023-04-27)
+
+
+### Features
+
+* add ACTOR_MAX_PAID_DATASET_ITEMS to env vars ([#380](https://github.com/apify/apify-shared-js/issues/380)) ([ed41d83](https://github.com/apify/apify-shared-js/commit/ed41d83491f8a92eb2278370eb4ad3e03d7dec22)), closes [apify/apify-core#10691](https://github.com/apify/apify-core/issues/10691)
+
+
+
+
+
 # [2.13.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.3...@apify/consts@2.13.0) (2023-04-24)
 
 
