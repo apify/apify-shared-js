@@ -88,6 +88,7 @@ export class WebhookPayloadTemplate {
         if (type !== 'string') throw new Error(`Cannot parse a ${type} payload template.`);
         const template = new WebhookPayloadTemplate(payloadTemplate, allowedVariables, context);
         const data = template._parse(); // eslint-disable-line no-underscore-dangle
+        // TODO: Maybe make this configurable via some options, to make "sure" about backwards compatibility?
         return template._interpolate(data); // eslint-disable-line no-underscore-dangle
     }
 
@@ -176,7 +177,6 @@ export class WebhookPayloadTemplate {
         return value;
     }
 
-    // TODO: Just replace the variables in this case
     private _interpolateString(value: string): string {
         // If the string matches exactly, we return the variable value including the type
         if (value.match(/^\{\{var:([a-zA-Z0-9.]*)\}\}$/)) {
