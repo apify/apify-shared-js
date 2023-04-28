@@ -152,17 +152,7 @@ export class WebhookPayloadTemplate {
         }
     }
 
-    /**
-     * Process variables that are inside strings.
-     *
-     * @param data
-     * @returns
-     */
-    private _interpolate(data: Record<string, any>): Record<string, any> {
-        return this._interpolateWhatever(data);
-    }
-
-    private _interpolateWhatever(value: any): any {
+    private _interpolate(value: any): any {
         if (typeof value === 'string') {
             return this._interpolateString(value);
         }
@@ -195,13 +185,13 @@ export class WebhookPayloadTemplate {
     private _interpolateObject(value: Record<string, any>): Record<string, any> {
         const result = {};
         Object.entries(value).forEach(([key, v]) => {
-            result[key] = this._interpolateWhatever(v);
+            result[key] = this._interpolate(v);
         });
         return result;
     }
 
     private _interpolateArray(value: Array<any>): Array<any> {
-        return value.map(this._interpolateWhatever.bind(this));
+        return value.map(this._interpolate.bind(this));
     }
 
     private _findPositionOfNextVariable(startIndex = 0): ParsePosition | null {
