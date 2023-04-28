@@ -114,6 +114,23 @@ describe('WebhookPayloadTemplate', () => {
         }
     });
 
+    it('replaces variables in strings', () => {
+        const payload = WebhookPayloadTemplate.parse(`
+        {
+            "justVariable": "{{var:foo}}",
+            "someOtherContent": "bar{{var:foo}}",
+            "twoVariables": "bar{{var:foo}}baz{{var:foo}}bar{{var:lol}}",
+            "bar": {{xyz}}
+        }`, null, {
+            foo: 'foo',
+            lol: 'lol',
+        });
+        expect(payload.justVariable).toBe('foo');
+        expect(payload.someOtherContent).toBe('barfoo');
+        expect(payload.twoVariables).toBe('barfoobazfoobarlol');
+        expect(payload.bar).toBe(null);
+    });
+
     it('should throw InvalidJsonError on invalid json', () => {
         try {
             WebhookPayloadTemplate.parse(invalidJson);

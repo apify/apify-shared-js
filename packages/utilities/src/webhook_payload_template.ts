@@ -87,7 +87,8 @@ export class WebhookPayloadTemplate {
         const type = typeof payloadTemplate;
         if (type !== 'string') throw new Error(`Cannot parse a ${type} payload template.`);
         const template = new WebhookPayloadTemplate(payloadTemplate, allowedVariables, context);
-        return template._parse(); // eslint-disable-line no-underscore-dangle
+        const data = template._parse(); // eslint-disable-line no-underscore-dangle
+        return template._interpolate(data); // eslint-disable-line no-underscore-dangle
     }
 
     /**
@@ -150,6 +151,59 @@ export class WebhookPayloadTemplate {
         }
     }
 
+    /**
+     * Process variables that are inside strings.
+     *
+     * @param data
+     * @returns
+     */
+    private _interpolate(data: Record<string, any>): Record<string, any> {
+        return this._interpolateWhatever(data);
+    }
+
+    private _interpolateWhatever(value: any): any {
+        if (typeof value === 'string') {
+            return this._interpolateString(value);
+        }
+        // Array needs to go before object!
+        if (Array.isArray(value)) {
+            return this._interpolateArray(value);
+        }
+        if (typeof value === 'object' && value !== null) {
+            return this._interpolateObject(value);
+        }
+        // We can't interpolate anything else
+        return value;
+    }
+
+    // TODO: Just replace the variables in this case
+    private _interpolateString(value: string): string {
+        // If the string matches exactly, we return the variable value including the type
+        if (value.match(/^\{\{var:([a-zA-Z0-9.]*)\}\}$/)) {
+            const variableName = value.substring(6, value.length - 2);
+            this._validateVariableName(variableName);
+            return this._getVariableValue(variableName);
+        }
+        // If it's just a part of substring, we replace the respective variables with their string variants
+        return value.replace(/\{\{var:([a-zA-Z0-9.]*)\}\}/g, (match, variableName) => {
+            this._validateVariableName(variableName);
+            const variableValue = this._getVariableValue(variableName);
+            return `${variableValue}`;
+        });
+    }
+
+    private _interpolateObject(value: Record<string, any>): Record<string, any> {
+        const result = {};
+        Object.entries(value).forEach(([key, v]) => {
+            result[key] = this._interpolateWhatever(v);
+        });
+        return result;
+    }
+
+    private _interpolateArray(value: Array<any>): Array<any> {
+        return value.map(this._interpolateWhatever.bind(this));
+    }
+
     private _findPositionOfNextVariable(startIndex = 0): ParsePosition | null {
         const openBraceIndex = this.payload.indexOf('{{', startIndex);
         const closeBraceIndex = this.payload.indexOf('}}', openBraceIndex) + 1;
@@ -197,13 +251,18 @@ export class WebhookPayloadTemplate {
         if (!isVariableValid) throw new InvalidVariableError(variableName);
     }
 
-    private _getVariableReplacement(variableName: string): string | null {
+    private _getVariableValue(variableName: string): any {
         const [variable, ...properties] = variableName.split('.');
         const context = this.context[variable];
-        const replacement = properties.reduce((ctx, prop) => {
+        const value = properties.reduce((ctx, prop) => {
             if (!ctx || typeof ctx !== 'object') return null;
             return ctx[prop];
         }, context);
-        return replacement ? JSON.stringify(replacement) : null;
+        return value;
+    }
+
+    private _getVariableReplacement(variableName: string): string | null {
+        const value = this._getVariableValue(variableName);
+        return value ? JSON.stringify(value) : null;
     }
 }
