@@ -23,6 +23,12 @@ export class InvalidVariableError extends Error {
     }
 }
 
+interface ParsePosition {
+    isInsideString: boolean;
+    openBraceIndex: number;
+    closeBraceIndex: number;
+}
+
 /**
  * WebhookPayloadTemplate enables creation and parsing of webhook payload template strings.
  * Template strings are JSON that may include template variables enclosed in double
@@ -125,31 +131,32 @@ export class WebhookPayloadTemplate {
     }
 
     private _parse() {
+        let currentIndex = 0;
         while (true) {
             // eslint-disable-line no-constant-condition
             try {
                 return JSON.parse(this.payload);
             } catch (err) {
-                const position = this._findPositionOfNextVariable();
-                if (position) {
-                    this._replaceVariable(position);
-                } else {
-                    // When we catch an error from JSON.parse, but there's
-                    // no variable, we must have an invalid JSON.
+                const position = this._findPositionOfNextVariable(currentIndex);
+                // When we catch an error from JSON.parse, but there's no remaining variable, we must have an invalid JSON.
+                if (!position) {
                     throw new InvalidJsonError(err as Error);
                 }
+                if (!position.isInsideString) {
+                    this._replaceVariable(position);
+                }
+                currentIndex = position.openBraceIndex + 1;
             }
         }
     }
 
-    private _findPositionOfNextVariable(startIndex = 0): { openBraceIndex: number, closeBraceIndex: number } | null {
+    private _findPositionOfNextVariable(startIndex = 0): ParsePosition | null {
         const openBraceIndex = this.payload.indexOf('{{', startIndex);
         const closeBraceIndex = this.payload.indexOf('}}', openBraceIndex) + 1;
         const someVariableMaybeExists = (openBraceIndex > -1) && (closeBraceIndex > -1);
         if (!someVariableMaybeExists) return null;
         const isInsideString = this._isVariableInsideString(openBraceIndex);
-        if (!isInsideString) return { openBraceIndex, closeBraceIndex };
-        return this._findPositionOfNextVariable(openBraceIndex + 1);
+        return { isInsideString, openBraceIndex, closeBraceIndex };
     }
 
     private _isVariableInsideString(openBraceIndex: number): boolean {
@@ -170,7 +177,7 @@ export class WebhookPayloadTemplate {
         return unescapedQuoteCount;
     }
 
-    private _replaceVariable({ openBraceIndex, closeBraceIndex }: { openBraceIndex: number, closeBraceIndex: number }): void {
+    private _replaceVariable({ openBraceIndex, closeBraceIndex }: ParsePosition): void {
         const variableName = this.payload.substring(openBraceIndex + 2, closeBraceIndex - 1);
         this._validateVariableName(variableName);
         const replacement = this._getVariableReplacement(variableName)!;
