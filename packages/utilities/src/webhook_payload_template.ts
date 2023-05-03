@@ -83,13 +83,20 @@ export class WebhookPayloadTemplate {
      * Parse also validates the template structure, so it can be used
      * to check validity of the template JSON and usage of allowedVariables.
      */
-    static parse(payloadTemplate: string, allowedVariables: Set<string> | null = null, context: Record<string, any> = {}): Record<string, any> {
+    static parse(
+        payloadTemplate: string,
+        allowedVariables: Set<string> | null = null,
+        context: Record<string, any> = {},
+        options: { interpolateStrings?: boolean } = {},
+    ): Record<string, any> {
         const type = typeof payloadTemplate;
         if (type !== 'string') throw new Error(`Cannot parse a ${type} payload template.`);
         const template = new WebhookPayloadTemplate(payloadTemplate, allowedVariables, context);
         const data = template._parse(); // eslint-disable-line no-underscore-dangle
-        // TODO: Maybe make this configurable via some options, to make "sure" about backwards compatibility?
-        return template._interpolate(data); // eslint-disable-line no-underscore-dangle
+        if (options.interpolateStrings) {
+            return template._interpolate(data); // eslint-disable-line no-underscore-dangle
+        }
+        return data;
     }
 
     /**
@@ -169,13 +176,14 @@ export class WebhookPayloadTemplate {
 
     private _interpolateString(value: string): string {
         // If the string matches exactly, we return the variable value including the type
-        if (value.match(/^\{\{var:([a-zA-Z0-9.]*)\}\}$/)) {
-            const variableName = value.substring(6, value.length - 2);
+        if (value.match(/^\{\{([a-zA-Z0-9.]+)\}\}$/)) {
+            // This just strpis the {{ and }}
+            const variableName = value.substring(2, value.length - 2);
             this._validateVariableName(variableName);
             return this._getVariableValue(variableName);
         }
         // If it's just a part of substring, we replace the respective variables with their string variants
-        return value.replace(/\{\{var:([a-zA-Z0-9.]*)\}\}/g, (match, variableName) => {
+        return value.replace(/\{\{([a-zA-Z0-9.]+)\}\}/g, (match, variableName) => {
             this._validateVariableName(variableName);
             const variableValue = this._getVariableValue(variableName);
             return `${variableValue}`;
@@ -226,7 +234,7 @@ export class WebhookPayloadTemplate {
         this._validateVariableName(variableName);
         const replacement = this._getVariableReplacement(variableName)!;
         this.replacedVariables.push({ variableName, replacement });
-        this.payload = this.payload.replace(`{{${variableName}}}`, replacement);
+        this.payload = this.payload.substring(0, openBraceIndex) + replacement + this.payload.substring(closeBraceIndex + 1);
     }
 
     private _validateVariableName(variableName: string): void {
