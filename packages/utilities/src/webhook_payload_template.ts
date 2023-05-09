@@ -177,7 +177,7 @@ export class WebhookPayloadTemplate {
     private _interpolateString(value: string): string {
         // If the string matches exactly, we return the variable value including the type
         if (value.match(/^\{\{([a-zA-Z0-9.]+)\}\}$/)) {
-            // This just strpis the {{ and }}
+            // This just strips the {{ and }}
             const variableName = value.substring(2, value.length - 2);
             this._validateVariableName(variableName);
             return this._getVariableValue(variableName);
