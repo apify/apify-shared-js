@@ -23,6 +23,12 @@ export class InvalidVariableError extends Error {
     }
 }
 
+interface ParsePosition {
+    isInsideString: boolean;
+    openBraceIndex: number;
+    closeBraceIndex: number;
+}
+
 /**
  * WebhookPayloadTemplate enables creation and parsing of webhook payload template strings.
  * Template strings are JSON that may include template variables enclosed in double
@@ -77,11 +83,20 @@ export class WebhookPayloadTemplate {
      * Parse also validates the template structure, so it can be used
      * to check validity of the template JSON and usage of allowedVariables.
      */
-    static parse(payloadTemplate: string, allowedVariables: Set<string> | null = null, context: Record<string, any> = {}): Record<string, any> {
+    static parse(
+        payloadTemplate: string,
+        allowedVariables: Set<string> | null = null,
+        context: Record<string, any> = {},
+        options: { interpolateStrings?: boolean } = {},
+    ): Record<string, any> {
         const type = typeof payloadTemplate;
         if (type !== 'string') throw new Error(`Cannot parse a ${type} payload template.`);
         const template = new WebhookPayloadTemplate(payloadTemplate, allowedVariables, context);
-        return template._parse(); // eslint-disable-line no-underscore-dangle
+        const data = template._parse(); // eslint-disable-line no-underscore-dangle
+        if (options.interpolateStrings) {
+            return template._interpolate(data); // eslint-disable-line no-underscore-dangle
+        }
+        return data;
     }
 
     /**
@@ -125,31 +140,75 @@ export class WebhookPayloadTemplate {
     }
 
     private _parse() {
+        let currentIndex = 0;
         while (true) {
             // eslint-disable-line no-constant-condition
             try {
                 return JSON.parse(this.payload);
             } catch (err) {
-                const position = this._findPositionOfNextVariable();
-                if (position) {
-                    this._replaceVariable(position);
-                } else {
-                    // When we catch an error from JSON.parse, but there's
-                    // no variable, we must have an invalid JSON.
+                const position = this._findPositionOfNextVariable(currentIndex);
+                // When we catch an error from JSON.parse, but there's no remaining variable, we must have an invalid JSON.
+                if (!position) {
                     throw new InvalidJsonError(err as Error);
                 }
+                if (!position.isInsideString) {
+                    this._replaceVariable(position);
+                }
+                currentIndex = position.openBraceIndex + 1;
             }
         }
     }
 
-    private _findPositionOfNextVariable(startIndex = 0): { openBraceIndex: number, closeBraceIndex: number } | null {
+    private _interpolate(value: any): any {
+        if (typeof value === 'string') {
+            return this._interpolateString(value);
+        }
+        // Array needs to go before object!
+        if (Array.isArray(value)) {
+            return this._interpolateArray(value);
+        }
+        if (typeof value === 'object' && value !== null) {
+            return this._interpolateObject(value);
+        }
+        // We can't interpolate anything else
+        return value;
+    }
+
+    private _interpolateString(value: string): string {
+        // If the string matches exactly, we return the variable value including the type
+        if (value.match(/^\{\{([a-zA-Z0-9.]+)\}\}$/)) {
+            // This just strips the {{ and }}
+            const variableName = value.substring(2, value.length - 2);
+            this._validateVariableName(variableName);
+            return this._getVariableValue(variableName);
+        }
+        // If it's just a part of substring, we replace the respective variables with their string variants
+        return value.replace(/\{\{([a-zA-Z0-9.]+)\}\}/g, (match, variableName) => {
+            this._validateVariableName(variableName);
+            const variableValue = this._getVariableValue(variableName);
+            return `${variableValue}`;
+        });
+    }
+
+    private _interpolateObject(value: Record<string, any>): Record<string, any> {
+        const result = {};
+        Object.entries(value).forEach(([key, v]) => {
+            result[key] = this._interpolate(v);
+        });
+        return result;
+    }
+
+    private _interpolateArray(value: Array<any>): Array<any> {
+        return value.map(this._interpolate.bind(this));
+    }
+
+    private _findPositionOfNextVariable(startIndex = 0): ParsePosition | null {
         const openBraceIndex = this.payload.indexOf('{{', startIndex);
         const closeBraceIndex = this.payload.indexOf('}}', openBraceIndex) + 1;
         const someVariableMaybeExists = (openBraceIndex > -1) && (closeBraceIndex > -1);
         if (!someVariableMaybeExists) return null;
         const isInsideString = this._isVariableInsideString(openBraceIndex);
-        if (!isInsideString) return { openBraceIndex, closeBraceIndex };
-        return this._findPositionOfNextVariable(openBraceIndex + 1);
+        return { isInsideString, openBraceIndex, closeBraceIndex };
     }
 
     private _isVariableInsideString(openBraceIndex: number): boolean {
@@ -170,12 +229,12 @@ export class WebhookPayloadTemplate {
         return unescapedQuoteCount;
     }
 
-    private _replaceVariable({ openBraceIndex, closeBraceIndex }: { openBraceIndex: number, closeBraceIndex: number }): void {
+    private _replaceVariable({ openBraceIndex, closeBraceIndex }: ParsePosition): void {
         const variableName = this.payload.substring(openBraceIndex + 2, closeBraceIndex - 1);
         this._validateVariableName(variableName);
         const replacement = this._getVariableReplacement(variableName)!;
         this.replacedVariables.push({ variableName, replacement });
-        this.payload = this.payload.replace(`{{${variableName}}}`, replacement);
+        this.payload = this.payload.substring(0, openBraceIndex) + replacement + this.payload.substring(closeBraceIndex + 1);
     }
 
     private _validateVariableName(variableName: string): void {
@@ -190,13 +249,18 @@ export class WebhookPayloadTemplate {
         if (!isVariableValid) throw new InvalidVariableError(variableName);
     }
 
-    private _getVariableReplacement(variableName: string): string | null {
+    private _getVariableValue(variableName: string): any {
         const [variable, ...properties] = variableName.split('.');
         const context = this.context[variable];
-        const replacement = properties.reduce((ctx, prop) => {
+        const value = properties.reduce((ctx, prop) => {
             if (!ctx || typeof ctx !== 'object') return null;
             return ctx[prop];
         }, context);
-        return replacement ? JSON.stringify(replacement) : null;
+        return value;
+    }
+
+    private _getVariableReplacement(variableName: string): string | null {
+        const value = this._getVariableValue(variableName);
+        return value ? JSON.stringify(value) : null;
     }
 }
