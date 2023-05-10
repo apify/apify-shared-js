@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.20](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.19...@apify/input_secrets@1.1.20) (2023-05-10)
+
+**Note:** Version bump only for package @apify/input_secrets
+
+
+
+
+
 ## [1.1.19](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.18...@apify/input_secrets@1.1.19) (2023-04-27)
 
 **Note:** Version bump only for package @apify/input_secrets
