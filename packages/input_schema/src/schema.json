@@ -63,15 +63,16 @@
                 "nullable": { "type": "boolean" },
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" },
-
                 "enum": {
                     "type": "array",
                     "items": { "type": "string" },
+                    "minItems": 1,
                     "uniqueItems": true
                 },
                 "enumTitles": {
                     "type": "array",
-                    "items": { "type": "string" }
+                    "items": { "type": "string" },
+                    "minItems": 1
                 }
             },
             "required": ["type", "title", "description", "enum"]
