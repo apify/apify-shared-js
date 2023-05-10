@@ -17,6 +17,21 @@ describe('input_schema.json', () => {
                         description: 'Some description ...',
                         editor: 'json',
                     },
+                    myField2: {
+                        title: 'Enum without titles',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'select',
+                        enum: ['a', 'b', 'c'],
+                    },
+                    myField3: {
+                        title: 'Enum with titles',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'select',
+                        enum: ['a', 'b', 'c'],
+                        enumTitles: ['A', 'B', 'C'],
+                    },
                 },
             };
 
@@ -205,6 +220,47 @@ describe('input_schema.json', () => {
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
                 'Input schema is not valid (Field schema.properties.myField.enum.0 must be string)',
+            );
+        });
+
+        it('should throw error on empty enum array', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        enum: [],
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.enum.enum must NOT have fewer than 1 items)',
+            );
+        });
+
+        it('should throw error on empty enumTitles array', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        enum: ['abcd'],
+                        enumTitles: [],
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.enum.enumTitles must NOT have fewer than 1 items)',
             );
         });
 
