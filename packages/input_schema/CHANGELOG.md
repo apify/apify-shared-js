@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.13](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.12...@apify/input_schema@3.3.13) (2023-05-10)
+
+
+### Bug Fixes
+
+* **input_schema:** disallow empty `enum`s in input schema ([#382](https://github.com/apify/apify-shared-js/issues/382)) ([54e5296](https://github.com/apify/apify-shared-js/commit/54e5296bdc3a57cbca05aa85cec10da42737097d))
+
+
+
+
+
 ## [3.3.12](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.11...@apify/input_schema@3.3.12) (2023-04-27)
 
 **Note:** Version bump only for package @apify/input_schema
