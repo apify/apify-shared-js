@@ -69,7 +69,10 @@ function validateProxyField(
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
 
-    const selectedProxyGroups = (apifyProxyGroups || []);
+    let selectedProxyGroups = [];
+    if (apifyProxyGroups) {
+        selectedProxyGroups = Array.isArray(apifyProxyGroups) ? apifyProxyGroups : [apifyProxyGroups];
+    }
 
     // Auto mode, check that user has access to alteast one proxy group usable in this mode
     if (!selectedProxyGroups.length && !options.hasAutoProxyGroups) {
