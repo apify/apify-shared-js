@@ -69,10 +69,14 @@ function validateProxyField(
     // If options are not provided skip additional checks
     if (!options) return fieldErrors;
 
-    let selectedProxyGroups = [];
-    if (apifyProxyGroups) {
-        selectedProxyGroups = Array.isArray(apifyProxyGroups) ? apifyProxyGroups : [apifyProxyGroups];
+    // apifyProxyGroup must be array of strings
+    const isStringsArray = (array: Array<string>) => array.every((i) => typeof i === 'string');
+    if (!(Array.isArray(apifyProxyGroups) && isStringsArray(apifyProxyGroups))) {
+        fieldErrors.push(m('inputSchema.validation.proxyGroupMustBeArrayOfStrings', { rootName: 'input', fieldKey }));
+        return fieldErrors;
     }
+
+    const selectedProxyGroups = (apifyProxyGroups || []);
 
     // Auto mode, check that user has access to alteast one proxy group usable in this mode
     if (!selectedProxyGroups.length && !options.hasAutoProxyGroups) {
