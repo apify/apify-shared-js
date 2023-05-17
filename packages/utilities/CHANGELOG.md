@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.6.0...@apify/utilities@2.7.0) (2023-05-17)
+
+
+### Features
+
+* **utilities:** use base64 encoding in url params utils ([#387](https://github.com/apify/apify-shared-js/issues/387)) ([80d3019](https://github.com/apify/apify-shared-js/commit/80d3019d13bff02a778240a13f605e20c38dd808))
+
+
+
+
+
+# [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.5.0...@apify/utilities@2.6.0) (2023-05-17)
+
+
+### Features
+
+* **utilities:** add new helpers for "run on apify" button ([#386](https://github.com/apify/apify-shared-js/issues/386)) ([881cbeb](https://github.com/apify/apify-shared-js/commit/881cbebd271b5079dcc3742e3d99ce3368c12dc6))
+
+
+
+
+
 # [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.4.1...@apify/utilities@2.5.0) (2023-05-10)
 
 
