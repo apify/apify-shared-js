@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'node:events';
 import { LogLevel } from './log_consts';
 import { Exception } from './logger_text';
 
