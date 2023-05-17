@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.5.0...@apify/utilities@2.6.0) (2023-05-17)
+
+
+### Features
+
+* **utilities:** add new helpers for "run on apify" button ([#386](https://github.com/apify/apify-shared-js/issues/386)) ([881cbeb](https://github.com/apify/apify-shared-js/commit/881cbebd271b5079dcc3742e3d99ce3368c12dc6))
+
+
+
+
+
 # [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.4.1...@apify/utilities@2.5.0) (2023-05-10)
 
 
