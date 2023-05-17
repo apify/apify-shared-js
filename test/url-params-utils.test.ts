@@ -1,5 +1,12 @@
 import { encodeInput, decodeInput, separateImports } from '@apify/utilities';
 
+export function base64UrlEncode<T extends object>(input: T) {
+    const data = JSON.stringify(input);
+    const buffer = Buffer.from(data, 'utf8');
+
+    return buffer.toString('base64url');
+}
+
 const input = {
     code: `import { PlaywrightCrawler, Dataset } from 'crawlee';
 
@@ -31,6 +38,11 @@ test('encode/decode', async () => {
     const decoded = decodeInput(hash);
 
     expect(input).toEqual(decoded);
+});
+
+test('encode uses base64url', () => {
+    const hash = encodeInput(input);
+    expect(hash).toEqual(base64UrlEncode(input));
 });
 
 test('import extraction', async () => {
