@@ -295,8 +295,6 @@ export const ENV_VARS = {
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
     ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
-    // TODO: We can remove this one later, when we are sure that it's not used in our actors
-    ACTOR_MAX_ITEMS: 'APIFY_ACTOR_MAX_ITEMS',
 } as const;
 
 export const INTEGER_ENV_VARS = [
