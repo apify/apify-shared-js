@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.14](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.13...@apify/input_schema@3.3.14) (2023-05-18)
+
+
+### Bug Fixes
+
+* **input_schema:** proxygroup validation ([#383](https://github.com/apify/apify-shared-js/issues/383)) ([1b3a118](https://github.com/apify/apify-shared-js/commit/1b3a1182953d2482b99dbb5ae4703a79547bff74))
+
+
+
+
+
 ## [3.3.13](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.12...@apify/input_schema@3.3.13) (2023-05-10)
 
 
