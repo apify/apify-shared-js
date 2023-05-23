@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.16](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.15...@apify/log@2.2.16) (2023-05-23)
+
+
+### Bug Fixes
+
+* omits node: import from events builtin module ([#389](https://github.com/apify/apify-shared-js/issues/389)) ([f49d6cd](https://github.com/apify/apify-shared-js/commit/f49d6cd2cdec537df366e6846884dff385c6da71))
+
+
+
+
+
 ## [2.2.15](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.14...@apify/log@2.2.15) (2023-05-17)
 
 
