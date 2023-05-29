@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.15...@apify/input_schema@3.4.0) (2023-05-29)
+
+
+### Features
+
+* allow custom proxies to be https ([#392](https://github.com/apify/apify-shared-js/issues/392)) ([d2043e8](https://github.com/apify/apify-shared-js/commit/d2043e8243868b35c6e40cd2c652093985d479b0))
+
+
+
+
+
 ## [3.3.15](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.14...@apify/input_schema@3.3.15) (2023-05-23)
 
 **Note:** Version bump only for package @apify/input_schema
