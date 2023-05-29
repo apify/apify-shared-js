@@ -56,7 +56,7 @@ export const APIFY_PROXY_VALUE_REGEX = /^[\w._~]+$/;
 // http://123123:qweqwe:asdasd@proxy.com:55555
 // http://proxy.apify.com:5000
 // http://root@proxy.apify.com:5000
-export const PROXY_URL_REGEX = /^http:\/\/(([^:]+:)?[^@]*@)?[^.:@]+\.[^:]+:[\d]+?$/;
+export const PROXY_URL_REGEX = /^https?:\/\/(([^:]+:)?[^@]*@)?[^.:@]+\.[^:]+:[\d]+?$/;
 
 /**
  * AWS S3 docs say:
