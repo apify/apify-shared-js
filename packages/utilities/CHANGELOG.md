@@ -3,6 +3,278 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.2...@apify/utilities@2.7.3) (2023-05-23)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.7.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.1...@apify/utilities@2.7.2) (2023-05-23)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.7.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.0...@apify/utilities@2.7.1) (2023-05-17)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.7.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.6.0...@apify/utilities@2.7.0) (2023-05-17)
+
+
+### Features
+
+* **utilities:** use base64 encoding in url params utils ([#387](https://github.com/apify/apify-shared-js/issues/387)) ([80d3019](https://github.com/apify/apify-shared-js/commit/80d3019d13bff02a778240a13f605e20c38dd808))
+
+
+
+
+
+# [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.5.0...@apify/utilities@2.6.0) (2023-05-17)
+
+
+### Features
+
+* **utilities:** add new helpers for "run on apify" button ([#386](https://github.com/apify/apify-shared-js/issues/386)) ([881cbeb](https://github.com/apify/apify-shared-js/commit/881cbebd271b5079dcc3742e3d99ce3368c12dc6))
+
+
+
+
+
+# [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.4.1...@apify/utilities@2.5.0) (2023-05-10)
+
+
+### Features
+
+* allow using variables in fields of webhook payload template ([#369](https://github.com/apify/apify-shared-js/issues/369)) ([005b6cc](https://github.com/apify/apify-shared-js/commit/005b6cc39a4c3eb79321493114a09ee21f23712d))
+
+
+
+
+
+## [2.4.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.4.0...@apify/utilities@2.4.1) (2023-04-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.4.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.9...@apify/utilities@2.4.0) (2023-04-24)
+
+
+### Features
+
+* **utilities:** add `MONGODB_PING` and `REDIS_PING` check types to `HealthChecker` ([#379](https://github.com/apify/apify-shared-js/issues/379)) ([4a55489](https://github.com/apify/apify-shared-js/commit/4a55489c8b39bcb66b9e6ded1f80f753fa7af127))
+
+
+
+
+
+## [2.3.9](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.8...@apify/utilities@2.3.9) (2023-04-24)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.8](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.7...@apify/utilities@2.3.8) (2023-04-14)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.7](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.6...@apify/utilities@2.3.7) (2023-03-30)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.5...@apify/utilities@2.3.6) (2023-03-29)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.4...@apify/utilities@2.3.5) (2023-03-28)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.3...@apify/utilities@2.3.4) (2023-03-20)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.2...@apify/utilities@2.3.3) (2023-03-20)
+
+
+### Bug Fixes
+
+* use `new URL` for URL normalization ([#365](https://github.com/apify/apify-shared-js/issues/365)) ([55c69bc](https://github.com/apify/apify-shared-js/commit/55c69bcd9ed2b70302063313cbabd80c3aedf442))
+
+
+
+
+
+## [2.3.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.1...@apify/utilities@2.3.2) (2023-03-15)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.3.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.3.0...@apify/utilities@2.3.1) (2023-03-07)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.3.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.8...@apify/utilities@2.3.0) (2023-02-13)
+
+
+### Features
+
+* Updated FORBIDDEN_USERNAMES_REGEXPS ([#361](https://github.com/apify/apify-shared-js/issues/361)) ([87286a7](https://github.com/apify/apify-shared-js/commit/87286a7e79f631d458f01bc21acaf01f6d98c283))
+
+
+
+
+
+## [2.2.8](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.7...@apify/utilities@2.2.8) (2023-01-31)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.7](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.6...@apify/utilities@2.2.7) (2022-12-21)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.5...@apify/utilities@2.2.6) (2022-12-13)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.4...@apify/utilities@2.2.5) (2022-12-01)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.3...@apify/utilities@2.2.4) (2022-10-31)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.2...@apify/utilities@2.2.3) (2022-10-07)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.1...@apify/utilities@2.2.2) (2022-10-05)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.2.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.2.0...@apify/utilities@2.2.1) (2022-09-29)
+
+
+### Bug Fixes
+
+* **utilities:** use native node js class for public/private key pairs ([#337](https://github.com/apify/apify-shared-js/issues/337)) ([d675f52](https://github.com/apify/apify-shared-js/commit/d675f521e4d212af28a1d2c32658bd915c8e4ec5))
+
+
+
+
+
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.5...@apify/utilities@2.2.0) (2022-09-27)
+
+
+### Features
+
+* **utilities:** add publicEncrypt() and privateDecrypt() method ([#334](https://github.com/apify/apify-shared-js/issues/334)) ([dead00c](https://github.com/apify/apify-shared-js/commit/dead00cf2a912f4a0c7742f4d2e080ab15466d33))
+
+
+
+
+
+## [2.1.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.4...@apify/utilities@2.1.5) (2022-09-05)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.3...@apify/utilities@2.1.4) (2022-07-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.2...@apify/utilities@2.1.3) (2022-07-26)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.1.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.1...@apify/utilities@2.1.2) (2022-07-19)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
 ## [2.1.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.1.0...@apify/utilities@2.1.1) (2022-07-04)
 
 **Note:** Version bump only for package @apify/utilities

@@ -207,5 +207,83 @@ describe('input_schema.json', () => {
 
             turnOffConsoleWarnErrors();
         });
+
+        describe('special cases for isSecret string type', () => {
+            const isSchemaValid = (fields: object, isSecret?: boolean) => {
+                return ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            isSecret,
+                            ...fields,
+                        },
+                    },
+                });
+            };
+
+            it('should not allow all editors', () => {
+                ['textfield', 'textarea', 'hidden'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(true);
+                });
+                ['javascript', 'python'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(false);
+                });
+            });
+
+            it('should not allow some fields', () => {
+                ['minLength', 'maxLength'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                });
+                ['default', 'prefill', 'pattern'].forEach((stringField) => {
+                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
+                });
+            });
+
+            it('should work without isSecret with all editors and properties', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'textarea',
+                            isSecret: false,
+                            minLength: 2,
+                            maxLength: 100,
+                            default: 'blablablablabla',
+                            prefill: 'blablablablablablablablablablabla',
+                        },
+                    },
+                })).toBe(true);
+
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'textarea',
+                            isSecret: false,
+                            minLength: 2,
+                            maxLength: 100,
+                            default: 'blablablablabla',
+                            prefill: 'blablablablablablablablablablabla',
+                            bla: 'bla', // Validation failed because additional property
+                        },
+                    },
+                })).toBe(false);
+            });
+        });
     });
 });

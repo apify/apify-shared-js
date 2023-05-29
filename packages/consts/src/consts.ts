@@ -2,12 +2,12 @@ import { DNS_SAFE_NAME_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
-export const ACT_JOB_TYPES = {
+export const ACTOR_JOB_TYPES = {
     BUILD: 'BUILD',
     RUN: 'RUN',
 } as const;
 
-export const ACT_SOURCE_TYPES = {
+export const ACTOR_SOURCE_TYPES = {
     SOURCE_CODE: 'SOURCE_CODE',
     SOURCE_FILES: 'SOURCE_FILES',
     GIT_REPO: 'GIT_REPO',
@@ -26,7 +26,7 @@ export const ACTOR_EVENT_NAMES = {
 /**
  * Dictionary of possible values for 'status' field of act2Builds or act2Runs collections.
  */
-export const ACT_JOB_STATUSES = {
+export const ACTOR_JOB_STATUSES = {
     READY: 'READY', // started but not allocated to any worker yet
     RUNNING: 'RUNNING', // running on worker
     SUCCEEDED: 'SUCCEEDED', // finished and all good
@@ -38,13 +38,22 @@ export const ACT_JOB_STATUSES = {
 } as const;
 
 /**
+ * Dictionary of possible values for 'status' field of webhookDispatches collections.
+ */
+export const WEBHOOK_DISPATCH_STATUSES = {
+    ACTIVE: 'ACTIVE', // Attempting to deliver the webhook
+    SUCCEEDED: 'SUCCEEDED', // Webhook was delivered
+    FAILED: 'FAILED', // All calls to webhook target URL failed
+} as const;
+
+/**
  * An array of act jobs statuses that are final for the jobs.
  */
-export const ACT_JOB_TERMINAL_STATUSES = [
-    ACT_JOB_STATUSES.SUCCEEDED,
-    ACT_JOB_STATUSES.FAILED,
-    ACT_JOB_STATUSES.TIMED_OUT,
-    ACT_JOB_STATUSES.ABORTED,
+export const ACTOR_JOB_TERMINAL_STATUSES = [
+    ACTOR_JOB_STATUSES.SUCCEEDED,
+    ACTOR_JOB_STATUSES.FAILED,
+    ACTOR_JOB_STATUSES.TIMED_OUT,
+    ACTOR_JOB_STATUSES.ABORTED,
 ];
 
 // NOTE: for legacy reasons these are lower-case, maybe we should migrate to upper case later.
@@ -60,142 +69,10 @@ export const META_ORIGINS = {
     API: 'API', // Job started through API
     SCHEDULER: 'SCHEDULER', // Job started through Scheduler
     TEST: 'TEST', // Job started through test actor page
+    WEBHOOK: 'WEBHOOK', // Job started by the webhook
+    ACTOR: 'ACTOR', // Job started by another actor run
+    CLI: 'CLI', // Job started by apify CLI
 } as const;
-
-/**
- * Base Docker images for acts, in order in which they are displayed in UI.
- * See https://www.apify.com/docs/actor#base-images
- */
-export const ACTOR_BASE_DOCKER_IMAGES = [
-    // Latest:
-    {
-        name: 'apify/actor-node',
-        displayName: 'Node.js 14 on Alpine Linux',
-        prePull: true,
-    },
-    {
-        name: 'apify/actor-node-puppeteer-chrome',
-        displayName: 'Node.js 14 + Puppeteer + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-        prePull: true,
-    },
-    {
-        name: 'apify/actor-node-playwright-chrome',
-        displayName: 'Node.js 14 + Playwright + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-        prePull: true,
-    },
-    {
-        name: 'apify/actor-node-playwright-firefox',
-        displayName: 'Node.js 14 + Playwright + Firefox on Debian',
-        copyChown: 'myuser:myuser',
-        prePull: true,
-    },
-    {
-        name: 'apify/actor-node-playwright-webkit',
-        displayName: 'Node.js 14 + Playwright + WebKit on Debian',
-        copyChown: 'myuser:myuser',
-        prePull: true,
-    },
-    {
-        name: 'apify/actor-node-playwright',
-        displayName: 'Node.js 14 + Playwright + All Browsers on Ubuntu',
-        copyChown: 'myuser:myuser',
-        prePull: true,
-    },
-
-    // Beta:
-    {
-        name: 'apify/actor-node',
-        displayName: 'BETA: Node.js 14 on Alpine Linux:beta',
-    },
-    {
-        name: 'apify/actor-node-puppeteer-chrome:beta',
-        displayName: 'BETA: Node.js 14 + Puppeteer + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-playwright-chrome:beta',
-        displayName: 'BETA: Node.js 14 + Playwright + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-playwright-firefox:beta',
-        displayName: 'BETA: Node.js 14 + Playwright + Firefox on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-playwright-webkit:beta',
-        displayName: 'BETA: Node.js 14 + Playwright + WebKit on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-playwright:beta',
-        displayName: 'Node.js 14 + Playwright + All Browsers on Ubuntu',
-        copyChown: 'myuser:myuser',
-    },
-
-    // Deprecated:
-    // These are here because we made breaking changes in the client that could break existing single file actors.
-    // We will get a rid of this along with the whole single file logic.
-    {
-        name: 'apify/actor-node-basic',
-        displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux',
-    },
-    {
-        name: 'apify/actor-node-chrome',
-        displayName: '[DEPRECATED]: Node.js 12 + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-chrome-xvfb',
-        displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-basic:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 12 on Alpine Linux',
-    },
-    {
-        name: 'apify/actor-node-chrome:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-chrome-xvfb:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 12 + Chrome + Xvfb on Debian',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-basic:v0.21.10',
-        displayName: '[DEPRECATED]: Node.js 12 on Alpine Linux (Apify SDK v0.21.10)',
-    },
-    {
-        name: 'apify/actor-node-chrome:v0.21.10',
-        displayName: '[DEPRECATED]: Node.js 12 + Chrome on Debian (Apify SDK v0.21.10)',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-chrome-xvfb:v0.21.10',
-        displayName: '[DEPRECATED]: Node.js 12 + Chrome + Xvfb on Debian (Apify SDK v0.21.10)',
-        copyChown: 'myuser:myuser',
-    },
-    {
-        name: 'apify/actor-node-puppeteer',
-        displayName: '[DEPRECATED] Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome instead!',
-        copyChown: 'node:node',
-    },
-    {
-        name: 'apify/actor-node-puppeteer:beta',
-        displayName: '[DEPRECATED] BETA: Node.js 10 + Puppeteer on Debian - use apify/actor-node-chrome:beta instead!',
-        copyChown: 'node:node',
-    },
-];
-
-/**
- * Default image from ACTOR_BASE_DOCKER_IMAGES.
- */
-export const ACTOR_BASE_DOCKER_IMAGE_DEFAULT = ACTOR_BASE_DOCKER_IMAGES[0].name;
 
 /**
  * Keys of labels applied to act Docker images and containers.
@@ -203,15 +80,18 @@ export const ACTOR_BASE_DOCKER_IMAGE_DEFAULT = ACTOR_BASE_DOCKER_IMAGES[0].name;
 export const DOCKER_LABELS = {
     ACTOR_BUILD_ID: 'com.apify.actBuildId',
     ACTOR_RUN_ID: 'com.apify.actRunId',
-    // Kept for backwards compatibility, will be removed soon
+
+    // Kept for backwards compatibility, will be removed soon (TODO: remove old usages!)
+    /** @deprecated Use ACTOR_BUILD_ID instead! */
     ACT_BUILD_ID: 'com.apify.actBuildId',
+    /** @deprecated Use ACTOR_RUN_ID instead! */
     ACT_RUN_ID: 'com.apify.actRunId',
 } as const;
 
 /**
  * Acts types
  */
-export const ACT_TYPES = {
+export const ACTOR_TYPES = {
     ACT: 'acts',
     CRAWLER: 'crawlers',
 } as const;
@@ -268,11 +148,26 @@ export const ACTOR_RESTART_ON_ERROR = {
     INTERVAL_MILLIS: 1 * 60 * 1000,
 };
 
-/**
- * Kept for backwards compatibility, will be removed soon.
- * TODO: Remove this once it's no longer used anywhere.
- */
+// The constants below are kept for backwards compatibility
+// TODO: Once all references to these are removed, remove these constants too
+
+/** @deprecated Use ACTOR_RESTART_ON_ERROR instead */
 export const ACT_RESTART_ON_ERROR = ACTOR_RESTART_ON_ERROR;
+
+/** @deprecated Use ACTOR_JOB_TYPES instead */
+export const ACT_JOB_TYPES = ACTOR_JOB_TYPES;
+
+/** @deprecated Use ACTOR_SOURCE_TYPES instead */
+export const ACT_SOURCE_TYPES = ACTOR_SOURCE_TYPES;
+
+/** @deprecated Use ACTOR_JOB_STATUSES instead */
+export const ACT_JOB_STATUSES = ACTOR_JOB_STATUSES;
+
+/** @deprecated Use ACTOR_JOB_TERMINAL_STATUSES instead */
+export const ACT_JOB_TERMINAL_STATUSES = ACTOR_JOB_TERMINAL_STATUSES;
+
+/** @deprecated Use ACTOR_TYPES instead */
+export const ACT_TYPES = ACTOR_TYPES;
 
 /**
  * 1 compute unit = 1GB * 1Hour.
@@ -286,10 +181,10 @@ export const COMPUTE_UNIT_MILLIS = 60 * 60 * 1000;
  */
 export const ACTOR_LIMITS = {
     // Total amount of memory for the build container. Must be less than or equal to the maximum of the free plan!
-    BUILD_DEFAULT_MEMORY_MBYTES: 1024,
+    BUILD_DEFAULT_MEMORY_MBYTES: 2048,
 
     // Maximum duration of build in seconds.
-    BUILD_TIMEOUT_SECS: 600,
+    BUILD_TIMEOUT_SECS: 1800,
 
     // For each build or run container, set disk quota based on memory size
     RUN_DISK_TO_MEMORY_SIZE_COEFF: 2,
@@ -311,7 +206,7 @@ export const ACTOR_LIMITS = {
     INPUT_SCHEMA_MAX_BYTES: 100 * 1024,
 
     // Max length of run/build log in number of characters
-    LOG_MAX_CHARS: 5000000,
+    LOG_MAX_CHARS: 10 * 1024 * 1024,
 };
 
 /**
@@ -319,16 +214,22 @@ export const ACTOR_LIMITS = {
  */
 export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of actors per user
-    MAX_ACTORS_PER_USER: 100,
+    MAX_ACTORS_PER_USER: 500,
 
     // Maximum number of tasks per user
-    MAX_TASKS_PER_USER: 1000,
+    MAX_TASKS_PER_USER: 5000,
 
     // Maximum number of schedules per user
     MAX_SCHEDULES_PER_USER: 100,
 
     // Maximum number of webhooks per user
     MAX_WEBHOOKS_PER_USER: 100,
+
+    // Maximum number of concurrent actor runs per user for free accounts.
+    FREE_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 25,
+
+    // Maximum number of concurrent actor runs per user for paid accounts.
+    PAID_ACCOUNT_MAX_CONCURRENT_ACTOR_RUNS_PER_USER: 250,
 
     // Maximum number of actors per scheduler
     MAX_ACTORS_PER_SCHEDULER: 10,
@@ -357,6 +258,7 @@ export const ENV_VARS = {
     ACTOR_TASK_ID: 'APIFY_ACTOR_TASK_ID',
     ACTOR_BUILD_ID: 'APIFY_ACTOR_BUILD_ID',
     ACTOR_BUILD_NUMBER: 'APIFY_ACTOR_BUILD_NUMBER',
+    ACTOR_MAX_PAID_DATASET_ITEMS: 'ACTOR_MAX_PAID_DATASET_ITEMS',
     INPUT_KEY: 'APIFY_INPUT_KEY',
     USER_ID: 'APIFY_USER_ID',
     TOKEN: 'APIFY_TOKEN',
@@ -376,6 +278,7 @@ export const ENV_VARS = {
     XVFB: 'APIFY_XVFB',
     MEMORY_MBYTES: 'APIFY_MEMORY_MBYTES',
     LOG_LEVEL: 'APIFY_LOG_LEVEL',
+    LOG_FORMAT: 'APIFY_LOG_FORMAT',
     ACTOR_EVENTS_WS_URL: 'APIFY_ACTOR_EVENTS_WS_URL',
     CHROME_EXECUTABLE_PATH: 'APIFY_CHROME_EXECUTABLE_PATH',
     CONTAINER_PORT: 'APIFY_CONTAINER_PORT',
@@ -386,6 +289,8 @@ export const ENV_VARS = {
     SDK_LATEST_VERSION: 'APIFY_SDK_LATEST_VERSION',
     DISABLE_OUTDATED_WARNING: 'APIFY_DISABLE_OUTDATED_WARNING',
     WORKFLOW_KEY: 'APIFY_WORKFLOW_KEY',
+    INPUT_SECRETS_PRIVATE_KEY_FILE: 'APIFY_INPUT_SECRETS_PRIVATE_KEY_FILE',
+    INPUT_SECRETS_PRIVATE_KEY_PASSPHRASE: 'APIFY_INPUT_SECRETS_PRIVATE_KEY_PASSPHRASE',
 
     // Deprecated, keep them for backward compatibility:
     ACT_ID: 'APIFY_ACT_ID',
@@ -435,12 +340,6 @@ export const KEY_VALUE_STORE_KEYS = {
 } as const;
 
 /**
- * Max length of Actor log in number of characters.
- * TODO: Remove this once it's no longer used anywhere.
- */
-export const ACTOR_LOG_MAX_CHARS = ACTOR_LIMITS.LOG_MAX_CHARS;
-
-/**
  * Represents the maximum size in bytes of a request body (decompressed)
  * that will be accepted by the App and API servers.
  */
@@ -450,6 +349,7 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
  * Categories for crawlers and actors
  */
 export const ACTOR_CATEGORIES = {
+    AI: 'AI',
     AUTOMATION: 'Automation',
     BUSINESS: 'Business',
     COVID_19: 'Covid-19',
@@ -458,6 +358,7 @@ export const ACTOR_CATEGORIES = {
     ECOMMERCE: 'E-commerce',
     GAMES: 'Games',
     JOBS: 'Jobs',
+    LEAD_GENERATION: 'Lead generation',
     MARKETING: 'Marketing',
     NEWS: 'News',
     SEO_TOOLS: 'SEO tools',
@@ -470,29 +371,11 @@ export const ACTOR_CATEGORIES = {
     OTHER: 'Other',
 } as const;
 
-/**
- * TODO: This will be used during the category migration and can be removed after that.
- */
-export const LEGACY_ACTOR_CATEGORIES = {
-    TRAVEL: 'Travel',
-    ECOMMERCE: 'E-commerce',
-    ENTERTAINMENT: 'Entertainment',
-    SOCIAL: 'Social',
-    MARKETING: 'Marketing',
-    NEWS: 'News',
-    FINANCE: 'Finance',
-    LIFESTYLE: 'Lifestyle',
-    SEARCH_ENGINES: 'Search engines',
-    DATA: 'Data processing',
-    EGOVERNMENT: 'E-government',
-    TOOLS: 'Tools',
-    EXAMPLES: 'Examples',
-    OTHER: 'Other',
-} as const;
-
+// TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
+/** @deprecated Use ACTOR_CATEGORIES instead! */
 export const ALL_ACTOR_CATEGORIES = {
     ...ACTOR_CATEGORIES,
-    ...LEGACY_ACTOR_CATEGORIES,
+    // ...LEGACY_ACTOR_CATEGORIES,
 } as const;
 
 /**
@@ -624,6 +507,11 @@ export const MARKETPLACE_USER_ROLES = {
     DEVELOPER: 'DEVELOPER',
     DATA_EXPERT: 'DATA_EXPERT',
     CUSTOMER: 'CUSTOMER',
+} as const;
+
+export const USER_PERSONA_TYPES = {
+    DEVELOPER: 'DEVELOPER',
+    USER: 'USER',
 } as const;
 
 export const GIT_MAIN_BRANCH = 'main';

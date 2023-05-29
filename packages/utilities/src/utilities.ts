@@ -9,7 +9,7 @@
 
 import crypto from 'crypto';
 import log, { Log, LoggerJson, LogLevel } from '@apify/log';
-import { ANONYMOUS_USERNAME } from '@apify/consts';
+import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -219,7 +219,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'act', 'acts', 'success-stories', 'roadmap', 'join-marketplace', 'presskit', 'press-kit', 'covid-19',
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
-    'freelancers', 'freelancer', 'partner',
+    'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
@@ -315,7 +315,7 @@ const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAM
  * or matches any root route path.
  */
 export function isForbiddenUsername(username: string): boolean {
-    return !!username.match(FORBIDDEN_REGEXP);
+    return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_REGEXP);
 }
 
 /**

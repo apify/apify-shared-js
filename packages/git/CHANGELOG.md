@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/git@2.0.0...@apify/git@2.1.0) (2023-02-14)
+
+
+### Features
+
+* **git:** update git parsing ([#359](https://github.com/apify/apify-shared-js/issues/359)) ([ef6313d](https://github.com/apify/apify-shared-js/commit/ef6313dc5135ababc966217593ff6731d0ab8597))
+
+
+
+
+
 # [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/git@1.0.2...@apify/git@2.0.0) (2022-06-21)
 
 

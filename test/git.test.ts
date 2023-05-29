@@ -151,6 +151,24 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         })).toEqual(expectedResult);
     });
 
+    it('works correctly for Github repo with branch name in hash #2', () => {
+        const testMarkdown = `
+            # Heading
+            ![img1](http://www.apify-awesome-test-image.com)
+            ![img2](./relative-path-to-img.jpg)
+        `;
+        const expectedResult = `
+            # Heading
+            ![img1](http://www.apify-awesome-test-image.com)
+            ![img2](https://raw.githubusercontent.com/apify/test-repo/my-awesome-branch/relative-path-to-img.jpg)
+        `;
+
+        expect(convertRelativeImagePathsToAbsoluteInReadme({
+            readme: testMarkdown,
+            gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch:folder',
+        })).toEqual(expectedResult);
+    });
+
     it('works correctly for Github repo without explicit branch name', () => {
         const testMarkdown = `
             # Heading

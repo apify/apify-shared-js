@@ -1,6 +1,6 @@
 # Apify shared library
 
-[![Build Status](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yml/badge.svg?branch=master)](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yml)
+[![Build Status](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yaml/badge.svg?branch=master)](https://github.com/apify/apify-shared-js/actions/workflows/test_and_release.yaml)
 
 package | version
 --------|--------
@@ -9,6 +9,7 @@ package | version
 `@apify/git` | [![NPM version](https://img.shields.io/npm/v/@apify/git.svg)](https://www.npmjs.com/package/@apify/git)
 `@apify/hubspot_client` | [![NPM version](https://img.shields.io/npm/v/@apify/hubspot_client.svg)](https://www.npmjs.com/package/@apify/hubspot_client)
 `@apify/input_schema` | [![NPM version](https://img.shields.io/npm/v/@apify/input_schema.svg)](https://www.npmjs.com/package/@apify/input_schema)
+`@apify/input_secrets` | [![NPM version](https://img.shields.io/npm/v/@apify/input_secrets.svg)](https://www.npmjs.com/package/@apify/input_secrets)
 `@apify/image_proxy_client` | [![NPM version](https://img.shields.io/npm/v/@apify/image_proxy_client.svg)](https://www.npmjs.com/package/@apify/image_proxy_client)
 `@apify/log` | [![NPM version](https://img.shields.io/npm/v/@apify/log.svg)](https://www.npmjs.com/package/@apify/log)
 `@apify/markdown` | [![NPM version](https://img.shields.io/npm/v/@apify/markdown.svg)](https://www.npmjs.com/package/@apify/markdown)

@@ -22,7 +22,8 @@ const validTemplate = `
 const validTemplateWithVariableInString = `
 {
     "foo": "bar\\"{{foo}}\\"",
-    "bar": {{xyz}}
+    "bar": {{xyz}},
+    "baz": "{{foo}}"
 }
 `;
 
@@ -102,7 +103,7 @@ describe('WebhookPayloadTemplate', () => {
         expect(payload).toEqual(context);
     });
 
-    it('does not replace variables in strings', () => {
+    it('does not replace variables in strings by default', () => {
         const payload = WebhookPayloadTemplate.parse(validTemplateWithVariableInString);
         expect(payload.foo).toBe('bar"{{foo}}"');
 
@@ -112,6 +113,40 @@ describe('WebhookPayloadTemplate', () => {
         } catch (err) {
             expect(err).toBeInstanceOf(InvalidJsonError);
         }
+    });
+
+    it('replaces variables in strings if interpolateStrings=true', () => {
+        const context = {
+            foo: 'hello',
+            lol: 'world',
+            resource: {
+                defaultDatasetId: 'dataset-123',
+            },
+            arrayField: [1, 2, 3],
+        };
+        const payload = WebhookPayloadTemplate.parse(`
+        {
+            "justVariable": "{{foo}}",
+            "someOtherContent": "bar{{foo}}",
+            "twoVariables": "bar{{foo}}baz{{foo}}bar{{lol}}",
+            "bar": {{xyz}},
+            "datasetId": "{{resource.defaultDatasetId}}",
+            "arrayField": "{{arrayField}}",
+            "arrayFieldInString": "This is my array {{arrayField}}",
+            "resourceWrapped": "{{resource}}",
+            "resourceDirect": {{resource}},
+            "resourceInString": "This is my object {{resource}}"
+        }`, null, context, { interpolateStrings: true });
+        expect(payload.justVariable).toBe('hello');
+        expect(payload.someOtherContent).toBe('barhello');
+        expect(payload.twoVariables).toBe('barhellobazhellobarworld');
+        expect(payload.bar).toBe(null);
+        expect(payload.datasetId).toBe('dataset-123');
+        expect(payload.arrayField).toStrictEqual(context.arrayField);
+        expect(payload.arrayFieldInString).toBe('This is my array 1,2,3');
+        expect(payload.resourceWrapped).toStrictEqual(context.resource);
+        expect(payload.resourceDirect).toStrictEqual(context.resource);
+        expect(payload.resourceInString).toBe('This is my object [object Object]');
     });
 
     it('should throw InvalidJsonError on invalid json', () => {

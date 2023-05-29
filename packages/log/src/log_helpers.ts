@@ -1,5 +1,5 @@
 import { ENV_VARS } from '@apify/consts';
-import { LogLevel } from './log_consts';
+import { LogLevel, LogFormat } from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -34,6 +34,25 @@ export function getLevelFromEnv(): number {
 }
 
 /**
+ * Gets log format from env variable. Currently, values 'JSON' and 'TEXT' are supported.
+ * Defaults to 'TEXT' if no value is specified.
+ */
+export function getFormatFromEnv(): LogFormat {
+    const envVar = process.env[ENV_VARS.LOG_FORMAT] || LogFormat.TEXT;
+
+    switch (envVar.toLowerCase()) {
+        case LogFormat.JSON.toLowerCase():
+            return LogFormat.JSON;
+        case LogFormat.TEXT.toLowerCase():
+            return LogFormat.TEXT;
+        default:
+            // eslint-disable-next-line no-console
+            console.warn(`Unknown value for environment variable ${ENV_VARS.LOG_FORMAT}: ${envVar}`);
+            return LogFormat.TEXT;
+    }
+}
+
+/**
  * Limits given object to given depth and escapes function with [function] string.
  *
  * ie. Replaces object's content by '[object]' and array's content
@@ -63,10 +82,10 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
     }
 
     if (typeof record === 'object' && record !== null) {
-        const mapObject = <U> (obj: U) => {
+        const mapObject = <U extends Record<PropertyKey, any>> (obj: U) => {
             const res = {} as U;
-            Object.keys(obj).forEach((key) => {
-                res[key] = nextCall(obj[key]);
+            Object.keys(obj).forEach((key: keyof U) => {
+                res[key as keyof U] = nextCall(obj[key]) as U[keyof U];
             });
             return res;
         };

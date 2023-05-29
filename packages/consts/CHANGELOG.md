@@ -3,6 +3,200 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.14.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.14.0...@apify/consts@2.14.1) (2023-05-23)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
+# [2.14.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.13.0...@apify/consts@2.14.0) (2023-04-27)
+
+
+### Features
+
+* add ACTOR_MAX_PAID_DATASET_ITEMS to env vars ([#380](https://github.com/apify/apify-shared-js/issues/380)) ([ed41d83](https://github.com/apify/apify-shared-js/commit/ed41d83491f8a92eb2278370eb4ad3e03d7dec22)), closes [apify/apify-core#10691](https://github.com/apify/apify-core/issues/10691)
+
+
+
+
+
+# [2.13.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.3...@apify/consts@2.13.0) (2023-04-24)
+
+
+### Features
+
+* **app:** Lead generation actor category ([#378](https://github.com/apify/apify-shared-js/issues/378)) ([bbe4467](https://github.com/apify/apify-shared-js/commit/bbe446742384fef005fee98039f6784fb5eef93a))
+
+
+
+
+
+## [2.12.3](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.2...@apify/consts@2.12.3) (2023-04-14)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
+## [2.12.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.1...@apify/consts@2.12.2) (2023-03-30)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
+## [2.12.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.12.0...@apify/consts@2.12.1) (2023-03-29)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
+# [2.12.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.11.0...@apify/consts@2.12.0) (2023-03-28)
+
+
+### Features
+
+* **app:** AI actor category ([#370](https://github.com/apify/apify-shared-js/issues/370)) ([1f0dcfb](https://github.com/apify/apify-shared-js/commit/1f0dcfbc2a4404d8dadbac72260cfaf150cb1215))
+
+
+
+
+
+# [2.11.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.10.0...@apify/consts@2.11.0) (2023-03-15)
+
+
+### Features
+
+* increase default number of actors and tasks ([#364](https://github.com/apify/apify-shared-js/issues/364)) ([dd20b18](https://github.com/apify/apify-shared-js/commit/dd20b186862d65c9e67be2268d3aa7d22bbdb9e0))
+
+
+
+
+
+# [2.10.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.9.0...@apify/consts@2.10.0) (2023-03-07)
+
+
+### Features
+
+* add max items to env variable names ([#363](https://github.com/apify/apify-shared-js/issues/363)) ([7fe15fc](https://github.com/apify/apify-shared-js/commit/7fe15fce9fef6e988161620300cd3f3f3e6564e9))
+
+
+
+
+
+# [2.9.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.8.0...@apify/consts@2.9.0) (2023-01-31)
+
+
+### Features
+
+* increased actor build timeout ([#357](https://github.com/apify/apify-shared-js/issues/357)) ([67c7009](https://github.com/apify/apify-shared-js/commit/67c700939066ffed818958079ce4f39a2bd38c4d))
+
+
+
+
+
+# [2.8.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.7.0...@apify/consts@2.8.0) (2022-12-21)
+
+
+### Features
+
+* **consts:** increase max length of actor job log to 10 MB ([#355](https://github.com/apify/apify-shared-js/issues/355)) ([b859433](https://github.com/apify/apify-shared-js/commit/b8594336c5d01c6e5f6a29e9316b21dce9ecab75))
+
+
+
+
+
+# [2.7.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.6.0...@apify/consts@2.7.0) (2022-12-13)
+
+
+### Features
+
+* **consts:** adding CLI to META_ORIGINS ([#354](https://github.com/apify/apify-shared-js/issues/354)) ([21b35d0](https://github.com/apify/apify-shared-js/commit/21b35d062c11b0f6da76d8c0099bbb2ad3e4903a))
+
+
+
+
+
+# [2.6.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.5.0...@apify/consts@2.6.0) (2022-12-01)
+
+
+### Features
+
+* **consts:** add USER_PERSONA_TYPES const ([#352](https://github.com/apify/apify-shared-js/issues/352)) ([9a19ec1](https://github.com/apify/apify-shared-js/commit/9a19ec13bfc4089f3de5df4ac9036b790d3d2f11))
+
+
+
+
+
+# [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.4.1...@apify/consts@2.5.0) (2022-10-31)
+
+
+### Features
+
+* **consts:** Adding new META_ORIGINS for jobs initiated by another actor or webhook ([#350](https://github.com/apify/apify-shared-js/issues/350)) ([15623cd](https://github.com/apify/apify-shared-js/commit/15623cd46e8d3324ff0ae94b9a92bdad86fcee79))
+
+
+
+
+
+## [2.4.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.4.0...@apify/consts@2.4.1) (2022-10-07)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
+# [2.4.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.3.0...@apify/consts@2.4.0) (2022-10-05)
+
+
+### Features
+
+* **consts,log:** add support for reading log level from env var ([#338](https://github.com/apify/apify-shared-js/issues/338)) ([88795f0](https://github.com/apify/apify-shared-js/commit/88795f0c13550a8aefec868ef4d0004ff473c79d))
+
+
+
+
+
+# [2.3.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.2.0...@apify/consts@2.3.0) (2022-07-27)
+
+
+### Features
+
+* Increasing BUILD_DEFAULT_MEMORY_MBYTES to 2 GB ([#321](https://github.com/apify/apify-shared-js/issues/321)) ([e9bdf1f](https://github.com/apify/apify-shared-js/commit/e9bdf1fb81fa282b9bd616c6aabc546b592bf810))
+
+
+
+
+
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.1.0...@apify/consts@2.2.0) (2022-07-26)
+
+
+### Features
+
+* add WEBHOOK_DISPATCH_STATUSES const ([#317](https://github.com/apify/apify-shared-js/issues/317)) ([0416c73](https://github.com/apify/apify-shared-js/commit/0416c73c95809a1b9c5b41e030a74fb981c51802))
+
+
+
+
+
+# [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.0.0...@apify/consts@2.1.0) (2022-07-19)
+
+
+### Features
+
+* **consts:** add a new platform limit for max concurrent actor runs ([#318](https://github.com/apify/apify-shared-js/issues/318)) ([630de0b](https://github.com/apify/apify-shared-js/commit/630de0b2169a48cac1f5b4a83a0d055d6a3a2b5d))
+
+
+
+
+
 # [2.0.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@1.11.0...@apify/consts@2.0.0) (2022-06-21)
 
 

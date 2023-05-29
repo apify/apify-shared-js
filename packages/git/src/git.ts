@@ -9,6 +9,37 @@ interface ConvertOptions {
     gitBranchName?: string;
 }
 
+interface ParseGitUrl extends gitUrlParse.GitUrl {
+    branchName?: string;
+}
+
+/**
+ * Apify uses an extended git URL format with branch and directory as hash parameters:
+ * - myrepo.git#branch
+ * - myrepo.git#:folder
+ * - myrepo.git#branch:folder
+ * see https://github.com/apify/apify-worker/blob/8a667b3b5879a78ec2ce6a06e4953ad174b47cf2/src/actor/act2_build_job.js#L1258
+ * @param gitRepoUrl
+ * @return {ParseGitUrl}
+ */
+const parseApifyGitUrl = (gitRepoUrl: string): ParseGitUrl => {
+    if (gitRepoUrl.includes('#')) {
+        const repoFullUrlParsed = gitRepoUrl.split('#');
+        const repoUrl = repoFullUrlParsed[0];
+        const branchDirPart = repoFullUrlParsed[1];
+        const parsedRepoUrl = gitUrlParse(repoUrl);
+        let branchName;
+        if (branchDirPart && branchDirPart.includes(':')) {
+            const [branchPart] = branchDirPart.split(':');
+            branchName = branchPart;
+        } else if (branchDirPart) {
+            branchName = branchDirPart;
+        }
+        return { ...parsedRepoUrl, branchName };
+    }
+    return gitUrlParse(gitRepoUrl);
+};
+
 /**
  * This replaces all relative image paths in markdown readme
  * by appropriate absolute paths so they can be correctly rendered on the website.
@@ -17,17 +48,16 @@ interface ConvertOptions {
  * @return {string} updated readme
  */
 export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl, gitBranchName }: ConvertOptions): string => {
-    const parsedRepoUrl = gitUrlParse(gitRepoUrl);
+    const parsedRepoUrl = parseApifyGitUrl(gitRepoUrl);
 
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
     const repoNameParts = parsedRepoUrl.full_name.split('/');
     const repoFullName = `${repoNameParts[0]}/${repoNameParts[1]}`;
 
-    // When user wants to specify a different branch during actor addition, they need
-    // to add #branchName to the end of git URL. Hence it ends up under 'hash' key here.
+    // We need to parse the branch there hence gitUrlParse is not detected this format of git URL.
     // Otherwise, we try to use the branch name from the build object. It should exist for all builds since roughly mid October 2020.
     // Prior to that, all default branches were 'master', hence we default to that as a backup.
-    const branchName = parsedRepoUrl.hash || gitBranchName || 'master';
+    const branchName = parsedRepoUrl.branchName || gitBranchName || 'master';
 
     // We want to replace relative paths (all paths which are not absolute, so anything not starting with http://, https://, ftp:// or data:)
     // with absolute paths, which is done by these fancy regular expressions

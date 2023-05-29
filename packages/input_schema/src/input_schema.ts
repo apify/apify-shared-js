@@ -43,6 +43,10 @@ export function parseAjvError(
     } else if (error.keyword === 'additionalProperties') {
         fieldKey = error.params.additionalProperty;
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
+    } else if (error.keyword === 'enum') {
+        fieldKey = error.instancePath.split('/').pop()!;
+        const errorMessage = `${error.message}: "${error.params.allowedValues.join('", "')}"`;
+        message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
     } else {
         fieldKey = error.instancePath.split('/').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
@@ -113,8 +117,24 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
 };
 
 /**
- * This function validates given input schema first just for basic structure then each field one by one and
- * finally fully against the whole schema.
+ * Validates that all required fields are present in properties list
+ */
+export function validateExistenceOfRequiredFields<T extends Record<string, any>>(inputSchema: T) {
+    // If the input schema does not have any required fields, we do not need to validate them
+    if (!inputSchema?.required?.length) return;
+
+    Object.values(inputSchema?.required).forEach((fieldKey) => {
+        // If the required field is present in the list of properties, we can check the next one
+        if (inputSchema?.properties[fieldKey as string]) return;
+
+        // The required field is not defined in list of properties. Which means the schema is not valid.
+        throw new Error(m('inputSchema.validation.missingRequiredField', { fieldKey }));
+    });
+}
+
+/**
+ * This function validates given input schema first just for basic structure then each field one by one,
+ * then checks that all required fields are present and finally checks fully against the whole schema.
  *
  * This way we get the most accurate error message for user.
  */
@@ -124,6 +144,9 @@ export function validateInputSchema<T extends Record<string, any>>(validator: Aj
 
     // Then validate each field separately.
     Object.entries<any>(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => validateField(validator, fieldSchema, fieldKey));
+
+    // Next validate if required fields are actually present in the schema
+    validateExistenceOfRequiredFields(inputSchema);
 
     // Finally just to be sure run validation against the whole shema.
     validateAgainstSchemaOrThrow(validator, inputSchema, schema, 'schema');

@@ -17,6 +17,21 @@ describe('input_schema.json', () => {
                         description: 'Some description ...',
                         editor: 'json',
                     },
+                    myField2: {
+                        title: 'Enum without titles',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'select',
+                        enum: ['a', 'b', 'c'],
+                    },
+                    myField3: {
+                        title: 'Enum with titles',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'select',
+                        enum: ['a', 'b', 'c'],
+                        enumTitles: ['A', 'B', 'C'],
+                    },
                 },
             };
 
@@ -78,7 +93,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values)',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "json", "hidden")',
             );
         });
 
@@ -140,7 +155,51 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values)',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: '
+                + '"javascript", "python", "textfield", "textarea", "datepicker", "hidden")',
+            );
+        });
+
+        it('should throw correct error on field in if/else definition', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        editor: 'textfield',
+                        maxLength: true,
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.maxLength must be integer)',
+            );
+        });
+
+        it('should throw correct error in string type else definition', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        isSecret: true,
+                        description: 'Some description ...',
+                        editor: 'textfield',
+                        maxLength: true,
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Property schema.properties.myField.maxLength is not allowed.)',
             );
         });
 
@@ -161,6 +220,62 @@ describe('input_schema.json', () => {
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
                 'Input schema is not valid (Field schema.properties.myField.enum.0 must be string)',
+            );
+        });
+
+        it('should throw error on empty enum array', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        enum: [],
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.enum.enum must NOT have fewer than 1 items)',
+            );
+        });
+
+        it('should throw error on empty enumTitles array', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        type: 'string',
+                        description: 'Some description ...',
+                        enum: ['abcd'],
+                        enumTitles: [],
+                    },
+                },
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                'Input schema is not valid (Field schema.properties.myField.enum.enumTitles must NOT have fewer than 1 items)',
+            );
+        });
+
+        it('should throw error when required field is not defined', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {},
+                required: ['something'],
+            };
+
+            expect(() => validateInputSchema(validator, schema)).toThrow(
+                // eslint-disable-next-line
+                'Field schema.properties.something does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
             );
         });
     });

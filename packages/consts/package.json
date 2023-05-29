@@ -1,6 +1,6 @@
 {
     "name": "@apify/consts",
-    "version": "2.0.0",
+    "version": "2.14.1",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

@@ -3,6 +3,191 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.17](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.16...@apify/log@2.2.17) (2023-05-23)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.16](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.15...@apify/log@2.2.16) (2023-05-23)
+
+
+### Bug Fixes
+
+* omits node: import from events builtin module ([#389](https://github.com/apify/apify-shared-js/issues/389)) ([f49d6cd](https://github.com/apify/apify-shared-js/commit/f49d6cd2cdec537df366e6846884dff385c6da71))
+
+
+
+
+
+## [2.2.15](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.14...@apify/log@2.2.15) (2023-05-17)
+
+
+### Bug Fixes
+
+* **logger:** destructured EventEmitter import from the events module ([#385](https://github.com/apify/apify-shared-js/issues/385)) ([d42a415](https://github.com/apify/apify-shared-js/commit/d42a415384ab3ca94949e2fb340a350735d175c5))
+
+
+
+
+
+## [2.2.14](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.13...@apify/log@2.2.14) (2023-04-27)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.13](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.12...@apify/log@2.2.13) (2023-04-24)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.12](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.11...@apify/log@2.2.12) (2023-04-14)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.11](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.10...@apify/log@2.2.11) (2023-03-30)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.10](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.9...@apify/log@2.2.10) (2023-03-29)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.9](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.8...@apify/log@2.2.9) (2023-03-28)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.8](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.7...@apify/log@2.2.8) (2023-03-15)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.7](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.6...@apify/log@2.2.7) (2023-03-07)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.6](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.5...@apify/log@2.2.6) (2023-01-31)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.5](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.4...@apify/log@2.2.5) (2022-12-21)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.4](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.3...@apify/log@2.2.4) (2022-12-13)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.3](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.2...@apify/log@2.2.3) (2022-12-01)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.2](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.1...@apify/log@2.2.2) (2022-10-31)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.2.1](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.0...@apify/log@2.2.1) (2022-10-07)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+# [2.2.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.4...@apify/log@2.2.0) (2022-10-05)
+
+
+### Features
+
+* **consts,log:** add support for reading log level from env var ([#338](https://github.com/apify/apify-shared-js/issues/338)) ([88795f0](https://github.com/apify/apify-shared-js/commit/88795f0c13550a8aefec868ef4d0004ff473c79d))
+
+
+
+
+
+## [2.1.4](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.3...@apify/log@2.1.4) (2022-09-05)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.3](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.2...@apify/log@2.1.3) (2022-07-27)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.2](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.1...@apify/log@2.1.2) (2022-07-26)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
+## [2.1.1](https://github.com/apify/apify-shared-js/compare/@apify/log@2.1.0...@apify/log@2.1.1) (2022-07-19)
+
+**Note:** Version bump only for package @apify/log
+
+
+
+
+
 # [2.1.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.0.0...@apify/log@2.1.0) (2022-07-04)
 
 
