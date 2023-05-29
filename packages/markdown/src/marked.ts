@@ -33,6 +33,8 @@ const LANGUAGE_TO_TAB_TITLE = {
     python3: 'Python 3',
     yml: 'YAML',
     yaml: 'YAML',
+    gql: 'GraphQL',
+    graphql: 'GraphQL',
 };
 
 const APIFY_CODE_TABS = 'apify-code-tabs';
