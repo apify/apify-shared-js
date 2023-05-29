@@ -40,17 +40,10 @@ const LANGUAGE_TO_TAB_TITLE = {
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
-interface Match {
-    groups: { header: string; lang: string; code: string };
-}
+interface Match { groups: { header: string, lang: string, code: string } }
 
-const codeTabObjectFromCodeTabMarkdown = (
-    markdown: string
-): Record<string, { language: string; code: string }> => {
-    const matchesIterator = matchAll(
-        markdown,
-        /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs
-    );
+const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string, code: string }> => {
+    const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
     const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
@@ -58,7 +51,7 @@ const codeTabObjectFromCodeTabMarkdown = (
         nextMatch = matchesIterator.nextRaw();
     }
 
-    const tabs: Record<string, { language: string; code: string }> = {};
+    const tabs: Record<string, { language: string, code: string }> = {};
 
     for (const match of matches) {
         const { header, lang, code } = match.groups!;
@@ -70,10 +63,7 @@ const codeTabObjectFromCodeTabMarkdown = (
 
 interface MarkedResponse {
     html: string;
-    codeTabsObjectPerIndex: Record<
-        number,
-        Record<string, { language: string; code: string }>
-    >;
+    codeTabsObjectPerIndex: Record<number, Record<string, { language: string, code: string }>>;
 }
 
 /**
@@ -164,11 +154,9 @@ export const apifyMarked = (markdown: string): MarkedResponse => {
     tokens.forEach((token) => {
         if (token.type === 'code' && token.lang) {
             if (token.lang === 'marked-tabs') {
-                codeTabsObjectPerIndex[markedTabTokenIndex] =
-                    codeTabObjectFromCodeTabMarkdown(token.text);
+                codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
             } else {
-                const tabTitle =
-                    LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
+                const tabTitle = LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
                 codeTabsObjectPerIndex[markedTabTokenIndex] = {
                     [tabTitle]: {
                         language: token.lang,
