@@ -21,7 +21,7 @@ const intlStrings = {
     'inputSchema.validation.proxyGroupsNotAvailable':
         'You currently do not have access to proxy groups: {groups}',
     'inputSchema.validation.customProxyInvalid':
-        'Proxy URL "{invalidUrl}" has invalid format, it must be http://[username[:password]]@hostname:port.',
+        'Proxy URL "{invalidUrl}" has invalid format, it must be http[s]://[username[:password]]@hostname:port.',
     'inputSchema.validation.apifyProxyCountryInvalid':
         'Country code "{invalidCountry}" is invalid. Only ISO 3166-1 alpha-2 country codes are supported.',
     'inputSchema.validation.apifyProxyCountryWithoutApifyProxyForbidden':
