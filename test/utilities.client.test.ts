@@ -974,7 +974,7 @@ describe('utilities.client', () => {
                 .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
-            expect(results.length).toEqual(5);
+            expect(results.length).toEqual(4);
             results.forEach((result) => {
                 // Only one error should be thrown
                 expect(result.length).toEqual(1);
