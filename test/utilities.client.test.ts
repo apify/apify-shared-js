@@ -958,12 +958,12 @@ describe('utilities.client', () => {
             const proxy = null;
             const inputs = [
                 // Invalid
-                { field: { useApifyProxy: false, proxyUrls: ['https://asdasd:qweqe@proxy.apify.com:8000'] } }, // https
                 { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe@proxy.apify.com'] } }, // missing port
                 { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe@proxy.apify.com:8000/asd'] } }, // path after port
                 { field: { useApifyProxy: false, proxyUrls: ['http://asdasd@qweqe@proxy.apify.com:8000'] } }, // malformed url
                 { field: { useApifyProxy: false, proxyUrls: ['http://asdasd:qweqe:proxy.apify.com:8000'] } }, // malformed url
                 // Valid
+                { field: { useApifyProxy: false, proxyUrls: ['https://asdasd:qweqe@proxy.apify.com:8000'] } }, // https
                 { field: { useApifyProxy: false, proxyUrls: ['http://proxy.apify.com:8000'] } }, // without auth
                 { field: { useApifyProxy: false, proxyUrls: ['http://qweqe@proxy.apify.com:6000'] } }, // without password
                 { field: { useApifyProxy: false, proxyUrls: ['http://asd:qweqe@proxy.apify.com:55555'] } }, // with auth
@@ -974,7 +974,7 @@ describe('utilities.client', () => {
                 .filter((errors) => errors.length > 0);
 
             // There should be 5 invalid inputs
-            expect(results.length).toEqual(5);
+            expect(results.length).toEqual(4);
             results.forEach((result) => {
                 // Only one error should be thrown
                 expect(result.length).toEqual(1);
