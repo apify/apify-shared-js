@@ -304,6 +304,13 @@ export const INTEGER_ENV_VARS = [
 ] as const;
 
 /**
+ * Dictionary of names of build-time variables passed to the Actor's Docker build process.
+ */
+export const ACTOR_BUILD_ARGS = {
+    ACTOR_PATH_IN_DOCKER_CONTEXT: 'ACTOR_PATH_IN_DOCKER_CONTEXT',
+};
+
+/**
  * Default value for APIFY_CONTAINER_PORT used both locally and at Apify platform.
  */
 export const DEFAULT_CONTAINER_PORT = 4321;
