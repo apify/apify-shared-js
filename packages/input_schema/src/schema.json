@@ -36,6 +36,7 @@
                         { "$ref": "#/definitions/stringProperty" },
                         { "$ref": "#/definitions/stringEnumProperty" },
                         { "$ref": "#/definitions/arrayProperty" },
+                        { "$ref": "#/definitions/arrayEnumProperty"},
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
                         { "$ref": "#/definitions/booleanProperty" },
@@ -158,6 +159,45 @@
                 "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description", "editor"]
+        },
+
+        "arrayEnumProperty": {
+            "title": "Array enum property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "editor": { "enum": ["select"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "array" },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+                "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" },
+                "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": { "enum": ["string"] },
+                        "enum": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "uniqueItems": true
+                        },
+                        "enumTitles": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    },
+                    "required": ["type", "enum"]
+                }
+            },
+            "required": ["type", "editor", "title", "description", "items"]
         },
         "objectProperty": {
             "title": "Object property",
