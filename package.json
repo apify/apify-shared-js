@@ -78,7 +78,7 @@
         "strip-ansi": "^6.0.0",
         "ts-jest": "^28.0.0",
         "ts-node": "^10.2.1",
-        "tsup": "^6.1.2",
+        "tsup": "^7.0.0",
         "typescript": "~4.9.0",
         "underscore": "^1.13.1"
     }
