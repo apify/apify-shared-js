@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.0...@apify/input_schema@3.5.1) (2023-06-21)
+
+
+### Bug Fixes
+
+* Fixed broken array input definition ([#397](https://github.com/apify/apify-shared-js/issues/397)) ([e052b16](https://github.com/apify/apify-shared-js/commit/e052b16134410f8c05ad4ba4be4d4149014701f2))
+
+
+
+
+
 # [3.5.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.4.1...@apify/input_schema@3.5.0) (2023-06-19)
 
 
