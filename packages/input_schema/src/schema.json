@@ -36,7 +36,6 @@
                         { "$ref": "#/definitions/stringProperty" },
                         { "$ref": "#/definitions/stringEnumProperty" },
                         { "$ref": "#/definitions/arrayProperty" },
-                        { "$ref": "#/definitions/arrayEnumProperty"},
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
                         { "$ref": "#/definitions/booleanProperty" },
@@ -134,61 +133,17 @@
                 }
             }
         },
-
-        "arrayEnumProperty": {
-            "title": "Array enum property",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": { "enum": ["array"] },
-                "editor": { "enum": ["select"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "default": { "type": "array" },
-                "prefill": { "type": "array" },
-                "example": { "type": "array" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-                "nullable": { "type": "boolean" },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" },
-                "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {
-                        "type": { "enum": ["string"] },
-                        "enum": {
-                            "type": "array",
-                            "items": { "type": "string" },
-                            "uniqueItems": true
-                        },
-                        "enumTitles": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                        }
-                    },
-                    "required": ["type", "enum"]
-                }
-            },
-            "required": ["type", "editor", "title", "description", "items"]
-        },
         "arrayProperty": {
             "title": "Array property",
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "type": { "enum": ["array"] },
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "default": { "type": "array" },
                 "prefill": { "type": "array" },
                 "example": { "type": "array" },
-                "placeholderKey": { "type": "string" },
-                "placeholderValue": { "type": "string" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" },
                 "nullable": { "type": "boolean" },
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
@@ -197,7 +152,43 @@
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" }
             },
-            "required": ["type", "title", "description", "editor"]
+            "additionalProperties": true,
+            "required": ["type", "title", "description", "editor"],
+            "if": {
+                "properties": {
+                    "editor": { "const": "select" }
+                }
+            },
+            "then": {
+                "required": ["items"],
+                "properties": {
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "type": { "enum": ["string"] },
+                            "enum": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "uniqueItems": true
+                            },
+                            "enumTitles": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                            }
+                        },
+                        "required": ["type", "enum"]
+                    }
+                }
+            },
+            "else": {
+                "properties": {
+                    "placeholderKey": { "type": "string" },
+                    "placeholderValue": { "type": "string" },
+                    "patternKey": { "type": "string" },
+                    "patternValue": { "type": "string" }
+                }
+            }
         },
         "objectProperty": {
             "title": "Object property",
