@@ -134,32 +134,6 @@
                 }
             }
         },
-        "arrayProperty": {
-            "title": "Array property",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": { "enum": ["array"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "default": { "type": "array" },
-                "prefill": { "type": "array" },
-                "example": { "type": "array" },
-                "placeholderKey": { "type": "string" },
-                "placeholderValue": { "type": "string" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" },
-                "nullable": { "type": "boolean" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
-            },
-            "required": ["type", "title", "description", "editor"]
-        },
 
         "arrayEnumProperty": {
             "title": "Array enum property",
@@ -198,6 +172,32 @@
                 }
             },
             "required": ["type", "editor", "title", "description", "items"]
+        },
+        "arrayProperty": {
+            "title": "Array property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "default": { "type": "array" },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
+                "placeholderKey": { "type": "string" },
+                "placeholderValue": { "type": "string" },
+                "patternKey": { "type": "string" },
+                "patternValue": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "editor"]
         },
         "objectProperty": {
             "title": "Object property",
