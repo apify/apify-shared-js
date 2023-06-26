@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.0...@apify/input_schema@3.5.1) (2023-06-21)
+
+
+### Bug Fixes
+
+* Fixed broken array input definition ([#397](https://github.com/apify/apify-shared-js/issues/397)) ([e052b16](https://github.com/apify/apify-shared-js/commit/e052b16134410f8c05ad4ba4be4d4149014701f2))
+
+
+
+
+
+# [3.5.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.4.1...@apify/input_schema@3.5.0) (2023-06-19)
+
+
+### Features
+
+* added multiselect option to input schema ([#396](https://github.com/apify/apify-shared-js/issues/396)) ([e8d8a80](https://github.com/apify/apify-shared-js/commit/e8d8a805eb160822eace9a2084578f68250c9581))
+
+
+
+
+
+## [3.4.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.4.0...@apify/input_schema@3.4.1) (2023-06-16)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 # [3.4.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.3.15...@apify/input_schema@3.4.0) (2023-05-29)
 
 
