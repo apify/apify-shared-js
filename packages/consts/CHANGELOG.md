@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.16.0...@apify/consts@2.17.0) (2023-06-27)
+
+
+### Features
+
+* increase build memory size ([#393](https://github.com/apify/apify-shared-js/issues/393)) ([f939142](https://github.com/apify/apify-shared-js/commit/f939142ebbe0683c453fc86beff2c33d2a7b4807))
+
+
+
+
+
 # [2.16.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.15.0...@apify/consts@2.16.0) (2023-06-16)
 
 
