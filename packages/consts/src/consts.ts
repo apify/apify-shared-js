@@ -297,6 +297,24 @@ export const ENV_VARS = {
     ACT_RUN_ID: 'APIFY_ACT_RUN_ID',
 } as const;
 
+/**
+ * Dictionary of environment variable names prefixed with "ACTOR_".
+ * Follows from Actor specs https://github.com/apify/actor-specs/#environment-variables
+ */
+export const ACTOR_ENV_VARS = {
+    DEFAULT_DATASET_ID: 'ACTOR_DEFAULT_DATASET_ID',
+    DEFAULT_KEY_VALUE_STORE_ID: 'ACTOR_DEFAULT_KEY_VALUE_STORE_ID',
+    DEFAULT_REQUEST_QUEUE_ID: 'ACTOR_DEFAULT_REQUEST_QUEUE_ID',
+    EVENTS_WEBSOCKET_URL: 'ACTOR_EVENTS_WEBSOCKET_URL',
+    INPUT_KEY: 'ACTOR_INPUT_KEY',
+    MEMORY_MBYTES: 'ACTOR_MEMORY_MBYTES',
+    RUN_ID: 'ACTOR_RUN_ID',
+    STARTED_AT: 'ACTOR_STARTED_AT',
+    TIMEOUT_AT: 'ACTOR_TIMEOUT_AT',
+    WEB_SERVER_PORT: 'ACTOR_WEB_SERVER_PORT',
+    WEB_SERVER_URL: 'ACTOR_WEB_SERVER_URL',
+} as const;
+
 export const INTEGER_ENV_VARS = [
     ENV_VARS.PROXY_PORT,
     ENV_VARS.MEMORY_MBYTES,
