@@ -72,7 +72,7 @@ export function decryptInputSecrets<T>(
             try {
                 decryptedInput[key] = privateDecrypt({ privateKey, encryptedPassword, encryptedValue });
             } catch {
-                throw Error(`The input field "${key}" could not be decrypted. You can fix this by updating the field's value in the input editor.`);
+                throw new Error(`The input field "${key}" could not be decrypted. You can fix this by updating the field's value in the input editor.`);
             }
         }
     }
