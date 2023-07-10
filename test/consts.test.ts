@@ -1,4 +1,4 @@
-import { USERNAME, APIFY_ID_REGEX } from '@apify/consts';
+import { USERNAME, APIFY_ID_REGEX, ACTOR_ENV_VARS, ENV_VARS, APIFY_ENV_VARS } from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 
 describe('consts', () => {
@@ -47,6 +47,22 @@ describe('consts', () => {
             for (let i = 0; i < 1000; i++) {
                 expect(cryptoRandomObjectId()).toMatch(APIFY_ID_REGEX);
             }
+        });
+    });
+
+    describe('ACTOR_ENV_VARS', () => {
+        it('every value begins with "ACTOR_"', () => {
+            Object.values(ACTOR_ENV_VARS).forEach((v) => {
+                expect(v.startsWith('ACTOR_')).toBe(true);
+            });
+        });
+    });
+
+    describe('APIFY_ENV_VARS', () => {
+        it('is the same as ENV_VARS', () => {
+            Object.keys(APIFY_ENV_VARS).forEach((k) => {
+                expect(APIFY_ENV_VARS[k]).toBe(ENV_VARS[k]);
+            });
         });
     });
 });
