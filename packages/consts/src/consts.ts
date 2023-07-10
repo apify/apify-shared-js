@@ -298,7 +298,7 @@ export const APIFY_ENV_VARS = {
 } as const;
 
 /**
- * `ENV_VARS` were replaced by `APIFY_ENV_VARS`. We keep this for backwards compatibility.
+ * @deprecated `ENV_VARS` were replaced by `APIFY_ENV_VARS`. We currently keep this for backwards compatibility.
  */
 export const ENV_VARS = APIFY_ENV_VARS;
 
