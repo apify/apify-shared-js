@@ -64,5 +64,14 @@ describe('consts', () => {
                 expect(APIFY_ENV_VARS[k]).toBe(ENV_VARS[k]);
             });
         });
+
+        it('every value is "APIFY_" + key', () => {
+            Object.entries(APIFY_ENV_VARS).forEach(([k, v]) => {
+                // TODO: remove this once ACTOR_MAX_PAID_DATASET_ITEMS is removed from APIFY_ENV_VARS
+                if (k === 'ACTOR_MAX_PAID_DATASET_ITEMS') return;
+
+                expect(v).toBe(`APIFY_${k}`);
+            });
+        });
     });
 });
