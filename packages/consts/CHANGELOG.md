@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.18.0...@apify/consts@2.19.0) (2023-07-11)
+
+
+### Features
+
+* add more ACTOR_ env vars, add a test, rename ENV_VARS ([#403](https://github.com/apify/apify-shared-js/issues/403)) ([555a265](https://github.com/apify/apify-shared-js/commit/555a265e4ce679634520082bf7ae79c85c807078))
+
+
+
+
+
 # [2.18.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.17.0...@apify/consts@2.18.0) (2023-07-02)
 
 
