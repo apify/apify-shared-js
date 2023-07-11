@@ -51,9 +51,9 @@ describe('consts', () => {
     });
 
     describe('ACTOR_ENV_VARS', () => {
-        it('every value begins with "ACTOR_"', () => {
-            Object.values(ACTOR_ENV_VARS).forEach((v) => {
-                expect(v.startsWith('ACTOR_')).toBe(true);
+        it('every value is "ACTOR_" + key', () => {
+            Object.entries(ACTOR_ENV_VARS).forEach(([k, v]) => {
+                expect(v).toBe(`ACTOR_${k}`);
             });
         });
     });
