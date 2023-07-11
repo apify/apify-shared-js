@@ -54,6 +54,7 @@ describe('input secrets', () => {
         const encryptedInput = encryptInputSecrets({ input: testInput, inputSchema, publicKey });
         expect(encryptedInput.secure).not.toEqual(testInput.secure);
         expect(encryptedInput.customString).toEqual(testInput.customString);
-        expect(() => decryptInputSecrets({ input: encryptedInput, privateKey: publicKey })).toThrow();
+        expect(() => decryptInputSecrets({ input: encryptedInput, privateKey: publicKey }))
+            .toThrowError(`The input field "secure" could not be decrypted. Try updating the field's value in the input editor.`);
     });
 });
