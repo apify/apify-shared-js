@@ -251,7 +251,7 @@ export const REQUEST_QUEUE_HEAD_MAX_LIMIT = 1000;
 /**
  * Dictionary of APIFY_XXX environment variable names.
  */
-export const ENV_VARS = {
+export const APIFY_ENV_VARS = {
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
     ACTOR_ID: 'APIFY_ACTOR_ID',
     ACTOR_RUN_ID: 'APIFY_ACTOR_RUN_ID',
@@ -298,19 +298,28 @@ export const ENV_VARS = {
 } as const;
 
 /**
+ * @deprecated `ENV_VARS` were replaced by `APIFY_ENV_VARS`. We currently keep this for backwards compatibility.
+ */
+export const ENV_VARS = APIFY_ENV_VARS;
+
+/**
  * Dictionary of environment variable names prefixed with "ACTOR_".
  * Follows from Actor specs https://github.com/apify/actor-specs/#environment-variables
  */
 export const ACTOR_ENV_VARS = {
+    BUILD_ID: 'ACTOR_BUILD_ID',
+    BUILD_NUMBER: 'ACTOR_BUILD_NUMBER',
     DEFAULT_DATASET_ID: 'ACTOR_DEFAULT_DATASET_ID',
     DEFAULT_KEY_VALUE_STORE_ID: 'ACTOR_DEFAULT_KEY_VALUE_STORE_ID',
     DEFAULT_REQUEST_QUEUE_ID: 'ACTOR_DEFAULT_REQUEST_QUEUE_ID',
     EVENTS_WEBSOCKET_URL: 'ACTOR_EVENTS_WEBSOCKET_URL',
+    ID: 'ACTOR_ID',
     INPUT_KEY: 'ACTOR_INPUT_KEY',
     MAX_PAID_DATASET_ITEMS: 'ACTOR_MAX_PAID_DATASET_ITEMS',
     MEMORY_MBYTES: 'ACTOR_MEMORY_MBYTES',
     RUN_ID: 'ACTOR_RUN_ID',
     STARTED_AT: 'ACTOR_STARTED_AT',
+    TASK_ID: 'ACTOR_TASK_ID',
     TIMEOUT_AT: 'ACTOR_TIMEOUT_AT',
     WEB_SERVER_PORT: 'ACTOR_WEB_SERVER_PORT',
     WEB_SERVER_URL: 'ACTOR_WEB_SERVER_URL',

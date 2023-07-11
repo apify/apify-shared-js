@@ -1,4 +1,4 @@
-import { USERNAME, APIFY_ID_REGEX } from '@apify/consts';
+import { USERNAME, APIFY_ID_REGEX, ACTOR_ENV_VARS, ENV_VARS, APIFY_ENV_VARS } from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 
 describe('consts', () => {
@@ -47,6 +47,31 @@ describe('consts', () => {
             for (let i = 0; i < 1000; i++) {
                 expect(cryptoRandomObjectId()).toMatch(APIFY_ID_REGEX);
             }
+        });
+    });
+
+    describe('ACTOR_ENV_VARS', () => {
+        it('every value is "ACTOR_" + key', () => {
+            Object.entries(ACTOR_ENV_VARS).forEach(([k, v]) => {
+                expect(v).toBe(`ACTOR_${k}`);
+            });
+        });
+    });
+
+    describe('APIFY_ENV_VARS', () => {
+        it('is the same as ENV_VARS', () => {
+            Object.keys(APIFY_ENV_VARS).forEach((k) => {
+                expect(APIFY_ENV_VARS[k]).toBe(ENV_VARS[k]);
+            });
+        });
+
+        it('every value is "APIFY_" + key', () => {
+            Object.entries(APIFY_ENV_VARS).forEach(([k, v]) => {
+                // TODO: remove this once ACTOR_MAX_PAID_DATASET_ITEMS is removed from APIFY_ENV_VARS
+                if (k === 'ACTOR_MAX_PAID_DATASET_ITEMS') return;
+
+                expect(v).toBe(`APIFY_${k}`);
+            });
         });
     });
 });
