@@ -1,4 +1,4 @@
-import { USERNAME, APIFY_ID_REGEX, ACTOR_ENV_VARS, ENV_VARS, APIFY_ENV_VARS } from '@apify/consts';
+import { USERNAME, APIFY_ID_REGEX, ACTOR_ENV_VARS, ENV_VARS, APIFY_ENV_VARS, LOCAL_ACTOR_ENV_VARS, LOCAL_APIFY_ENV_VARS, LOCAL_ENV_VARS } from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 
 describe('consts', () => {
@@ -71,6 +71,37 @@ describe('consts', () => {
                 if (k === 'ACTOR_MAX_PAID_DATASET_ITEMS') return;
 
                 expect(v).toBe(`APIFY_${k}`);
+            });
+        });
+    });
+
+    describe('LOCAL_ACTOR_ENV_VARS', () => {
+        it('every key starts with "ACTOR_"', () => {
+            Object.keys(LOCAL_ACTOR_ENV_VARS).forEach((k) => {
+                expect(k.startsWith('ACTOR_')).toBe(true);
+            });
+        });
+        it('every key has a corresponding local value in LOCAL_APIFY_ENV_VARS', () => {
+            Object.entries(LOCAL_ACTOR_ENV_VARS).forEach(([k, v]) => {
+                // We need to change 'WEB_SERVER' to 'CONTAINER' because of a rename introduced.
+                if (k.includes('WEB_SERVER')) {
+                    k = k.replace('WEB_SERVER', 'CONTAINER');
+                }
+                expect(LOCAL_APIFY_ENV_VARS[`APIFY_${k.slice(6)}`]).toBe(v);
+            });
+        });
+    });
+
+    describe('LOCAL_APIFY_ENV_VARS', () => {
+        it('is the same as LOCAL_ENV_VARS', () => {
+            Object.keys(LOCAL_APIFY_ENV_VARS).forEach((k) => {
+                expect(LOCAL_APIFY_ENV_VARS[k]).toBe(LOCAL_ENV_VARS[k]);
+            });
+        });
+
+        it('every key starts with "APIFY_"', () => {
+            Object.keys(LOCAL_APIFY_ENV_VARS).forEach((k) => {
+                expect(k.startsWith('APIFY_')).toBe(true);
             });
         });
     });
