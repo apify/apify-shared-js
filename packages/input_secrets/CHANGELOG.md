@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.31](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.30...@apify/input_secrets@1.1.31) (2023-07-12)
+
+
+### Bug Fixes
+
+* throw when `privateDecrypt` fails for input secrets ([#399](https://github.com/apify/apify-shared-js/issues/399)) ([0f439a1](https://github.com/apify/apify-shared-js/commit/0f439a1ed4755f38dec23c48c5387a161e5b0931))
+
+
+
+
+
 ## [1.1.30](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.29...@apify/input_secrets@1.1.30) (2023-07-11)
 
 **Note:** Version bump only for package @apify/input_secrets
