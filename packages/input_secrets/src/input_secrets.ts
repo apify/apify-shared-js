@@ -69,7 +69,12 @@ export function decryptInputSecrets<T>(
             const match = value.match(ENCRYPTED_INPUT_VALUE_REGEXP);
             if (!match) continue;
             const [, encryptedPassword, encryptedValue] = match;
-            decryptedInput[key] = privateDecrypt({ privateKey, encryptedPassword, encryptedValue });
+            try {
+                decryptedInput[key] = privateDecrypt({ privateKey, encryptedPassword, encryptedValue });
+            } catch (err) {
+                throw new Error(`The input field "${key}" could not be decrypted. Try updating the field's value in the input editor. `
+                + `Decryption error: ${err}`);
+            }
         }
     }
 

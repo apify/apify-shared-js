@@ -48,4 +48,13 @@ describe('input secrets', () => {
         const encrypted2 = encryptInputSecrets({ input: encrypted1, inputSchema, publicKey });
         expect(testInput).toStrictEqual(decryptInputSecrets({ input: encrypted2, privateKey }));
     });
+
+    it('should throw if private key is not valid', () => {
+        const testInput = { secure: 'a secret string', customString: 'another string' };
+        const encryptedInput = encryptInputSecrets({ input: testInput, inputSchema, publicKey });
+        expect(encryptedInput.secure).not.toEqual(testInput.secure);
+        expect(encryptedInput.customString).toEqual(testInput.customString);
+        expect(() => decryptInputSecrets({ input: encryptedInput, privateKey: publicKey }))
+            .toThrowError(`The input field "secure" could not be decrypted. Try updating the field's value in the input editor.`);
+    });
 });
