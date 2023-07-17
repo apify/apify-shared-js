@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import _ from 'underscore';
 import { Log, LEVELS, Logger } from '@apify/log';
-import { ENV_VARS } from '@apify/consts';
+import { APIFY_ENV_VARS } from '@apify/consts';
 
 describe('log', () => {
     let loggerSpy: jest.SpyInstance;
@@ -23,19 +23,19 @@ describe('log', () => {
     });
 
     it('correctly sets log level based on ENV_VAR', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
         const log = new Log();
         expect(log.getOptions().level).toBe(LEVELS.SOFT_FAIL);
 
-        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.ERROR}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LEVELS.ERROR}`;
         const log2 = new Log();
         expect(log2.getOptions().level).toBe(LEVELS.ERROR);
 
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should allow to retrieve and modify level using get|setLevel()', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LEVELS.SOFT_FAIL}`;
 
         const log = new Log();
         expect(log.getLevel()).toBe(LEVELS.SOFT_FAIL);
@@ -43,7 +43,7 @@ describe('log', () => {
         log.setLevel(LEVELS.ERROR);
         expect(log.getLevel()).toBe(LEVELS.ERROR);
 
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should allow to create a child logger with inherited config', () => {
@@ -96,23 +96,23 @@ describe('log', () => {
     });
 
     it('should support debug() method', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.DEBUG}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LEVELS.DEBUG}`;
 
         const log = new Log();
         log.debug('Something to be debugged happened', { foo: 'bar' });
         expect(loggerSpy).toBeCalledWith(LEVELS.DEBUG, 'Something to be debugged happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
 
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should support perf() method', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = `${LEVELS.PERF}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LEVELS.PERF}`;
 
         const log = new Log();
         log.perf('Some perf info', { foo: 'bar' });
         expect(loggerSpy).toBeCalledWith(LEVELS.PERF, 'Some perf info', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
 
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should support deprecated() method', () => {

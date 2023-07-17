@@ -1,25 +1,25 @@
 import { limitDepth, getLevelFromEnv, LogLevel } from '@apify/log';
-import { ENV_VARS } from '@apify/consts';
+import { APIFY_ENV_VARS } from '@apify/consts';
 
 describe('getLevelFromEnv()', () => {
     it('should support integers', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = `${LogLevel.SOFT_FAIL}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LogLevel.SOFT_FAIL}`;
         expect(getLevelFromEnv()).toBe(LogLevel.SOFT_FAIL);
-        process.env[ENV_VARS.LOG_LEVEL] = `${LogLevel.WARNING}`;
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = `${LogLevel.WARNING}`;
         expect(getLevelFromEnv()).toBe(LogLevel.WARNING);
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should support strings', () => {
-        process.env[ENV_VARS.LOG_LEVEL] = LogLevel[LogLevel.SOFT_FAIL];
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = LogLevel[LogLevel.SOFT_FAIL];
         expect(getLevelFromEnv()).toBe(LogLevel.SOFT_FAIL);
-        process.env[ENV_VARS.LOG_LEVEL] = LogLevel[LogLevel.WARNING];
+        process.env[APIFY_ENV_VARS.LOG_LEVEL] = LogLevel[LogLevel.WARNING];
         expect(getLevelFromEnv()).toBe(LogLevel.WARNING);
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
 
     it('should support default to INFO', () => {
-        delete process.env[ENV_VARS.LOG_LEVEL];
+        delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
         expect(getLevelFromEnv()).toBe(LogLevel.INFO);
     });
 });
