@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.22...@apify/log@2.3.0) (2023-07-17)
+
+
+### Features
+
+* improve consts related to env vars ([#405](https://github.com/apify/apify-shared-js/issues/405)) ([dba0675](https://github.com/apify/apify-shared-js/commit/dba06752347627a1b10e6572e77e36be78a1d0b4))
+
+
+
+
+
 ## [2.2.22](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.21...@apify/log@2.2.22) (2023-07-11)
 
 **Note:** Version bump only for package @apify/log
