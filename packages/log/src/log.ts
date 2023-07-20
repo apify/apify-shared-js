@@ -70,8 +70,11 @@ type AdditionalData = Record<string, any> | null;
  *
  * **Example:**
  * ```js
- * const Apify = require('apify');
- * const { log } = Apify.utils;
+ * import log from '@apify/log';
+ *
+ * // importing from the Apify SDK or Crawlee is also supported:
+ * // import { log } from 'apify';
+ * // import { log } from 'crawlee';
  *
  * log.info('Information message', { someData: 123 }); // prints message
  * log.debug('Debug message', { debugData: 'hello' }); // doesn't print anything
@@ -82,8 +85,8 @@ type AdditionalData = Record<string, any> | null;
  * log.setLevel(log.LEVELS.ERROR);
  * log.debug('Debug message'); // doesn't print anything
  * log.info('Info message'); // doesn't print anything
- *
  * log.error('Error message', { errorDetails: 'This is bad!' }); // prints message
+ *
  * try {
  *   throw new Error('Not good!');
  * } catch (e) {
