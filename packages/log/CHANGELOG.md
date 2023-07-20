@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.3.0...@apify/log@2.4.0) (2023-07-20)
+
+
+### Features
+
+* **utilities:** add new helpers for "run on apify" button ([1b2a045](https://github.com/apify/apify-shared-js/commit/1b2a0459bc0e53719058e3854761628b8653d4a8))
+
+
+
+
+
 # [2.3.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.2.22...@apify/log@2.3.0) (2023-07-17)
 
 
