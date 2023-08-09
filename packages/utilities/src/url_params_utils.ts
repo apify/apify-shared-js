@@ -22,6 +22,7 @@ function base64ToBase64Url(input: string) {
 
 /**
  * Encodes object (e.g. input for actor) to a string hash.
+ * @deprecated use `CodeHashManager` instead
  */
 export function encodeInput<T extends object>(input: T) {
     const data = JSON.stringify(input);
@@ -33,6 +34,7 @@ export function encodeInput<T extends object>(input: T) {
 
 /**
  * Decodes a string hash produced via `encodeInput` back into the original object.
+ * @deprecated use `CodeHashManager` instead
  */
 export function decodeInput(urlHash: string) {
     const base64 = base64urlToBase64(urlHash);
