@@ -7,3 +7,4 @@ export * from './streams_utilities';
 export * from './webhook_payload_template';
 export * from './crypto';
 export * from './url_params_utils';
+export * from './code_hash_manager';
