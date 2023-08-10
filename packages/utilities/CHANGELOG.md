@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.10...@apify/utilities@2.8.0) (2023-08-10)
+
+
+### Features
+
+* **utilities:** implement signing and verification for the "run on apify" links ([#408](https://github.com/apify/apify-shared-js/issues/408)) ([14990f7](https://github.com/apify/apify-shared-js/commit/14990f79f8d71c21de253188e3ab19cc88c93110)), closes [#400](https://github.com/apify/apify-shared-js/issues/400)
+
+
+
+
+
 ## [2.7.10](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.9...@apify/utilities@2.7.10) (2023-07-20)
 
 **Note:** Version bump only for package @apify/utilities
