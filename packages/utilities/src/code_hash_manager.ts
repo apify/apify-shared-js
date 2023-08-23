@@ -23,9 +23,9 @@ export class CodeHashManager {
     /**
      * Encodes object (e.g. input for actor) to a string hash and uses the `secret` to sign the hash.
      */
-    encode<T extends object>(data: T, user: string) {
+    encode<T extends object>(data: T, userId: string) {
         const meta = {
-            [CodeHashMetaKey.USER]: user,
+            [CodeHashMetaKey.USER]: userId,
             [CodeHashMetaKey.VERSION]: CodeHashManager.VERSION,
         };
         const metaBase64 = this.toBase64(JSON.stringify(meta));
@@ -45,14 +45,14 @@ export class CodeHashManager {
         const data = JSON.parse(this.fromBase64(parts[1]).toString());
         const signature = this.fromBase64(parts[2]);
         const expectedSignature = this.generateSignature(dataToSign);
-        const validSignature = timingSafeEqual(signature, expectedSignature);
+        const isSignatureValid = timingSafeEqual(signature, expectedSignature);
 
         return {
             data,
             meta: {
-                user: meta[CodeHashMetaKey.USER],
+                userId: meta[CodeHashMetaKey.USER],
                 version: meta[CodeHashMetaKey.VERSION],
-                validSignature,
+                isSignatureValid,
             },
         };
     }
