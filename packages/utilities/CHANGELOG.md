@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.8.0...@apify/utilities@2.9.0) (2023-08-23)
+
+
+### Features
+
+* **utilities:** signature of code hash manager changed ([#410](https://github.com/apify/apify-shared-js/issues/410)) ([1ce60f9](https://github.com/apify/apify-shared-js/commit/1ce60f986a888fe88b1b783c07d4e83e9d27e4b7))
+
+
+
+
+
 # [2.8.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.7.10...@apify/utilities@2.8.0) (2023-08-10)
 
 
