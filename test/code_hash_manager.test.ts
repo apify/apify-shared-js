@@ -38,8 +38,8 @@ test('encode/decode', async () => {
     expect(input).toEqual(data);
     expect(meta).toEqual({
         version: 1,
-        user: '123',
-        validSignature: true,
+        userId: '123',
+        isSignatureValid: true,
     });
 });
 
@@ -53,7 +53,7 @@ test('encode without secret', async () => {
     expect(input).toEqual(data);
     expect(meta).toEqual({
         version: 1,
-        user: '123',
-        validSignature: false,
+        userId: '123',
+        isSignatureValid: false,
     });
 });
