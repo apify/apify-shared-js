@@ -29,7 +29,7 @@ jobs:
                     path: '**/node_modules'
                     key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
             -   name: Update NPM
-                run: npm install --no-audit -g npm@7
+                run: npm install --no-audit -g npm@9
             -   name: Install Dependencies
                 run: npm ci --no-audit
             -   name: Run Tests
@@ -51,7 +51,7 @@ jobs:
                     path: '**/node_modules'
                     key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
             -   name: Update NPM
-                run: npm install --no-audit -g npm@7
+                run: npm install --no-audit -g npm@9
             -   name: Install Dependencies
                 run: npm ci --no-audit
             -   run: npm run build
