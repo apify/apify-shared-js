@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.20.0...@apify/consts@2.21.0) (2023-09-13)
+
+
+### Features
+
+* **consts:** add INTEGRATIONS actor category ([#413](https://github.com/apify/apify-shared-js/issues/413)) ([c5fa28b](https://github.com/apify/apify-shared-js/commit/c5fa28bbc381f6ff3bbbc28f216e1f8ae4201d3f))
+
+
+
+
+
 # [2.20.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.19.0...@apify/consts@2.20.0) (2023-07-17)
 
 
