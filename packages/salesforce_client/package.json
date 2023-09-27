@@ -1,6 +1,6 @@
 {
     "name": "@apify/salesforce_client",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

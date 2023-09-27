@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.22.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.21.0...@apify/consts@2.22.0) (2023-09-27)
+
+
+### Features
+
+* add "For creators" category ([#414](https://github.com/apify/apify-shared-js/issues/414)) ([5c3f507](https://github.com/apify/apify-shared-js/commit/5c3f50772bf05bd5b001f1798dd562c41371581d))
+
+
+
+
+
 # [2.21.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.20.0...@apify/consts@2.21.0) (2023-09-13)
 
 
