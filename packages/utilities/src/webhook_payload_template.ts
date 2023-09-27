@@ -141,8 +141,8 @@ export class WebhookPayloadTemplate {
 
     private _parse() {
         let currentIndex = 0;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
-            // eslint-disable-line no-constant-condition
             try {
                 return JSON.parse(this.payload);
             } catch (err) {

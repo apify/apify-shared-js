@@ -196,7 +196,7 @@ export class SalesforceClient {
         ]);
 
         // https://test.salesforce.com/services/oauth2/token?grant_type=password&client_id=&client_secret=&username=&password=
-        // eslint-disable-next-line camelcase
+
         type Response = AxiosResponse<{ access_token: string; instance_url: string }>;
         const { data } = await axios({
             url: `${this.config.tokenUrl}?${query.toString()}`,

@@ -1,4 +1,3 @@
-/* eslint-disable max-len,quotes,quote-props */
 const intlStrings = {
     'inputSchema.validation.generic':
         'Field {rootName}.{fieldKey} {message}',

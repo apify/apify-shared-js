@@ -175,7 +175,7 @@ describe('utilities', () => {
         const server1 = http.createServer();
         const server2 = http.createServer();
 
-        utils
+        void utils
             .promisifyServerListen(server1)(8799)
             .then(() => {
                 expect(server1.listening).toBe(true);

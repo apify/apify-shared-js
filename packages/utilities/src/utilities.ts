@@ -133,7 +133,7 @@ export function betterSetInterval(func: (a: (...args: unknown[]) => unknown) => 
     };
     funcWrapper();
     return {
-        // eslint-disable-next-line no-underscore-dangle
+
         _betterClearInterval() {
             isRunning = false;
             clearTimeout(timeoutId);

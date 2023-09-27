@@ -99,6 +99,7 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
     }
 
     // this shouldn't happen
+    // eslint-disable-next-line no-console
     console.log(`WARNING: Object cannot be logged: ${record}`);
 
     return undefined;

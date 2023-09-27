@@ -5,8 +5,10 @@
             "files": ["**/*.ts"],
             "rules": {
                 "no-console": 0,
+                "no-void": 0,
                 "no-useless-constructor": 0,
                 "import/no-extraneous-dependencies": 0,
+                "no-empty-function": 0,
                 "@typescript-eslint/no-empty-function": 0,
                 "@typescript-eslint/no-explicit-any": 0,
                 "@typescript-eslint/ban-ts-comment": 0

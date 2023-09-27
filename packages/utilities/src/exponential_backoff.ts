@@ -11,7 +11,6 @@ export class RetryableError extends Error {
 }
 
 // extend the error with added properties
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface RetryableError extends Exception {}
 
 export async function retryWithExpBackoff<T>(

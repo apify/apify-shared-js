@@ -100,7 +100,7 @@ export function parseUrl(str: string): Uri {
             loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/, // eslint-disable-line max-len,no-useless-escape
         },
     };
-    // eslint-disable-next-line @typescript-eslint/no-shadow
+
     const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str);
     const uri: Uri = {};
     let i = o.key.length;

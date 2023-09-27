@@ -32,7 +32,6 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        // eslint-disable-next-line max-len
         expect(renderedLink).toEqual('<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" target="_blank" rel="nofollow noreferrer noopener">link to bar</a>');
     });
 
@@ -51,7 +50,6 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        // eslint-disable-next-line max-len
         expect(renderedLink).toEqual('<a href="https://github.com/apify/actor-test-url/do-not-change" target="_blank" rel="nofollow noreferrer noopener">absolute-link</a>');
     });
 
@@ -61,7 +59,6 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `git@gitlab.com:${repoFullName}.git`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        // eslint-disable-next-line max-len
         expect(renderedLink).toEqual('<a href="https://gitlab.com/apify/actor-test-url" target="_blank" rel="nofollow noreferrer noopener">SSH link</a>');
     });
 
@@ -71,7 +68,6 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `git@gitlab.com:${repoFullName}.git`;
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
-        // eslint-disable-next-line max-len
         expect(renderedLink).toEqual('<img src="https://gitlab.com/apify/actor-test-url/badges/master/pipeline.svg" alt="SSH link" loading="lazy" />');
     });
 

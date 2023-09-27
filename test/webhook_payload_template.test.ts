@@ -155,7 +155,7 @@ describe('WebhookPayloadTemplate', () => {
             throw new Error('Wrong error.');
         } catch (_err) {
             const err = _err as Error;
-            expect(err.message).toBe('Unexpected token , in JSON at position 68');
+            expect(err.message).toBe('Expected double-quoted property name in JSON at position 68');
             expect(err).toBeInstanceOf(InvalidJsonError);
         }
     });
