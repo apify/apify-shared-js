@@ -18,7 +18,7 @@ jobs:
                 node-version: [ 14, 16, 18 ]
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
             -   name: Use Node.js ${{ matrix.node-version }}
                 uses: actions/setup-node@v3
                 with:
@@ -40,7 +40,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
             -   name: Use Node.js 16
                 uses: actions/setup-node@v3
                 with:
@@ -61,7 +61,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
             -   name: Use Node.js 16
                 uses: actions/setup-node@v3
                 with:
@@ -81,7 +81,7 @@ jobs:
         needs: [ test, build, lint ]
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
                 with:
                     token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                     fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
