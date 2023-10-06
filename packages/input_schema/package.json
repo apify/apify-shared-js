@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_schema",
-    "version": "3.5.7",
+    "version": "3.5.8",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -43,7 +43,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.22.0",
+        "@apify/consts": "^2.23.0",
         "countries-list": "^2.6.1",
         "escaya": "^0.0.61"
     },

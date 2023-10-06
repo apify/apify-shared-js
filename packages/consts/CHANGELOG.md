@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.23.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.22.0...@apify/consts@2.23.0) (2023-10-06)
+
+
+### Features
+
+* bump imput schema max size to 200kB ([#417](https://github.com/apify/apify-shared-js/issues/417)) ([5dc063c](https://github.com/apify/apify-shared-js/commit/5dc063c892f84aa32f503a8229625a9803986557))
+
+
+
+
+
 # [2.22.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.21.0...@apify/consts@2.22.0) (2023-09-27)
 
 
