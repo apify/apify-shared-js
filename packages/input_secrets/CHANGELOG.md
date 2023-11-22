@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.39](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.38...@apify/input_secrets@1.1.39) (2023-11-22)
+
+
+### Bug Fixes
+
+* **input_secrets:** fix ESM build ([#423](https://github.com/apify/apify-shared-js/issues/423)) ([bec8a96](https://github.com/apify/apify-shared-js/commit/bec8a96eea1ab805beec59460e26b6d612db0eae))
+
+
+
+
+
 ## [1.1.38](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.37...@apify/input_secrets@1.1.38) (2023-10-06)
 
 **Note:** Version bump only for package @apify/input_secrets
