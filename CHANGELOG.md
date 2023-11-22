@@ -13,7 +13,7 @@ package | version | changelog
 `@apify/git` | 2.1.0 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.0 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 3.5.8 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
-`@apify/input_secrets` | 1.1.38 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
+`@apify/input_secrets` | 1.1.39 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/log` | 2.4.3 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 2.1.12 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.0 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
