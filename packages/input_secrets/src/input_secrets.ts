@@ -1,8 +1,11 @@
 import { KeyObject } from 'crypto';
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
-import type { Ow } from 'ow';
+import _testOw, { type Ow } from 'ow';
 
-declare const ow: Ow;
+// eslint-disable-next-line no-underscore-dangle
+declare const __injectedOw: Ow;
+
+const ow: Ow = typeof __injectedOw === 'undefined' ? _testOw : __injectedOw || _testOw;
 
 const BASE64_REGEXP = /[-A-Za-z0-9+/]*={0,3}/;
 const ENCRYPTED_INPUT_VALUE_PREFIX = 'ENCRYPTED_VALUE';

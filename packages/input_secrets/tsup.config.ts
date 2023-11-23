@@ -6,13 +6,13 @@ export default createTsupConfig({
             case 'cjs': {
                 return {
                     js: `const __ow_import = require('ow');
-const ow = __ow_import.default || __ow_import;`,
+const __injectedOw = __ow_import.default || __ow_import;`,
                 };
             }
             case 'esm': {
                 return {
                     js: `import __ow_import from 'ow';
-const ow = __ow_import.default || __ow_import;`,
+const __injectedOw = __ow_import.default || __ow_import;`,
                 };
             }
             default: {
