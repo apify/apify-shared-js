@@ -1,7 +1,8 @@
 import { KeyObject } from 'crypto';
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
+import type { Ow } from 'ow';
 
-import { ow } from './ow';
+declare const ow: Ow;
 
 const BASE64_REGEXP = /[-A-Za-z0-9+/]*={0,3}/;
 const ENCRYPTED_INPUT_VALUE_PREFIX = 'ENCRYPTED_VALUE';
