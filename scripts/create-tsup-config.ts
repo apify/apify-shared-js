@@ -7,7 +7,8 @@ export const createTsupConfig = ({
     target = 'es2020',
     sourcemap = true,
     esbuildOptions = undefined,
-}: ConfigOptions = {}) => defineConfig({
+    ...other
+}: Options = {}) => defineConfig({
     clean: true,
     dts: false,
     entry: ['src/index.ts'],
@@ -20,6 +21,5 @@ export const createTsupConfig = ({
     keepNames: true,
     globalName,
     esbuildOptions,
+    ...other,
 });
-
-type ConfigOptions = Pick<Options, 'esbuildOptions' | 'sourcemap' | 'target' | 'format' | 'globalName' | 'loader'>;
