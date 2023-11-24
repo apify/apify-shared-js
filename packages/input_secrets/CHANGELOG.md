@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.40](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.39...@apify/input_secrets@1.1.40) (2023-11-24)
+
+
+### Bug Fixes
+
+* **input_secrets:** add ow import as a banner to correctly import it per bundle ([#424](https://github.com/apify/apify-shared-js/issues/424)) ([3a087cd](https://github.com/apify/apify-shared-js/commit/3a087cd7b94b5591613f2d828a73091d9d931c89))
+
+
+
+
+
 ## [1.1.39](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.38...@apify/input_secrets@1.1.39) (2023-11-22)
 
 
