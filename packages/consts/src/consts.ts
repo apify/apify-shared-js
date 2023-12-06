@@ -72,6 +72,7 @@ export const META_ORIGINS = {
     WEBHOOK: 'WEBHOOK', // Job started by the webhook
     ACTOR: 'ACTOR', // Job started by another actor run
     CLI: 'CLI', // Job started by apify CLI
+    STANDBY: 'STANDBY', // Job started by Actor Standby
 } as const;
 
 /**
