@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.23.0...@apify/consts@2.24.0) (2023-12-06)
+
+
+### Features
+
+* **consts:** add `STANDBY` meta origin ([#426](https://github.com/apify/apify-shared-js/issues/426)) ([4755107](https://github.com/apify/apify-shared-js/commit/4755107f094ea7273be1508c35da0d5336c0e9f6))
+
+
+
+
+
 # [2.23.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.22.0...@apify/consts@2.23.0) (2023-10-06)
 
 
