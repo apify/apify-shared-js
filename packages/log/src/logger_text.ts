@@ -1,4 +1,5 @@
 import c from 'ansi-colors';
+import { inspect } from 'node:util';
 import { Logger } from './logger';
 import { LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
 
@@ -79,9 +80,16 @@ export class LoggerText extends Logger {
         // NOTE: Reason is here to support Meteor.js like errors.
         const errorString = exception.stack || exception.reason || exception.toString();
         const errorLines = errorString.split('\n');
+        const causeString = exception.cause
+            ? inspect(exception.cause, { colors: true, maxArrayLength: 20 }) : null;
 
         // Add details to a first line.
         if (errDetails.length) errorLines[0] += c.gray(`(details: ${errDetails.join(', ')})`);
+
+        if (causeString) {
+            const causeLines = causeString.split('\n');
+            errorLines.push(c.gray(`Cause: ${causeLines[0]}`), ...causeLines.slice(1).map((line) => `  ${line}`));
+        }
 
         // Compose it back.
         errStack = errorLines.map((line) => `  ${line}`).join('\n');
