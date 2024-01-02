@@ -96,17 +96,20 @@ describe('loggerText', () => {
         ]);
     });
 
-    it('should log cause for errors', () => {
-        const causeError = new Error('hello world!');
-        const actualError = new Error('some error', { cause: causeError });
+    // Only Node16+ supports cause
+    if (!process.version.startsWith('v14')) {
+        it('should log cause for errors', () => {
+            const causeError = new Error('hello world!');
+            const actualError = new Error('some error', { cause: causeError });
 
-        const logger = new LoggerText();
+            const logger = new LoggerText();
 
-        logger.log(LogLevel.ERROR, 'Some error message', {}, actualError);
+            logger.log(LogLevel.ERROR, 'Some error message', {}, actualError);
 
-        const line = loggedLines.error;
-        const pattern = `^ERROR Some error message {}\\s+Error: some error([\\s\\S]*)Cause: Error: hello world!`;
+            const line = loggedLines.error;
+            const pattern = `^ERROR Some error message {}\\s+Error: some error([\\s\\S]*)Cause: Error: hello world!`;
 
-        expect(line).toMatch(new RegExp(pattern));
-    });
+            expect(line).toMatch(new RegExp(pattern));
+        });
+    }
 });
