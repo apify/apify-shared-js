@@ -68,13 +68,15 @@ interface ParsePosition {
  * @hideconstructor
  */
 export class WebhookPayloadTemplate {
-    private payload = this.template;
+    private payload: string;
 
     readonly replacedVariables: { variableName: string, replacement: string }[] = [];
 
     constructor(private readonly template: string,
                 private readonly allowedVariables: Set<string> | null = null,
-                private readonly context: Record<string, any> = {}) { }
+                private readonly context: Record<string, any> = {}) {
+        this.payload = template;
+    }
 
     /**
      * Parse existing webhook payload template string into an object, replacing

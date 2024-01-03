@@ -10,12 +10,14 @@ export interface LruCacheOptions {
 export class LruCache<T = any> {
     listDictionary = new ListDictionary<T>();
 
-    maxLength = this.options.maxLength;
+    maxLength: number;
 
     constructor(private options: LruCacheOptions) {
         if (typeof options.maxLength !== 'number') {
             throw new Error('Parameter "maxLength" must be a number.');
         }
+
+        this.maxLength = options.maxLength;
     }
 
     /**

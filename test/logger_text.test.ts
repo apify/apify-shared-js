@@ -1,11 +1,11 @@
 import stripAnsi from 'strip-ansi';
 import { LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
 
-const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'];
+const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 const DATE_REGEX = '\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d';
 
 describe('loggerText', () => {
-    let loggedLines: any;
+    let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
     const originalConsoleMethods = {};
 
     beforeEach(() => {
@@ -95,4 +95,21 @@ describe('loggerText', () => {
             'ERROR Some error message',
         ]);
     });
+
+    // Only Node16+ supports cause
+    if (!process.version.startsWith('v14')) {
+        it('should log cause for errors', () => {
+            const causeError = new Error('hello world!');
+            const actualError = new Error('some error', { cause: causeError });
+
+            const logger = new LoggerText();
+
+            logger.log(LogLevel.ERROR, 'Some error message', {}, actualError);
+
+            const line = loggedLines.error;
+            const pattern = `^ERROR Some error message {}\\s+Error: some error([\\s\\S]*)Cause: Error: hello world!`;
+
+            expect(line).toMatch(new RegExp(pattern));
+        });
+    }
 });

@@ -20,6 +20,12 @@ export const createTsupConfig = ({
     tsconfig: relative(__dirname, resolveDir(process.cwd(), 'tsconfig.build.json')),
     keepNames: true,
     globalName,
-    esbuildOptions,
+    esbuildOptions(options, context) {
+        if (esbuildOptions) {
+            esbuildOptions(options, context);
+        }
+
+        options.target = target;
+    },
     ...other,
 });
