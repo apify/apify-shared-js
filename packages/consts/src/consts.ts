@@ -587,3 +587,5 @@ export const USER_PERSONA_TYPES = {
 } as const;
 
 export const GIT_MAIN_BRANCH = 'main';
+
+export const REQUEST_QUEUE_MAX_REQUESTS_PER_BATCH_OPERATION = 25;
