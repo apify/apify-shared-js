@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.24.0...@apify/consts@2.25.0) (2024-01-08)
+
+
+### Features
+
+* **consts:** add REQUEST_QUEUE_MAX_REQUESTS_PER_BATCH_OPERATION ([#431](https://github.com/apify/apify-shared-js/issues/431)) ([fa21e74](https://github.com/apify/apify-shared-js/commit/fa21e741f082986b99cab960ad22187f42a502da))
+
+
+
+
+
 # [2.24.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.23.0...@apify/consts@2.24.0) (2023-12-06)
 
 
