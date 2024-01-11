@@ -24,7 +24,7 @@ export function truncate(str: string, maxLength: number, suffix = '...[truncated
  * Gets log level from env variable. Both integers and strings (WARNING) are supported.
  */
 export function getLevelFromEnv(): number {
-    const envVar = process.env[APIFY_ENV_VARS.LOG_LEVEL];
+    const envVar = globalThis.process?.env[APIFY_ENV_VARS.LOG_LEVEL];
 
     if (!envVar) return LogLevel.INFO;
     if (Number.isFinite(+envVar)) return +envVar;
@@ -38,7 +38,7 @@ export function getLevelFromEnv(): number {
  * Defaults to 'TEXT' if no value is specified.
  */
 export function getFormatFromEnv(): LogFormat {
-    const envVar = process.env[APIFY_ENV_VARS.LOG_FORMAT] || LogFormat.TEXT;
+    const envVar = globalThis.process?.env[APIFY_ENV_VARS.LOG_FORMAT] || LogFormat.TEXT;
 
     switch (envVar.toLowerCase()) {
         case LogFormat.JSON.toLowerCase():

@@ -80,8 +80,12 @@ export class LoggerText extends Logger {
         // NOTE: Reason is here to support Meteor.js like errors.
         const errorString = exception.stack || exception.reason || exception.toString();
         const errorLines = errorString.split('\n');
-        const causeString = exception.cause
-            ? inspect(exception.cause, { colors: true, maxArrayLength: 20 }) : null;
+        let causeString = null;
+
+        if (exception.cause) {
+            if (inspect) causeString = inspect(exception.cause, { colors: true, maxArrayLength: 20 });
+            else causeString = exception.cause.toString();
+        }
 
         // Add details to a first line.
         if (errDetails.length) errorLines[0] += c.gray(`(details: ${errDetails.join(', ')})`);
