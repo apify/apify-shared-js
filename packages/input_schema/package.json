@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_schema",
-    "version": "3.5.10",
+    "version": "3.5.11",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

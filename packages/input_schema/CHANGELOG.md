@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.11](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.10...@apify/input_schema@3.5.11) (2024-01-12)
+
+
+### Bug Fixes
+
+* **rollback:** revert logging the `cause` property from errors ([#434](https://github.com/apify/apify-shared-js/issues/434)) ([af74dab](https://github.com/apify/apify-shared-js/commit/af74dab62369b3d21c794a3f1adf9da21c99b526))
+
+
+
+
+
 ## [3.5.10](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.9...@apify/input_schema@3.5.10) (2024-01-08)
 
 **Note:** Version bump only for package @apify/input_schema
