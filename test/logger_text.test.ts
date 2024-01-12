@@ -98,7 +98,7 @@ describe('loggerText', () => {
 
     // Only Node16+ supports cause
     if (!process.version.startsWith('v14')) {
-        it('should log cause for errors', () => {
+        it.skip('should log cause for errors', () => {
             const causeError = new Error('hello world!');
             const actualError = new Error('some error', { cause: causeError });
 

@@ -34,7 +34,6 @@ const intlStrings = {
     'inputSchema.validation.proxyGroupMustBeArrayOfStrings':
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
 };
-/* eslint-enable max-len,quotes,quote-props */
 
 /**
  * Helper function to simulate intl formatMessage function
