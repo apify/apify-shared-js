@@ -19,4 +19,4 @@ const target = resolve(process.cwd(), 'dist');
 copy('README.md', root, target);
 copy('LICENSE', root, target);
 copy('package.json', process.cwd(), target);
-rewrite(resolve(target, 'package.json'), (pkg) => pkg.replace(/dist\//g, ''));
+rewrite(resolve(target, 'package.json'), (pkg) => pkg.replace(/.\/dist\//g, './'));

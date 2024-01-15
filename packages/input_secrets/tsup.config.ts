@@ -1,6 +1,7 @@
-import { createTsupConfig } from '../../scripts/create-tsup-config';
+import type { Options } from 'tsup';
+import { createTsupConfig } from '../../scripts/tsup.config';
 
-export default createTsupConfig({
+const shared: Options = {
     banner(ctx) {
         switch (ctx.format) {
             case 'cjs': {
@@ -21,4 +22,13 @@ const __injectedOw = __ow_import.default || __ow_import;`,
         }
     },
     shims: true,
+};
+
+export default createTsupConfig({
+    cjsOptions: {
+        ...shared,
+    },
+    esmOptions: {
+        ...shared,
+    },
 });

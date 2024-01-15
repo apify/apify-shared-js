@@ -1,3 +1,3 @@
-import { createTsupConfig } from '../../scripts/create-tsup-config';
+import { createTsupConfig } from '../../scripts/tsup.config';
 
-export default createTsupConfig();
+export default createTsupConfig({});

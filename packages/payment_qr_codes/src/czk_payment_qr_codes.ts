@@ -22,6 +22,5 @@ export function encodeInputDataToRawQrCodeInputString(data: CzkQRCodeInputData):
  * It returns the QR code encoded as data URL that can be directly viewed in browser or used in <img> tag.
  */
 export async function generateCzkPaymentQrCodeDataUrl(data: CzkQRCodeInputData): Promise<string> {
-    const code = qrcode.create(encodeInputDataToRawQrCodeInputString(data), {});
-    return qrcode.toDataURL(code.segments);
+    return qrcode.toDataURL(encodeInputDataToRawQrCodeInputString(data));
 }

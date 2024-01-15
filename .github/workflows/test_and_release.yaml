@@ -30,6 +30,7 @@ jobs:
                     key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
             -   name: Update NPM
                 run: npm install --no-audit -g npm@9
+                if: matrix.node-version < 18
             -   name: Install Dependencies
                 run: npm ci --no-audit
             -   name: Run Tests
@@ -41,17 +42,15 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v4
-            -   name: Use Node.js 16
+            -   name: Use Node.js 20
                 uses: actions/setup-node@v4
                 with:
-                    node-version: 16
+                    node-version: 20
             -   name: Cache node_modules
                 uses: actions/cache@v3
                 with:
                     path: '**/node_modules'
                     key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
-            -   name: Update NPM
-                run: npm install --no-audit -g npm@9
             -   name: Install Dependencies
                 run: npm ci --no-audit
             -   run: npm run build
@@ -62,10 +61,10 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v4
-            -   name: Use Node.js 16
+            -   name: Use Node.js 20
                 uses: actions/setup-node@v4
                 with:
-                    node-version: 16
+                    node-version: 20
             -   name: Cache node_modules
                 uses: actions/cache@v3
                 with:
@@ -88,7 +87,7 @@ jobs:
                     ref: master
             -   uses: actions/setup-node@v4
                 with:
-                    node-version: 16
+                    node-version: 20
             -   name: Cache node_modules
                 uses: actions/cache@v3
                 with:

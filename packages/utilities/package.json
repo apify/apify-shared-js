@@ -2,14 +2,19 @@
     "name": "@apify/utilities",
     "version": "2.9.7",
     "description": "Tools and constants shared across Apify projects.",
-    "main": "./dist/index.js",
-    "module": "./dist/index.mjs",
-    "typings": "./dist/index.d.ts",
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.mjs",
+    "typings": "./dist/cjs/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "import": {
+                "types": "./dist/esm/index.d.mts",
+                "default": "./dist/esm/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.cjs"
+            }
         }
     },
     "keywords": [
@@ -36,7 +41,7 @@
     "scripts": {
         "build": "npm run clean && npm run compile && npm run copy",
         "clean": "rimraf ./dist",
-        "compile": "tsup && tsc -p tsconfig.build.json",
+        "compile": "tsup",
         "copy": "ts-node -T ../../scripts/copy.ts"
     },
     "publishConfig": {
