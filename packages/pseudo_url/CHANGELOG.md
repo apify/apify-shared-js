@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.38](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.37...@apify/pseudo_url@2.0.38) (2024-01-15)
+
+
+### Bug Fixes
+
+* properly bundle to esm/cjs ([#430](https://github.com/apify/apify-shared-js/issues/430)) ([6775869](https://github.com/apify/apify-shared-js/commit/6775869d97d9006156a118044a66c4c0b644cb1f)), closes [#429](https://github.com/apify/apify-shared-js/issues/429)
+
+
+
+
+
 ## [2.0.37](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.36...@apify/pseudo_url@2.0.37) (2024-01-12)
 
 **Note:** Version bump only for package @apify/pseudo_url

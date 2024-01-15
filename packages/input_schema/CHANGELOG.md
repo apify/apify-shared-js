@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.12](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.11...@apify/input_schema@3.5.12) (2024-01-15)
+
+
+### Bug Fixes
+
+* properly bundle to esm/cjs ([#430](https://github.com/apify/apify-shared-js/issues/430)) ([6775869](https://github.com/apify/apify-shared-js/commit/6775869d97d9006156a118044a66c4c0b644cb1f)), closes [#429](https://github.com/apify/apify-shared-js/issues/429)
+
+
+
+
+
 ## [3.5.11](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.10...@apify/input_schema@3.5.11) (2024-01-12)
 
 

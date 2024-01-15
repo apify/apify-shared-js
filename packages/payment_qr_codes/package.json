@@ -1,6 +1,6 @@
 {
     "name": "@apify/payment_qr_codes",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Tools for creating payment QR codes.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
