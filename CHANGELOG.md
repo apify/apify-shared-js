@@ -10,7 +10,7 @@ package | version | changelog
 --------|---------|----------
 `@apify/consts` | 2.25.1 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.2 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
-`@apify/git` | 2.1.1 | [CHANGELOG](./packages/git/CHANGELOG.md)
+`@apify/git` | 2.1.2 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 3.5.12 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.45 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
@@ -18,6 +18,6 @@ package | version | changelog
 `@apify/markdown` | 2.1.17 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 2.0.38 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
-`@apify/salesforce_client` | 2.0.2 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
+`@apify/salesforce_client` | 2.0.3 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
 `@apify/timeout` | 0.3.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
 `@apify/utilities` | 2.9.8 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
