@@ -12,7 +12,7 @@ package | version | changelog
 `@apify/datastructures` | 2.0.2 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/git` | 2.1.2 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 3.5.12 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_schema` | 3.5.13 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.45 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/log` | 2.4.8 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 2.1.17 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
