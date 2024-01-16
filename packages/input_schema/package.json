@@ -49,7 +49,7 @@
     },
     "dependencies": {
         "@apify/consts": "^2.25.1",
-        "countries-list": "^2.6.1",
+        "countries-list": "^3.0.0",
         "escaya": "^0.0.61"
     },
     "peerDependencies": {
