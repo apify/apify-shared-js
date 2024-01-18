@@ -589,3 +589,13 @@ export const USER_PERSONA_TYPES = {
 export const GIT_MAIN_BRANCH = 'main';
 
 export const REQUEST_QUEUE_MAX_REQUESTS_PER_BATCH_OPERATION = 25;
+
+export const ISSUES_STATUS_TYPES = {
+    OPEN: 'OPEN',
+    CLOSED: 'CLOSED',
+} as const;
+
+/**
+ * This is used for filtering issues. All issue types to be considered.
+ */
+export const ISSUES_STATUS_ALL = 'ALL';
