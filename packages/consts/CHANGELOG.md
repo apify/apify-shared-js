@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.26.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.25.1...@apify/consts@2.26.0) (2024-01-18)
+
+
+### Features
+
+* add issues statuses ([#435](https://github.com/apify/apify-shared-js/issues/435)) ([7cce8ad](https://github.com/apify/apify-shared-js/commit/7cce8adb74f86614e3a0ce15344a8fe9b095c4e4)), closes [apify/apify-core#13926](https://github.com/apify/apify-core/issues/13926)
+
+
+
+
+
 ## [2.25.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.25.0...@apify/consts@2.25.1) (2024-01-15)
 
 
