@@ -1,6 +1,8 @@
 import c from 'ansi-colors';
 import { Logger } from './logger';
-import { LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
+import { IS_APIFY_LOGGER_EXCEPTION, LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
+import { LimitedError } from './log_helpers';
+import { getStackFrames } from './node_internals';
 
 const SHORTEN_LEVELS = {
     SOFT_FAIL: 'SFAIL',
@@ -31,18 +33,12 @@ const DEFAULT_OPTIONS = {
     skipTime: true,
 };
 
-export interface Exception extends Error {
-    type?: string;
-    details?: Record<string, any>;
-    reason?: string;
-}
-
 export class LoggerText extends Logger {
     constructor(options = {}) {
         super({ ...DEFAULT_OPTIONS, ...options });
     }
 
-    _log(level: LogLevel, message: string, data?: any, exception?: Exception, opts: Record<string, any> = {}) {
+    _log(level: LogLevel, message: string, data?: any, exception?: unknown, opts: Record<string, any> = {}) {
         let { prefix, suffix } = opts;
 
         let maybeDate = '';
@@ -65,35 +61,62 @@ export class LoggerText extends Logger {
         return line;
     }
 
-    _parseException(exception: Exception) {
-        let errStack = '';
+    protected _parseException(exception: unknown, indentLevel = 1) {
+        if (!exception) {
+            return '';
+        }
 
-        // Parse error.type and error.details from ApifyClientError.
+        if (['string', 'boolean', 'number', 'symbol', 'undefined'].includes(typeof exception)) {
+            return `\n${exception}`;
+        }
+
+        if (typeof exception === 'object' && IS_APIFY_LOGGER_EXCEPTION in exception) {
+            return this._parseLoggerException(exception as LimitedError, indentLevel);
+        }
+
+        // Anything else we just stringify
+        return `\n${JSON.stringify(exception, null, 2)}`;
+    }
+
+    private _parseLoggerException(exception: LimitedError, indentLevel = 1) {
         const errDetails = [];
-        if (exception.type) errDetails.push(`type=${exception.type}`);
+
+        if (exception.type) {
+            errDetails.push(`type=${exception.type}`);
+        }
+
         if (exception.details) {
             Object.entries(exception.details).map(([key, val]) => errDetails.push(`${key}=${val}`));
         }
 
-        // Parse error stack lines.
-        // NOTE: Reason is here to support Meteor.js like errors.
-        const errorString = exception.stack || exception.reason || exception.toString();
-        const errorLines = errorString.split('\n');
-        // const causeString = exception.cause
-        //     ? inspect(exception.cause, { colors: true, maxArrayLength: 20 }) : null;
+        // Parse the stack lines
+        const errorString = exception.stack || exception.reason || exception.message;
+        const isStack = errorString === exception.stack;
+        const errorLines = getStackFrames(exception, errorString);
 
-        // Add details to a first line.
-        if (errDetails.length) errorLines[0] += c.gray(`(details: ${errDetails.join(', ')})`);
+        if (isStack) {
+            // Remove the useless `Error` prefix from stack traces
+            errorLines[0] = exception.message || errorLines[0];
+        }
 
-        // if (causeString) {
-        //     const causeLines = causeString.split('\n');
-        //     errorLines.push(c.gray(`Cause: ${causeLines[0]}`), ...causeLines.slice(1).map((line) => `  ${line}`));
-        // }
+        // Add details to the first line.
+        if (errDetails.length) {
+            errorLines[0] += c.gray(`(details: ${errDetails.join(', ')})`);
+        }
 
-        // Compose it back.
-        errStack = errorLines.map((line) => `  ${line}`).join('\n');
-        errStack = `\n${errStack}`;
+        // Make stack lines gray
+        for (let i = 1; i < errorLines.length; i++) {
+            errorLines[i] = c.gray(errorLines[i]);
+        }
 
-        return errStack;
+        // Recursively parse the cause.
+        if (exception.cause) {
+            const causeString = this._parseException(exception.cause, indentLevel + 1);
+            const causeLines = causeString.trim().split('\n');
+
+            errorLines.push(c.red(`  CAUSE: ${c.reset(causeLines[0])}`), ...causeLines.slice(1));
+        }
+
+        return `\n${errorLines.map((line) => `${' '.repeat(indentLevel * 2)}${line}`).join('\n')}`;
     }
 }

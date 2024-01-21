@@ -1,6 +1,5 @@
 import { PREFIX_DELIMITER, LogLevel } from './log_consts';
 import { Logger } from './logger';
-import { Exception } from './logger_text';
 
 const DEFAULT_OPTIONS = {
     skipLevelInfo: false,
@@ -12,7 +11,7 @@ export class LoggerJson extends Logger {
         super({ ...DEFAULT_OPTIONS, ...options });
     }
 
-    _log(level: LogLevel, message: string, data?: any, exception?: Exception, opts: Record<string, any> = {}) {
+    _log(level: LogLevel, message: string, data?: any, exception?: unknown, opts: Record<string, any> = {}) {
         const { prefix, suffix } = opts;
 
         if (exception) data = { ...data, exception };

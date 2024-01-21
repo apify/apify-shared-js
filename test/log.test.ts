@@ -1,16 +1,33 @@
 /* eslint-disable max-len */
-import _ from 'underscore';
-import { Log, LEVELS, Logger } from '@apify/log';
+import { Log, LEVELS, Logger, LoggerText, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import { APIFY_ENV_VARS } from '@apify/consts';
+import stripAnsi from 'strip-ansi';
+
+const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 
 describe('log', () => {
     let loggerSpy: jest.SpyInstance;
 
+    let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
+    const originalConsoleMethods = {} as Record<typeof CONSOLE_METHODS[number], (...args: any[]) => void>;
+
     beforeEach(() => {
         loggerSpy = jest.spyOn(Logger.prototype, 'log');
+        loggedLines = {};
+        CONSOLE_METHODS.map((method) => {
+            originalConsoleMethods[method] = console[method];
+            console[method] = (line: string) => {
+                loggedLines[method] = stripAnsi(line);
+            };
+        });
     });
 
-    afterEach(() => jest.resetAllMocks());
+    afterEach(() => {
+        jest.restoreAllMocks();
+        CONSOLE_METHODS.map((method) => {
+            console[method] = originalConsoleMethods[method];
+        });
+    });
 
     it('allows to set/get options', () => {
         const log = new Log({ prefix: 'aaa' });
@@ -74,7 +91,13 @@ describe('log', () => {
         const log = new Log();
         const err = new Error('some-error');
         log.exception(err, 'Error happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, _.pick(err, 'name', 'message', 'stack'), { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, {
+            [IS_APIFY_LOGGER_EXCEPTION]: true,
+            message: 'some-error',
+            name: 'Error',
+            stack: expect.any(String),
+            cause: undefined,
+        }, { prefix: null, suffix: null });
     });
 
     it('should support softFail() method', () => {
@@ -150,4 +173,22 @@ describe('log', () => {
         log.info('Something to be informed about happened', { hotel: 'restaurant' });
         expect(loggerSpy).toBeCalledWith(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar', hotel: 'restaurant' }, undefined, { prefix: null, suffix: null });
     });
+
+    // Only Node16+ supports cause
+    if (!process.version.startsWith('v14')) {
+        it('should log cause for errors', () => {
+            const log = new Log({ logger: new LoggerText() });
+            const causeError = new Error('hello world!');
+            const actualError = new Error('some error', { cause: causeError });
+
+            log.exception(actualError, 'Some error message');
+
+            expect(loggerSpy).toHaveBeenCalled();
+
+            const line = loggedLines.error;
+            const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
+
+            expect(line).toMatch(new RegExp(pattern));
+        });
+    }
 });

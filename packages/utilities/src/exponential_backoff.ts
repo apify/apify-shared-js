@@ -1,17 +1,17 @@
-import log, { Exception } from '@apify/log';
+import log from '@apify/log';
 import { delayPromise } from './utilities';
 
 export class RetryableError extends Error {
-    readonly error: Exception;
+    readonly error: Error;
 
-    constructor(error: Error | Exception, ...args: unknown[]) {
+    constructor(error: Error, ...args: unknown[]) {
         super(...args as [string]);
-        this.error = error as Exception;
+        this.error = error;
     }
 }
 
 // extend the error with added properties
-export interface RetryableError extends Exception {}
+export interface RetryableError extends Error {}
 
 export async function retryWithExpBackoff<T>(
     params: { func?: (...args: unknown[]) => T, expBackoffMillis?: number, expBackoffMaxRepeats?: number } = {},
@@ -54,7 +54,7 @@ export async function retryWithExpBackoff<T>(
         if (i === Math.round(expBackoffMaxRepeats / 2)) {
             log.warning(`Retry failed ${i} times and will be repeated in ${randomizedWaitMillis}ms`, {
                 originalError: error.error.message,
-                errorDetails: error.error.details,
+                errorDetails: Reflect.get(error.error, 'details'),
             });
         }
 

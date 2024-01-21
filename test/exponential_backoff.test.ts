@@ -1,4 +1,4 @@
-import log, { Exception } from '@apify/log';
+import log from '@apify/log';
 import { retryWithExpBackoff, RetryableError } from '@apify/utilities';
 
 describe('exponential_backoff', () => {
@@ -103,11 +103,11 @@ describe('exponential_backoff', () => {
     it('should display correct message after 1/2 of retries', async () => {
         const logWarningSpy = jest.spyOn(log, 'warning');
 
-        let error!: Exception;
+        let error!: Error & { details?: Record<string, any> };
         try {
             await retryWithExpBackoff({
                 func: async () => {
-                    const err = new Error('Failed because of XXX') as Exception;
+                    const err = new Error('Failed because of XXX') as Error & { details?: Record<string, any> };
                     err.details = { foo: 'bar' };
                     throw new RetryableError(err);
                 },
@@ -115,7 +115,7 @@ describe('exponential_backoff', () => {
                 expBackoffMillis: 10,
             });
         } catch (e) {
-            error = e as Exception;
+            error = e as Error & { details?: Record<string, any> };
         }
         expect(error.message).toBe('Failed because of XXX');
         expect(error.details).toEqual({ foo: 'bar' });
