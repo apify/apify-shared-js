@@ -1,5 +1,5 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
-import { LogLevel, LogFormat } from './log_consts';
+import { LogLevel, LogFormat, IS_APIFY_LOGGER_EXCEPTION } from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -64,15 +64,15 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
         return maxStringLength && record.length > maxStringLength ? truncate(record, maxStringLength) as unknown as T : record;
     }
 
-    if (['number', 'boolean'].includes(typeof record) || record == null || record instanceof Date) {
+    if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof record) || record == null || record instanceof Date) {
         return record;
     }
 
     // WORKAROUND: Error's properties are not iterable, convert it to a simple object and preserve custom properties
     // NOTE: _.isError() doesn't work on Match.Error
     if (record instanceof Error) {
-        const { name, message, stack, ...rest } = record;
-        record = { name, message, stack, ...rest } as unknown as T;
+        const { name, message, stack, cause, ...rest } = record;
+        record = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true } as unknown as T;
     }
 
     const nextCall = (rec: T) => limitDepth(rec, depth - 1, maxStringLength);
@@ -84,7 +84,7 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
     if (typeof record === 'object' && record !== null) {
         const mapObject = <U extends Record<PropertyKey, any>> (obj: U) => {
             const res = {} as U;
-            Object.keys(obj).forEach((key: keyof U) => {
+            Reflect.ownKeys(obj).forEach((key: keyof U) => {
                 res[key as keyof U] = nextCall(obj[key]) as U[keyof U];
             });
             return res;
@@ -103,4 +103,20 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
     console.log(`WARNING: Object cannot be logged: ${record}`);
 
     return undefined;
+}
+
+// Like an error class, but turned into an object
+export interface LimitedError {
+    // used to identify this object as an error
+    [IS_APIFY_LOGGER_EXCEPTION]: true;
+    name: string;
+    message: string;
+    stack?: string;
+    cause?: unknown;
+
+    // Custom properties
+    type?: string;
+    details?: Record<string, unknown>;
+    reason?: string;
+    [key: string]: unknown;
 }

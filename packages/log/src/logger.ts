@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { EventEmitter } from 'events';
 import { LogLevel } from './log_consts';
-import { Exception } from './logger_text';
 
 /**
  * This is an abstract class that should
@@ -39,7 +38,7 @@ export class Logger extends EventEmitter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _log(level: LogLevel, message: string, data?: any, exception?: Exception, opts: Record<string, any> = {}) {
+    _log(level: LogLevel, message: string, data?: any, exception?: unknown, opts: Record<string, any> = {}) {
         throw new Error('log() method must be implemented!');
     }
 

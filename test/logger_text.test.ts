@@ -1,5 +1,5 @@
 import stripAnsi from 'strip-ansi';
-import { LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
+import { IS_APIFY_LOGGER_EXCEPTION, LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 const DATE_REGEX = '\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d';
@@ -43,12 +43,12 @@ describe('loggerText', () => {
         level = LogLevel.ERROR;
         message = 'Some error happened';
         const err = new Error('some-error');
-        const errObj = { name: err.name, message: err.message, stack: err.stack, ...(err as any) };
+        const errObj = { name: err.name, message: err.message, stack: err.stack, ...(err as any), cause: undefined, [IS_APIFY_LOGGER_EXCEPTION]: true };
         logger.log(level, message, data, errObj);
 
         line = loggedLines.error;
         levelString = LogLevel[level];
-        pattern = `^${levelString}\\s+${message} ${JSON.stringify(data)}\\s+Error: ${err.message}`;
+        pattern = `^${levelString}\\s+${message} ${JSON.stringify(data)}\\s+${err.message}`;
         expect(line).toMatch(new RegExp(pattern));
 
         level = LogLevel.DEBUG;
@@ -95,21 +95,4 @@ describe('loggerText', () => {
             'ERROR Some error message',
         ]);
     });
-
-    // Only Node16+ supports cause
-    if (!process.version.startsWith('v14')) {
-        it.skip('should log cause for errors', () => {
-            const causeError = new Error('hello world!');
-            const actualError = new Error('some error', { cause: causeError });
-
-            const logger = new LoggerText();
-
-            logger.log(LogLevel.ERROR, 'Some error message', {}, actualError);
-
-            const line = loggedLines.error;
-            const pattern = `^ERROR Some error message {}\\s+Error: some error([\\s\\S]*)Cause: Error: hello world!`;
-
-            expect(line).toMatch(new RegExp(pattern));
-        });
-    }
 });

@@ -23,3 +23,9 @@ export const LEVELS = LogLevel;
 
 // Inverse of LOG_LEVELS = maps log level to string.
 export const LEVEL_TO_STRING = Object.keys(LogLevel).filter((x) => Number.isNaN(+x));
+
+/**
+ * A symbol used to mark a limited depth object as having come from an error
+ * @internal
+ */
+export const IS_APIFY_LOGGER_EXCEPTION = Symbol('apify.processed_error');

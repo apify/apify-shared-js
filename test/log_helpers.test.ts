@@ -1,4 +1,4 @@
-import { limitDepth, getLevelFromEnv, LogLevel } from '@apify/log';
+import { limitDepth, getLevelFromEnv, LogLevel, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import { APIFY_ENV_VARS } from '@apify/consts';
 
 describe('getLevelFromEnv()', () => {
@@ -72,7 +72,7 @@ describe('limitDepth()', () => {
                 b: '[object]',
             },
             arr: [1, 2, '[object]'],
-            err: { name: err.name, message: err.message, stack: err.stack, ...err as any },
+            err: { name: err.name, message: err.message, stack: err.stack, ...err as any, cause: undefined, [IS_APIFY_LOGGER_EXCEPTION]: true },
         };
 
         expect(limitDepth(object, 2)).toEqual(limited);
@@ -137,6 +137,8 @@ describe('limitDepth()', () => {
             stack: error.stack,
             injectedArrow: '[function]',
             injectedFce: '[function]',
+            cause: undefined,
+            [IS_APIFY_LOGGER_EXCEPTION]: true,
         });
     });
 });

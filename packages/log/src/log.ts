@@ -170,7 +170,7 @@ export class Log {
         if (level > this.options.level) return;
 
         data = { ...this.options.data, ...data };
-        data = Object.keys(data).length > 0 ? this._limitDepth(data) : undefined;
+        data = Reflect.ownKeys(data).length > 0 ? this._limitDepth(data) : undefined;
         exception = this._limitDepth(exception);
 
         this.options.logger.log(level, message, data, exception, {
