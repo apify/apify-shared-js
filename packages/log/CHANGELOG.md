@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/apify/apify-shared-js/compare/@apify/log@2.4.9...@apify/log@2.5.0) (2024-01-25)
+
+
+### Features
+
+* log error causes (without breaking things this time) ([#438](https://github.com/apify/apify-shared-js/issues/438)) ([ea3cb57](https://github.com/apify/apify-shared-js/commit/ea3cb572c9d8ae2080014bd81bbc3e78eafd515c))
+
+
+
+
+
 ## [2.4.9](https://github.com/apify/apify-shared-js/compare/@apify/log@2.4.8...@apify/log@2.4.9) (2024-01-18)
 
 **Note:** Version bump only for package @apify/log
