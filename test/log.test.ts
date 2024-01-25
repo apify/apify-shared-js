@@ -190,5 +190,19 @@ describe('log', () => {
 
             expect(line).toMatch(new RegExp(pattern));
         });
+
+        it('should support printing cause even if it is not an error', () => {
+            const log = new Log({ logger: new LoggerText() });
+            const actualError = new Error('some error', { cause: 'hello world!' });
+
+            log.exception(actualError, 'Some error message');
+
+            expect(loggerSpy).toHaveBeenCalled();
+
+            const line = loggedLines.error;
+            const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
+
+            expect(line).toMatch(new RegExp(pattern));
+        });
     }
 });

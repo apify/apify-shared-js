@@ -64,7 +64,7 @@ export function getStackFrames(err: Error, stack: string) {
     }
 
     // Remove stack frames identical to frames in cause.
-    if (cause != null && IS_APIFY_LOGGER_EXCEPTION in (cause as any)) {
+    if (cause != null && typeof cause === 'object' && IS_APIFY_LOGGER_EXCEPTION in (cause as any)) {
         const causeStack = getStackString(cause);
         const causeStackStart = causeStack.indexOf('\n    at');
         if (causeStackStart !== -1) {

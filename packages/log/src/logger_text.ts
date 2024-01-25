@@ -62,12 +62,17 @@ export class LoggerText extends Logger {
     }
 
     protected _parseException(exception: unknown, indentLevel = 1) {
-        if (!exception) {
-            return '';
+        if (['string', 'boolean', 'number', 'undefined', 'bigint'].includes(typeof exception)) {
+            return `\n${exception}`;
         }
 
-        if (['string', 'boolean', 'number', 'symbol', 'undefined'].includes(typeof exception)) {
-            return `\n${exception}`;
+        if (exception === null) {
+            return '\nnull';
+        }
+
+        // We need to manually call toString on symbols
+        if (typeof exception === 'symbol') {
+            return `\n${exception.toString()}`;
         }
 
         if (typeof exception === 'object' && IS_APIFY_LOGGER_EXCEPTION in exception) {

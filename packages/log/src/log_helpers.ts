@@ -64,7 +64,7 @@ export function limitDepth<T>(record: T, depth: number, maxStringLength?: number
         return maxStringLength && record.length > maxStringLength ? truncate(record, maxStringLength) as unknown as T : record;
     }
 
-    if (['number', 'boolean', 'symbol'].includes(typeof record) || record == null || record instanceof Date) {
+    if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof record) || record == null || record instanceof Date) {
         return record;
     }
 
