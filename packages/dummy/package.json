@@ -1,6 +1,6 @@
 {
     "name": "@apify/dummy-package-for-testing",
-    "version": "2.1.2",
+    "version": "2.2.0",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -46,7 +46,5 @@
     },
     "publishConfig": {
         "access": "public"
-    },
-    "dependencies": {
     }
 }
