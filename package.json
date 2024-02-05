@@ -27,7 +27,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "postinstall": "husky install",
+        "postinstall": "husky",
         "prepublishOnly": "lerna run copy",
         "clean": "lerna run clean",
         "build": "lerna run build",
