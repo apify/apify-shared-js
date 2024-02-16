@@ -1,14 +1,9 @@
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
-import { ValidateFunction } from 'ajv';
 import { countries } from 'countries-list';
-import escaya from 'escaya';
-import { parseAjvError } from './input_schema';
+import { ValidateFunction } from 'ajv';
+import { parseScript } from 'escaya';
 import { m } from './intl';
-
-// eslint-disable-next-line no-underscore-dangle
-declare const __injectedEscayaParseScript: typeof escaya.parseScript;
-
-const escayaParseScript = typeof __injectedEscayaParseScript === 'undefined' ? escaya.parseScript : __injectedEscayaParseScript || escaya.parseScript;
+import { parseAjvError } from './input_schema';
 
 /**
  * Validates input field configured with proxy editor
@@ -278,7 +273,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
 
         let ast;
         try {
-            ast = escayaParseScript(maybeFunction, { cst: true });
+            ast = parseScript(maybeFunction, { cst: true });
         } catch (err) {
             // Don't do anything in a case of invalid JS code.
             return;

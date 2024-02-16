@@ -39,7 +39,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run compile && npm run copy",
+        "build": "npm run clean && npm run compile && npm run copy && ts-node -T scripts/fix-esm.ts",
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "copy": "ts-node -T ../../scripts/copy.ts"
