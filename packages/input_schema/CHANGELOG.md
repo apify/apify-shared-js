@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.15](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.14...@apify/input_schema@3.5.15) (2024-02-16)
+
+
+### Bug Fixes
+
+* make input_schema fully ESM usable 😢 ([#448](https://github.com/apify/apify-shared-js/issues/448)) ([fe75f79](https://github.com/apify/apify-shared-js/commit/fe75f79ced3404e791f9a2878b2f1a179dcbf3c3))
+
+
+
+
+
 ## [3.5.14](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.13...@apify/input_schema@3.5.14) (2024-01-18)
 
 **Note:** Version bump only for package @apify/input_schema
