@@ -48,7 +48,6 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.26.0",
         "ansi-colors": "^4.1.1"
     }
 }
