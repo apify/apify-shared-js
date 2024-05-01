@@ -46,6 +46,6 @@
     "dependencies": {
         "@apify/log": "^2.5.0",
         "@apify/utilities": "^2.10.1",
-        "ow": "^0.28.2"
+        "ow": "^1.0.0"
     }
 }
