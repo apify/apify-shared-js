@@ -76,6 +76,10 @@ const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
 export const TWITTER_REGEX = /^@[a-z0-9_]{1,15}$/i;
 export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
 
+/**
+ * For matching linkedin URLs for both profiles and companies.
+ * Used for validating urls in user settings.
+ */
 export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?linkedin.com\/(in|company)\/([A-Za-z0-9]+)\/?$/;
 
 /**
