@@ -50,12 +50,14 @@ export const DNS_SAFE_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-
  */
 export const APIFY_PROXY_VALUE_REGEX = /^[\w._~]+$/;
 
-// Regular expression to validate proxy urls, matches
-// http://asd:qweqwe@proxy.apify.com:8000
-// http://asd:qweqwe@proxy.apify.com:8000/
-// http://123123:qweqwe:asdasd@proxy.com:55555
-// http://proxy.apify.com:5000
-// http://root@proxy.apify.com:5000
+/**
+ * Regular expression to validate proxy urls, matches
+ * http://asd:qweqwe@proxy.apify.com:8000
+ * http://asd:qweqwe@proxy.apify.com:8000/
+ * http://123123:qweqwe:asdasd@proxy.com:55555
+ * http://proxy.apify.com:5000
+ * http://root@proxy.apify.com:5000
+ */
 export const PROXY_URL_REGEX = /^https?:\/\/(([^:]+:)?[^@]*@)?[^.:@]+\.[^:]+:[\d]+?$/;
 
 /**
@@ -74,7 +76,15 @@ const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
 export const TWITTER_REGEX = /^@[a-z0-9_]{1,15}$/i;
 export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
 
-// @TODO: Discontinue usage of this regexps, in favor of HTTP_URL_REGEX
+/**
+ * For matching linkedin URLs for both profiles and companies.
+ * Used for validating urls in user settings.
+ */
+export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?linkedin.com\/(in|company)\/([A-Za-z0-9]+)\/?$/;
+
+/**
+ * @deprecated Discontinue usage of this regexps, in favor of HTTP_URL_REGEX
+ */
 export const URL_REGEX = /^https?:\/\//i;
 
 // Inspired by https://gist.github.com/dperini/729294, but doesn't match FTP URLs
@@ -128,13 +138,19 @@ export const HTTP_URL_REGEX = new RegExp(
 // E.g. https://gist.github.com/jancurn/2dbe83fea77c439b1119fb3f118513e7
 export const GITHUB_GIST_URL_REGEX = new RegExp(`^https:\\/\\/gist\\.github\\.com\\/${GITHUB_REGEX_STR}\\/[0-9a-f]{32}$`, 'i');
 
-// Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].
+/**
+ * Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].
+ */
 export const SPLIT_PATH_REGEX = /[^/]+/g;
 
-// Check if a URL is relative, i.e. does not start with a protocol
+/**
+ * Check if a URL is relative, i.e. does not start with a protocol
+ */
 export const RELATIVE_URL_REGEX = /^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\|\/\/).*/i;
 
-// Check if a link is a mailto/tel/sms type
+/**
+ * Check if a link is a mailto/tel/sms type
+ */
 export const CONTACT_LINK_REGEX = /^(mailto|tel|sms):.*$/i;
 
 /**
