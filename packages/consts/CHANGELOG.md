@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.27.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.26.0...@apify/consts@2.27.0) (2024-05-06)
+
+
+### Features
+
+* **app:** Linkedin profile regex ([#454](https://github.com/apify/apify-shared-js/issues/454)) ([085c619](https://github.com/apify/apify-shared-js/commit/085c6196f882ef42692f4e408dac46386bd138e1))
+
+
+
+
+
 # [2.26.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.25.1...@apify/consts@2.26.0) (2024-01-18)
 
 
