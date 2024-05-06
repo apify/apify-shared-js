@@ -76,7 +76,7 @@ const GITHUB_REGEX_STR = '[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}';
 export const TWITTER_REGEX = /^@[a-z0-9_]{1,15}$/i;
 export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
 
-export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?linkedin.com\/in\/([A-Za-z0-9]+)\/?$/;
+export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?linkedin.com\/(in|company)\/([A-Za-z0-9]+)\/?$/;
 
 /**
  * @deprecated Discontinue usage of this regexps, in favor of HTTP_URL_REGEX
