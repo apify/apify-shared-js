@@ -288,6 +288,27 @@ const tests = {
             'https://127.0.0.1:3000',
         ],
     },
+    LINKEDIN_PROFILE_REGEX: {
+        valid: [
+            'https://www.linkedin.com/in/username',
+            'https://www.linkedin.com/company/companyname',
+            'https://www.cs.linkedin.com/in/username/',
+        ],
+        invalid: [
+            'https://www.linkedin.com/in/',
+            'https://www.linkedin.com/in',
+            'https://www.linkedin.com/company/',
+            'https://www.linkedin.com/company',
+            'https://www.linkedin.com/in/username/extra',
+            'https://www.linkedin.com/in/username/extra/',
+            'https://www.linkedin.com/company/companyname/extra',
+            'https://www.linkedin.com/company/companyname/extra/',
+            'https://www.linkedin.com/in/username/extra/extra',
+            'https://www.linkedin.com/in/username/extra/extra/',
+            'https://www.linkedin.com/company/companyname/extra/extra',
+            'https://www.linkedin.com/company/companyname/extra/extra/',
+        ],
+    },
 };
 
 describe('regexps', () => {
