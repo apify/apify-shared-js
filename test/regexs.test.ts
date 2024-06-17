@@ -291,8 +291,14 @@ const tests = {
     LINKEDIN_PROFILE_REGEX: {
         valid: [
             'https://www.linkedin.com/in/username',
+            'https://linkedin.com/in/username',
+            'http://linkedin.com/in/username',
             'https://www.linkedin.com/company/companyname',
-            'https://www.cs.linkedin.com/in/username/',
+            'https://linkedin.com/company/companyname',
+            'http://linkedin.com/company/companyname',
+            'https://www.cz.linkedin.com/in/username/',
+            'https://cz.linkedin.com/company/apifytech',
+            'http://cz.linkedin.com/company/apifytech',
         ],
         invalid: [
             'https://www.linkedin.com/in/',
