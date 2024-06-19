@@ -243,6 +243,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "default": { "type": "boolean" },
+                "prefill": { "type": "boolean" },
                 "example": { "type": "boolean" },
                 "nullable": { "type": "boolean" },
                 "groupCaption": { "type": "string" },
