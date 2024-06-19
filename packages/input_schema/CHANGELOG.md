@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.6.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.17...@apify/input_schema@3.6.0) (2024-06-19)
+
+
+### Features
+
+* add prefill option to input schema ([#460](https://github.com/apify/apify-shared-js/issues/460)) ([46df11b](https://github.com/apify/apify-shared-js/commit/46df11ba15b28eb931f1a9e82dfc93522e7b328c))
+
+
+
+
+
 ## [3.5.17](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.16...@apify/input_schema@3.5.17) (2024-06-18)
 
 **Note:** Version bump only for package @apify/input_schema
