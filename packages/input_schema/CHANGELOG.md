@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.6.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.6.0...@apify/input_schema@3.6.1) (2024-06-20)
+
+
+### Bug Fixes
+
+* **input-schema:** replace escaya with acorn ([#461](https://github.com/apify/apify-shared-js/issues/461)) ([0a0da70](https://github.com/apify/apify-shared-js/commit/0a0da706a6d62de33e205d2119f660d198be4d2f))
+
+
+
+
+
 # [3.6.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.5.17...@apify/input_schema@3.6.0) (2024-06-19)
 
 
