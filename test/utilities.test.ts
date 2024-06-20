@@ -313,7 +313,11 @@ describe('timeoutPromise()', () => {
     "cookiesPersistence": "PER_PROCESS",
     "arrowFunction": async (a, b) => a + b,
     "loadCss": false,
-    "normalFunction": "function INVALID!!! pageFunction(context) {\\n    // called on every page the crawler visits, use it to extract data from it\\n    const $ = context.jQuery;\\n    return 'xxxx';\\n}"
+    "normalFunction": function INVALID!!! pageFunction(context) {
+        // called on every page the crawler visits, use it to extract data from it
+        const $ = context.jQuery;
+        return 'xxxx';
+    }
 }`;
             /* eslint-enable */
 

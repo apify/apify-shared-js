@@ -39,7 +39,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run compile && npm run copy && ts-node -T scripts/fix-esm.ts",
+        "build": "npm run clean && npm run compile && npm run copy",
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "copy": "ts-node -T ../../scripts/copy.ts"
@@ -50,7 +50,7 @@
     "dependencies": {
         "@apify/consts": "^2.28.0",
         "countries-list": "^3.0.0",
-        "escaya": "^0.0.61"
+        "acorn-loose": "^8.4.0"
     },
     "peerDependencies": {
         "ajv": "^8.0.0"

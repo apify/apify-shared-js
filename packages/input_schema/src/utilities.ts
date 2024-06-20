@@ -1,7 +1,7 @@
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { countries } from 'countries-list';
 import { ValidateFunction } from 'ajv';
-import { parseScript } from 'escaya';
+import { parse } from 'acorn-loose';
 import { m } from './intl';
 import { parseAjvError } from './input_schema';
 
@@ -273,7 +273,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
 
         let ast;
         try {
-            ast = parseScript(maybeFunction, { cst: true });
+            ast = parse(maybeFunction, { ecmaVersion: 'latest' });
         } catch (err) {
             // Don't do anything in a case of invalid JS code.
             return;
@@ -281,17 +281,10 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
 
         const isMultiline = maybeFunction.includes('\n');
         const isSingleFunction = ast
-            && ast.leafs
-            && ast.leafs.length === 1 // Must have only one expression inside!
-            && ast.leafs[0]
+            && ast.body.length === 1
             && (
-                // Normal function ...
-                ast.leafs[0].type === 'FunctionDeclaration'
-                // or arrow function
-                || (
-                    ast.leafs[0].type === 'ExpressionStatement'
-                    && (ast.leafs[0] as { expression: { type: string } }).expression.type === 'ArrowFunction'
-                )
+                ast.body[0].type === 'FunctionDeclaration'
+                || (ast.body[0].type === 'ExpressionStatement' && ast.body[0].expression.type === 'ArrowFunctionExpression')
             );
 
         // If it's not a function declaration or multiline JS code then we do nothing.
