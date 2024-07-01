@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.28.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.28.0...@apify/consts@2.28.1) (2024-07-01)
+
+
+### Bug Fixes
+
+* **consts:** updated linkedin profile regex to support underscore and dash in the username ([#464](https://github.com/apify/apify-shared-js/issues/464)) ([e2f1335](https://github.com/apify/apify-shared-js/commit/e2f133582ecd251a123307b5bde745ef0cc23bbc))
+
+
+
+
+
 # [2.28.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.27.0...@apify/consts@2.28.0) (2024-06-18)
 
 
