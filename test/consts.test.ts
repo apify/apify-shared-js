@@ -83,6 +83,8 @@ describe('consts', () => {
         });
         it('every key has a corresponding local value in LOCAL_APIFY_ENV_VARS', () => {
             Object.entries(LOCAL_ACTOR_ENV_VARS).forEach(([k, v]) => {
+                // Ignore standby as that was added later and doesn't need backwards compatibility.
+                if (k.includes('STANDBY')) return;
                 // We need to change 'WEB_SERVER' to 'CONTAINER' because of a rename introduced.
                 if (k.includes('WEB_SERVER')) {
                     k = k.replace('WEB_SERVER', 'CONTAINER');
