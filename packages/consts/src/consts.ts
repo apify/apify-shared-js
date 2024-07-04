@@ -336,9 +336,9 @@ export const ACTOR_ENV_VARS = {
 // TODO: Discuss what to include here and whether to split into ACTOR and APIFY or not.
 export const INTEGER_ENV_VARS = [
     // Actor env vars
-    ACTOR_ENV_VARS.STANDBY_PORT,
     ACTOR_ENV_VARS.MAX_PAID_DATASET_ITEMS,
     ACTOR_ENV_VARS.MEMORY_MBYTES,
+    ACTOR_ENV_VARS.STANDBY_PORT,
     ACTOR_ENV_VARS.WEB_SERVER_PORT,
     // Apify env vars
     APIFY_ENV_VARS.ACTOR_MAX_PAID_DATASET_ITEMS,
