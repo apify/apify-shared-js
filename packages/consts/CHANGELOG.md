@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.28.1...@apify/consts@2.29.0) (2024-07-04)
+
+
+### Features
+
+* **consts:** add actor standby consts ([#465](https://github.com/apify/apify-shared-js/issues/465)) ([4076f60](https://github.com/apify/apify-shared-js/commit/4076f60484a2c6bdf9ffe4829fe4f188d1329d1c))
+
+
+
+
+
 ## [2.28.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.28.0...@apify/consts@2.28.1) (2024-07-01)
 
 
