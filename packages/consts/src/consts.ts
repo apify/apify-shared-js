@@ -325,6 +325,7 @@ export const ACTOR_ENV_VARS = {
     MAX_PAID_DATASET_ITEMS: 'ACTOR_MAX_PAID_DATASET_ITEMS',
     MEMORY_MBYTES: 'ACTOR_MEMORY_MBYTES',
     RUN_ID: 'ACTOR_RUN_ID',
+    STANDBY_PORT: 'ACTOR_STANDBY_PORT',
     STARTED_AT: 'ACTOR_STARTED_AT',
     TASK_ID: 'ACTOR_TASK_ID',
     TIMEOUT_AT: 'ACTOR_TIMEOUT_AT',
@@ -362,6 +363,11 @@ export const ACTOR_BUILD_ARGS = {
 export const DEFAULT_CONTAINER_PORT = 4321;
 
 /**
+ * Default value for ACTOR_STANDBY_PORT used both locally and at Apify platform.
+ */
+export const DEFAULT_ACTOR_STANDBY_PORT = 4322;
+
+/**
  * Local emulation sub directories for local stores
  */
 export const LOCAL_STORAGE_SUBDIRS = {
@@ -375,10 +381,11 @@ export const LOCAL_STORAGE_SUBDIRS = {
  * These are being preset in Apify SDK when it's running out of the Apify platform.
  */
 export const LOCAL_ACTOR_ENV_VARS = {
+    [ACTOR_ENV_VARS.STANDBY_PORT]: DEFAULT_ACTOR_STANDBY_PORT.toString(),
     [ACTOR_ENV_VARS.DEFAULT_DATASET_ID]: 'default',
     [ACTOR_ENV_VARS.DEFAULT_KEY_VALUE_STORE_ID]: 'default',
     [ACTOR_ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
-    [ACTOR_ENV_VARS.WEB_SERVER_PORT]: (DEFAULT_CONTAINER_PORT).toString(),
+    [ACTOR_ENV_VARS.WEB_SERVER_PORT]: DEFAULT_CONTAINER_PORT.toString(),
     [ACTOR_ENV_VARS.WEB_SERVER_URL]: `http://localhost:${DEFAULT_CONTAINER_PORT}`, // Must match port line above!
 };
 
