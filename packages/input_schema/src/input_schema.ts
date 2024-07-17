@@ -1,8 +1,16 @@
-import Ajv, { ErrorObject } from 'ajv';
+import Ajv, { ErrorObject, Schema } from 'ajv';
 import schema from './schema.json';
 import { m } from './intl';
+import {
+    FieldDefinition,
+    FieldDefinitionUnchecked,
+    InputSchema,
+    InputSchemaBaseChecked,
+    InputSchemaUnchecked, StringFieldDefinition,
+} from './types';
 
 export { schema as inputSchema };
+
 const { definitions } = schema;
 
 /**
@@ -56,9 +64,9 @@ export function parseAjvError(
 }
 
 /**
- * Validates given object against schema and throws a human readable error.
+ * Validates given object against schema and throws a human-readable error.
  */
-const validateAgainstSchemaOrThrow = <T> (validator: Ajv, obj: T, inputSchema: any, rootName: string) => {
+const validateAgainstSchemaOrThrow = (validator: Ajv, obj: InputSchemaUnchecked | FieldDefinitionUnchecked, inputSchema: Schema, rootName: string) => {
     if (validator.validate(inputSchema, obj)) return;
 
     const errorMessage = parseAjvError(validator.errors![0], rootName)?.message;
@@ -67,18 +75,18 @@ const validateAgainstSchemaOrThrow = <T> (validator: Ajv, obj: T, inputSchema: a
 
 /**
  * This validates given object only against the basic input schema without checking the particular fields.
- * We override schema.properties.properties not to validate field defitions.
+ * We override schema.properties.properties not to validate field definitions.
  */
-const validateBasicStructure = <T> (validator: Ajv, obj: T) => {
+function validateBasicStructure(validator: Ajv, obj: InputSchemaUnchecked): asserts obj is InputSchemaBaseChecked {
     const schemaWithoutProperties = { ...schema };
     schemaWithoutProperties.properties = { ...schema.properties, properties: { type: 'object' } as any };
     validateAgainstSchemaOrThrow(validator, obj, schemaWithoutProperties, 'schema');
-};
+}
 
 /**
  * Validates particular field against it's schema.
  */
-const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSchema: T, fieldKey: string) => {
+function validateField(validator: Ajv, fieldSchema: FieldDefinitionUnchecked, fieldKey: string): asserts fieldSchema is FieldDefinition {
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
@@ -101,9 +109,9 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
         return;
     }
 
-    // If there are more matching definitions then the type is string and we need to get the right one.
+    // If there are more matching definitions then the type is string, and we need to get the right one.
     // If the definition contains "enum" property then it's enum type.
-    if (fieldSchema.enum) {
+    if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
         validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.enum`);
@@ -114,12 +122,19 @@ const validateField = <T extends Record<string, any>> (validator: Ajv, fieldSche
     if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
     validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
-};
+}
+
+/**
+ * Validates all properties in the input schema
+ */
+function validateProperties(inputSchema: InputSchemaBaseChecked, validator: Ajv): asserts inputSchema is InputSchema {
+    Object.entries(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => validateField(validator, fieldSchema, fieldKey));
+}
 
 /**
  * Validates that all required fields are present in properties list
  */
-export function validateExistenceOfRequiredFields<T extends Record<string, any>>(inputSchema: T) {
+export function validateExistenceOfRequiredFields(inputSchema: InputSchema) {
     // If the input schema does not have any required fields, we do not need to validate them
     if (!inputSchema?.required?.length) return;
 
@@ -138,16 +153,16 @@ export function validateExistenceOfRequiredFields<T extends Record<string, any>>
  *
  * This way we get the most accurate error message for user.
  */
-export function validateInputSchema<T extends Record<string, any>>(validator: Ajv, inputSchema: T) {
+export function validateInputSchema(validator: Ajv, inputSchema: InputSchemaUnchecked): asserts inputSchema is InputSchema {
     // First validate just basic structure without fields.
     validateBasicStructure(validator, inputSchema);
 
     // Then validate each field separately.
-    Object.entries<any>(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => validateField(validator, fieldSchema, fieldKey));
+    validateProperties(inputSchema, validator);
 
     // Next validate if required fields are actually present in the schema
     validateExistenceOfRequiredFields(inputSchema);
 
-    // Finally just to be sure run validation against the whole shema.
+    // Finally just to be sure run validation against the whole schema.
     validateAgainstSchemaOrThrow(validator, inputSchema, schema, 'schema');
 }
