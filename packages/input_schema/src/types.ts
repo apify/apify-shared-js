@@ -75,7 +75,7 @@ export type FieldDefinition = StringFieldDefinition
 type NeverFieldDefinition = CommonFieldDefinition<never> & { type?: undefined, editor?: string }
 
 type FieldDefinitionToUnchecked<T extends FieldDefinition | NeverFieldDefinition> = Partial<
-    Omit<T, 'type'> & { type: string | string[] }
+    Omit<T, 'type'> & { type: string | string[] | readonly string[] }
 >
 
 // needs to be separated to have all possible values
