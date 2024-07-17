@@ -53,8 +53,14 @@ export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & { typ
     items?: unknown;
 }
 
+type AllTypes = StringFieldDefinition['type']
+    | BooleanFieldDefinition['type']
+    | IntegerFieldDefinition['type']
+    | ObjectFieldDefinition['type']
+    | ArrayFieldDefinition['type']
+
 export type MixedFieldDefinition = CommonFieldDefinition<never> & {
-    type: ('string' | 'boolean' | 'integer' | 'object' | 'array')[];
+    type: AllTypes[] | readonly AllTypes[];
     editor: 'json'
 }
 
@@ -68,9 +74,11 @@ export type FieldDefinition = StringFieldDefinition
 // should not be present, this type is for invalid schema
 type NeverFieldDefinition = CommonFieldDefinition<never> & { type?: undefined, editor?: string }
 
-type FieldDefinitionToUnchecked<T extends FieldDefinition | NeverFieldDefinition> = Pick<T, 'type'> & Partial<T>
+type FieldDefinitionToUnchecked<T extends FieldDefinition | NeverFieldDefinition> = Partial<
+    Omit<T, 'type'> & { type: string | string[] }
+>
 
-// needs to be separated to stay discriminating union
+// needs to be separated to have all possible values
 export type FieldDefinitionUnchecked = FieldDefinitionToUnchecked<StringFieldDefinition>
     | FieldDefinitionToUnchecked<BooleanFieldDefinition>
     | FieldDefinitionToUnchecked<IntegerFieldDefinition>
@@ -82,12 +90,14 @@ export type FieldDefinitionUnchecked = FieldDefinitionToUnchecked<StringFieldDef
 /**
  * Unchecked type for input schema that is parsed from JSON.
  */
-export type InputSchemaUnchecked = Partial<InputSchemaBaseChecked>
+export type InputSchemaUnchecked = Partial<Omit<InputSchemaBaseChecked, 'type'>> & {
+    type: string
+}
 
 /**
  * Type with checked base, but not properties
  */
-export type InputSchemaBaseChecked = InputSchema & {
+export type InputSchemaBaseChecked = Omit<InputSchema, 'properties'> & {
     properties: Record<string, FieldDefinitionUnchecked>;
 }
 
