@@ -8,8 +8,6 @@ export {
     ArrayFieldDefinition,
     MixedFieldDefinition,
     FieldDefinition,
-    FieldDefinitionUnchecked,
     InputSchema,
-    InputSchemaUnchecked,
 } from './types';
 export * from './utilities';

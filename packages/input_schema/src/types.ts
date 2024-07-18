@@ -71,34 +71,11 @@ export type FieldDefinition = StringFieldDefinition
     | ArrayFieldDefinition
     | MixedFieldDefinition
 
-// should not be present, this type is for invalid schema
-type NeverFieldDefinition = CommonFieldDefinition<never> & { type?: undefined, editor?: string }
-
-type FieldDefinitionToUnchecked<T extends FieldDefinition | NeverFieldDefinition> = Partial<
-    Omit<T, 'type'> & { type: string | string[] | readonly string[] }
->
-
-// needs to be separated to have all possible values
-export type FieldDefinitionUnchecked = FieldDefinitionToUnchecked<StringFieldDefinition>
-    | FieldDefinitionToUnchecked<BooleanFieldDefinition>
-    | FieldDefinitionToUnchecked<IntegerFieldDefinition>
-    | FieldDefinitionToUnchecked<ObjectFieldDefinition>
-    | FieldDefinitionToUnchecked<ArrayFieldDefinition>
-    | FieldDefinitionToUnchecked<MixedFieldDefinition>
-    | FieldDefinitionToUnchecked<NeverFieldDefinition>;
-
-/**
- * Unchecked type for input schema that is parsed from JSON.
- */
-export type InputSchemaUnchecked = Partial<Omit<InputSchemaBaseChecked, 'type'>> & {
-    type: string
-}
-
 /**
  * Type with checked base, but not properties
  */
 export type InputSchemaBaseChecked = Omit<InputSchema, 'properties'> & {
-    properties: Record<string, FieldDefinitionUnchecked>;
+    properties: Record<string, Record<string, unknown>>;
 }
 
 /**

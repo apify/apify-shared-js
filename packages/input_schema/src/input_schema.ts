@@ -3,10 +3,9 @@ import schema from './schema.json';
 import { m } from './intl';
 import {
     FieldDefinition,
-    FieldDefinitionUnchecked,
     InputSchema,
     InputSchemaBaseChecked,
-    InputSchemaUnchecked, StringFieldDefinition,
+    StringFieldDefinition,
 } from './types';
 
 export { schema as inputSchema };
@@ -66,7 +65,7 @@ export function parseAjvError(
 /**
  * Validates given object against schema and throws a human-readable error.
  */
-const validateAgainstSchemaOrThrow = (validator: Ajv, obj: InputSchemaUnchecked | FieldDefinitionUnchecked, inputSchema: Schema, rootName: string) => {
+const validateAgainstSchemaOrThrow = (validator: Ajv, obj: Record<string, unknown>, inputSchema: Schema, rootName: string) => {
     if (validator.validate(inputSchema, obj)) return;
 
     const errorMessage = parseAjvError(validator.errors![0], rootName)?.message;
@@ -77,16 +76,18 @@ const validateAgainstSchemaOrThrow = (validator: Ajv, obj: InputSchemaUnchecked 
  * This validates given object only against the basic input schema without checking the particular fields.
  * We override schema.properties.properties not to validate field definitions.
  */
-function validateBasicStructure(validator: Ajv, obj: InputSchemaUnchecked): asserts obj is InputSchemaBaseChecked {
-    const schemaWithoutProperties = { ...schema };
-    schemaWithoutProperties.properties = { ...schema.properties, properties: { type: 'object' } as any };
+function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): asserts obj is InputSchemaBaseChecked {
+    const schemaWithoutProperties = {
+        ...schema,
+        properties: { ...schema.properties, properties: { type: 'object' } as any },
+    };
     validateAgainstSchemaOrThrow(validator, obj, schemaWithoutProperties, 'schema');
 }
 
 /**
  * Validates particular field against it's schema.
  */
-function validateField(validator: Ajv, fieldSchema: FieldDefinitionUnchecked, fieldKey: string): asserts fieldSchema is FieldDefinition {
+function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string): asserts fieldSchema is FieldDefinition {
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
@@ -128,7 +129,9 @@ function validateField(validator: Ajv, fieldSchema: FieldDefinitionUnchecked, fi
  * Validates all properties in the input schema
  */
 function validateProperties(inputSchema: InputSchemaBaseChecked, validator: Ajv): asserts inputSchema is InputSchema {
-    Object.entries(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => validateField(validator, fieldSchema, fieldKey));
+    Object.entries(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => (
+        validateField(validator, fieldSchema, fieldKey)),
+    );
 }
 
 /**
@@ -153,7 +156,7 @@ export function validateExistenceOfRequiredFields(inputSchema: InputSchema) {
  *
  * This way we get the most accurate error message for user.
  */
-export function validateInputSchema(validator: Ajv, inputSchema: InputSchemaUnchecked): asserts inputSchema is InputSchema {
+export function validateInputSchema(validator: Ajv, inputSchema: Record<string, unknown>): asserts inputSchema is InputSchema {
     // First validate just basic structure without fields.
     validateBasicStructure(validator, inputSchema);
 
