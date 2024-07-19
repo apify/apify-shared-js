@@ -2,38 +2,41 @@ type CommonFieldDefinition<T> = {
     title: string;
     description: string;
     default?: T;
-    prefill?: T extends boolean ? never : T;
+    prefill?: T;
     example?: T;
     nullable?: boolean;
     sectionCaption?: string;
     sectionDescription?: string;
 }
 
-export type StringFieldDefinition = CommonFieldDefinition<string> & { type: 'string' } & {
-    // json is specified in tests, but not in docs
+export type StringFieldDefinition = CommonFieldDefinition<string> & {
+    type: 'string'
     editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json';
     pattern?: string;
     minLength?: number;
     maxLength?: number;
-    enum?: string[]; // required if editor is 'select'
-    enumTitles?: string[]
+    enum?: readonly string[]; // required if editor is 'select'
+    enumTitles?: readonly string[]
     isSecret?: boolean;
 }
 
-export type BooleanFieldDefinition = CommonFieldDefinition<boolean> & { type: 'boolean' } & {
+export type BooleanFieldDefinition = CommonFieldDefinition<boolean> & {
+    type: 'boolean'
     editor?: 'checkbox' | 'hidden';
     groupCaption?: string;
     groupDescription?: string;
 }
 
-export type IntegerFieldDefinition = CommonFieldDefinition<number> & { type: 'integer' } & {
+export type IntegerFieldDefinition = CommonFieldDefinition<number> & {
+    type: 'integer'
     editor?: 'number' | 'hidden';
     maximum?: number;
     minimum?: number;
     unit?: string;
 }
 
-export type ObjectFieldDefinition = CommonFieldDefinition<object> & { type: 'object' } & {
+export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
+    type: 'object'
     editor: 'json' | 'proxy' | 'hidden';
     patternKey?: string;
     patternValue?: string;
@@ -41,7 +44,8 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & { type: 'obj
     minProperties?: number;
 }
 
-export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & { type: 'array' } & {
+export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
+    type: 'array'
     editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'hidden';
     placeholderKey?: string;
     placeholderValue?: string;
@@ -60,7 +64,7 @@ type AllTypes = StringFieldDefinition['type']
     | ArrayFieldDefinition['type']
 
 export type MixedFieldDefinition = CommonFieldDefinition<never> & {
-    type: AllTypes[] | readonly AllTypes[];
+    type: readonly AllTypes[];
     editor: 'json'
 }
 
@@ -82,12 +86,12 @@ export type InputSchemaBaseChecked = Omit<InputSchema, 'properties'> & {
  * Type with checked base & properties
  */
 export type InputSchema = {
+    type: 'object';
     title: string;
     description?: string;
-    type: 'object';
     schemaVersion: number;
     properties: Record<string, FieldDefinition>;
-    required: string[];
+    required?: readonly string[];
 
-    $schema: unknown;
+    $schema?: unknown;
 }
