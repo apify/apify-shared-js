@@ -1,4 +1,5 @@
 import { KeyObject } from 'crypto';
+
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
 import _testOw, { type Ow } from 'ow';
 
@@ -33,7 +34,7 @@ export function encryptInputSecretValue({ value, publicKey }: { value: string, p
 /**
  * Encrypts actor input secrets
  */
-export function encryptInputSecrets<T>(
+export function encryptInputSecrets<T extends Record<string, any>>(
     { input, inputSchema, publicKey }: { input: T, inputSchema: object, publicKey: KeyObject },
 ): T {
     ow(input, ow.object);
@@ -43,7 +44,7 @@ export function encryptInputSecrets<T>(
     const secretsInInputKeys = getInputSchemaSecretFieldKeys(inputSchema);
     if (secretsInInputKeys.length === 0) return input;
 
-    const encryptedInput = {};
+    const encryptedInput = {} as Record<string, any>;
     for (const key of secretsInInputKeys) {
         const value = input[key];
         // NOTE: Skips already encrypted values. It can happens in case client already encrypted values, before
@@ -68,7 +69,7 @@ export function decryptInputSecrets<T>(
     ow(input, ow.object);
     ow(privateKey, ow.object.instanceOf(KeyObject));
 
-    const decryptedInput = {};
+    const decryptedInput = {} as Record<string, any>;
     for (const [key, value] of Object.entries(input)) {
         if (ow.isValid(value, ow.string) && ENCRYPTED_INPUT_VALUE_REGEXP.test(value)) {
             const match = value.match(ENCRYPTED_INPUT_VALUE_REGEXP);

@@ -1,4 +1,5 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
+
 import { LogLevel, LogFormat, IS_APIFY_LOGGER_EXCEPTION } from './log_consts';
 
 /**
@@ -24,7 +25,7 @@ export function truncate(str: string, maxLength: number, suffix = '...[truncated
  * Gets log level from env variable. Both integers and strings (WARNING) are supported.
  */
 export function getLevelFromEnv(): number {
-    const envVar = process.env[APIFY_ENV_VARS.LOG_LEVEL];
+    const envVar = process.env[APIFY_ENV_VARS.LOG_LEVEL] as keyof typeof LogLevel;
 
     if (!envVar) return LogLevel.INFO;
     if (Number.isFinite(+envVar)) return +envVar;

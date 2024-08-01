@@ -1,9 +1,10 @@
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
-import { countries } from 'countries-list';
-import { ValidateFunction } from 'ajv';
 import { parse } from 'acorn-loose';
-import { m } from './intl';
+import { ValidateFunction } from 'ajv';
+import { countries } from 'countries-list';
+
 import { parseAjvError } from './input_schema';
+import { m } from './intl';
 
 /**
  * Validates input field configured with proxy editor
@@ -62,7 +63,7 @@ function validateProxyField(
     if (!useApifyProxy) return fieldErrors;
 
     // If Apify proxy is used, check if there is a selected country and if so, check that it's valid (empty or a valid country code)
-    if (apifyProxyCountry && !countries[apifyProxyCountry]) {
+    if (apifyProxyCountry && !countries[apifyProxyCountry as keyof typeof countries]) {
         fieldErrors.push(m('inputSchema.validation.apifyProxyCountryInvalid', { invalidCountry: apifyProxyCountry }));
     }
 
@@ -85,7 +86,7 @@ function validateProxyField(
     }
 
     // Check if proxy groups selected by user are available to him
-    const availableProxyGroupsById = {};
+    const availableProxyGroupsById = {} as Record<string, boolean>;
     (options.availableProxyGroups || []).forEach((group) => { availableProxyGroupsById[group] = true; });
     const unavailableProxyGroups = selectedProxyGroups.filter((group: string) => !availableProxyGroupsById[group]);
 

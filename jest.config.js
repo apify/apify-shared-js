@@ -1,6 +1,11 @@
 module.exports = {
     testTimeout: 30e3,
-    preset: 'ts-jest',
+    transform: {
+        '^.+\\.tsx?$': ['ts-jest', {
+            tsconfig: 'test/tsconfig.json',
+            isolatedModules: true,
+        }],
+    },
     testEnvironment: 'node',
     collectCoverage: false,
     collectCoverageFrom: [
@@ -13,9 +18,4 @@ module.exports = {
         'dist/package.json',
         '<rootDir>/package.json',
     ],
-    globals: {
-        'ts-jest': {
-            tsconfig: 'test/tsconfig.json',
-        },
-    },
 };

@@ -1,5 +1,6 @@
-import createHmac from 'create-hmac';
 import querystring from 'querystring';
+
+import createHmac from 'create-hmac';
 
 /**
  * This client can be used to generate URLs for Apify image proxy server.

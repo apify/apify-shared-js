@@ -1,6 +1,7 @@
-import _ from 'underscore';
-import axios, { AxiosError, AxiosResponse, Method } from 'axios';
 import { URLSearchParams } from 'url';
+
+import axios, { AxiosError, AxiosResponse, Method } from 'axios';
+import _ from 'underscore';
 
 const AUTH_RETRY_ATTEMPTS = 5;
 const ALLOWED_API_METHODS = ['GET', 'POST', 'PATCH', 'DELETE'];
@@ -102,7 +103,7 @@ export interface Lead {
  * @return {Object} Object with only keys allowed in the schema
  */
 export function cleanAndCompareWithSchema(data: any, allowedValues: any) {
-    const cleanedData = {};
+    const cleanedData = {} as Record<string, any>;
     Object.keys(allowedValues).forEach((key) => {
         // Skip schema fields that are not present in data
         if (typeof data[key] === 'undefined') return;

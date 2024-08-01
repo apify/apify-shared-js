@@ -193,7 +193,7 @@ export class WebhookPayloadTemplate {
     }
 
     private _interpolateObject(value: Record<string, any>): Record<string, any> {
-        const result = {};
+        const result = {} as Record<string, any>;
         Object.entries(value).forEach(([key, v]) => {
             result[key] = this._interpolate(v);
         });

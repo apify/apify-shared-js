@@ -44,7 +44,7 @@ describe('timeout with abort controller', () => {
 
     it('passes without timeouting', async () => {
         const res = await addTimeoutToPromise(
-            () => handler(),
+            async () => handler(),
             200,
             'timed out',
         );
@@ -54,7 +54,7 @@ describe('timeout with abort controller', () => {
 
     it('timeouts in the middle', async () => {
         await expect(addTimeoutToPromise(
-            () => handler(),
+            async () => handler(),
             100,
             'timed out',
         )).rejects.toThrowError();
@@ -64,7 +64,7 @@ describe('timeout with abort controller', () => {
     it('timeouts with given error instance', async () => {
         const err = new Error('123');
         await expect(addTimeoutToPromise(
-            () => handler(),
+            async () => handler(),
             100,
             err,
         )).rejects.toThrowError(err);
@@ -75,14 +75,14 @@ describe('timeout with abort controller', () => {
         // this will timeout and cause failure, but it will happen sooner than in 200ms, so err 1 will be thrown
         async function handler2() {
             await addTimeoutToPromise(
-                () => handler(),
+                async () => handler(),
                 100,
                 'err 1',
             );
         }
 
         await expect(addTimeoutToPromise(
-            () => handler2(),
+            async () => handler2(),
             200,
             'err 2',
         )).rejects.toThrowError('err 1');
