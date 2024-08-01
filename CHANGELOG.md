@@ -16,7 +16,7 @@ package | version | changelog
 `@apify/input_schema` | 3.7.1 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.53 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/log` | 2.5.5 | [CHANGELOG](./packages/log/CHANGELOG.md)
-`@apify/markdown` | 2.1.25 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
+`@apify/markdown` | 3.0.0 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 2.0.45 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
 `@apify/salesforce_client` | 2.0.4 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
