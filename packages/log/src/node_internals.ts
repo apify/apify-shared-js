@@ -24,6 +24,7 @@ IN THE SOFTWARE.
 // We've adapted the following code to work with our "error" representations (which are just nested simple objects)
 
 import c from 'ansi-colors';
+
 import { IS_APIFY_LOGGER_EXCEPTION } from './log_consts';
 
 function identicalSequenceRange(a: any[], b: any[]) {

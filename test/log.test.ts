@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { Log, LEVELS, Logger, LoggerText, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import { APIFY_ENV_VARS } from '@apify/consts';
+import { Log, LEVELS, Logger, LoggerText, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import stripAnsi from 'strip-ansi';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;

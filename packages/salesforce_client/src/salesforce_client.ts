@@ -1,6 +1,7 @@
-import _ from 'underscore';
-import axios, { AxiosError, AxiosResponse, Method } from 'axios';
 import { URLSearchParams } from 'url';
+
+import axios, { AxiosError, AxiosResponse, Method } from 'axios';
+import _ from 'underscore';
 
 const AUTH_RETRY_ATTEMPTS = 5;
 const ALLOWED_API_METHODS = ['GET', 'POST', 'PATCH', 'DELETE'];

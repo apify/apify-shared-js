@@ -1,8 +1,8 @@
-import { LoggerText } from './logger_text';
-import { Logger } from './logger';
 import { LogFormat, LogLevel, PREFIX_DELIMITER } from './log_consts';
 import { getFormatFromEnv, getLevelFromEnv, limitDepth } from './log_helpers';
+import { Logger } from './logger';
 import { LoggerJson } from './logger_json';
+import { LoggerText } from './logger_text';
 
 export interface LoggerOptions {
     /**

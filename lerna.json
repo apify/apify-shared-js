@@ -9,9 +9,12 @@
             "granularPathspec": false,
             "createRelease": "github",
             "message": "chore: release [skip ci]"
+        },
+        "publish": {
+            "assets": []
         }
     },
-    "useWorkspaces": true,
+    "useNx": false,
     "ignoreChanges": [
         "**/test/**",
         "**/*.md"

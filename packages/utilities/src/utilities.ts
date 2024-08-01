@@ -8,8 +8,9 @@
  */
 
 import crypto from 'crypto';
-import log, { Log, LoggerJson, LogLevel } from '@apify/log';
+
 import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
+import log, { Log, LoggerJson, LogLevel } from '@apify/log';
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -60,7 +61,7 @@ export function parseDateFromJson(date: string | Date) {
  * Returns a Promise object that will wait a specific number of milliseconds.
  * @param {number} millis Time to wait. If the value is not larger than zero, the promise resolves immediately.
  */
-export function delayPromise(millis: number): Promise<void> {
+export async function delayPromise(millis: number): Promise<void> {
     return new Promise(((resolve) => {
         if (millis > 0) {
             setTimeout(() => resolve(), millis);
@@ -360,7 +361,7 @@ interface Server {
  * Usage: `promisifyServerListen(server)(1234)`;
  */
 export function promisifyServerListen<T extends Server>(server: T) {
-    return (port: number) => {
+    return async (port: number) => {
         return new Promise<void>((resolve, reject) => {
             const onError = (err: Error) => {
                 removeListeners();
@@ -396,7 +397,7 @@ export function configureLogger(givenLog: Log, isProduction?: boolean) {
 /**
  * Wraps given promise with timeout.
  */
-export function timeoutPromise<T>(promise: Promise<T>, timeoutMillis: number, errorMessage = 'Promise has timed-out') {
+export async function timeoutPromise<T>(promise: Promise<T>, timeoutMillis: number, errorMessage = 'Promise has timed-out') {
     return new Promise((resolve, reject) => {
         let timeout: number;
         let hasFulfilled = false;

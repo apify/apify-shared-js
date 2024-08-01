@@ -1,7 +1,8 @@
-import _ from 'underscore';
 import * as http from 'http';
-import * as utils from '@apify/utilities';
+
 import { makeInputJsFieldsReadable } from '@apify/input_schema';
+import * as utils from '@apify/utilities';
+import _ from 'underscore';
 
 describe('utilities', () => {
     describe('#cryptoRandomObjectId()', () => {
@@ -128,9 +129,9 @@ describe('utilities', () => {
         });
     });
 
-    it('sequentializePromises()', () => {
+    it('sequentializePromises()', async () => {
         const range = _.range(21, 33);
-        const promises = range.map((index) => {
+        const promises = range.map(async (index) => {
             return new Promise((resolve) => {
                 setTimeout(() => resolve(index), Math.round(Math.random() * 100));
             });
@@ -141,13 +142,13 @@ describe('utilities', () => {
             .then((data) => expect(data).toEqual(range));
     });
 
-    it('delayPromise()', () => {
+    it('delayPromise()', async () => {
         let timeBefore: number;
         return Promise.resolve()
-            .then(() => utils.delayPromise(0))
-            .then(() => utils.delayPromise(null as any))
-            .then(() => utils.delayPromise(-1))
-            .then(() => {
+            .then(async () => utils.delayPromise(0))
+            .then(async () => utils.delayPromise(null as any))
+            .then(async () => utils.delayPromise(-1))
+            .then(async () => {
                 timeBefore = Date.now();
                 return utils.delayPromise(100);
             })
@@ -177,7 +178,7 @@ describe('utilities', () => {
 
         void utils
             .promisifyServerListen(server1)(8799)
-            .then(() => {
+            .then(async () => {
                 expect(server1.listening).toBe(true);
                 expect(server2.listening).toBe(false);
 
@@ -308,7 +309,7 @@ describe('timeoutPromise()', () => {
             /* eslint-enable */
 
             const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
-            /* eslint-disable */
+
             const expected = `{
     "cookiesPersistence": "PER_PROCESS",
     "arrowFunction": async (a, b) => a + b,
@@ -319,7 +320,6 @@ describe('timeoutPromise()', () => {
         return 'xxxx';
     }
 }`;
-            /* eslint-enable */
 
             expect(given).toBe(expected);
         });

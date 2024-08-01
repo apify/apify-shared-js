@@ -1,5 +1,5 @@
-import stripAnsi from 'strip-ansi';
 import { IS_APIFY_LOGGER_EXCEPTION, LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
+import stripAnsi from 'strip-ansi';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 const DATE_REGEX = '\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d';

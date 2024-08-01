@@ -43,7 +43,7 @@ describe('HealthChecker', () => {
 
     it('should pass when all checks pass', async () => {
         redis.get.mockReturnValueOnce('OK');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
         writeTestCollection.findOne.mockReturnValueOnce({ some: 'object' });
 
         await healthChecker.ensureIsHealthy();
@@ -58,7 +58,7 @@ describe('HealthChecker', () => {
 
     it('should fail when some of the checks returns something wrong (1).', async () => {
         redis.get.mockReturnValueOnce('OK');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
 
         // Item was not found.
         writeTestCollection.findOne.mockReturnValueOnce(undefined);
@@ -75,7 +75,7 @@ describe('HealthChecker', () => {
 
     it('should fail when some of the checks returns something wrong (2).', async () => {
         redis.get.mockReturnValueOnce('OK');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
 
         // Throws an error
         writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
@@ -100,7 +100,7 @@ describe('HealthChecker', () => {
 
     it('should fail when redis returns invalid value', async () => {
         redis.get.mockReturnValueOnce('NOPE');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
         writeTestCollection.findOne.mockReturnValueOnce({ some: 'object' });
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow(
@@ -113,7 +113,7 @@ describe('HealthChecker', () => {
 
     it('should fail when mongo returns invalid value', async () => {
         redis.get.mockReturnValueOnce('OK');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
 
         // Throws an error
         writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
@@ -130,7 +130,7 @@ describe('HealthChecker', () => {
 
     it('should fail when mongo cannot read', async () => {
         redis.get.mockReturnValueOnce('OK');
-        mongoRead.listCollections.mockReturnValueOnce({ toArray: () => Promise.resolve([]) });
+        mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
         writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some-problem'); });
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some-problem"');
