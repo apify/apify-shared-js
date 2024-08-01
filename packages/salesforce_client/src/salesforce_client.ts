@@ -103,7 +103,7 @@ export interface Lead {
  * @return {Object} Object with only keys allowed in the schema
  */
 export function cleanAndCompareWithSchema(data: any, allowedValues: any) {
-    const cleanedData = {};
+    const cleanedData = {} as Record<string, any>;
     Object.keys(allowedValues).forEach((key) => {
         // Skip schema fields that are not present in data
         if (typeof data[key] === 'undefined') return;
