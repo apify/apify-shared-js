@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.46](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.45...@apify/pseudo_url@2.0.46) (2024-08-01)
+
+
+### Bug Fixes
+
+* **pseudo_url:** drop dependency on `@sapphire/shapeshift` ([#470](https://github.com/apify/apify-shared-js/issues/470)) ([7d318f5](https://github.com/apify/apify-shared-js/commit/7d318f5ce77326a1e8133c985b9129386446d7f0))
+
+
+
+
+
 ## [2.0.45](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.44...@apify/pseudo_url@2.0.45) (2024-08-01)
 
 **Note:** Version bump only for package @apify/pseudo_url
