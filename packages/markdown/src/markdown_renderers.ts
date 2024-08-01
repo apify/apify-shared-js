@@ -1,5 +1,6 @@
 import { CONTACT_LINK_REGEX, GIT_MAIN_BRANCH } from '@apify/consts';
 import { isUrlRelative } from '@apify/utilities';
+import type { Tokens } from 'marked';
 
 export function formatHeadingId(headingId: string) {
     // Replace non-word characters with dashes
@@ -14,8 +15,8 @@ export function formatHeadingId(headingId: string) {
 
 export function extractHeadingIdAndText(text: string, raw: string): { headingText: string; headingId: string } {
     // Check if there is a custom fragment link with the custom heading ID present in the heading
-    // The heading text already comes rendered from Markdown to HTML to the renderer, so we have to look for an <a> tag instead of the Markdown source
-    const parsingRegExp = /<a href="#([^"]+)"><\/a>(.*)/;
+    // Since marked v13, we get markdown text here.
+    const parsingRegExp = /\[]\(#([^"]+)\)(.*)/;
     const regexMatch = text.match(parsingRegExp);
 
     let headingId = '';
@@ -45,9 +46,9 @@ export function extractHeadingIdAndText(text: string, raw: string): { headingTex
  *     becomes
  *   <h3 id="custom-id"><a href="#custom-id"></a>Heading text</h3>
 */
-export function customHeadingRenderer(text: string, level: 1 | 2 | 3 | 4 | 5 | 6, raw: string): string {
+export function customHeadingRenderer({ depth, text, raw }: Tokens.Heading): string {
     const { headingId, headingText } = extractHeadingIdAndText(text, raw);
-    return `\n${' '.repeat(12)}<h${level} id="${headingId}"><a href="#${headingId}"></a>${headingText}</h${level}>`;
+    return `\n${' '.repeat(12)}<h${depth} id="${headingId}"><a href="#${headingId}"></a>${headingText}</h${depth}>`;
 }
 
 export function parseRepoName(gitRepoUrl: string): string {
@@ -58,7 +59,7 @@ export function parseRepoName(gitRepoUrl: string): string {
     const parsedRepoUrl = new URL(normalizedUrl);
     const cleanedPath = parsedRepoUrl.pathname.replace('.git', '');
     // Do not use the initial slash in the path
-    const path = cleanedPath.substr(1);
+    const path = cleanedPath.substring(1);
     // Can't use "path" on it's own as Bitbucket adds irrelevant path suffix to the end of it
     return path.split('/').slice(0, 2).join('/');
 }
