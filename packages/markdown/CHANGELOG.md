@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.1.25...@apify/markdown@3.0.0) (2024-08-01)
+
+
+### Bug Fixes
+
+* **markdown:** upgrade dependency on `marked` to v13 ([#468](https://github.com/apify/apify-shared-js/issues/468)) ([d09775e](https://github.com/apify/apify-shared-js/commit/d09775ecfb9bc92de8d54623045dcbdb3518e0cf))
+
+
+### BREAKING CHANGES
+
+* **markdown:** Node 18 is required for `@apify/markdown` package, since `marked` added
+this constraint too via `engines` field. The tests are still passing
+even with node 14, so this is a rather artificial constraint.
+
+Signature of `customHeadingRenderer` changed:
+
+```diff
+-customHeadingRenderer(text: string, level: 1 | 2 | 3 | 4 | 5 | 6, raw: string): string
++customHeadingRenderer({ depth, text, raw }: Tokens.Heading): string
+```
+
+
+
+
+
 ## [2.1.25](https://github.com/apify/apify-shared-js/compare/@apify/markdown@2.1.24...@apify/markdown@2.1.25) (2024-08-01)
 
 **Note:** Version bump only for package @apify/markdown
