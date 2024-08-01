@@ -1,8 +1,6 @@
-import { marked } from 'marked';
+import { Renderer, lexer, parser, Tokens } from 'marked';
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
-
-const { Renderer, lexer, parser } = marked;
 
 /**
  * Map from the language of a fenced code block to the title of corresponding tab.
@@ -40,7 +38,9 @@ const LANGUAGE_TO_TAB_TITLE = {
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
-interface Match { groups: { header: string, lang: string, code: string } }
+interface Match {
+    groups: { header: string, lang: string, code: string };
+}
 
 const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string, code: string }> => {
     const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
@@ -141,11 +141,12 @@ interface MarkedResponse {
 export const apifyMarked = (markdown: string): MarkedResponse => {
     const renderer = new Renderer();
     renderer.heading = customHeadingRenderer;
-    renderer.code = function (code, language) {
-        if (language) {
-            return code;
+    renderer.code = function (this: Renderer, code: Tokens.Code) {
+        if (code.lang) {
+            return code.text;
         }
-        return DEFAULT_MARKED_RENDERER.code.call(this, code, language, false);
+
+        return DEFAULT_MARKED_RENDERER.code.call(this, { ...code, escaped: false });
     };
     const tokens = lexer(markdown);
 
