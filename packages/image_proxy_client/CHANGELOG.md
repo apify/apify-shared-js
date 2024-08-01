@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/apify/apify-shared-js/compare/@apify/image_proxy_client@2.0.1...@apify/image_proxy_client@2.0.2) (2024-08-01)
+
+**Note:** Version bump only for package @apify/image_proxy_client
+
+
+
+
+
 ## [2.0.1](https://github.com/apify/apify-shared-js/compare/@apify/image_proxy_client@2.0.0...@apify/image_proxy_client@2.0.1) (2024-01-15)
 
 
