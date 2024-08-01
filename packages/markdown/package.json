@@ -50,7 +50,7 @@
     "dependencies": {
         "@apify/consts": "^2.29.0",
         "@apify/utilities": "^2.10.6",
-        "marked": "^3.0.2",
+        "marked": "^4.0.0",
         "match-all": "^1.2.6"
     }
 }
