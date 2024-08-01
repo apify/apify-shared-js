@@ -1,4 +1,4 @@
-import marked from 'marked';
+import { marked } from 'marked';
 import matchAll from 'match-all';
 import { customHeadingRenderer } from './markdown_renderers';
 
