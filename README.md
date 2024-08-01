@@ -15,7 +15,6 @@ package | version
 `@apify/markdown` | [![NPM version](https://img.shields.io/npm/v/@apify/markdown.svg)](https://www.npmjs.com/package/@apify/markdown)
 `@apify/payment_qr_codes` | [![NPM version](https://img.shields.io/npm/v/@apify/payment_qr_codes.svg)](https://www.npmjs.com/package/@apify/payment_qr_codes)
 `@apify/pseudo_url` | [![NPM version](https://img.shields.io/npm/v/@apify/pseudo_url.svg)](https://www.npmjs.com/package/@apify/pseudo_url)
-`@apify/salesforce_client` | [![NPM version](https://img.shields.io/npm/v/@apify/salesforce_client.svg)](https://www.npmjs.com/package/@apify/salesforce_client)
 `@apify/utilities` | [![NPM version](https://img.shields.io/npm/v/@apify/utilities.svg)](https://www.npmjs.com/package/@apify/utilities)
 `@apify/timeout` | [![NPM version](https://img.shields.io/npm/v/@apify/timeout.svg)](https://www.npmjs.com/package/@apify/timeout)
 

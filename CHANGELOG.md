@@ -19,6 +19,5 @@ package | version | changelog
 `@apify/markdown` | 3.0.0 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 2.0.46 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
-`@apify/salesforce_client` | 2.0.4 | [CHANGELOG](./packages/salesforce_client/CHANGELOG.md)
 `@apify/timeout` | 0.3.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
 `@apify/utilities` | 2.10.6 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
