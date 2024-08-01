@@ -1,5 +1,6 @@
-import * as utils from '@apify/utilities';
 import { createPrivateKey, createPublicKey } from 'crypto';
+
+import * as utils from '@apify/utilities';
 
 const publicKey = createPublicKey({
     // eslint-disable-next-line max-len

@@ -94,7 +94,7 @@ export class HealthChecker {
         if (typeof check.client !== 'object') throw new Error(`Check client must be an object got "${typeof check.client}" instead`);
     }
 
-    _performCheck(check: CheckType): Promise<void> {
+    async _performCheck(check: CheckType): Promise<void> {
         switch (check.type) {
             case CHECK_TYPES.MONGODB_PING:
                 return this._testMongoDbPing(check);

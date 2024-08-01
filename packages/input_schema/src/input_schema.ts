@@ -1,6 +1,7 @@
 import Ajv, { ErrorObject, Schema } from 'ajv';
-import schema from './schema.json';
+
 import { m } from './intl';
+import schema from './schema.json';
 import {
     FieldDefinition,
     InputSchema,

@@ -102,7 +102,7 @@ export function parseUrl(str: string): Uri {
     };
 
     const m = o.parser[o.strictMode ? 'strict' : 'loose'].exec(str);
-    const uri: Uri = {};
+    const uri: Record<string, any> = {};
     let i = o.key.length;
 
     while (i--) uri[o.key[i]] = m![i] || '';

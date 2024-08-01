@@ -1,5 +1,6 @@
-import { encryptInputSecrets, decryptInputSecrets } from '@apify/input_secrets';
 import { createPrivateKey, createPublicKey } from 'crypto';
+
+import { encryptInputSecrets, decryptInputSecrets } from '@apify/input_secrets';
 
 const publicKey = createPublicKey({
     // eslint-disable-next-line max-len

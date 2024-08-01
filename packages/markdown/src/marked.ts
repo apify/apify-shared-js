@@ -1,5 +1,6 @@
 import marked from 'marked';
 import matchAll from 'match-all';
+
 import { customHeadingRenderer } from './markdown_renderers';
 
 const { Renderer, lexer, parser } = marked;
@@ -150,13 +151,13 @@ export const apifyMarked = (markdown: string): MarkedResponse => {
     const tokens = lexer(markdown);
 
     let markedTabTokenIndex = 0;
-    const codeTabsObjectPerIndex = {};
+    const codeTabsObjectPerIndex = {} as Record<string, any>;
     tokens.forEach((token) => {
         if (token.type === 'code' && token.lang) {
             if (token.lang === 'marked-tabs') {
                 codeTabsObjectPerIndex[markedTabTokenIndex] = codeTabObjectFromCodeTabMarkdown(token.text);
             } else {
-                const tabTitle = LANGUAGE_TO_TAB_TITLE[token.lang] || token.lang;
+                const tabTitle = LANGUAGE_TO_TAB_TITLE[token.lang as keyof typeof LANGUAGE_TO_TAB_TITLE] || token.lang;
                 codeTabsObjectPerIndex[markedTabTokenIndex] = {
                     [tabTitle]: {
                         language: token.lang,

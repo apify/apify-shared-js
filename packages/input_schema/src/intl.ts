@@ -39,7 +39,7 @@ const intlStrings = {
  * Helper function to simulate intl formatMessage function
  */
 export function m(stringId: string, variables?: Record<string, any>) {
-    let text = intlStrings[stringId];
+    let text = intlStrings[stringId as keyof typeof intlStrings];
     if (!text) return stringId;
 
     if (variables) {

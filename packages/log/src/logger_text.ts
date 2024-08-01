@@ -1,13 +1,14 @@
 import c from 'ansi-colors';
-import { Logger } from './logger';
+
 import { IS_APIFY_LOGGER_EXCEPTION, LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
 import { LimitedError } from './log_helpers';
+import { Logger } from './logger';
 import { getStackFrames } from './node_internals';
 
 const SHORTEN_LEVELS = {
     SOFT_FAIL: 'SFAIL',
     WARNING: 'WARN',
-};
+} as const;
 
 const LEVEL_TO_COLOR = {
     [LogLevel.ERROR]: 'red',
@@ -16,9 +17,9 @@ const LEVEL_TO_COLOR = {
     [LogLevel.INFO]: 'green',
     [LogLevel.DEBUG]: 'blue',
     [LogLevel.PERF]: 'magenta',
-};
+} as const;
 
-const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map((level) => SHORTEN_LEVELS[level] || level);
+const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map((level) => SHORTEN_LEVELS[level as keyof typeof SHORTEN_LEVELS] || level);
 const MAX_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVELS.map((l) => l.length));
 
 const getLevelIndent = (level: string) => {
@@ -47,7 +48,7 @@ export class LoggerText extends Logger {
         }
 
         const errStack = exception ? this._parseException(exception) : '';
-        const color = LEVEL_TO_COLOR[level];
+        const color = LEVEL_TO_COLOR[level as keyof typeof LEVEL_TO_COLOR];
         const levelStr = SHORTENED_LOG_LEVELS[level];
         const levelIndent = getLevelIndent(levelStr);
         const dataStr = !data ? '' : ` ${JSON.stringify(data)}`;

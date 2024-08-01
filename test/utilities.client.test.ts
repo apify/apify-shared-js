@@ -1,9 +1,4 @@
-import _ from 'underscore';
-import Ajv from 'ajv';
-
-// @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
-import brokenClone from 'clone-deep';
-
+import { validateInputUsingValidator } from '@apify/input_schema';
 import {
     buildOrVersionNumberIntToStr,
     escapeForBson,
@@ -16,7 +11,11 @@ import {
     traverseObject,
     unescapeFromBson,
 } from '@apify/utilities';
-import { validateInputUsingValidator } from '@apify/input_schema';
+import Ajv from 'ajv';
+import brokenClone from 'clone-deep';
+import _ from 'underscore';
+
+// @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
 
 const clone = function (obj: any) {
     return Array.isArray(obj) ? obj.slice(0) : brokenClone(obj);

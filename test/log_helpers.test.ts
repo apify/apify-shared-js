@@ -1,5 +1,5 @@
-import { limitDepth, getLevelFromEnv, LogLevel, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import { APIFY_ENV_VARS } from '@apify/consts';
+import { limitDepth, getLevelFromEnv, LogLevel, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 
 describe('getLevelFromEnv()', () => {
     it('should support integers', () => {
