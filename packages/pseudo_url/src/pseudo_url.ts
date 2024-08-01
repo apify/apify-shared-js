@@ -1,7 +1,6 @@
-import log from '@apify/log';
-import { s } from '@sapphire/shapeshift';
+import { inspect } from 'node:util';
 
-const inputPredicate = s.union(s.string, s.instance(RegExp));
+import log from '@apify/log';
 
 /**
  * Represents a pseudo-URL (PURL) - a URL pattern used to find
@@ -62,13 +61,14 @@ export class PseudoUrl {
      *   such as making the matching case-sensitive.
      */
     constructor(purl: string | RegExp) {
-        inputPredicate.parse(purl);
-
         if (purl instanceof RegExp) {
             this.regex = purl;
-        } else {
+        } else if (typeof purl === 'string') {
             this.regex = purlToRegExp(purl);
             log.debug('PURL parsed', { purl, regex: this.regex });
+        } else {
+            const type = Array.isArray(purl) ? 'array' : typeof purl;
+            throw new Error(`Invalid PseudoUrl format, 'string' or 'RegExp' required, got \`${inspect(purl)}\` of type '${type}' instead`);
         }
     }
 
