@@ -11,7 +11,7 @@ type CommonFieldDefinition<T> = {
 
 export type StringFieldDefinition = CommonFieldDefinition<string> & {
     type: 'string'
-    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json';
+    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json' | 'dataset' | 'keyValueStore' | 'requestQueue';
     pattern?: string;
     minLength?: number;
     maxLength?: number;
