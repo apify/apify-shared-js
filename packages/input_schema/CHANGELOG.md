@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.8.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.7.1...@apify/input_schema@3.8.0) (2024-09-13)
+
+
+### Features
+
+* **input_schema:** storage editor types ([#476](https://github.com/apify/apify-shared-js/issues/476)) ([c9a4a9d](https://github.com/apify/apify-shared-js/commit/c9a4a9def5446d31eac5c8e7aed6990949648122))
+
+
+
+
+
 ## [3.7.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.7.0...@apify/input_schema@3.7.1) (2024-08-01)
 
 **Note:** Version bump only for package @apify/input_schema
