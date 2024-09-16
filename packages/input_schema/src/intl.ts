@@ -33,6 +33,14 @@ const intlStrings = {
         'Field schema.properties.{fieldKey} does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
     'inputSchema.validation.proxyGroupMustBeArrayOfStrings':
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
+    'inputSchema.validation.datepickerInvalidFormatAbsolute':
+        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD".',
+    'inputSchema.validation.datepickerInvalidFormatRelative':
+        'Field {rootName}.{fieldKey} must be a string in format "+ 1 day", "+ 3 months", "- 4 years" etc.',
+    'inputSchema.validation.datepickerInvalidFormatBoth':
+        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+ 1 day", "+ 3 months", "- 4 years" etc.',
+    'inputSchema.validation.datepickerInvalidDate':
+        'Field {rootName}.{fieldKey} must be a valid date.',
 };
 
 /**
