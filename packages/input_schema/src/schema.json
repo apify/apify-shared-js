@@ -115,7 +115,9 @@
                     "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "dataset", "keyValueStore", "requestQueue"] },
                     "isSecret": { "type": "boolean" },
                     "sectionCaption": { "type": "string" },
-                    "sectionDescription": { "type": "string" }
+                    "sectionDescription": { "type": "string" },
+                    "isAbsolute": { "type": "boolean" },
+                    "isRelative": { "type": "boolean" }
                 }
             },
             "else": {

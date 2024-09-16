@@ -18,6 +18,9 @@ export type StringFieldDefinition = CommonFieldDefinition<string> & {
     enum?: readonly string[]; // required if editor is 'select'
     enumTitles?: readonly string[]
     isSecret?: boolean;
+    // used for 'datepicker' editor, isAbsolute is considered with default value true
+    isAbsolute?: boolean;
+    isRelative?: boolean;
 }
 
 export type BooleanFieldDefinition = CommonFieldDefinition<boolean> & {
