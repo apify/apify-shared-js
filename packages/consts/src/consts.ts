@@ -204,7 +204,7 @@ export const ACTOR_LIMITS = {
     MAX_RUN_MEMORY_MBYTES: 32768,
 
     // Maximum size of actor input schema.
-    INPUT_SCHEMA_MAX_BYTES: 200 * 1024,
+    INPUT_SCHEMA_MAX_BYTES: 500 * 1024,
 
     // Max length of run/build log in number of characters
     LOG_MAX_CHARS: 10 * 1024 * 1024,

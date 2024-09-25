@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.29.0...@apify/consts@2.30.0) (2024-09-24)
+
+
+### Features
+
+* **consts:** increase input schema max size to 500 kB ([#478](https://github.com/apify/apify-shared-js/issues/478)) ([06ba055](https://github.com/apify/apify-shared-js/commit/06ba055724ec39cec6ab475912d723dbde04de76))
+
+
+
+
+
 # [2.29.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.28.1...@apify/consts@2.29.0) (2024-07-04)
 
 
