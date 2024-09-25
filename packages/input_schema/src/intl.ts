@@ -36,9 +36,9 @@ const intlStrings = {
     'inputSchema.validation.datepickerInvalidFormatAbsolute':
         'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD".',
     'inputSchema.validation.datepickerInvalidFormatRelative':
-        'Field {rootName}.{fieldKey} must be a string in format "+ 1 day", "+ 3 months", "- 4 years" etc.',
+        'Field {rootName}.{fieldKey} must be a string in format "+/- number unit ". Supported units are "day", "week", "month", "year".',
     'inputSchema.validation.datepickerInvalidFormatBoth':
-        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+ 1 day", "+ 3 months", "- 4 years" etc.',
+        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+/- number unit ". Supported units are "day", "week", "month", "year".',
     'inputSchema.validation.datepickerInvalidDate':
         'Field {rootName}.{fieldKey} must be a valid date.',
 };

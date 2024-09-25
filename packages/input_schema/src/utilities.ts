@@ -253,7 +253,7 @@ export function validateInputUsingValidator(
             const acceptAbsolute = isAbsolute !== false;
             const acceptRelative = isRelative === true;
             const isValidAbsolute = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value);
-            const isValidRelative = /^[+-] [0-9]+ (day|month|year)s?$/.test(value);
+            const isValidRelative = /^[+-] [0-9]+ (day|week|month|year)s?$/.test(value);
             let isValidDate: boolean | undefined;
 
             if (isValidAbsolute) {
@@ -283,7 +283,7 @@ export function validateInputUsingValidator(
                     rootName: 'input',
                     fieldKey: property,
                 }));
-            } else if (isValidDate === false && acceptAbsolute && !acceptRelative) {
+            } else if (isValidDate === false && acceptAbsolute) {
                 fieldErrors.push(m('inputSchema.validation.datepickerInvalidDate', {
                     rootName: 'input',
                     fieldKey: property,
