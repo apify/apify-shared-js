@@ -25,7 +25,7 @@ const { definitions } = schema;
 export function parseAjvError(
     error: ErrorObject,
     rootName: string,
-    properties: Record<string, { nullable?: boolean }> = {},
+    properties: Record<string, { nullable?: boolean, editor?: string }> = {},
     input: Record<string, unknown> = {},
 ): { fieldKey: string; message: string } | null {
     // There are 3 possible errors comming from validation:
@@ -55,6 +55,14 @@ export function parseAjvError(
         fieldKey = error.instancePath.split('/').pop()!;
         const errorMessage = `${error.message}: "${error.params.allowedValues.join('", "')}"`;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
+    } else if (error.keyword === 'const') {
+        fieldKey = error.instancePath.split('/').pop()!;
+        // This is a special case for datepicker fields, where both allowAbsolute and allowRelative properties are set to false
+        if (properties[fieldKey] && properties[fieldKey].editor === 'datepicker') {
+            message = m('inputSchema.validation.datepickerNoType', { rootName, fieldKey });
+        } else {
+            message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
+        }
     } else {
         fieldKey = error.instancePath.split('/').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });

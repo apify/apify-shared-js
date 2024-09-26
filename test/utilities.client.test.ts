@@ -1018,6 +1018,219 @@ describe('utilities.client', () => {
                 expect(result[0].fieldKey).toEqual('field');
             });
         });
+
+        describe('special cases for datepicker string type', () => {
+            it('should allow absolute dates when allowAbsolute is omitted', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'datepicker',
+                        nullable: true,
+                    },
+                });
+                const inputs = [
+                    // 5 invalid inputs
+                    { field: {} },
+                    { field: [] },
+                    { field: 'invalid string' },
+                    { field: '12.10.2024' },
+                    { field: '+ 1 day' },
+                    // Valid
+                    { field: '2022-12-31' },
+                    { field: '2024-01-31' },
+                    { field: '1999-02-28' },
+                    { field: null },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 5 invalid inputs
+                expect(results.length).toEqual(5);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow absolute dates when allowAbsolute is set to true', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'datepicker',
+                        allowAbsolute: true,
+                    },
+                });
+                const inputs = [
+                    // 6 invalid inputs
+                    { field: {} },
+                    { field: [] },
+                    { field: 'invalid string' },
+                    { field: '12.10.2024' },
+                    { field: '+ 1 day' },
+                    { field: null },
+                    // Valid
+                    { field: '2022-12-31' },
+                    { field: '2024-01-31' },
+                    { field: '1999-02-28' },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 6 invalid inputs
+                expect(results.length).toEqual(6);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow only relative dates when allowRelative is true and allowAbsolute is false', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'datepicker',
+                        allowAbsolute: false,
+                        allowRelative: true,
+                    },
+                });
+                const inputs = [
+                    // 11 invalid inputs
+                    { field: '2022-12-31' },
+                    { field: '2024-01-31' },
+                    { field: '1999-02-28' },
+                    { field: {} },
+                    { field: [] },
+                    { field: 'invalid string' },
+                    { field: '12.10.2024' },
+                    { field: null },
+                    { field: '+ 1 minutes' },
+                    { field: '1 day' },
+                    { field: '- 11 sec' },
+                    // Valid
+                    { field: '+ 1 day' },
+                    { field: '+ 3 days' },
+                    { field: '+ 5 weeks' },
+                    { field: '- 10 months' },
+                    { field: '+ 3 years' },
+                    { field: '- 0 days' },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 11 invalid inputs
+                expect(results.length).toEqual(11);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow both dates when allowRelative is true', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'datepicker',
+                        allowRelative: true,
+                    },
+                });
+                const inputs = [
+                    // 8 invalid inputs
+                    { field: {} },
+                    { field: [] },
+                    { field: 'invalid string' },
+                    { field: '12.10.2024' },
+                    { field: null },
+                    { field: '+ 1 minutes' },
+                    { field: '1 day' },
+                    { field: '- 11 sec' },
+                    // Valid
+                    { field: '2022-12-31' },
+                    { field: '2024-01-31' },
+                    { field: '1999-02-28' },
+                    { field: '+ 1 day' },
+                    { field: '+ 3 days' },
+                    { field: '+ 5 weeks' },
+                    { field: '- 10 months' },
+                    { field: '+ 3 years' },
+                    { field: '- 0 days' },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 8 invalid inputs
+                expect(results.length).toEqual(8);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow both dates when allowRelative is true and allowAbsolute is true', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'datepicker',
+                        allowRelative: true,
+                        allowAbsolute: true,
+                    },
+                });
+                const inputs = [
+                    // 8 invalid inputs
+                    { field: {} },
+                    { field: [] },
+                    { field: 'invalid string' },
+                    { field: '12.10.2024' },
+                    { field: null },
+                    { field: '+ 1 minutes' },
+                    { field: '1 day' },
+                    { field: '- 11 sec' },
+                    // Valid
+                    { field: '2022-12-31' },
+                    { field: '2024-01-31' },
+                    { field: '1999-02-28' },
+                    { field: '+ 1 day' },
+                    { field: '+ 3 days' },
+                    { field: '+ 5 weeks' },
+                    { field: '- 10 months' },
+                    { field: '+ 3 years' },
+                    { field: '- 0 days' },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 8 invalid inputs
+                expect(results.length).toEqual(8);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {

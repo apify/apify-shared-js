@@ -41,6 +41,8 @@ const intlStrings = {
         'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+/- number unit ". Supported units are "day", "week", "month", "year".',
     'inputSchema.validation.datepickerInvalidDate':
         'Field {rootName}.{fieldKey} must be a valid date.',
+    'inputSchema.validation.datepickerNoType':
+        'Field {rootName}.{fieldKey} must accept absolute, relative or both dates. Set "allowAbsolute" and "allowRelative" properties.',
 };
 
 /**

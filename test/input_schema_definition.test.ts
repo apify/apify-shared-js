@@ -285,5 +285,163 @@ describe('input_schema.json', () => {
                 })).toBe(false);
             });
         });
+
+        describe('special cases for datepicker editor type', () => {
+            it('should accept allowAbsolute and allowRelative fields omitted', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowAbsolute and allowRelative both set to true', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: true,
+                            allowRelative: true,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowAbsolute=true and allowRelative=false', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: true,
+                            allowRelative: false,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowAbsolute=false and allowRelative=true', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: false,
+                            allowRelative: true,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowAbsolute=true', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: true,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowRelative=true', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowRelative: true,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept allowRelative=false', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowRelative: false,
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should not accept allowAbsolute=false', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: false,
+                        },
+                    },
+                })).toBe(false);
+            });
+
+            it('should not accept allowAbsolute=false allowRelative=false', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'datepicker',
+                            allowAbsolute: false,
+                            allowRelative: false,
+                        },
+                    },
+                })).toBe(false);
+            });
+        });
     });
 });
