@@ -130,7 +130,6 @@
                     },
                     "then": { "required": ["type", "title", "description", "editor", "allowRelative"] },
                     "anyOf": [
-                        { "properties": { "allowAbsolute": { "const": null }, "allowRelative": {"const": null} } },
                         { "properties": { "allowAbsolute": { "const": true } } },
                         { "properties": { "allowRelative": { "const": true } } }
                     ]
