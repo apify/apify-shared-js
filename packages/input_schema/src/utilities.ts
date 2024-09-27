@@ -137,7 +137,7 @@ export function validateInputUsingValidator(
     }
 
     Object.keys(properties).forEach((property) => {
-        const value = input[property] as Record<string, any> | Array<any> | string | number | boolean | null;
+        const value = input[property];
         const { type, editor, patternKey, patternValue, allowAbsolute, allowRelative } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
