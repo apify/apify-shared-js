@@ -36,13 +36,13 @@ const intlStrings = {
     'inputSchema.validation.datepickerInvalidFormatAbsolute':
         'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD".',
     'inputSchema.validation.datepickerInvalidFormatRelative':
-        'Field {rootName}.{fieldKey} must be a string in format "+/- number unit ". Supported units are "day", "week", "month", "year".',
+        'Field {rootName}.{fieldKey} must be a string in format "+/- number unit". Supported units are "day", "week", "month" and "year".',
     'inputSchema.validation.datepickerInvalidFormatBoth':
-        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+/- number unit ". Supported units are "day", "week", "month", "year".',
+        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+/- number unit". Supported units are "day", "week", "month" and "year".',
     'inputSchema.validation.datepickerInvalidDate':
         'Field {rootName}.{fieldKey} must be a valid date.',
     'inputSchema.validation.datepickerNoType':
-        'Field {rootName}.{fieldKey} must accept absolute, relative or both dates. Set "allowAbsolute" and "allowRelative" properties.',
+        'Field {rootName}.{fieldKey} must accept absolute, relative or both dates. Set "allowAbsolute", "allowRelative" or both properties.',
 };
 
 /**
