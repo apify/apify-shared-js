@@ -1,4 +1,4 @@
-import { inputSchema } from '@apify/input_schema';
+import { inputSchema, parseAjvError } from '@apify/input_schema';
 import Ajv from 'ajv';
 
 /**
@@ -423,6 +423,10 @@ describe('input_schema.json', () => {
                         },
                     },
                 })).toBe(false);
+                expect(ajv.errorsText()).toContain('data/properties/myField must have required property \'allowRelative\'');
+                expect(parseAjvError(ajv.errors![0], 'schema.properties.myField')?.message)
+                    .toEqual('Field schema.properties.myField must accept absolute, relative or both dates. '
+                        + 'Set "allowAbsolute", "allowRelative" or both properties.');
             });
 
             it('should not accept allowAbsolute=false allowRelative=false', () => {
@@ -441,6 +445,10 @@ describe('input_schema.json', () => {
                         },
                     },
                 })).toBe(false);
+                expect(ajv.errorsText()).toContain('data/properties/myField/allowAbsolute must be equal to constant');
+                expect(parseAjvError(ajv.errors![0], 'schema.properties.myField')?.message)
+                    .toEqual('Field schema.properties.myField must accept absolute, relative or both dates. '
+                        + 'Set "allowAbsolute", "allowRelative" or both properties.');
             });
         });
     });

@@ -42,7 +42,7 @@ const intlStrings = {
     'inputSchema.validation.datepickerInvalidDate':
         'Field {rootName}.{fieldKey} must be a valid date.',
     'inputSchema.validation.datepickerNoType':
-        'Field {rootName}.{fieldKey} must accept absolute, relative or both dates. Set "allowAbsolute", "allowRelative" or both properties.',
+        'Field {rootName} must accept absolute, relative or both dates. Set "allowAbsolute", "allowRelative" or both properties.',
 };
 
 /**
