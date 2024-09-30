@@ -137,12 +137,12 @@ export function validateInputUsingValidator(
     }
 
     Object.keys(properties).forEach((property) => {
-        const value = input[property] as Record<string, any>;
-        const { type, editor, patternKey, patternValue } = properties[property];
+        const value = input[property];
+        const { type, editor, patternKey, patternValue, allowAbsolute, allowRelative } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
-            const proxyValidationErrors = validateProxyField(property as any, value, required.includes(property), options.proxy);
+            const proxyValidationErrors = validateProxyField(property as any, value as Record<string, any>, required.includes(property), options.proxy);
             proxyValidationErrors.forEach((error) => {
                 fieldErrors.push(error);
             });
@@ -234,7 +234,7 @@ export function validateInputUsingValidator(
                 const check = new RegExp(patternValue);
                 const invalidKeys: any[] = [];
                 Object.keys(value).forEach((key) => {
-                    const propertyValue = value[key];
+                    const propertyValue = (value as Record<string, any>)[key];
                     if (typeof propertyValue !== 'string' || !check.test(propertyValue)) invalidKeys.push(key);
                 });
                 if (invalidKeys.length) {
@@ -247,6 +247,50 @@ export function validateInputUsingValidator(
                 }
             }
         }
+
+        // Check datepicker editor format
+        if (type === 'string' && editor === 'datepicker' && value && typeof value === 'string') {
+            const acceptAbsolute = allowAbsolute !== false;
+            const acceptRelative = allowRelative === true;
+            const isValidAbsolute = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value);
+            const isValidRelative = /^[+-] [0-9]+ (day|week|month|year)s?$/.test(value);
+            let isValidDate: boolean | undefined;
+
+            if (isValidAbsolute) {
+                const [year, month, day] = value.split('-').map(Number);
+                const date = new Date(`${year}-${month}-${day}`);
+
+                // Check if the date object is valid and matches the input string
+                isValidDate = date.getFullYear() === year
+                    && date.getMonth() + 1 === month
+                    && date.getDate() === day;
+            }
+
+            if (acceptAbsolute && !acceptRelative && !isValidAbsolute) {
+                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatAbsolute', {
+                    rootName: 'input',
+                    fieldKey: property,
+                }));
+            } else if (acceptRelative && !acceptAbsolute && !isValidRelative) {
+                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatRelative', {
+                    rootName: 'input',
+                    fieldKey: property,
+                }));
+            } else if ((acceptAbsolute && !acceptRelative && !isValidAbsolute)
+                || (acceptRelative && !acceptAbsolute && !isValidRelative)
+                || (acceptRelative && acceptAbsolute && !isValidAbsolute && !isValidRelative)) {
+                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatBoth', {
+                    rootName: 'input',
+                    fieldKey: property,
+                }));
+            } else if (isValidDate === false && acceptAbsolute) {
+                fieldErrors.push(m('inputSchema.validation.datepickerInvalidDate', {
+                    rootName: 'input',
+                    fieldKey: property,
+                }));
+            }
+        }
+
         if (fieldErrors.length > 0) {
             const message = fieldErrors.join(', ');
             errors.push({ fieldKey: property, message });

@@ -18,6 +18,10 @@ export type StringFieldDefinition = CommonFieldDefinition<string> & {
     enum?: readonly string[]; // required if editor is 'select'
     enumTitles?: readonly string[]
     isSecret?: boolean;
+    // Used for 'datepicker' editor, allowAbsolute is considered with default value true
+    // If only relative time is wanted, allowAbsolute must be explicitly set to false
+    allowAbsolute?: boolean;
+    allowRelative?: boolean;
 }
 
 export type BooleanFieldDefinition = CommonFieldDefinition<boolean> & {
