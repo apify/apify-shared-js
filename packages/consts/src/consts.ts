@@ -326,6 +326,7 @@ export const ACTOR_ENV_VARS = {
     MEMORY_MBYTES: 'ACTOR_MEMORY_MBYTES',
     RUN_ID: 'ACTOR_RUN_ID',
     STANDBY_PORT: 'ACTOR_STANDBY_PORT',
+    STANDBY_URL: 'ACTOR_STANDBY_URL',
     STARTED_AT: 'ACTOR_STARTED_AT',
     TASK_ID: 'ACTOR_TASK_ID',
     TIMEOUT_AT: 'ACTOR_TIMEOUT_AT',
@@ -364,9 +365,10 @@ export const ACTOR_BUILD_ARGS = {
 export const DEFAULT_CONTAINER_PORT = 4321;
 
 /**
+ * @deprecated Please use `DEFAULT_CONTAINER_PORT` instead, the value is the same.
  * Default value for ACTOR_STANDBY_PORT used both locally and at Apify platform.
  */
-export const DEFAULT_ACTOR_STANDBY_PORT = 4322;
+export const DEFAULT_ACTOR_STANDBY_PORT = DEFAULT_CONTAINER_PORT;
 
 /**
  * Local emulation sub directories for local stores
@@ -382,7 +384,7 @@ export const LOCAL_STORAGE_SUBDIRS = {
  * These are being preset in Apify SDK when it's running out of the Apify platform.
  */
 export const LOCAL_ACTOR_ENV_VARS = {
-    [ACTOR_ENV_VARS.STANDBY_PORT]: DEFAULT_ACTOR_STANDBY_PORT.toString(),
+    [ACTOR_ENV_VARS.STANDBY_PORT]: DEFAULT_CONTAINER_PORT.toString(),
     [ACTOR_ENV_VARS.DEFAULT_DATASET_ID]: 'default',
     [ACTOR_ENV_VARS.DEFAULT_KEY_VALUE_STORE_ID]: 'default',
     [ACTOR_ENV_VARS.DEFAULT_REQUEST_QUEUE_ID]: 'default',
