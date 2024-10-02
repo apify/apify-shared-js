@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.30.0...@apify/consts@2.31.0) (2024-10-02)
+
+
+### Features
+
+* **consts:** deprecate default standby port, add standby URL ([#479](https://github.com/apify/apify-shared-js/issues/479)) ([a23dc0b](https://github.com/apify/apify-shared-js/commit/a23dc0b8fde6969e73d120028d12116d53ccda2e))
+
+
+
+
+
 # [2.30.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.29.0...@apify/consts@2.30.0) (2024-09-24)
 
 
