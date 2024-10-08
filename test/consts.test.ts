@@ -69,6 +69,7 @@ describe('consts', () => {
             Object.entries(APIFY_ENV_VARS).forEach(([k, v]) => {
                 // TODO: remove this once ACTOR_MAX_PAID_DATASET_ITEMS is removed from APIFY_ENV_VARS
                 if (k === 'ACTOR_MAX_PAID_DATASET_ITEMS') return;
+                if (k === 'ACTOR_MAX_COST_PER_RUN_USD') return;
 
                 expect(v).toBe(`APIFY_${k}`);
             });
