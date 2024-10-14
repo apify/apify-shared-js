@@ -13,7 +13,7 @@ package | version | changelog
 `@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
 `@apify/git` | 2.1.3 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.2 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 3.9.1 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_schema` | 3.9.2 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.55 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/log` | 2.5.7 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 3.0.3 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
