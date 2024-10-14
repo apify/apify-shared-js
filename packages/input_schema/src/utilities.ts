@@ -138,7 +138,7 @@ export function validateInputUsingValidator(
 
     Object.keys(properties).forEach((property) => {
         const value = input[property];
-        const { type, editor, patternKey, patternValue, allowAbsolute, allowRelative } = properties[property];
+        const { type, editor, patternKey, patternValue } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
@@ -249,7 +249,8 @@ export function validateInputUsingValidator(
         }
 
         // Check datepicker editor format
-        if (type === 'string' && editor === 'datepicker' && value && typeof value === 'string') {
+        // TODO: enable validation for datepicker editor later
+        /* if (type === 'string' && editor === 'datepicker' && value && typeof value === 'string') {
             const acceptAbsolute = allowAbsolute !== false;
             const acceptRelative = allowRelative === true;
             const isValidAbsolute = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value);
@@ -289,7 +290,7 @@ export function validateInputUsingValidator(
                     fieldKey: property,
                 }));
             }
-        }
+        } */
 
         if (fieldErrors.length > 0) {
             const message = fieldErrors.join(', ');
