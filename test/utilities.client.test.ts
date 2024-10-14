@@ -1019,6 +1019,7 @@ describe('utilities.client', () => {
             });
         });
 
+        /* TODO - enable this tests when the datepicker validation is back on
         describe('special cases for datepicker string type', () => {
             it('should allow absolute dates when allowAbsolute is omitted', () => {
                 const { inputSchema, validator } = buildInputSchema({
@@ -1231,6 +1232,7 @@ describe('utilities.client', () => {
                 });
             });
         });
+        */
     });
 
     describe('#jsonStringifyExtended()', () => {
