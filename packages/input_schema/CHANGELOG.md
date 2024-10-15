@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.1...@apify/input_schema@3.9.2) (2024-10-14)
+
+
+### Bug Fixes
+
+* **input_schema:** disable datepicker validation ([#482](https://github.com/apify/apify-shared-js/issues/482)) ([688a243](https://github.com/apify/apify-shared-js/commit/688a24345cce976d9aba1d40d10cec2a90acc472))
+
+
+
+
+
 ## [3.9.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.0...@apify/input_schema@3.9.1) (2024-10-02)
 
 **Note:** Version bump only for package @apify/input_schema

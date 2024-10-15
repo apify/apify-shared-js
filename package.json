@@ -69,8 +69,8 @@
         "strip-ansi": "^6.0.0",
         "ts-jest": "^29.2.4",
         "ts-node": "^10.9.2",
-        "tsup": "^8.2.3",
-        "typescript": "^5.5.4",
+        "tsup": "^8.3.0",
+        "typescript": "^5.6.3",
         "underscore": "^1.13.7"
     },
     "packageManager": "npm@10.9.0"
