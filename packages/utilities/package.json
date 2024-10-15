@@ -1,6 +1,6 @@
 {
     "name": "@apify/utilities",
-    "version": "2.10.8",
+    "version": "2.10.9",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -48,8 +48,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.31.0",
-        "@apify/log": "^2.5.7"
+        "@apify/consts": "^2.32.0",
+        "@apify/log": "^2.5.8"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"

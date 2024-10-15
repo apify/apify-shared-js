@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.32.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.31.0...@apify/consts@2.32.0) (2024-10-15)
+
+
+### Features
+
+* add max cost per run  ([#480](https://github.com/apify/apify-shared-js/issues/480)) ([01588f5](https://github.com/apify/apify-shared-js/commit/01588f53eb432b3e4ab75dc2e3138d2e537d091a))
+
+
+
+
+
 # [2.31.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.30.0...@apify/consts@2.31.0) (2024-10-02)
 
 

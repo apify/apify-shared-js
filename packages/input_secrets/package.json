@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_secrets",
-    "version": "1.1.55",
+    "version": "1.1.56",
     "description": "Package to encrypt and decrypt apify actor input secrets.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -44,8 +44,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/log": "^2.5.7",
-        "@apify/utilities": "^2.10.8",
+        "@apify/log": "^2.5.8",
+        "@apify/utilities": "^2.10.9",
         "ow": "^0.28.2"
     }
 }
