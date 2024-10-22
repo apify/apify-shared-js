@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.9.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.3...@apify/input_schema@3.9.4) (2024-10-22)
+
+
+### Bug Fixes
+
+* **input_schema:** disable isSecret for array properties ([#483](https://github.com/apify/apify-shared-js/issues/483)) ([1bf2b57](https://github.com/apify/apify-shared-js/commit/1bf2b577b76cc149a3692fe7ac1f2d71ea28a56e))
+
+
+
+
+
 ## [3.9.3](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.2...@apify/input_schema@3.9.3) (2024-10-15)
 
 **Note:** Version bump only for package @apify/input_schema
