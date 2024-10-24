@@ -32,17 +32,32 @@
             "type": "object",
             "patternProperties": {
                 "^": {
-                    "oneOf": [
-                        { "$ref": "#/definitions/stringProperty" },
-                        { "$ref": "#/definitions/stringEnumProperty" },
-                        { "$ref": "#/definitions/arrayProperty" },
-                        { "$ref": "#/definitions/objectProperty" },
-                        { "$ref": "#/definitions/integerProperty" },
-                        { "$ref": "#/definitions/booleanProperty" },
-                        { "$ref": "#/definitions/resourceProperty" },
-                        { "$ref": "#/definitions/resourceArrayProperty" },
-                        { "$ref": "#/definitions/anyProperty" }
-                    ]
+                    "if": {
+                        "properties": {
+                            "resourceType": {
+                                "not": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "then": {
+                        "oneOf": [
+                            { "$ref": "#/definitions/stringProperty" },
+                            { "$ref": "#/definitions/stringEnumProperty" },
+                            { "$ref": "#/definitions/arrayProperty" },
+                            { "$ref": "#/definitions/objectProperty" },
+                            { "$ref": "#/definitions/integerProperty" },
+                            { "$ref": "#/definitions/booleanProperty" },
+                            { "$ref": "#/definitions/anyProperty" }
+                        ]
+                    },
+                    "else": {
+                        "oneOf": [
+                            { "$ref": "#/definitions/resourceProperty" },
+                            { "$ref": "#/definitions/resourceArrayProperty" }
+                        ]
+                    }
                 }
             }
         }
@@ -50,6 +65,47 @@
     "additionalProperties": false,
     "required": ["title", "type", "properties", "schemaVersion"],
     "definitions": {
+        "resourceProperty": {
+            "title": "Resource property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "default": { "type": "string" },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "resourceType"]
+        },
+        "resourceArrayProperty": {
+            "title": "Resource array property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "default": { "type": "array" },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
+                "nullable": { "type": "boolean" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "resourceType"]
+        },
         "stringEnumProperty": {
             "title": "Enum property",
             "type": "object",
@@ -149,7 +205,7 @@
                         "nullable": { "type": "boolean" },
                         "minLength": { "type": "integer" },
                         "maxLength": { "type": "integer" },
-                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "dataset", "keyValueStore", "requestQueue"] },
+                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden"] },
                         "isSecret": { "type": "boolean" },
                         "sectionCaption": { "type": "string" },
                         "sectionDescription": { "type": "string" }
@@ -291,47 +347,6 @@
                 "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description"]
-        },
-        "resourceProperty": {
-            "title": "Resource property",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": { "enum": ["string"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "editor": { "enum": ["resourcePicker", "hidden"] },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
-                "default": { "type": "string" },
-                "prefill": { "type": "string" },
-                "example": { "type": "string" },
-                "nullable": { "type": "boolean" },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
-            },
-            "required": ["type", "title", "description", "resourceType"]
-        },
-        "resourceArrayProperty": {
-            "title": "Resource array property",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "type": { "enum": ["array"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "editor": { "enum": ["resourcePicker", "hidden"] },
-                "default": { "type": "array" },
-                "prefill": { "type": "array" },
-                "example": { "type": "array" },
-                "nullable": { "type": "boolean" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
-            },
-            "required": ["type", "title", "description", "resourceType"]
         },
         "anyProperty": {
             "title": "Any property",
