@@ -3,6 +3,7 @@ import Ajv, { ErrorObject, Schema } from 'ajv';
 import { m } from './intl';
 import schema from './schema.json';
 import {
+    CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
     InputSchemaBaseChecked,
@@ -124,12 +125,19 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
         return;
     }
 
-    // If there are more matching definitions then the type is string, and we need to get the right one.
+    // If there are more matching definitions then we need to get the right one.
     // If the definition contains "enum" property then it's enum type.
     if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
         validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.enum`);
+        return;
+    }
+    // If the definition contains "resourceType" property then it's resource type.
+    if ((fieldSchema as CommonResourceFieldDefinition<unknown>).resourceType) {
+        const definition = matchingDefinitions.filter((item) => !!item.properties.resourceType).pop();
+        if (!definition) throw new Error('Input schema validation failed to find "resource property" definition');
+        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.resourceType`);
         return;
     }
     // Otherwise we use the other definition.
