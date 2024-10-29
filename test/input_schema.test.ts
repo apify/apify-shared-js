@@ -278,5 +278,47 @@ describe('input_schema.json', () => {
                 'Field schema.properties.something does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
             );
         });
+
+        describe('special cases for resourceProperty', () => {
+            it('should not accept invalid resourceType', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'xxx',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.resourceType must be equal to one of the allowed values: '
+                    + '"dataset", "keyValueStore", "requestQueue")',
+                );
+            });
+
+            it('should not accept invalid editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            editor: 'textfield',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "hidden")',
+                );
+            });
+        });
     });
 });

@@ -137,11 +137,11 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if ((fieldSchema as CommonResourceFieldDefinition<unknown>).resourceType) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.resourceType).pop();
         if (!definition) throw new Error('Input schema validation failed to find "resource property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.resourceType`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
         return;
     }
     // Otherwise we use the other definition.
-    const definition = matchingDefinitions.filter((item) => !item.properties.enum).pop();
+    const definition = matchingDefinitions.filter((item) => !item.properties.enum && !item.properties.resourceType).pop();
     if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
     validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);

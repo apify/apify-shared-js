@@ -501,46 +501,6 @@ describe('input_schema.json', () => {
                     },
                 })).toBe(true);
             });
-
-            it('should not accept invalid resourceType', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'xxx',
-                        },
-                    },
-                })).toBe(false);
-                expect(ajv.errorsText()).toContain('data/properties/myField/resourceType must be equal to one of the allowed values');
-                expect(parseAjvError(ajv.errors![0], 'schema.properties.myField')?.message)
-                    .toEqual('Field schema.properties.myField.resourceType must be equal to one of the allowed values: '
-                        + '"dataset", "keyValueStore", "requestQueue"');
-            });
-
-            it('should not accept invalid editor', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'keyValueStore',
-                            editor: 'textfield',
-                        },
-                    },
-                })).toBe(false);
-                expect(ajv.errorsText()).toContain('data/properties/myField/editor must be equal to one of the allowed values');
-                expect(parseAjvError(ajv.errors![0], 'schema.properties.myField')?.message)
-                    .toEqual('Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "hidden"');
-            });
         });
     });
 });
