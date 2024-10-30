@@ -70,7 +70,7 @@ export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
     type: 'string'
 }
 
-export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<Array<string>> & {
+export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[]> & {
     type: 'array'
 }
 
