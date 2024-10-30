@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.10.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.4...@apify/input_schema@3.10.0) (2024-10-30)
+
+
+### Features
+
+* **input_schema:** Resource properties ([#484](https://github.com/apify/apify-shared-js/issues/484)) ([ccfca82](https://github.com/apify/apify-shared-js/commit/ccfca820d935eb51ebe841ceeed7abf1b3b54481))
+
+
+
+
+
 ## [3.9.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.3...@apify/input_schema@3.9.4) (2024-10-22)
 
 
