@@ -39,6 +39,8 @@
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
                         { "$ref": "#/definitions/booleanProperty" },
+                        { "$ref": "#/definitions/resourceProperty" },
+                        { "$ref": "#/definitions/resourceArrayProperty" },
                         { "$ref": "#/definitions/anyProperty" }
                     ]
                 }
@@ -86,7 +88,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "nullable": { "type": "boolean" },
-                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "dataset", "keyValueStore", "requestQueue"] },
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden"] },
                 "isSecret": { "type": "boolean" }
             },
             "required": ["type", "title", "description", "editor"],
@@ -147,7 +149,7 @@
                         "nullable": { "type": "boolean" },
                         "minLength": { "type": "integer" },
                         "maxLength": { "type": "integer" },
-                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "dataset", "keyValueStore", "requestQueue"] },
+                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden"] },
                         "isSecret": { "type": "boolean" },
                         "sectionCaption": { "type": "string" },
                         "sectionDescription": { "type": "string" }
@@ -305,6 +307,47 @@
                 "sectionDescription": { "type": "string" }
             },
             "required": ["type", "title", "description"]
+        },
+        "resourceProperty": {
+            "title": "Resource property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "default": { "type": "string" },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "resourceType"]
+        },
+        "resourceArrayProperty": {
+            "title": "Resource array property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "default": { "type": "array" },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
+                "nullable": { "type": "boolean" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "resourceType"]
         },
         "anyProperty": {
             "title": "Any property",

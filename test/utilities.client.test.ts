@@ -1019,6 +1019,74 @@ describe('utilities.client', () => {
             });
         });
 
+        describe('special cases for resource property', () => {
+            it('should allow string value for single resource', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        resourceType: 'dataset',
+                        nullable: true,
+                    },
+                });
+                const inputs = [
+                    // 2 invalid inputs
+                    { field: [] },
+                    { field: {} },
+                    // Valid
+                    { field: 'DATASET_ID' },
+                    { field: null },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 2 invalid inputs
+                expect(results.length).toEqual(2);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow array value for multiple resource', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        resourceType: 'dataset',
+                        nullable: true,
+                    },
+                });
+                const inputs = [
+                    // 2 invalid inputs
+                    { field: 'DATASET_ID' },
+                    { field: {} },
+                    // Valid
+                    { field: [] },
+                    { field: ['DATASET_ID'] },
+                    { field: ['DATASET_ID_1', 'DATASET_ID_2', 'DATASET_ID_3'] },
+                    { field: null },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 2 invalid inputs
+                expect(results.length).toEqual(2);
+                results.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+        });
+
         /* TODO - enable this tests when the datepicker validation is back on
         describe('special cases for datepicker string type', () => {
             it('should allow absolute dates when allowAbsolute is omitted', () => {

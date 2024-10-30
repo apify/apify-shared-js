@@ -465,5 +465,56 @@ describe('input_schema.json', () => {
                         + 'Set "allowAbsolute", "allowRelative" or both properties.');
             });
         });
+
+        describe('special cases for resourceProperty', () => {
+            it('should accept resourceType with editor', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                            editor: 'resourcePicker',
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept resourceType without editor', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept array resourceType', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'dataset',
+                        },
+                    },
+                })).toBe(true);
+            });
+        });
     });
 });

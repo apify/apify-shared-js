@@ -11,7 +11,7 @@ type CommonFieldDefinition<T> = {
 
 export type StringFieldDefinition = CommonFieldDefinition<string> & {
     type: 'string'
-    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json' | 'dataset' | 'keyValueStore' | 'requestQueue';
+    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json';
     pattern?: string;
     minLength?: number;
     maxLength?: number;
@@ -61,6 +61,19 @@ export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
     items?: unknown;
 }
 
+export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
+    editor?: 'resourcePicker' | 'hidden';
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue'
+}
+
+export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
+    type: 'string'
+}
+
+export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[]> & {
+    type: 'array'
+}
+
 type AllTypes = StringFieldDefinition['type']
     | BooleanFieldDefinition['type']
     | IntegerFieldDefinition['type']
@@ -78,6 +91,8 @@ export type FieldDefinition = StringFieldDefinition
     | ObjectFieldDefinition
     | ArrayFieldDefinition
     | MixedFieldDefinition
+    | ResourceFieldDefinition
+    | ResourceArrayFieldDefinition
 
 /**
  * Type with checked base, but not properties
