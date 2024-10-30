@@ -176,19 +176,7 @@
             "type": "object",
             "properties": {
                 "type": { "enum": ["array"] },
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "default": { "type": "array" },
-                "prefill": { "type": "array" },
-                "example": { "type": "array" },
-                "nullable": { "type": "boolean" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] }
             },
             "additionalProperties": true,
             "required": ["type", "title", "description", "editor"],
@@ -198,8 +186,22 @@
                 }
             },
             "then": {
+                "additionalProperties": false,
                 "required": ["items"],
                 "properties": {
+                    "type": { "enum": ["array"] },
+                    "editor": { "enum": ["select"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "default": { "type": "array" },
+                    "prefill": { "type": "array" },
+                    "example": { "type": "array" },
+                    "nullable": { "type": "boolean" },
+                    "minItems": { "type": "integer" },
+                    "maxItems": { "type": "integer" },
+                    "uniqueItems": { "type": "boolean" },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" },
                     "items": {
                         "type": "object",
                         "additionalProperties": false,
@@ -220,7 +222,21 @@
                 }
             },
             "else": {
+                "additionalProperties": false,
                 "properties": {
+                    "type": { "enum": ["array"] },
+                    "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "default": { "type": "array" },
+                    "prefill": { "type": "array" },
+                    "example": { "type": "array" },
+                    "nullable": { "type": "boolean" },
+                    "minItems": { "type": "integer" },
+                    "maxItems": { "type": "integer" },
+                    "uniqueItems": { "type": "boolean" },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" },
                     "placeholderKey": { "type": "string" },
                     "placeholderValue": { "type": "string" },
                     "patternKey": { "type": "string" },

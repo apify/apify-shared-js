@@ -235,6 +235,20 @@ describe('input_schema.json', () => {
                 });
             });
 
+            it('should allow only string type', () => {
+                [{ type: 'string', editor: 'textfield' }].forEach((fields) => {
+                    expect(isSchemaValid(fields, true)).toBe(true);
+                });
+                [
+                    { type: 'array', editor: 'stringList' },
+                    { type: 'object', editor: 'json' },
+                    { type: 'boolean' },
+                    { type: 'integer' },
+                ].forEach((fields) => {
+                    expect(isSchemaValid(fields, true)).toBe(false);
+                });
+            });
+
             it('should not allow some fields', () => {
                 ['minLength', 'maxLength'].forEach((intField) => {
                     expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
