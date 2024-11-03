@@ -98,6 +98,11 @@ export const ACTOR_TYPES = {
 } as const;
 
 /**
+ * Used as username for returning user own info from API v2/users/username
+ */
+export const ME_USER_NAME_PLACEHOLDER = 'me';
+
+/**
  * Username used when user is anonymous.
  */
 export const ANONYMOUS_USERNAME = 'anonymous';
@@ -111,7 +116,18 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+    REGEX: /^[a-zA-Z0-9_-]{3,30}$/,
+};
+
+/**
+ * Profile name (such as organization or first / last name) constraints.
+ */
+export const PROFILE_NAME = {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 50,
+
+    // Regex to prohibit anything that could potentially form an URL or email address.
+    REGEX: /^[^/.@><]{3,50}$/,
 };
 
 /**
@@ -238,11 +254,6 @@ export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of tasks per scheduler
     MAX_TASKS_PER_SCHEDULER: 10,
 };
-
-/**
- * Use as username for returning user own info from API v2/users/username
- */
-export const ME_USER_NAME_PLACEHOLDER = 'me';
 
 /**
  * Max length of the queue head that server will return in Request Queue API.
