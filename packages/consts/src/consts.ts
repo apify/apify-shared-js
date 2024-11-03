@@ -134,7 +134,7 @@ export const PROFILE_NAME = {
     MAX_LENGTH: 50,
 
     // Regex to prohibit anything that could potentially form an URL or email address.
-    REGEX: /^[^/.@><]{3,50}$/,
+    REGEX: /^[^/.@><]*$/,
 };
 
 /**
