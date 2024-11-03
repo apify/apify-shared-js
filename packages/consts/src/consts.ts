@@ -1,4 +1,4 @@
-import { DNS_SAFE_NAME_REGEX } from './regexs';
+import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
@@ -117,6 +117,13 @@ export const USERNAME = {
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
     REGEX: /^[a-zA-Z0-9_-]{3,30}$/,
+};
+
+export const EMAIL = {
+    MIN_LENGTH: 3,
+    MAX_LENGTH: 254, // see https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
+
+    REGEX: EMAIL_REGEX,
 };
 
 /**
