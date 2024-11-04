@@ -116,7 +116,7 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_-]{3,30}$/,
+    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
 };
 
 export const EMAIL = {
@@ -133,8 +133,8 @@ export const PROFILE_NAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: 50,
 
-    // Regex to prohibit anything that could potentially form an URL or email address.
-    REGEX: /^[^/.@><]*$/,
+    // Prohibits usage of @, <, > and :// in the name
+    REGEX: /^(?!.*:\/\/)[^@><]*$/,
 };
 
 /**
