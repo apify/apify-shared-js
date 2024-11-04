@@ -120,9 +120,7 @@ export const USERNAME = {
 };
 
 export const EMAIL = {
-    MIN_LENGTH: 3,
     MAX_LENGTH: 254, // see https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
-
     REGEX: EMAIL_REGEX,
 };
 
@@ -130,11 +128,8 @@ export const EMAIL = {
  * Profile name (such as organization or first / last name) constraints.
  */
 export const PROFILE_NAME = {
-    MIN_LENGTH: 3,
     MAX_LENGTH: 50,
-
-    // Prohibits usage of @, <, > and :// in the name
-    REGEX: /^(?!.*:\/\/)[^@><]*$/,
+    REGEX: /^(?!.*:\/\/)[^@><]*$/, // Prohibits usage of @, <, > and ://
 };
 
 /**
