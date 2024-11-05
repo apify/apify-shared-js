@@ -248,50 +248,6 @@ export function validateInputUsingValidator(
             }
         }
 
-        // Check datepicker editor format
-        // TODO: enable validation for datepicker editor later
-        /* if (type === 'string' && editor === 'datepicker' && value && typeof value === 'string') {
-            const acceptAbsolute = allowAbsolute !== false;
-            const acceptRelative = allowRelative === true;
-            const isValidAbsolute = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(value);
-            const isValidRelative = /^[+-] [0-9]+ (day|week|month|year)s?$/.test(value);
-            let isValidDate: boolean | undefined;
-
-            if (isValidAbsolute) {
-                const [year, month, day] = value.split('-').map(Number);
-                const date = new Date(`${year}-${month}-${day}`);
-
-                // Check if the date object is valid and matches the input string
-                isValidDate = date.getFullYear() === year
-                    && date.getMonth() + 1 === month
-                    && date.getDate() === day;
-            }
-
-            if (acceptAbsolute && !acceptRelative && !isValidAbsolute) {
-                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatAbsolute', {
-                    rootName: 'input',
-                    fieldKey: property,
-                }));
-            } else if (acceptRelative && !acceptAbsolute && !isValidRelative) {
-                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatRelative', {
-                    rootName: 'input',
-                    fieldKey: property,
-                }));
-            } else if ((acceptAbsolute && !acceptRelative && !isValidAbsolute)
-                || (acceptRelative && !acceptAbsolute && !isValidRelative)
-                || (acceptRelative && acceptAbsolute && !isValidAbsolute && !isValidRelative)) {
-                fieldErrors.push(m('inputSchema.validation.datepickerInvalidFormatBoth', {
-                    rootName: 'input',
-                    fieldKey: property,
-                }));
-            } else if (isValidDate === false && acceptAbsolute) {
-                fieldErrors.push(m('inputSchema.validation.datepickerInvalidDate', {
-                    rootName: 'input',
-                    fieldKey: property,
-                }));
-            }
-        } */
-
         if (fieldErrors.length > 0) {
             const message = fieldErrors.join(', ');
             errors.push({ fieldKey: property, message });

@@ -48,12 +48,7 @@ export function parseAjvError(
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     } else if (error.keyword === 'required') {
         fieldKey = error.params.missingProperty;
-        if (fieldKey === 'allowRelative') {
-            // this is the case, when allowAbsolute is set to false, but allowRelative is not set
-            message = m('inputSchema.validation.datepickerNoType', { rootName });
-        } else {
-            message = m('inputSchema.validation.required', { rootName, fieldKey });
-        }
+        message = m('inputSchema.validation.required', { rootName, fieldKey });
     } else if (error.keyword === 'additionalProperties') {
         fieldKey = error.params.additionalProperty;
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
@@ -63,12 +58,7 @@ export function parseAjvError(
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
     } else if (error.keyword === 'const') {
         fieldKey = error.instancePath.split('/').pop()!;
-        // This is a special case for datepicker fields, where both allowAbsolute and allowRelative properties are set to false
-        if (fieldKey === 'allowRelative' || fieldKey === 'allowAbsolute') {
-            message = m('inputSchema.validation.datepickerNoType', { rootName });
-        } else {
-            message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
-        }
+        message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     } else {
         fieldKey = error.instancePath.split('/').pop()!;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });

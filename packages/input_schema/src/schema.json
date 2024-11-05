@@ -123,18 +123,8 @@
                         "editor": { "enum": ["datepicker"] },
                         "sectionCaption": { "type": "string" },
                         "sectionDescription": { "type": "string" },
-                        "allowAbsolute": { "type": "boolean" },
-                        "allowRelative": { "type": "boolean" }
-                    },
-                    "if": {
-                        "required": ["allowAbsolute"],
-                        "properties": { "allowAbsolute": { "const": false } }
-                    },
-                    "then": { "required": ["type", "title", "description", "editor", "allowRelative"] },
-                    "anyOf": [
-                        { "properties": { "allowAbsolute": { "const": true } } },
-                        { "properties": { "allowRelative": { "const": true } } }
-                    ]
+                        "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] }
+                    }
                 },
                 "else": {
                     "additionalProperties": false,
@@ -149,8 +139,8 @@
                         "nullable": { "type": "boolean" },
                         "minLength": { "type": "integer" },
                         "maxLength": { "type": "integer" },
-                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden"] },
-                        "isSecret": { "type": "boolean" },
+                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
+                        "isSecret": { "enum": [false] },
                         "sectionCaption": { "type": "string" },
                         "sectionDescription": { "type": "string" }
                     }
@@ -165,7 +155,7 @@
                     "example": { "type": "string" },
                     "nullable": { "type": "boolean" },
                     "editor": { "enum": ["textfield", "textarea", "hidden"] },
-                    "isSecret": { "type": "boolean" },
+                    "isSecret": { "enum": [true] },
                     "sectionCaption": { "type": "string" },
                     "sectionDescription": { "type": "string" }
                 }

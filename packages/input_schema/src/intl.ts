@@ -33,16 +33,6 @@ const intlStrings = {
         'Field schema.properties.{fieldKey} does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
     'inputSchema.validation.proxyGroupMustBeArrayOfStrings':
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
-    'inputSchema.validation.datepickerInvalidFormatAbsolute':
-        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD".',
-    'inputSchema.validation.datepickerInvalidFormatRelative':
-        'Field {rootName}.{fieldKey} must be a string in format "+/- number unit". Supported units are "day", "week", "month" and "year".',
-    'inputSchema.validation.datepickerInvalidFormatBoth':
-        'Field {rootName}.{fieldKey} must be a string in format "YYYY-MM-DD" or "+/- number unit". Supported units are "day", "week", "month" and "year".',
-    'inputSchema.validation.datepickerInvalidDate':
-        'Field {rootName}.{fieldKey} must be a valid date.',
-    'inputSchema.validation.datepickerNoType':
-        'Field {rootName} must accept absolute, relative or both dates. Set "allowAbsolute", "allowRelative" or both properties.',
 };
 
 /**
