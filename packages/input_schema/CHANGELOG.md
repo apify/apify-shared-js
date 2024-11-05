@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.12.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.11.0...@apify/input_schema@3.12.0) (2024-11-05)
+
+
+### Features
+
+* **input_schema:** datepicker dateType property ([#485](https://github.com/apify/apify-shared-js/issues/485)) ([3309290](https://github.com/apify/apify-shared-js/commit/3309290ad1fbb7d13e2735c8c02e195c023ef652))
+
+
+
+
+
 # [3.11.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.10.0...@apify/input_schema@3.11.0) (2024-11-05)
 
 
