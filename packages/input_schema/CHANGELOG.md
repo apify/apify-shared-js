@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.11.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.10.0...@apify/input_schema@3.11.0) (2024-11-05)
+
+
+### Features
+
+* **input_schema:** add missing ResourceArrayFieldDefinition properties to ts types ([#487](https://github.com/apify/apify-shared-js/issues/487)) ([9e4e8d3](https://github.com/apify/apify-shared-js/commit/9e4e8d3eb7001a7827ea2b2d47865d1417ad1bed))
+
+
+
+
+
 # [3.10.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.9.4...@apify/input_schema@3.10.0) (2024-10-30)
 
 

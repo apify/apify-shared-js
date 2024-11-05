@@ -61,15 +61,18 @@ export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
 
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
-    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue'
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
 }
 
 export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
-    type: 'string'
+    type: 'string';
 }
 
 export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[]> & {
-    type: 'array'
+    type: 'array';
+    maxItems?: number;
+    minItems?: number;
+    uniqueItems?: boolean;
 }
 
 type AllTypes = StringFieldDefinition['type']
