@@ -1,4 +1,4 @@
-import { DNS_SAFE_NAME_REGEX } from './regexs';
+import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
@@ -98,6 +98,11 @@ export const ACTOR_TYPES = {
 } as const;
 
 /**
+ * Used as username for returning user own info from API v2/users/username
+ */
+export const ME_USER_NAME_PLACEHOLDER = 'me';
+
+/**
  * Username used when user is anonymous.
  */
 export const ANONYMOUS_USERNAME = 'anonymous';
@@ -112,6 +117,19 @@ export const USERNAME = {
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
     REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+};
+
+export const EMAIL = {
+    MAX_LENGTH: 254, // see https://www.rfc-editor.org/errata_search.php?rfc=3696&eid=1690
+    REGEX: EMAIL_REGEX,
+};
+
+/**
+ * Profile name (such as organization or first / last name) constraints.
+ */
+export const PROFILE_NAME = {
+    MAX_LENGTH: 50,
+    REGEX: /^(?!.*:\/\/)[^@><]*$/, // Prohibits usage of @, <, > and ://
 };
 
 /**
@@ -238,11 +256,6 @@ export const DEFAULT_PLATFORM_LIMITS = {
     // Maximum number of tasks per scheduler
     MAX_TASKS_PER_SCHEDULER: 10,
 };
-
-/**
- * Use as username for returning user own info from API v2/users/username
- */
-export const ME_USER_NAME_PLACEHOLDER = 'me';
 
 /**
  * Max length of the queue head that server will return in Request Queue API.

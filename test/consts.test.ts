@@ -1,4 +1,14 @@
-import { USERNAME, APIFY_ID_REGEX, ACTOR_ENV_VARS, ENV_VARS, APIFY_ENV_VARS, LOCAL_ACTOR_ENV_VARS, LOCAL_APIFY_ENV_VARS, LOCAL_ENV_VARS } from '@apify/consts';
+import {
+    USERNAME,
+    APIFY_ID_REGEX,
+    ACTOR_ENV_VARS,
+    ENV_VARS,
+    APIFY_ENV_VARS,
+    LOCAL_ACTOR_ENV_VARS,
+    LOCAL_APIFY_ENV_VARS,
+    LOCAL_ENV_VARS,
+    PROFILE_NAME,
+} from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 
 describe('consts', () => {
@@ -14,6 +24,30 @@ describe('consts', () => {
             expect(USERNAME.REGEX.test('xfavicon.ico')).toBe(true);
             expect(USERNAME.REGEX.test('karl12345')).toBe(true);
             expect(USERNAME.REGEX.test('45678')).toBe(true);
+        });
+    });
+
+    describe('PROFILE_NAME', () => {
+        it('REGEX works as expected', () => {
+            // Valid cases
+            expect(PROFILE_NAME.REGEX.test('John Doe')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('Anonymous')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('John123')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('John-Doe')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('Org_Example')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test(':/JohnDoe')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test(':/a/Simple.Name')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('John:/Doe/')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('Simple:.//Name')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('Joh////:/n-Doe')).toBe(true);
+            expect(PROFILE_NAME.REGEX.test('user:name')).toBe(true);
+
+            // Invalid cases
+            expect(PROFILE_NAME.REGEX.test('user@name')).toBe(false);
+            expect(PROFILE_NAME.REGEX.test('user>name')).toBe(false);
+            expect(PROFILE_NAME.REGEX.test('user<name')).toBe(false);
+            expect(PROFILE_NAME.REGEX.test('example://test')).toBe(false);
+            expect(PROFILE_NAME.REGEX.test('example://////test')).toBe(false);
         });
     });
 
