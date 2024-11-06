@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.33.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.32.0...@apify/consts@2.33.0) (2024-11-06)
+
+
+### Features
+
+* **consts:** introduce profile name (first, last, organization, ...) restrictions and adjust username regex [internal] ([#486](https://github.com/apify/apify-shared-js/issues/486)) ([2ef6d61](https://github.com/apify/apify-shared-js/commit/2ef6d61b5966665e87286b15f536a5908a7526fa))
+
+
+
+
+
 # [2.32.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.31.0...@apify/consts@2.32.0) (2024-10-15)
 
 
