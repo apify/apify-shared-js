@@ -11,7 +11,7 @@ package | version | changelog
 `@apify/consts` | 2.33.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.2 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
-`@apify/git` | 2.1.3 | [CHANGELOG](./packages/git/CHANGELOG.md)
+`@apify/git` | 2.1.4 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.2 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 3.12.1 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.1.57 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
