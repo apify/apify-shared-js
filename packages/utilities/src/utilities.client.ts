@@ -158,7 +158,8 @@ export function normalizeUrl(url: string, keepFragment?: boolean) {
 }
 
 // Helper function for markdown rendered marked
-// Renders links outside apify.com in readme with rel="noopener noreferrer nofollow" and target="_blank" attributes
+// If passed hostname, it renders links outside that hostname in readme with rel="noopener noreferrer" and target="_blank" attributes
+// And links outside apify.com in readme with rel="noopener noreferrer nofollow" and target="_blank" attributes
 export function markedSetNofollowLinks(href: string, title: string, text: string, hostname?: string) {
     let urlParsed: URL;
     try {
