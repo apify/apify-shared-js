@@ -159,7 +159,7 @@ export function normalizeUrl(url: string, keepFragment?: boolean) {
 
 // Helper function for markdown rendered marked
 // Renders links outside apify.com in readme with rel="noopener noreferrer nofollow" and target="_blank" attributes
-export function markedSetNofollowLinks(href: string, title: string, text: string) {
+export function markedSetNofollowLinks(href: string, title: string, text: string, hostname?: string) {
     let urlParsed: URL;
     try {
         urlParsed = new URL(href);
@@ -167,9 +167,15 @@ export function markedSetNofollowLinks(href: string, title: string, text: string
         // Probably invalid url, go on
     }
     const isApifyLink = (urlParsed! && /(\.|^)apify\.com$/i.test(urlParsed.hostname));
-    return (isApifyLink)
-        ? `<a href="${href}">${title || text}</a>`
-        : `<a rel="noopener noreferrer nofollow" target="_blank" href="${href}">${title || text}</a>`;
+    const isSameHostname = !hostname || (urlParsed! && urlParsed.hostname === hostname);
+
+    if (isApifyLink && isSameHostname) {
+        return `<a href="${href}">${title || text}</a>`;
+    } if (isApifyLink) {
+        return `<a rel="noopener noreferrer" target="_blank" href="${href}">${title || text}</a>`;
+    }
+
+    return `<a rel="noopener noreferrer nofollow" target="_blank" href="${href}">${title || text}</a>`;
 }
 
 // Helper function for markdown rendered marked

@@ -6,6 +6,7 @@ import {
     isBadForMongo,
     jsonStringifyExtended,
     JsonVariable,
+    markedSetNofollowLinks,
     normalizeUrl,
     splitFullName,
     traverseObject,
@@ -1201,6 +1202,48 @@ describe('utilities.client', () => {
             expect(splitFullName('New-man')).toEqual([null, 'New-man']);
             expect(splitFullName('  New  man  ')).toEqual(['New', 'man']);
             expect(splitFullName('More    Spaces Between')).toEqual(['More', 'Spaces Between']);
+        });
+    });
+
+    describe('#markedSetNofollowLinks', () => {
+        it('should return a link without rel or target attributes for Apify links on the same hostname', () => {
+            const result = markedSetNofollowLinks('https://console.apify.com', 'Apify console', 'Apify Link', 'console.apify.com');
+            expect(result).toBe('<a href="https://console.apify.com">Apify console</a>');
+        });
+
+        it('should return a link with rel="noopener noreferrer" and target="_blank" for Apify links on a different hostname', () => {
+            const result = markedSetNofollowLinks('https://www.apify.com', 'Apify', 'Apify Link', 'different-hostname.com');
+            expect(result).toBe('<a rel="noopener noreferrer" target="_blank" href="https://www.apify.com">Apify</a>');
+        });
+
+        it('should return a link with rel="noopener noreferrer nofollow" and target="_blank" for non-Apify links', () => {
+            const result = markedSetNofollowLinks('https://www.example.com', 'Example', 'Example Link');
+            expect(result).toBe('<a rel="noopener noreferrer nofollow" target="_blank" href="https://www.example.com">Example</a>');
+        });
+
+        it('should return a link with rel="noopener noreferrer nofollow" and target="_blank" for invalid URLs', () => {
+            const result = markedSetNofollowLinks('invalid-url', 'Invalid', 'Invalid Link');
+            expect(result).toBe('<a rel="noopener noreferrer nofollow" target="_blank" href="invalid-url">Invalid</a>');
+        });
+
+        it('should handle a missing title and use the text instead', () => {
+            const result = markedSetNofollowLinks('https://www.apify.com', '', 'Apify Link', 'www.apify.com');
+            expect(result).toBe('<a href="https://www.apify.com">Apify Link</a>');
+        });
+
+        it('should handle a missing hostname parameter', () => {
+            const result = markedSetNofollowLinks('https://www.apify.com', 'Apify', 'Apify Link');
+            expect(result).toBe('<a href="https://www.apify.com">Apify</a>');
+        });
+
+        it('should treat subdomains of apify.com as Apify links', () => {
+            const result = markedSetNofollowLinks('https://docs.apify.com', 'Docs', 'Docs Link');
+            expect(result).toBe('<a href="https://docs.apify.com">Docs</a>');
+        });
+
+        it('should apply rel="noopener noreferrer nofollow" for links with an undefined hostname and non-Apify URLs', () => {
+            const result = markedSetNofollowLinks('https://example.com', 'Example', 'Example Link', undefined);
+            expect(result).toBe('<a rel="noopener noreferrer nofollow" target="_blank" href="https://example.com">Example</a>');
         });
     });
 });
