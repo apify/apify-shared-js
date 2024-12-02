@@ -465,6 +465,7 @@ export const ACTOR_CATEGORIES = {
     EDUCATION: 'Education',
     INTEGRATIONS: 'Integrations',
     OTHER: 'Other',
+    OPEN_SOURCE: 'Open source',
 } as const;
 
 // TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
