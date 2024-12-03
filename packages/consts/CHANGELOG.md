@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.34.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.33.0...@apify/consts@2.34.0) (2024-12-03)
+
+
+### Features
+
+* **consts:** add open source actor category ([#491](https://github.com/apify/apify-shared-js/issues/491)) ([7ed8b9a](https://github.com/apify/apify-shared-js/commit/7ed8b9acf5abb9824605cccaf2eb3bb0f64a9b5b))
+
+
+
+
+
 # [2.33.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.32.0...@apify/consts@2.33.0) (2024-11-06)
 
 
