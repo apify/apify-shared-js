@@ -8,16 +8,16 @@ See the changelogs of each package:
 
 package | version | changelog
 --------|---------|----------
-`@apify/consts` | 2.33.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
+`@apify/consts` | 2.34.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.2 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
 `@apify/git` | 2.1.4 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.2 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 3.12.1 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
-`@apify/input_secrets` | 1.1.57 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
-`@apify/log` | 2.5.9 | [CHANGELOG](./packages/log/CHANGELOG.md)
-`@apify/markdown` | 3.0.6 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
+`@apify/input_schema` | 3.12.2 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_secrets` | 1.1.58 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
+`@apify/log` | 2.5.10 | [CHANGELOG](./packages/log/CHANGELOG.md)
+`@apify/markdown` | 3.0.7 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
-`@apify/pseudo_url` | 2.0.50 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
+`@apify/pseudo_url` | 2.0.51 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
 `@apify/timeout` | 0.3.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
-`@apify/utilities` | 2.10.10 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
+`@apify/utilities` | 2.10.11 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
