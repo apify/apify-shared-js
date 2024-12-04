@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.10.11...@apify/utilities@2.11.0) (2024-12-04)
+
+
+### Features
+
+* **utilities:** markedSetNofollowLinks with hostname check ([#492](https://github.com/apify/apify-shared-js/issues/492)) ([59d746d](https://github.com/apify/apify-shared-js/commit/59d746d77383ec761e9672cb50da388163b7d961))
+
+
+
+
+
 ## [2.10.11](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.10.10...@apify/utilities@2.10.11) (2024-12-03)
 
 **Note:** Version bump only for package @apify/utilities
