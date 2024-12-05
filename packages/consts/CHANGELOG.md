@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.35.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.34.0...@apify/consts@2.35.0) (2024-12-05)
+
+
+### Features
+
+* add `ACTOR_BUILD_TAGS`, `ACTOR_FULL_NAME` environment variables ([#494](https://github.com/apify/apify-shared-js/issues/494)) ([73a3f06](https://github.com/apify/apify-shared-js/commit/73a3f06ce972bee6e07fcb0dc8562e0626b5b89a))
+
+
+
+
+
 # [2.34.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.33.0...@apify/consts@2.34.0) (2024-12-03)
 
 
