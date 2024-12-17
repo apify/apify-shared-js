@@ -117,24 +117,27 @@ export type BetterIntervalID = { _betterClearInterval: () => void };
  * Similar to setInterval() but with two important differences:
  * First, it assumes the function is asynchronous and only schedules its next invocation AFTER the asynchronous function finished.
  * Second, it invokes the function immediately.
- * @param func Asynchronous function to be periodically executed. It must take a single argument with a callback that
- * the function must invoke after it's done.
- * @param delay The number of milliseconds to wait to next invocation of the function.
+ * @param func Function to be periodically executed.
+ * For backwards compatibility reasons, it is passed a callback as its first argument during invocation, however that callback has no effect.
+ * @param delay The number of milliseconds to wait to next invocation of the function after the current invocation finishes.
  * @returns Object that can be passed to betterClearInterval()
  */
-export function betterSetInterval(func: (a: (...args: unknown[]) => unknown) => void, delay: number): BetterIntervalID {
-    let callback: (...a: unknown[]) => unknown;
-    let timeoutId: number;
+export function betterSetInterval(func: ((a: (...args: unknown[]) => unknown) => void) | ((...args: unknown[]) => unknown), delay: number): BetterIntervalID {
+    let scheduleNextRun: () => void;
+    let timeoutId: NodeJS.Timeout;
     let isRunning = true;
+
     const funcWrapper = function () {
-        func(callback);
+        // Historically, the function was passed a callback that it needed to call to signal it was done.
+        // We keep passing this callback for backwards compatibility, but it has no effect anymore.
+        void new Promise((resolve) => resolve(func(() => undefined))).finally(scheduleNextRun);
     };
-    callback = function () {
-        if (isRunning) timeoutId = setTimeout(funcWrapper, delay) as unknown as number;
+    scheduleNextRun = function () {
+        if (isRunning) timeoutId = setTimeout(funcWrapper, delay);
     };
     funcWrapper();
-    return {
 
+    return {
         _betterClearInterval() {
             isRunning = false;
             clearTimeout(timeoutId);
