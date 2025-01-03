@@ -368,6 +368,10 @@ export const INTEGER_ENV_VARS = [
     APIFY_ENV_VARS.SYSTEM_INFO_INTERVAL_MILLIS,
 ] as const;
 
+export const COMMA_SEPARATED_LIST_ENV_VARS = [
+    ACTOR_ENV_VARS.BUILD_TAGS,
+] as const;
+
 /**
  * Dictionary of names of build-time variables passed to the Actor's Docker build process.
  */
