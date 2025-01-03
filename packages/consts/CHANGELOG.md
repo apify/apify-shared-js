@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.36.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.35.0...@apify/consts@2.36.0) (2025-01-03)
+
+
+### Features
+
+* add `COMMA_SEPARATED_LIST_ENV_VARS` constant ([#497](https://github.com/apify/apify-shared-js/issues/497)) ([32e1424](https://github.com/apify/apify-shared-js/commit/32e142473cb82c320c5dcf424aba4cf59a5775e9))
+
+
+
+
+
 # [2.35.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.34.0...@apify/consts@2.35.0) (2024-12-05)
 
 
