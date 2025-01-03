@@ -342,3 +342,62 @@ describe('timeoutPromise()', () => {
         });
     });
 });
+
+describe('BetterSetInterval', () => {
+    it('works with normal function', async () => {
+        const fn = jest.fn();
+
+        const interval = utils.betterSetInterval(fn, 200);
+
+        // 3 x 200ms + some leeway
+        await utils.delayPromise(700);
+        utils.betterClearInterval(interval);
+
+        // 1st call is immediate, 3 more after 1, 2 and 3 intervals
+        expect(fn).toHaveBeenCalledTimes(4);
+
+        // No more calls after clearing the interval
+        await utils.delayPromise(500);
+        expect(fn).toHaveBeenCalledTimes(4);
+    });
+
+    it('works with async function', async () => {
+        const fn = jest.fn();
+
+        const interval = utils.betterSetInterval(async () => {
+            fn();
+            await utils.delayPromise(100);
+        }, 200);
+
+        // 3 x (200 + 100)ms + some leeway
+        await utils.delayPromise(1000);
+        utils.betterClearInterval(interval);
+
+        // 1st call is immediate, 3 more after 1, 2 and 3 intervals
+        expect(fn).toHaveBeenCalledTimes(4);
+
+        // No more calls after clearing the interval
+        await utils.delayPromise(500);
+        expect(fn).toHaveBeenCalledTimes(4);
+    });
+
+    it('works with function that accepts a callback (legacy)', async () => {
+        const fn = jest.fn();
+
+        const interval = utils.betterSetInterval((cb: () => void) => {
+            fn();
+            cb();
+        }, 200);
+
+        // 3 x 200ms + some leeway
+        await utils.delayPromise(700);
+        utils.betterClearInterval(interval);
+
+        // 1st call is immediate, 3 more after 1, 2 and 3 intervals
+        expect(fn).toHaveBeenCalledTimes(4);
+
+        // No more calls after clearing the interval
+        await utils.delayPromise(500);
+        expect(fn).toHaveBeenCalledTimes(4);
+    });
+});
