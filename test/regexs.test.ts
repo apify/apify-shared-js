@@ -317,6 +317,30 @@ const tests = {
             'https://www.linkedin.com/company/companyname/extra/extra/',
         ],
     },
+    PROXY_URL_REGEX: {
+        valid: [
+            'http://asd:qweqwe@proxy.apify.com:8000',
+            'http://asd:qweqwe@proxy.apify.com:8000',
+            'http://123123:qweqwe:asdasd@proxy.com:55555',
+            'http://proxy.apify.com:5000',
+            'http://root@proxy.apify.com:5000',
+            'https://proxy.apify.com:5000',
+            'socks://proxy.apify.com:5000',
+            'socks4://proxy.apify.com:5000',
+            'socks4a://proxy.apify.com:5000',
+            'socks5://proxy.apify.com:5000',
+            'socks5h://proxy.apify.com:5000',
+        ],
+        invalid: [
+            'http://@proxy.apify.com:8000/',
+            'https://proxy.apify.com',
+            'httpss://proxy.apify.com:5000',
+            'htt://proxy.apify.com:5000',
+            'soks://proxy.apify.com:5000',
+            'socks3://proxy.apify.com:5000',
+            'socks6://proxy.apify.com:5000',
+        ],
+    },
 };
 
 describe('regexps', () => {

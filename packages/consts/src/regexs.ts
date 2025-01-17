@@ -53,12 +53,11 @@ export const APIFY_PROXY_VALUE_REGEX = /^[\w._~]+$/;
 /**
  * Regular expression to validate proxy urls, matches
  * http://asd:qweqwe@proxy.apify.com:8000
- * http://asd:qweqwe@proxy.apify.com:8000/
  * http://123123:qweqwe:asdasd@proxy.com:55555
  * http://proxy.apify.com:5000
  * http://root@proxy.apify.com:5000
  */
-export const PROXY_URL_REGEX = /^https?:\/\/(([^:]+:)?[^@]*@)?[^.:@]+\.[^:]+:[\d]+?$/;
+export const PROXY_URL_REGEX = /^(socks(4|4a|5|5h)?|https?):\/\/(([^:]+:)?[^@]*@)?[^.:@]+\.[^:]+:[\d]+?$/;
 
 /**
  * AWS S3 docs say:
