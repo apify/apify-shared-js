@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.37.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.36.0...@apify/consts@2.37.0) (2025-01-21)
+
+
+### Features
+
+* add support for SOCKS to PROXY_URL_REGEX ([#498](https://github.com/apify/apify-shared-js/issues/498)) ([b114d33](https://github.com/apify/apify-shared-js/commit/b114d3320520f2165e53ff32a27eef35d08a7a67))
+
+
+
+
+
 # [2.36.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.35.0...@apify/consts@2.36.0) (2025-01-03)
 
 

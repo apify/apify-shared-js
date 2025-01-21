@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.13.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.12.4...@apify/input_schema@3.13.0) (2025-01-21)
+
+
+### Features
+
+* add support for SOCKS to PROXY_URL_REGEX ([#498](https://github.com/apify/apify-shared-js/issues/498)) ([b114d33](https://github.com/apify/apify-shared-js/commit/b114d3320520f2165e53ff32a27eef35d08a7a67))
+
+
+
+
+
 ## [3.12.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.12.3...@apify/input_schema@3.12.4) (2025-01-03)
 
 **Note:** Version bump only for package @apify/input_schema
