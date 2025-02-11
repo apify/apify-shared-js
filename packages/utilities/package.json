@@ -49,8 +49,7 @@
     },
     "dependencies": {
         "@apify/consts": "^2.37.0",
-        "@apify/log": "^2.5.13",
-        "base62": "^2.0.2"
+        "@apify/log": "^2.5.13"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"
