@@ -3,18 +3,18 @@ import crypto from 'crypto';
 const CHARSET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 /**
- * Encodes number to base62.
+ * Encodes BigInt to base62.
  * To avoid new dependency, this function was copied from https://github.com/base62/base62.js/blob/master/lib/ascii.js
  */
-function encodeBase62(num: number) {
-    if (num === 0) {
+function encodeBase62(num: bigint) {
+    if (num === 0n) {
         return CHARSET[0];
     }
 
     let res = '';
-    while (num > 0) {
-        res = CHARSET[num % 62] + res;
-        num = Math.floor(num / 62);
+    while (num > 0n) {
+        res = CHARSET[Number(num % 62n)] + res;
+        num /= 62n;
     }
     return res;
 }
@@ -33,5 +33,5 @@ export function createHmacSignature(secretKey: string, message: string): string 
         .digest('hex')
         .substring(0, 30);
 
-    return encodeBase62(parseInt(signature, 16));
+    return encodeBase62(BigInt(`0x${signature}`));
 }
