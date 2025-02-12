@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.12.2...@apify/utilities@2.13.0) (2025-02-12)
+
+
+### Features
+
+* add create hmac signature ([#500](https://github.com/apify/apify-shared-js/issues/500)) ([fe937f2](https://github.com/apify/apify-shared-js/commit/fe937f2f3d6adb22d1222a7cd95e73ae4081bc1d))
+
+
+
+
+
 ## [2.12.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.12.1...@apify/utilities@2.12.2) (2025-01-21)
 
 **Note:** Version bump only for package @apify/utilities
