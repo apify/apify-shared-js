@@ -4,7 +4,6 @@ const CHARSET = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 /**
  * Encodes BigInt to base62.
- * To avoid new dependency, this function was copied from https://github.com/base62/base62.js/blob/master/lib/ascii.js
  */
 function encodeBase62(num: bigint) {
     if (num === 0n) {
