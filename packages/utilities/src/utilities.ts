@@ -224,6 +224,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
+    'discord',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
@@ -296,7 +297,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'site', 'sitemap', 'sites', 'smartphone', 'smtp', 'soporte', 'source', 'spec', 'special', 'sql',
     'src', 'ssh', 'ssl', 'ssladmin', 'ssladministrator', 'sslwebmaster', 'staff', 'stage', 'staging',
     'start', 'stat', 'state', 'static', 'stats', 'status', 'store', 'stores', 'stories', 'style',
-    'styleguide', 'stylesheet', 'stylesheets', 'subdomain', 'subscribe', 'subscriptions', 'suporte',
+    'styleguide', 'stylesheet', 'stylesheets', 'subdomain', 'subscribe', 'subscription', 'subscriptions', 'suporte',
     'support', 'svn', 'swf', 'sys', 'sysadmin', 'sysadministrator', 'system', 'tablet', 'tablets',
     'tag', 'talk', 'task', 'tasks', 'team', 'teams', 'tech', 'telnet', 'term', 'terms',
     'terms-of-service', 'terms_of_service', 'termsofservice', 'test', 'test1', 'test2', 'test3',
