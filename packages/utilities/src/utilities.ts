@@ -224,7 +224,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
-    'discord', 'praguecrawl', 'prague-crawl', 'bob',
+    'discord', 'praguecrawl', 'prague-crawl', 'bob', 'ai-agents', 'reel', 'video-reel',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
