@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.14.0...@apify/utilities@2.15.0) (2025-03-10)
+
+
+### Features
+
+* **internal:** Added more prohibited usernames ([#504](https://github.com/apify/apify-shared-js/issues/504)) ([e1e60b7](https://github.com/apify/apify-shared-js/commit/e1e60b74c5d5b5bbf4f00e3a551b9df98234cff5))
+
+
+
+
+
 # [2.14.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.13.1...@apify/utilities@2.14.0) (2025-02-23)
 
 
