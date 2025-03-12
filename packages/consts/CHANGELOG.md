@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.38.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.37.0...@apify/consts@2.38.0) (2025-03-12)
+
+
+### Features
+
+* add Agents to category ([#505](https://github.com/apify/apify-shared-js/issues/505)) ([234a30f](https://github.com/apify/apify-shared-js/commit/234a30f048d00eabf2f80ee4e830301c1cd8a2aa))
+
+
+
+
+
 # [2.37.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.36.0...@apify/consts@2.37.0) (2025-01-21)
 
 
