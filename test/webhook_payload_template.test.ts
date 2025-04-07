@@ -1,5 +1,5 @@
-import { WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES } from '@apify/consts';
-import { WebhookPayloadTemplate, InvalidJsonError, InvalidVariableError } from '@apify/utilities';
+import { WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE } from '@apify/consts';
+import { InvalidJsonError, InvalidVariableError, WebhookPayloadTemplate } from '@apify/utilities';
 
 const validJson = `
 {
@@ -77,12 +77,11 @@ describe('WebhookPayloadTemplate', () => {
             userId: ['some-user-id'],
             eventType: null,
             createdAt: null,
-            eventData: [{
-                tmpl: {
-                    status: 200,
-                    body: 'hello-world',
-                    messages: [1, 2, 3],
-                } }],
+            eventData: [{ tmpl: {
+                status: 200,
+                body: 'hello-world',
+                messages: [1, 2, 3],
+            } }],
             resource: null,
         });
     });

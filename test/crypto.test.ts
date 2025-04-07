@@ -1,4 +1,4 @@
-import { createPrivateKey, createPublicKey } from 'crypto';
+import { createPrivateKey, createPublicKey } from 'node:crypto';
 
 import * as utils from '@apify/utilities';
 

@@ -7,10 +7,11 @@
  *
  */
 
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
-import log, { Log, LoggerJson, LogLevel } from '@apify/log';
+import type { Log } from '@apify/log';
+import log, { LoggerJson, LogLevel } from '@apify/log';
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -106,7 +107,10 @@ export function http404Route(req: RequestLike, res: ResponseLike) {
  */
 export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseLike, next: (...a: unknown[]) => unknown) {
     log.warning('Client HTTP request failed', { url: req.url, errMsg: err.message });
-    if (res.headersSent) { return next(err); }
+    if (res.headersSent) {
+        next(err);
+        return;
+    }
     res.status(505);
     res.send('Internal server error');
 }
@@ -130,7 +134,9 @@ export function betterSetInterval(func: ((a: (...args: unknown[]) => unknown) =>
     const funcWrapper = function () {
         // Historically, the function was passed a callback that it needed to call to signal it was done.
         // We keep passing this callback for backwards compatibility, but it has no effect anymore.
-        void new Promise((resolve) => resolve(func(() => undefined))).finally(scheduleNextRun);
+        void new Promise((resolve) => {
+            resolve(func(() => undefined));
+        }).finally(scheduleNextRun);
     };
     scheduleNextRun = function () {
         if (isRunning) timeoutId = setTimeout(funcWrapper, delay);
@@ -410,7 +416,10 @@ export async function timeoutPromise<T>(promise: Promise<T>, timeoutMillis: numb
             if (hasFulfilled) return;
             clearTimeout(timeout);
             hasFulfilled = true;
-            if (err) return reject(err);
+            if (err) {
+                reject(err);
+                return;
+            }
             resolve(result);
         };
 

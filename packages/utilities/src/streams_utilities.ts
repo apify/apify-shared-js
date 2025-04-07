@@ -1,4 +1,4 @@
-import { PassThrough, Readable } from 'stream';
+import type { PassThrough, Readable } from 'node:stream';
 
 /**
  * Concat data from stream to Buffer

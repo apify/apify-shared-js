@@ -5,21 +5,21 @@ const DATE_REGEX = /\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ/;
 
 describe('loggerJson', () => {
     let loggedLines: any;
-    const originalConsoleMethods = {};
+    const originalConsoleMethods: Record<string, any> = {};
 
     beforeEach(() => {
         loggedLines = {};
-        CONSOLE_METHODS.map((method) => {
+        CONSOLE_METHODS.forEach((method) => {
             originalConsoleMethods[method] = console[method];
-            console[method] = (line: string) => {
+            console[method] = ((line: string) => {
                 loggedLines[method] = JSON.parse(line);
-            };
+            }) as any;
         });
     });
 
     afterEach(() => {
-        CONSOLE_METHODS.map((method) => {
-            console[method] = originalConsoleMethods[method];
+        CONSOLE_METHODS.forEach((method) => {
+            console[method] = originalConsoleMethods[method] as any;
         });
     });
 

@@ -1,4 +1,4 @@
-import { PREFIX_DELIMITER, LogLevel } from './log_consts';
+import { LogLevel, PREFIX_DELIMITER } from './log_consts';
 import { Logger } from './logger';
 
 const DEFAULT_OPTIONS = {

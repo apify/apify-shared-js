@@ -1,6 +1,7 @@
+import type { Tokens } from 'marked';
+
 import { CONTACT_LINK_REGEX, GIT_MAIN_BRANCH } from '@apify/consts';
 import { isUrlRelative } from '@apify/utilities';
-import type { Tokens } from 'marked';
 
 export function formatHeadingId(headingId: string) {
     // Replace non-word characters with dashes

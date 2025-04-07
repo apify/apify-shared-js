@@ -1,8 +1,9 @@
-import Ajv, { ErrorObject, Schema } from 'ajv';
+import type { ErrorObject, Schema } from 'ajv';
+import type Ajv from 'ajv';
 
 import { m } from './intl';
 import schema from './schema.json';
-import {
+import type {
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,

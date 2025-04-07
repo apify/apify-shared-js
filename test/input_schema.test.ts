@@ -1,5 +1,6 @@
-import { validateInputSchema } from '@apify/input_schema';
 import Ajv from 'ajv';
+
+import { validateInputSchema } from '@apify/input_schema';
 
 describe('input_schema.json', () => {
     const validator = new Ajv({ strict: false });
