@@ -51,7 +51,7 @@
         "@apify/eslint-config-ts": "^0.4.1",
         "@commitlint/config-conventional": "^19.2.2",
         "@types/clone-deep": "^4.0.4",
-        "@types/git-url-parse": "^9.0.3",
+        "@types/git-url-parse": "^16.0.0",
         "@types/jest": "^29.5.12",
         "@types/node": "^22.0.2",
         "@types/underscore": "^1.11.15",
