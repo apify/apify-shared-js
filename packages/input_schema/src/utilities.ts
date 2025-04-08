@@ -1,7 +1,8 @@
-import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { parse } from 'acorn-loose';
-import { ValidateFunction } from 'ajv';
+import type { ValidateFunction } from 'ajv';
 import { countries } from 'countries-list';
+
+import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 
 import { parseAjvError } from './input_schema';
 import { m } from './intl';
@@ -71,7 +72,7 @@ function validateProxyField(
     if (!options) return fieldErrors;
 
     // if apifyProxyGroups exists it must be an array of strings
-    const isStringsArray = (array: Array<string>) => array.every((item) => typeof item === 'string');
+    const isStringsArray = (array: string[]) => array.every((item) => typeof item === 'string');
     if (apifyProxyGroups && !(Array.isArray(apifyProxyGroups) && isStringsArray(apifyProxyGroups))) {
         fieldErrors.push(m('inputSchema.validation.proxyGroupMustBeArrayOfStrings', { rootName: 'input', fieldKey }));
         return fieldErrors;
@@ -276,7 +277,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
         let ast;
         try {
             ast = parse(maybeFunction, { ecmaVersion: 'latest' });
-        } catch (err) {
+        } catch {
             // Don't do anything in a case of invalid JS code.
             return;
         }

@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import { AsyncLocalStorage } from 'async_hooks';
+import { AsyncLocalStorage } from 'node:async_hooks';
 
 export interface AbortContext {
     cancelTask: AbortController;

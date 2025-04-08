@@ -1,3 +1,7 @@
+import Ajv from 'ajv';
+import brokenClone from 'clone-deep';
+import _ from 'underscore';
+
 import { validateInputUsingValidator } from '@apify/input_schema';
 import {
     buildOrVersionNumberIntToStr,
@@ -12,9 +16,6 @@ import {
     traverseObject,
     unescapeFromBson,
 } from '@apify/utilities';
-import Ajv from 'ajv';
-import brokenClone from 'clone-deep';
-import _ from 'underscore';
 
 // @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
 

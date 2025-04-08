@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import { JsonVariable, jsonStringifyExtended } from './utilities.client';
+import { jsonStringifyExtended, JsonVariable } from './utilities.client';
 
 class WebhookPayloadTemplateError extends Error {
     constructor(message?: string) {
@@ -143,7 +143,7 @@ export class WebhookPayloadTemplate {
 
     private _parse() {
         let currentIndex = 0;
-        // eslint-disable-next-line no-constant-condition
+
         while (true) {
             try {
                 return JSON.parse(this.payload);
@@ -200,7 +200,7 @@ export class WebhookPayloadTemplate {
         return result;
     }
 
-    private _interpolateArray(value: Array<any>): Array<any> {
+    private _interpolateArray(value: any[]): any[] {
         return value.map(this._interpolate.bind(this));
     }
 

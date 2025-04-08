@@ -1,8 +1,9 @@
-import * as http from 'http';
+import * as http from 'node:http';
+
+import _ from 'underscore';
 
 import { makeInputJsFieldsReadable } from '@apify/input_schema';
 import * as utils from '@apify/utilities';
-import _ from 'underscore';
 
 describe('utilities', () => {
     describe('#cryptoRandomObjectId()', () => {
@@ -258,7 +259,6 @@ describe('timeoutPromise()', () => {
 
     describe('#makeInputJsFieldsReadable()', () => {
         it('should correctly handle normal functions, arrow functions and JS code', () => {
-            /* eslint-disable */
             const json = `{
                 "cookiesPersistence": "PER_PROCESS",
                 "disableWebSecurity": true,
@@ -271,7 +271,6 @@ describe('timeoutPromise()', () => {
                 "rotateUserAgents": false,
                 "someCode": "const a = 5;\\nfunction sum (a, b) {\\n    return a + b;\\n}\\nsum(a, 10);"
             }`;
-            /* eslint-enable */
 
             const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
             const expected = `{
@@ -299,14 +298,12 @@ describe('timeoutPromise()', () => {
         });
 
         it('should not fail on invalid JS code', () => {
-            /* eslint-disable */
             const json = `{
                 "cookiesPersistence": "PER_PROCESS",
                 "arrowFunction": "async (a, b) => a + b; ",
                 "loadCss": false,
                 "normalFunction": "function INVALID!!! pageFunction(context) {\\n    // called on every page the crawler visits, use it to extract data from it\\n    const $ = context.jQuery;\\n    return 'xxxx';\\n}"
             }`;
-            /* eslint-enable */
 
             const given = makeInputJsFieldsReadable(json, ['normalFunction', 'arrowFunction', 'someCode'], 4);
 

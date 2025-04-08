@@ -1,5 +1,5 @@
 import log from '@apify/log';
-import { retryWithExpBackoff, RetryableError } from '@apify/utilities';
+import { RetryableError, retryWithExpBackoff } from '@apify/utilities';
 
 describe('exponential_backoff', () => {
     it('should retry retryable error and return result', async () => {
