@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.39.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.38.0...@apify/consts@2.39.0) (2025-04-08)
+
+
+### Features
+
+* add general access enum to consts ([#507](https://github.com/apify/apify-shared-js/issues/507)) ([71fd1a5](https://github.com/apify/apify-shared-js/commit/71fd1a56029374ee413410953c8f25b3fa6a8f38)), closes [/github.com/apify/apify-core/blob/ba052eedd7490952fa1b8c1447c261a9cfd3acb3/src/packages/consts/src/iam.ts#L101](https://github.com//github.com/apify/apify-core/blob/ba052eedd7490952fa1b8c1447c261a9cfd3acb3/src/packages/consts/src/iam.ts/issues/L101)
+
+
+
+
+
 # [2.38.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.37.0...@apify/consts@2.38.0) (2025-03-12)
 
 

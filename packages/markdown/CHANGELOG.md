@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.19](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.18...@apify/markdown@3.0.19) (2025-04-08)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
 ## [3.0.18](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.17...@apify/markdown@3.0.18) (2025-04-08)
 
 **Note:** Version bump only for package @apify/markdown
