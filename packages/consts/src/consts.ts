@@ -1,3 +1,4 @@
+import type { ValueOf } from './helpers';
 import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
@@ -631,3 +632,40 @@ export const ISSUES_STATUS_TYPES = {
  * This is used for filtering issues. All issue types to be considered.
  */
 export const ISSUES_STATUS_ALL = 'ALL';
+
+/**
+ * Storage setting determining how others can access the storage.
+ *
+ * This setting overrides the user setting of the storage owner.
+ */
+export const STORAGE_GENERAL_ACCESS = {
+    // Empty / not populated: Follow the user setting.
+
+    /** Only signed-in users with explicit access can read this storage. */
+    RESTRICTED: 'RESTRICTED',
+
+    /** Anyone with a link, or the unique storage ID, can read the storage. */
+    ANYONE_WITH_ID_CAN_READ: 'ANYONE_WITH_ID_CAN_READ',
+
+    /** Anyone with a link, the unique storage ID, or the storage name, can read the storage. */
+    ANYONE_WITH_NAME_CAN_READ: 'ANYONE_WITH_NAME_CAN_READ',
+} as const;
+
+export type STORAGE_GENERAL_ACCESS = ValueOf<typeof STORAGE_GENERAL_ACCESS>
+
+/**
+ * Run setting determining how others can access the run.
+ *
+ * This setting overrides the user setting of the run owner.
+ */
+export const RUN_GENERAL_ACCESS = {
+    // Empty / not populated: Follow the user setting.
+
+    /** Only signed-in users with explicit access can read this run. */
+    RESTRICTED: 'RESTRICTED',
+
+    /** Anyone with a link, or the unique run ID, can read the run. */
+    ANYONE_WITH_ID_CAN_READ: 'ANYONE_WITH_ID_CAN_READ',
+} as const;
+
+export type RUN_GENERAL_ACCESS = ValueOf<typeof RUN_GENERAL_ACCESS>
