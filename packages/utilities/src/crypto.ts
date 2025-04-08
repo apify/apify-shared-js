@@ -1,4 +1,5 @@
-import crypto, { KeyObject } from 'crypto';
+import type { KeyObject } from 'node:crypto';
+import crypto from 'node:crypto';
 
 import { cryptoRandomObjectId } from './utilities';
 

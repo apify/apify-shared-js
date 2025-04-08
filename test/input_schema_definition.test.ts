@@ -1,5 +1,6 @@
-import { inputSchema } from '@apify/input_schema';
 import Ajv from 'ajv';
+
+import { inputSchema } from '@apify/input_schema';
 
 /**
  * Temporarily replace console.warn with implementation that throws error instead

@@ -46,7 +46,7 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     minProperties?: number;
 }
 
-export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
+export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     type: 'array'
     editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'hidden';
     placeholderKey?: string;

@@ -1,13 +1,13 @@
 import {
-    USERNAME,
-    APIFY_ID_REGEX,
     ACTOR_ENV_VARS,
-    ENV_VARS,
     APIFY_ENV_VARS,
+    APIFY_ID_REGEX,
+    ENV_VARS,
     LOCAL_ACTOR_ENV_VARS,
     LOCAL_APIFY_ENV_VARS,
     LOCAL_ENV_VARS,
     PROFILE_NAME,
+    USERNAME,
 } from '@apify/consts';
 import { cryptoRandomObjectId } from '@apify/utilities';
 

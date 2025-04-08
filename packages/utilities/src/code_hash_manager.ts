@@ -1,4 +1,4 @@
-import { timingSafeEqual, createHmac } from 'node:crypto';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
 export enum CodeHashMetaKey {
     VERSION = 'v',
@@ -58,7 +58,7 @@ export class CodeHashManager {
     }
 
     private toBase64(data: string | Buffer) {
-        return Buffer.from(data).toString('base64url');
+        return Buffer.from(data as Buffer).toString('base64url');
     }
 
     private fromBase64(encoded: string) {

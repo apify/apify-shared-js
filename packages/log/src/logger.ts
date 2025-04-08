@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 
 import { LogLevel } from './log_consts';
 

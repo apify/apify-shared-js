@@ -1,6 +1,6 @@
-import { createPrivateKey, createPublicKey } from 'crypto';
+import { createPrivateKey, createPublicKey } from 'node:crypto';
 
-import { encryptInputSecrets, decryptInputSecrets } from '@apify/input_secrets';
+import { decryptInputSecrets, encryptInputSecrets } from '@apify/input_secrets';
 
 const publicKey = createPublicKey({
     // eslint-disable-next-line max-len
@@ -56,6 +56,6 @@ describe('input secrets', () => {
         expect(encryptedInput.secure).not.toEqual(testInput.secure);
         expect(encryptedInput.customString).toEqual(testInput.customString);
         expect(() => decryptInputSecrets({ input: encryptedInput, privateKey: publicKey }))
-            .toThrowError(`The input field "secure" could not be decrypted. Try updating the field's value in the input editor.`);
+            .toThrow(`The input field "secure" could not be decrypted. Try updating the field's value in the input editor.`);
     });
 });

@@ -1,4 +1,5 @@
-import { Transform, TransformCallback } from 'stream';
+import type { TransformCallback } from 'node:stream';
+import { Transform } from 'node:stream';
 
 // TODO: Fix the issue with the separate 'data' and 'object' event - see below.
 // For example, we could just have 'data' and it would just pass the object.
