@@ -88,7 +88,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "nullable": { "type": "boolean" },
-                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden"] },
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "fileUrl"] },
                 "isSecret": { "type": "boolean" }
             },
             "required": ["type", "title", "description", "editor"],
@@ -139,7 +139,7 @@
                         "nullable": { "type": "boolean" },
                         "minLength": { "type": "integer" },
                         "maxLength": { "type": "integer" },
-                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden"] },
+                        "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileUrl"] },
                         "isSecret": { "enum": [false] },
                         "sectionCaption": { "type": "string" },
                         "sectionDescription": { "type": "string" }
