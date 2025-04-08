@@ -1,4 +1,4 @@
-import { ValueOf } from './helpers';
+import type { ValueOf } from './helpers';
 import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
