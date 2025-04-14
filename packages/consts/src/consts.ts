@@ -639,7 +639,8 @@ export const ISSUES_STATUS_ALL = 'ALL';
  * This setting overrides the user setting of the storage owner.
  */
 export const STORAGE_GENERAL_ACCESS = {
-    // Empty / not populated: Follow the user setting.
+    /** Respect the user setting of the storage owner (default behavior). */
+    FOLLOW_USER_SETTING: 'FOLLOW_USER_SETTING',
 
     /** Only signed-in users with explicit access can read this storage. */
     RESTRICTED: 'RESTRICTED',
@@ -659,7 +660,8 @@ export type STORAGE_GENERAL_ACCESS = ValueOf<typeof STORAGE_GENERAL_ACCESS>
  * This setting overrides the user setting of the run owner.
  */
 export const RUN_GENERAL_ACCESS = {
-    // Empty / not populated: Follow the user setting.
+    /** Respect the user setting of the run owner (default behavior). */
+    FOLLOW_USER_SETTING: 'FOLLOW_USER_SETTING',
 
     /** Only signed-in users with explicit access can read this run. */
     RESTRICTED: 'RESTRICTED',
