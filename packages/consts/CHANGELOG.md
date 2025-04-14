@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.40.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.39.0...@apify/consts@2.40.0) (2025-04-14)
+
+
+### Features
+
+* add FOLLOW_USER_SETTING to generalAccess enum ([#510](https://github.com/apify/apify-shared-js/issues/510)) ([06d06fc](https://github.com/apify/apify-shared-js/commit/06d06fcab07c471a77f2b11a8cd59c14fcf99696))
+
+
+
+
+
 # [2.39.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.38.0...@apify/consts@2.39.0) (2025-04-08)
 
 
