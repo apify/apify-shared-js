@@ -287,6 +287,25 @@ describe('input_schema.json', () => {
         });
 
         describe('special cases for resourceProperty', () => {
+            it('should accept valid resourceType', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            prefill: 'test',
+                            default: 'test',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
             it('should not accept invalid resourceType', () => {
                 const schema = {
                     title: 'Test input schema',
@@ -324,6 +343,143 @@ describe('input_schema.json', () => {
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "hidden")',
+                );
+            });
+
+            it('should accept valid resourcePermissions', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['READ'],
+                        },
+                    },
+                };
+                validateInputSchema(validator, schema);
+
+                const schema2 = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['READ', 'WRITE'],
+                        },
+                    },
+                };
+                validateInputSchema(validator, schema2);
+            });
+
+            it('should not accept invalid resourcePermissions values', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['INVALID'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                );
+            });
+
+            it('should not accept empty resourcePermissions array', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: [],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.resourcePermissions must NOT have fewer than 1 items)',
+                );
+            });
+
+            it('should not accept resourcePermissions with prefill', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['READ'],
+                            prefill: 'some-value',
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField. must NOT be valid)',
+                );
+            });
+
+            it('should not accept resourcePermissions with default', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['READ'],
+                            default: 'some-value',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField. must NOT be valid)',
+                );
+            });
+
+            it('should not accept resourcePermissions without READ', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['WRITE'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.resourcePermissions must contain at least 1 valid item(s))',
                 );
             });
         });
