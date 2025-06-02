@@ -304,6 +304,23 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).not.toThrow();
+
+                const schema2 = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myFieldArray: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'keyValueStore',
+                            prefill: [],
+                            default: [],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema2)).not.toThrow();
             });
 
             it('should not accept invalid resourceType', () => {
@@ -368,10 +385,10 @@ describe('input_schema.json', () => {
                     type: 'object',
                     schemaVersion: 1,
                     properties: {
-                        myField: {
+                        myFieldArray: {
                             title: 'Field title',
                             description: 'My test field',
-                            type: 'string',
+                            type: 'array',
                             resourceType: 'keyValueStore',
                             resourcePermissions: ['READ', 'WRITE'],
                         },
@@ -397,6 +414,24 @@ describe('input_schema.json', () => {
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                );
+
+                const schema2 = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myFieldArray: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['INVALID'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema2)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myFieldArray.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
             });
 
@@ -438,6 +473,26 @@ describe('input_schema.json', () => {
                 };
 
                 expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField. must NOT be valid)',
+                );
+
+                const schema2 = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'keyValueStore',
+                            resourcePermissions: ['READ'],
+                            prefill: [],
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema2)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField. must NOT be valid)',
                 );
             });
