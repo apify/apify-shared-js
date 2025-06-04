@@ -62,6 +62,7 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
     resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
+    resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
 export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
