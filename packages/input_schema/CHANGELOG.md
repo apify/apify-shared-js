@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.15.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.0...@apify/input_schema@3.15.1) (2025-06-09)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.15.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.14.1...@apify/input_schema@3.15.0) (2025-06-04)
+
+
+### Features
+
+* **schema:** add support for resource permissions ([#514](https://github.com/apify/apify-shared-js/issues/514)) ([edb7fda](https://github.com/apify/apify-shared-js/commit/edb7fdad92df8b17546470138cbacd0981f4dc72))
+
+
+
+
+
 ## [3.14.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.14.0...@apify/input_schema@3.14.1) (2025-04-30)
 
 **Note:** Version bump only for package @apify/input_schema
