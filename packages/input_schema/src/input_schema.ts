@@ -38,6 +38,11 @@ export function parseAjvError(
     let fieldKey: string;
     let message: string;
 
+    const cleanPropertyName = (name: string) => {
+        // remove leading and trailing slashes and replace remaining slashes with dots
+        return name.replace(/^\/|\/$/g, '').replace(/\//g, '.');
+    };
+
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
     if (error.keyword === 'type') {
@@ -48,20 +53,20 @@ export function parseAjvError(
         }
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     } else if (error.keyword === 'required') {
-        fieldKey = error.params.missingProperty;
+        fieldKey = cleanPropertyName(`${error.instancePath}/${error.params.missingProperty}`);
         message = m('inputSchema.validation.required', { rootName, fieldKey });
     } else if (error.keyword === 'additionalProperties') {
-        fieldKey = error.params.additionalProperty;
+        fieldKey = cleanPropertyName(`${error.instancePath}/${error.params.additionalProperty}`);
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
     } else if (error.keyword === 'enum') {
-        fieldKey = error.instancePath.split('/').pop()!;
+        fieldKey = cleanPropertyName(error.instancePath);
         const errorMessage = `${error.message}: "${error.params.allowedValues.join('", "')}"`;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
     } else if (error.keyword === 'const') {
-        fieldKey = error.instancePath.split('/').pop()!;
+        fieldKey = cleanPropertyName(error.instancePath);
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     } else {
-        fieldKey = error.instancePath.split('/').pop()!;
+        fieldKey = cleanPropertyName(error.instancePath);
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
     }
 
@@ -93,10 +98,19 @@ function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): a
 /**
  * Validates particular field against it's schema.
  */
-function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string): asserts fieldSchema is FieldDefinition {
+function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string, subField = false): asserts fieldSchema is FieldDefinition {
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
+            if (!subField && definition.title.startsWith('Sub-schema')) {
+                // This is a sub-schema definition, so we skip it.
+                return false;
+            }
+            if (subField && !definition.title.startsWith('Sub-schema')) {
+                // This is a normal definition, so we skip it.
+                return false;
+            }
+
             return definition.properties.type.enum
                 // This is a normal case where fieldSchema.type can be only one possible value matching definition.properties.type.enum.0
                 ? definition.properties.type.enum[0] === fieldSchema.type
@@ -110,9 +124,18 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
         throw new Error(`Input schema is not valid (${errorMessage})`);
     }
 
+    // When validating against schema of one definition, the definition can reference other definitions.
+    // So we need to add all of them to the schema.
+    function enhanceDefinition(definition: any) {
+        return {
+            ...definition,
+            definitions,
+        };
+    }
+
     // If there is only one matching then we are done and simply compare it.
     if (matchingDefinitions.length === 1) {
-        validateAgainstSchemaOrThrow(validator, fieldSchema, matchingDefinitions[0], `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(matchingDefinitions[0]), `schema.properties.${fieldKey}`);
         return;
     }
 
@@ -121,30 +144,41 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}.enum`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}.enum`);
         return;
     }
     // If the definition contains "resourceType" property then it's resource type.
     if ((fieldSchema as CommonResourceFieldDefinition<unknown>).resourceType) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.resourceType).pop();
         if (!definition) throw new Error('Input schema validation failed to find "resource property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
     // Otherwise we use the other definition.
     const definition = matchingDefinitions.filter((item) => !item.properties.enum && !item.properties.resourceType).pop();
     if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
-    validateAgainstSchemaOrThrow(validator, fieldSchema, definition, `schema.properties.${fieldKey}`);
+    validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+}
+
+function validateSubFields(validator: Ajv, fieldSchema: InputSchemaBaseChecked, fieldKey: string) {
+    Object.entries(fieldSchema.properties).forEach(([subFieldKey, subFieldSchema]) => (
+        validateField(validator, subFieldSchema, `${fieldKey}.${subFieldKey}`, true)),
+    );
 }
 
 /**
  * Validates all properties in the input schema
  */
 function validateProperties(inputSchema: InputSchemaBaseChecked, validator: Ajv): asserts inputSchema is InputSchema {
-    Object.entries(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => (
-        validateField(validator, fieldSchema, fieldKey)),
-    );
+    Object.entries(inputSchema.properties).forEach(([fieldKey, fieldSchema]) => {
+        // The sub-properties has to be validated first, so we got more relevant error messages.
+        if ((fieldSchema as any).properties) {
+            // If the field has sub-fields, we need to validate them as well.
+            validateSubFields(validator, fieldSchema as any as InputSchemaBaseChecked, fieldKey);
+        }
+        validateField(validator, fieldSchema, fieldKey);
+    });
 }
 
 /**

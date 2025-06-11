@@ -538,5 +538,92 @@ describe('input_schema.json', () => {
                 );
             });
         });
+
+        describe('special cases for sub-schema', () => {
+            it('should accept valid object sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            additionalProperties: false,
+                            // required: ['key2'],
+                            properties: {
+                                key: {
+                                    type: 'object',
+                                    title: 'Key',
+                                    description: 'Key description',
+                                    editor: 'schemaBased',
+                                    properties: {
+                                        key1: {
+                                            type: 'string',
+                                            title: 'Key 1',
+                                            description: 'Key 1 description',
+                                            editor: 'textfield',
+                                        },
+                                        key2: {
+                                            type: 'string',
+                                            title: 'Key 2',
+                                            description: 'Key 2 description',
+                                            editor: 'textfield',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept valid array sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    key: {
+                                        type: 'object',
+                                        title: 'Key',
+                                        description: 'Key description',
+                                        editor: 'schemaBased',
+                                        properties: {
+                                            key1: {
+                                                type: 'string',
+                                                title: 'Key 1',
+                                                description: 'Key 1 description',
+                                                editor: 'textfield',
+                                            },
+                                            key2: {
+                                                type: 'string',
+                                                title: 'Key 2',
+                                                description: 'Key 2 description',
+                                                editor: 'textfield',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+        });
     });
 });

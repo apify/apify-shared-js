@@ -166,7 +166,7 @@
             "type": "object",
             "properties": {
                 "type": { "enum": ["array"] },
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] }
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "schemaBased", "hidden"] }
             },
             "additionalProperties": true,
             "required": ["type", "title", "description", "editor"],
@@ -215,7 +215,7 @@
                 "additionalProperties": false,
                 "properties": {
                     "type": { "enum": ["array"] },
-                    "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
+                    "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "schemaBased", "hidden"] },
                     "title": { "type": "string" },
                     "description": { "type": "string" },
                     "default": { "type": "array" },
@@ -230,7 +230,48 @@
                     "placeholderKey": { "type": "string" },
                     "placeholderValue": { "type": "string" },
                     "patternKey": { "type": "string" },
-                    "patternValue": { "type": "string" }
+                    "patternValue": { "type": "string" },
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { "enum": ["string", "integer", "boolean", "object"] }
+                        },
+                        "required": ["type"],
+                        "if": {
+                            "properties": {
+                                "type": { "enum": ["object"] }
+                            }
+                        },
+                        "then": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": { "enum": ["object"] },
+                                "properties": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        "^": {
+                                            "oneOf": [
+                                                { "$ref": "#/definitions/subSchemaStringProperty" },
+                                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
+                                                { "$ref": "#/definitions/subSchemaArrayProperty" },
+                                                { "$ref": "#/definitions/subSchemaObjectProperty" },
+                                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                                            ]
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            }
+                        },
+                        "else": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": { "enum": ["string", "integer", "boolean"] }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -250,10 +291,35 @@
                 "nullable": { "type": "boolean" },
                 "minProperties": { "type": "integer" },
                 "maxProperties": { "type": "integer" },
-
-                "editor": { "enum": ["json", "proxy", "hidden"] },
+                "editor": { "enum": ["json", "proxy", "schemaBased", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "properties": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^": {
+                            "oneOf": [
+                                { "$ref": "#/definitions/subSchemaStringProperty" },
+                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
+                                { "$ref": "#/definitions/subSchemaArrayProperty" },
+                                { "$ref": "#/definitions/subSchemaObjectProperty" },
+                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                            ]
+                        }
+                    },
+                    "additionalProperties": false,
+                    "minProperties": 1
+                },
+                "required": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": { "type": "string" },
+                    "uniqueItems": true
+                },
+                "additionalProperties": {
+                    "type": "boolean"
+                }
             },
             "required": ["type", "title", "description", "editor"]
         },
@@ -417,6 +483,251 @@
                 "editor": { "enum": ["json", "hidden"] },
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description", "editor"]
+        },
+        "subSchemaStringEnumProperty": {
+            "title": "Sub-schema Enum property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "editor": { "enum": ["select"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "enum": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "enumTitles": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1
+                }
+            },
+            "required": ["type", "title", "description", "enum"]
+        },
+        "subSchemaStringProperty": {
+            "title": "Sub-schema String property",
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "fileupload"] }
+            },
+            "required": ["type", "title", "description", "editor"],
+            "if": {
+                "properties": {
+                    "editor": { "const": "datepicker" }
+                }
+            },
+            "then": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["string"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "pattern": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minLength": { "type": "integer" },
+                    "maxLength": { "type": "integer" },
+                    "editor": { "enum": ["datepicker"] },
+                    "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] }
+                }
+            },
+            "else": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["string"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "pattern": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minLength": { "type": "integer" },
+                    "maxLength": { "type": "integer" },
+                    "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
+                }
+            }
+        },
+        "subSchemaArrayProperty": {
+            "title": "Sub-schema Array property",
+            "type": "object",
+            "properties": {
+                "type": { "enum": ["array"] },
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] }
+            },
+            "additionalProperties": true,
+            "required": ["type", "title", "description", "editor"],
+            "if": {
+                "properties": {
+                    "editor": { "const": "select" }
+                }
+            },
+            "then": {
+                "additionalProperties": false,
+                "required": ["items"],
+                "properties": {
+                    "type": { "enum": ["array"] },
+                    "editor": { "enum": ["select"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minItems": { "type": "integer" },
+                    "maxItems": { "type": "integer" },
+                    "uniqueItems": { "type": "boolean" },
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "type": { "enum": ["string"] },
+                            "enum": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "uniqueItems": true
+                            },
+                            "enumTitles": {
+                                "type": "array",
+                                "items": { "type": "string" }
+                            }
+                        },
+                        "required": ["type", "enum"]
+                    }
+                }
+            },
+            "else": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["array"] },
+                    "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "hidden"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minItems": { "type": "integer" },
+                    "maxItems": { "type": "integer" },
+                    "uniqueItems": { "type": "boolean" },
+                    "placeholderKey": { "type": "string" },
+                    "placeholderValue": { "type": "string" },
+                    "patternKey": { "type": "string" },
+                    "patternValue": { "type": "string" },
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "type": { "enum": ["string", "integer", "boolean", "object"] }
+                        },
+                        "required": ["type"],
+                        "if": {
+                            "properties": {
+                                "type": { "enum": ["object"] }
+                            }
+                        },
+                        "then": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": { "enum": ["object"] },
+                                "properties": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                        "^": {
+                                            "oneOf": [
+                                                { "$ref": "#/definitions/subSchemaStringProperty" },
+                                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
+                                                { "$ref": "#/definitions/subSchemaArrayProperty" },
+                                                { "$ref": "#/definitions/subSchemaObjectProperty" },
+                                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                                            ]
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "minProperties": 1
+                                }
+                            }
+                        },
+                        "else": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": { "enum": ["string", "integer", "boolean"] }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "subSchemaIntegerProperty": {
+            "title": "Sub-schema Integer property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["integer"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "minimum": { "type": "integer" },
+                "maximum": { "type": "integer" },
+                "unit": { "type": "string" },
+                "editor": { "enum": ["number", "hidden"] }
+            },
+            "required": ["type", "title", "description"]
+        },
+        "subSchemaBooleanProperty": {
+            "title": "Sub-schema Boolean property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["boolean"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "groupCaption": { "type": "string" },
+                "groupDescription": { "type": "string" },
+                "editor": { "enum": ["checkbox", "hidden"] }
+            },
+            "required": ["type", "title", "description"]
+        },
+        "subSchemaObjectProperty": {
+            "title": "Sub-schema Object property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["object"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "patternKey": { "type": "string" },
+                "patternValue": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "minProperties": { "type": "integer" },
+                "maxProperties": { "type": "integer" },
+                "editor": { "enum": ["json", "proxy", "schemaBased", "hidden"] },
+                "properties": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^": {
+                            "oneOf": [
+                                { "$ref": "#/definitions/subSchemaStringProperty" },
+                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
+                                { "$ref": "#/definitions/subSchemaArrayProperty" },
+                                { "$ref": "#/definitions/subSchemaObjectProperty" },
+                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                            ]
+                        }
+                    }
+                },
+                "required": {
+                    "type": "array",
+                    "minItems": 0,
+                    "items": { "type": "string" },
+                    "uniqueItems": true
+                },
+                "additionalProperties": {
+                    "type": "boolean"
+                }
             },
             "required": ["type", "title", "description", "editor"]
         }
