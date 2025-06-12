@@ -232,45 +232,7 @@
                     "patternKey": { "type": "string" },
                     "patternValue": { "type": "string" },
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "type": { "enum": ["string", "integer", "boolean", "object"] }
-                        },
-                        "required": ["type"],
-                        "if": {
-                            "properties": {
-                                "type": { "enum": ["object"] }
-                            }
-                        },
-                        "then": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": { "enum": ["object"] },
-                                "properties": {
-                                    "type": "object",
-                                    "patternProperties": {
-                                        "^": {
-                                            "oneOf": [
-                                                { "$ref": "#/definitions/subSchemaStringProperty" },
-                                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
-                                                { "$ref": "#/definitions/subSchemaArrayProperty" },
-                                                { "$ref": "#/definitions/subSchemaObjectProperty" },
-                                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
-                                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
-                                            ]
-                                        }
-                                    },
-                                    "additionalProperties": false,
-                                    "minProperties": 1
-                                }
-                            }
-                        },
-                        "else": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": { "enum": ["string", "integer", "boolean"] }
-                            }
-                        }
+                        "$ref": "#/definitions/arrayItemsProperty"
                     }
                 }
             }
@@ -304,7 +266,9 @@
                                 { "$ref": "#/definitions/subSchemaArrayProperty" },
                                 { "$ref": "#/definitions/subSchemaObjectProperty" },
                                 { "$ref": "#/definitions/subSchemaIntegerProperty" },
-                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                                { "$ref": "#/definitions/subSchemaBooleanProperty" },
+                                { "$ref": "#/definitions/subSchemaResourceProperty" },
+                                { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
                             ]
                         }
                     },
@@ -616,45 +580,7 @@
                     "patternKey": { "type": "string" },
                     "patternValue": { "type": "string" },
                     "items": {
-                        "type": "object",
-                        "properties": {
-                            "type": { "enum": ["string", "integer", "boolean", "object"] }
-                        },
-                        "required": ["type"],
-                        "if": {
-                            "properties": {
-                                "type": { "enum": ["object"] }
-                            }
-                        },
-                        "then": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": { "enum": ["object"] },
-                                "properties": {
-                                    "type": "object",
-                                    "patternProperties": {
-                                        "^": {
-                                            "oneOf": [
-                                                { "$ref": "#/definitions/subSchemaStringProperty" },
-                                                { "$ref": "#/definitions/subSchemaStringEnumProperty" },
-                                                { "$ref": "#/definitions/subSchemaArrayProperty" },
-                                                { "$ref": "#/definitions/subSchemaObjectProperty" },
-                                                { "$ref": "#/definitions/subSchemaIntegerProperty" },
-                                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
-                                            ]
-                                        }
-                                    },
-                                    "additionalProperties": false,
-                                    "minProperties": 1
-                                }
-                            }
-                        },
-                        "else": {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": { "enum": ["string", "integer", "boolean"] }
-                            }
-                        }
+                        "$ref": "#/definitions/arrayItemsProperty"
                     }
                 }
             }
@@ -714,7 +640,9 @@
                                 { "$ref": "#/definitions/subSchemaArrayProperty" },
                                 { "$ref": "#/definitions/subSchemaObjectProperty" },
                                 { "$ref": "#/definitions/subSchemaIntegerProperty" },
-                                { "$ref": "#/definitions/subSchemaBooleanProperty" }
+                                { "$ref": "#/definitions/subSchemaBooleanProperty" },
+                                { "$ref": "#/definitions/subSchemaResourceProperty" },
+                                { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
                             ]
                         }
                     }
@@ -730,6 +658,122 @@
                 }
             },
             "required": ["type", "title", "description", "editor"]
+        },
+        "subSchemaResourceProperty": {
+            "title": "Sub-schema Resource property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "resourcePermissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["READ", "WRITE"]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "contains": {
+                        "const": "READ"
+                    }
+                },
+                "nullable": { "type": "boolean" }
+            },
+            "required": ["type", "title", "description", "resourceType"]
+        },
+        "subSchemaResourceArrayProperty": {
+            "title": "Sub-schema Resource array property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "resourcePermissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["READ", "WRITE"]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "contains": {
+                        "const": "READ"
+                    }
+                },
+                "nullable": { "type": "boolean" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] }
+            },
+            "required": ["type", "title", "description", "resourceType"]
+        },
+        "arrayItemsProperty": {
+            "title": "Utils Array items property",
+            "type": "object",
+            "properties": {
+                "type": { "enum": ["string", "integer", "boolean", "object", "array"] }
+            },
+            "required": ["type"],
+            "if": {
+                "properties": {
+                    "type": { "enum": ["object"] }
+                }
+            },
+            "then": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["object"] },
+                    "properties": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^": {
+                                "oneOf": [
+                                    { "$ref": "#/definitions/subSchemaStringProperty" },
+                                    { "$ref": "#/definitions/subSchemaStringEnumProperty" },
+                                    { "$ref": "#/definitions/subSchemaArrayProperty" },
+                                    { "$ref": "#/definitions/subSchemaObjectProperty" },
+                                    { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                    { "$ref": "#/definitions/subSchemaBooleanProperty" },
+                                    { "$ref": "#/definitions/subSchemaResourceProperty" },
+                                    { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
+                                ]
+                            }
+                        },
+                        "additionalProperties": false,
+                        "minProperties": 1
+                    }
+                }
+            },
+            "else": {
+                "additionalProperties": true,
+                "if": {
+                    "properties": {
+                        "type": { "const": "array" }
+                    }
+                },
+                "then": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": { "enum": ["array"] },
+                        "items": {
+                            "$ref": "#/definitions/arrayItemsProperty"
+                        }
+                    }
+                },
+                "else": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": { "enum": ["string", "integer", "boolean"] }
+                    }
+                }
+            }
         }
     }
 }

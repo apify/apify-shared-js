@@ -102,6 +102,11 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
+            if (definition.title.startsWith('Utils')) {
+                // Utility definitions are not used for property validation.
+                // They are used for their internal logic.
+                return false;
+            }
             if (!subField && definition.title.startsWith('Sub-schema')) {
                 // This is a sub-schema definition, so we skip it.
                 return false;
