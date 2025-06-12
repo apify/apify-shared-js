@@ -413,7 +413,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
 
                 const schema2 = {
@@ -431,7 +432,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema2)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myFieldArray.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myFieldArray.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
             });
 
