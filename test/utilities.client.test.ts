@@ -1088,6 +1088,99 @@ describe('utilities.client', () => {
                 });
             });
         });
+
+        describe('special cases for sub-schema', () => {
+            it('should allow sub-schema for object property', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'schemaBased',
+                        properties: {
+                            key1: {
+                                type: 'string',
+                                title: 'Key 1',
+                                description: 'Description for key 1',
+                                editor: 'textfield',
+                            },
+                            key2: {
+                                type: 'string',
+                                title: 'Key 2',
+                                description: 'Description for key 2',
+                                editor: 'textfield',
+                            },
+                        },
+                        additionalProperties: false,
+                        required: ['key1'],
+                    },
+                });
+                const inputs = [
+                    // 4 invalid inputs
+                    { field: [] },
+                    { field: {} },
+                    { field: { key2: 'value' } },
+                    { field: { key3: 'value' } },
+                    // 2 valid inputs
+                    { field: { key1: 'value' } },
+                    { field: { key1: 'value', key2: 'value' } },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 4 invalid inputs
+                expect(results.length).toEqual(4);
+            });
+
+            it('should allow sub-schema for array property', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        editor: 'schemaBased',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                key1: {
+                                    type: 'string',
+                                    title: 'Key 1',
+                                    description: 'Description for key 1',
+                                    editor: 'textfield',
+                                },
+                                key2: {
+                                    type: 'string',
+                                    title: 'Key 2',
+                                    description: 'Description for key 2',
+                                    editor: 'textfield',
+                                },
+                            },
+                            additionalProperties: false,
+                            required: ['key1'],
+                        },
+                    },
+                });
+                const inputs = [
+                    // 3 invalid inputs
+                    { field: {} },
+                    { field: [{ key2: 'value' }] },
+                    { field: [{ key3: 'value' }] },
+                    // 2 valid inputs
+                    { field: [{ key1: 'value' }] },
+                    { field: [{ key1: 'value' }, { key1: 'value' }] },
+                    { field: [{ key1: 'value', key2: 'value' }, { key1: 'value' }] },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 4 invalid inputs
+                expect(results.length).toEqual(3);
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {

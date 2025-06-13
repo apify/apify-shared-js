@@ -413,7 +413,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
 
                 const schema2 = {
@@ -431,7 +432,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema2)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myFieldArray.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myFieldArray.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
             });
 
@@ -536,6 +538,139 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.resourcePermissions must contain at least 1 valid item(s))',
                 );
+            });
+        });
+
+        describe('special cases for sub-schema', () => {
+            it('should accept valid object sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            additionalProperties: false,
+                            // required: ['key2'],
+                            properties: {
+                                key: {
+                                    type: 'object',
+                                    title: 'Key',
+                                    description: 'Key description',
+                                    editor: 'schemaBased',
+                                    properties: {
+                                        key1: {
+                                            type: 'string',
+                                            title: 'Key 1',
+                                            description: 'Key 1 description',
+                                            editor: 'textfield',
+                                        },
+                                        key2: {
+                                            type: 'string',
+                                            title: 'Key 2',
+                                            description: 'Key 2 description',
+                                            editor: 'textfield',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept valid array sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    key: {
+                                        type: 'object',
+                                        title: 'Key',
+                                        description: 'Key description',
+                                        editor: 'schemaBased',
+                                        properties: {
+                                            key1: {
+                                                type: 'string',
+                                                title: 'Key 1',
+                                                description: 'Key 1 description',
+                                                editor: 'textfield',
+                                            },
+                                            key2: {
+                                                type: 'string',
+                                                title: 'Key 2',
+                                                description: 'Key 2 description',
+                                                editor: 'textfield',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept valid 2D array sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        key: {
+                                            type: 'object',
+                                            title: 'Key',
+                                            description: 'Key description',
+                                            editor: 'schemaBased',
+                                            properties: {
+                                                key1: {
+                                                    type: 'string',
+                                                    title: 'Key 1',
+                                                    description: 'Key 1 description',
+                                                    editor: 'textfield',
+                                                },
+                                                key2: {
+                                                    type: 'string',
+                                                    title: 'Key 2',
+                                                    description: 'Key 2 description',
+                                                    editor: 'textfield',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
             });
         });
     });
