@@ -236,13 +236,15 @@ describe('input_schema.json', () => {
                 });
             });
 
-            it('should allow only string type', () => {
+            it('should allow only string and object type', () => {
                 [{ type: 'string', editor: 'textfield' }].forEach((fields) => {
+                    expect(isSchemaValid(fields, true)).toBe(true);
+                });
+                [{ type: 'object', editor: 'json' }].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(true);
                 });
                 [
                     { type: 'array', editor: 'stringList' },
-                    { type: 'object', editor: 'json' },
                     { type: 'boolean' },
                     { type: 'integer' },
                 ].forEach((fields) => {
@@ -294,6 +296,84 @@ describe('input_schema.json', () => {
                             maxLength: 100,
                             default: 'blablablablabla',
                             prefill: 'blablablablablablablablablablabla',
+                            bla: 'bla', // Validation failed because additional property
+                        },
+                    },
+                })).toBe(false);
+            });
+        });
+
+        describe('special cases for isSecret object type', () => {
+            const isSchemaValid = (fields: object, isSecret?: boolean) => {
+                return ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            isSecret,
+                            ...fields,
+                        },
+                    },
+                });
+            };
+
+            it('should not allow all editors', () => {
+                ['json', 'hidden'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(true);
+                });
+                ['proxy'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(false);
+                });
+            });
+
+            it('should not allow some fields', () => {
+                ['minProperties', 'maxProperties'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                });
+                ['patternKey', 'patternValue', 'prefill', 'example'].forEach((stringField) => {
+                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
+                });
+            });
+
+            it('should work without isSecret with all editors and properties', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            isSecret: false,
+                            minProperties: 2,
+                            maxProperties: 100,
+                            default: { key: 'value' },
+                            prefill: { key: 'value', key2: 'value2' },
+                        },
+                    },
+                })).toBe(true);
+
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            isSecret: false,
+                            minProperties: 2,
+                            maxProperties: 100,
+                            default: { key: 'value' },
+                            prefill: { key: 'value', key2: 'value2' },
                             bla: 'bla', // Validation failed because additional property
                         },
                     },
