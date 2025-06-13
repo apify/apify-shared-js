@@ -476,6 +476,7 @@ export const ACTOR_CATEGORIES = {
     INTEGRATIONS: 'Integrations',
     OTHER: 'Other',
     OPEN_SOURCE: 'Open source',
+    MCP_SERVERS: 'MCP servers',
 } as const;
 
 // TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
