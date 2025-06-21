@@ -237,25 +237,58 @@
         "objectProperty": {
             "title": "Object property",
             "type": "object",
-            "additionalProperties": false,
+            "additionalProperties": true,
             "properties": {
                 "type": { "enum": ["object"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
-                "default": { "type": "object" },
-                "prefill": { "type": "object" },
-                "example": { "type": "object" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" },
-                "nullable": { "type": "boolean" },
-                "minProperties": { "type": "integer" },
-                "maxProperties": { "type": "integer" },
-
                 "editor": { "enum": ["json", "proxy", "hidden"] },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "isSecret": { "type": "boolean" }
             },
-            "required": ["type", "title", "description", "editor"]
+            "required": ["type", "title", "description", "editor"],
+            "if": {
+                "properties": {
+                    "isSecret": {
+                        "not": {
+                            "const": true
+                        }
+                    }
+                }
+            },
+            "then": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["object"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "default": { "type": "object" },
+                    "prefill": { "type": "object" },
+                    "example": { "type": "object" },
+                    "patternKey": { "type": "string" },
+                    "patternValue": { "type": "string" },
+                    "nullable": { "type": "boolean" },
+                    "minProperties": { "type": "integer" },
+                    "maxProperties": { "type": "integer" },
+                    "editor": { "enum": ["json", "proxy", "hidden"] },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" },
+                    "isSecret": { "enum": [false] }
+                }
+            },
+            "else": {
+                "additionalProperties": false,
+                "properties": {
+                    "type": { "enum": ["object"] },
+                    "title": { "type": "string" },
+                    "description": { "type": "string" },
+                    "example": { "type": "object" },
+                    "nullable": { "type": "boolean" },
+                    "editor": { "enum": ["json", "hidden"] },
+                    "sectionCaption": { "type": "string" },
+                    "sectionDescription": { "type": "string" },
+                    "isSecret": { "enum": [true] }
+                }
+            }
         },
         "integerProperty": {
             "title": "Integer property",
