@@ -31,6 +31,13 @@ const inputSchema = {
             isSecret: true,
             description: 'Description',
         },
+        secureArray: {
+            title: 'Secure Array',
+            type: 'array',
+            editor: 'json',
+            isSecret: true,
+            description: 'Description',
+        },
         customString: {
             title: 'String',
             type: 'string',
@@ -49,11 +56,15 @@ describe('input secrets', () => {
                 key1: 'value1',
                 key2: 'value2',
             },
+            secureArray: ['value1', 'value2'],
             customString: 'just string',
         };
         const encryptedInput = encryptInputSecrets({ input: testInput, inputSchema, publicKey });
         expect(encryptedInput.secure).not.toEqual(testInput.secure);
         expect(encryptedInput.secureObject).not.toEqual(testInput.secureObject);
+        expect(typeof encryptedInput.secureObject).toEqual('string');
+        expect(encryptedInput.secureArray).not.toEqual(testInput.secureArray);
+        expect(typeof encryptedInput.secureArray).toEqual('string');
         expect(encryptedInput.customString).toEqual(testInput.customString);
         expect(testInput).toStrictEqual(decryptInputSecrets({ input: encryptedInput, privateKey }));
     });
@@ -65,6 +76,7 @@ describe('input secrets', () => {
                 key1: 'value1',
                 key2: 'value2',
             },
+            secureArray: ['value1', 'value2'],
             customString: 'just string',
         };
         const encrypted1 = encryptInputSecrets({ input: testInput, inputSchema, publicKey });
@@ -87,10 +99,8 @@ describe('input secrets', () => {
         // This is an example of an encrypted object that is not valid JSON:
         // { "key1": "value1", "key2" }
         // This should never happen in practice, but we want to test that the decryption function handles it gracefully.
-        const secureObject = {
-            // eslint-disable-next-line max-len
-            secret: 'ENCRYPTED_VALUE:kGUk2YdlMZGKdycmBUUZMSbZh/GMB+wvXkWDuI6G9cIzBnKQEqngpCb/lJSSdM4Gd1Xy6rwBVMxGm6ntnYaOyx6lgZqBs5hQqMe3Q0rK2ToW279ZNVNdMmeQDjPKKPpYEpz6p9yAmrRvWu7+1fW6UmazSYj1ErLI9WVJnG3MXb3CsSfQa3HHZ7Qtmgx5AXGT19z24cVSMqWsQOyJW2UwB83jcKcxqAS4w0YV9GsLgMX0K01BR1sXP303Om8c28h6EW6+Ad02pGWwANWjszwY/cWjCNXd44BqJxssLZ3rfk1EG8MkosdK0Zem9/8O4TCbxEAr7hQ2qVwNf43h4si05w==:ry21ohthwOdgBIR9TN0kxpSBe+h7rwhIxvSe4carBWYQWHSiYptLceQ55F8=',
-        };
+        // eslint-disable-next-line max-len
+        const secureObject = 'ENCRYPTED_JSON_VALUE:kGUk2YdlMZGKdycmBUUZMSbZh/GMB+wvXkWDuI6G9cIzBnKQEqngpCb/lJSSdM4Gd1Xy6rwBVMxGm6ntnYaOyx6lgZqBs5hQqMe3Q0rK2ToW279ZNVNdMmeQDjPKKPpYEpz6p9yAmrRvWu7+1fW6UmazSYj1ErLI9WVJnG3MXb3CsSfQa3HHZ7Qtmgx5AXGT19z24cVSMqWsQOyJW2UwB83jcKcxqAS4w0YV9GsLgMX0K01BR1sXP303Om8c28h6EW6+Ad02pGWwANWjszwY/cWjCNXd44BqJxssLZ3rfk1EG8MkosdK0Zem9/8O4TCbxEAr7hQ2qVwNf43h4si05w==:ry21ohthwOdgBIR9TN0kxpSBe+h7rwhIxvSe4carBWYQWHSiYptLceQ55F8=';
 
         const encryptedInput = {
             secure,
@@ -98,6 +108,6 @@ describe('input secrets', () => {
             customString: 'just string',
         };
         expect(() => decryptInputSecrets({ input: encryptedInput, privateKey }))
-            .toThrow(`The input field "secureObject" could not be parsed as JSON after decryption`);
+            .toThrow(`The input field "secureObject" could not be decrypted.`);
     });
 });

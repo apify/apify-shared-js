@@ -236,15 +236,15 @@ describe('input_schema.json', () => {
                 });
             });
 
-            it('should allow only string and object type', () => {
-                [{ type: 'string', editor: 'textfield' }].forEach((fields) => {
-                    expect(isSchemaValid(fields, true)).toBe(true);
-                });
-                [{ type: 'object', editor: 'json' }].forEach((fields) => {
+            it('should allow only string, object and array type', () => {
+                [
+                    { type: 'string', editor: 'textfield' },
+                    { type: 'object', editor: 'json' },
+                    { type: 'array', editor: 'json' },
+                ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(true);
                 });
                 [
-                    { type: 'array', editor: 'stringList' },
                     { type: 'boolean' },
                     { type: 'integer' },
                 ].forEach((fields) => {
@@ -254,7 +254,7 @@ describe('input_schema.json', () => {
 
             it('should not allow some fields', () => {
                 ['minLength', 'maxLength'].forEach((intField) => {
-                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(true);
                 });
                 ['default', 'prefill', 'pattern'].forEach((stringField) => {
                     expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);

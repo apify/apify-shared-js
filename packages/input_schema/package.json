@@ -49,6 +49,7 @@
     },
     "dependencies": {
         "@apify/consts": "^2.41.0",
+        "@apify/input_secrets": "file:../input_secrets",
         "acorn-loose": "^8.4.0",
         "countries-list": "^3.0.0"
     },
