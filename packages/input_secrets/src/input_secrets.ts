@@ -4,7 +4,7 @@ import _testOw, { type Ow } from 'ow';
 
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
 
-import { getFieldSchemaHash } from './field_schema_utils.js';
+import { getFieldSchemaHash } from './field_schema_utils';
 
 // eslint-disable-next-line no-underscore-dangle
 declare const __injectedOw: Ow;

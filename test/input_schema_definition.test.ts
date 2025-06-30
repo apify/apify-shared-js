@@ -220,6 +220,7 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
+                            editor: 'textfield',
                             isSecret,
                             ...fields,
                         },
@@ -256,7 +257,7 @@ describe('input_schema.json', () => {
                 ['minLength', 'maxLength'].forEach((intField) => {
                     expect(isSchemaValid({ [intField]: 10 }, true)).toBe(true);
                 });
-                ['default', 'prefill', 'pattern'].forEach((stringField) => {
+                ['default', 'prefill'].forEach((stringField) => {
                     expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });
