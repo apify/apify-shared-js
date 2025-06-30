@@ -379,6 +379,18 @@
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "hidden"] },
                 "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "resourcePermissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["READ", "WRITE"]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "contains": {
+                        "const": "READ"
+                    }
+                },
                 "default": { "type": "string" },
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
@@ -386,7 +398,22 @@
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" }
             },
-            "required": ["type", "title", "description", "resourceType"]
+            "required": ["type", "title", "description", "resourceType"],
+            "allOf": [
+                {
+                    "if": {
+                        "required": ["resourcePermissions"]
+                    },
+                    "then": {
+                        "not": {
+                            "anyOf": [
+                                { "required": ["prefill"] },
+                                { "required": ["default"] }
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         "resourceArrayProperty": {
             "title": "Resource array property",
@@ -397,6 +424,18 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "hidden"] },
+                "resourcePermissions": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": ["READ", "WRITE"]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "contains": {
+                        "const": "READ"
+                    }
+                },
                 "default": { "type": "array" },
                 "prefill": { "type": "array" },
                 "example": { "type": "array" },
@@ -408,7 +447,22 @@
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" }
             },
-            "required": ["type", "title", "description", "resourceType"]
+            "required": ["type", "title", "description", "resourceType"],
+            "allOf": [
+                {
+                    "if": {
+                        "required": ["resourcePermissions"]
+                    },
+                    "then": {
+                        "not": {
+                            "anyOf": [
+                                { "required": ["prefill"] },
+                                { "required": ["default"] }
+                            ]
+                        }
+                    }
+                }
+            ]
         },
         "anyProperty": {
             "title": "Any property",

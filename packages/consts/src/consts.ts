@@ -476,6 +476,7 @@ export const ACTOR_CATEGORIES = {
     INTEGRATIONS: 'Integrations',
     OTHER: 'Other',
     OPEN_SOURCE: 'Open source',
+    MCP_SERVERS: 'MCP servers',
 } as const;
 
 // TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
@@ -673,3 +674,30 @@ export const RUN_GENERAL_ACCESS = {
 } as const;
 
 export type RUN_GENERAL_ACCESS = ValueOf<typeof RUN_GENERAL_ACCESS>
+
+/**
+ * Determines permissions that the Actor requires to run.
+ *
+ * Based on this value, the Apify platform generates a scoped run token with a corresponding permission scope and
+ * injects it into the Actor runtime.
+ *
+ * Warning: Make sure you know what you are doing when changing this value, in particular for public Actors!
+ */
+export const ACTOR_PERMISSION_LEVEL = {
+    /** Full permission Actors have access to all user data in the account. */
+    FULL_PERMISSIONS: 'FULL_PERMISSIONS',
+
+    /**
+     * Limited permission Actors have access only to specific resources:
+     * - default storages
+     * - storages provided via input
+     * - the current run
+     * - ...
+     *
+     * Broadly speaking, limited permission Actors cannot access any account data not related to the current run.
+     * For details refer to the Apify documentation.
+     */
+    LIMITED_PERMISSIONS: 'LIMITED_PERMISSIONS',
+};
+
+export type ACTOR_PERMISSION_LEVEL = ValueOf<typeof ACTOR_PERMISSION_LEVEL>;

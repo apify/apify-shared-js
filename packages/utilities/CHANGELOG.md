@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.16.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.16.1...@apify/utilities@2.16.2) (2025-06-13)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.16.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.16.0...@apify/utilities@2.16.1) (2025-06-10)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.16.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.6...@apify/utilities@2.16.0) (2025-06-10)
+
+
+### Features
+
+* **internal:** Update utilities.ts ([#513](https://github.com/apify/apify-shared-js/issues/513)) ([bcf9f73](https://github.com/apify/apify-shared-js/commit/bcf9f73558d541190ddb3a594402e1aea8ef5e5a))
+
+
+
+
+
+## [2.15.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.5...@apify/utilities@2.15.6) (2025-06-09)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
 ## [2.15.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.4...@apify/utilities@2.15.5) (2025-04-30)
 
 **Note:** Version bump only for package @apify/utilities
