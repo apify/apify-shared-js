@@ -257,7 +257,7 @@ describe('input_schema.json', () => {
                 ['minLength', 'maxLength'].forEach((intField) => {
                     expect(isSchemaValid({ [intField]: 10 }, true)).toBe(true);
                 });
-                ['default', 'prefill'].forEach((stringField) => {
+                ['default'].forEach((stringField) => {
                     expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });

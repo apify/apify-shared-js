@@ -200,13 +200,13 @@ describe('input_schema.json', () => {
                         isSecret: true,
                         description: 'Some description ...',
                         editor: 'textfield',
-                        prefill: true,
+                        default: true,
                     },
                 },
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Property schema.properties.myField.prefill is not allowed.)',
+                'Input schema is not valid (Property schema.properties.myField.default is not allowed.)',
             );
         });
 

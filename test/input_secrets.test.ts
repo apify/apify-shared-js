@@ -100,7 +100,7 @@ describe('input secrets', () => {
         // { "key1": "value1", "key2" }
         // This should never happen in practice, but we want to test that the decryption function handles it gracefully.
         // eslint-disable-next-line max-len
-        const secureObject = 'ENCRYPTED_JSON_VALUE:kGUk2YdlMZGKdycmBUUZMSbZh/GMB+wvXkWDuI6G9cIzBnKQEqngpCb/lJSSdM4Gd1Xy6rwBVMxGm6ntnYaOyx6lgZqBs5hQqMe3Q0rK2ToW279ZNVNdMmeQDjPKKPpYEpz6p9yAmrRvWu7+1fW6UmazSYj1ErLI9WVJnG3MXb3CsSfQa3HHZ7Qtmgx5AXGT19z24cVSMqWsQOyJW2UwB83jcKcxqAS4w0YV9GsLgMX0K01BR1sXP303Om8c28h6EW6+Ad02pGWwANWjszwY/cWjCNXd44BqJxssLZ3rfk1EG8MkosdK0Zem9/8O4TCbxEAr7hQ2qVwNf43h4si05w==:ry21ohthwOdgBIR9TN0kxpSBe+h7rwhIxvSe4carBWYQWHSiYptLceQ55F8=';
+        const secureObject = 'ENCRYPTED_JSON:kGUk2YdlMZGKdycmBUUZMSbZh/GMB+wvXkWDuI6G9cIzBnKQEqngpCb/lJSSdM4Gd1Xy6rwBVMxGm6ntnYaOyx6lgZqBs5hQqMe3Q0rK2ToW279ZNVNdMmeQDjPKKPpYEpz6p9yAmrRvWu7+1fW6UmazSYj1ErLI9WVJnG3MXb3CsSfQa3HHZ7Qtmgx5AXGT19z24cVSMqWsQOyJW2UwB83jcKcxqAS4w0YV9GsLgMX0K01BR1sXP303Om8c28h6EW6+Ad02pGWwANWjszwY/cWjCNXd44BqJxssLZ3rfk1EG8MkosdK0Zem9/8O4TCbxEAr7hQ2qVwNf43h4si05w==:ry21ohthwOdgBIR9TN0kxpSBe+h7rwhIxvSe4carBWYQWHSiYptLceQ55F8=';
 
         const encryptedInput = {
             secure,
