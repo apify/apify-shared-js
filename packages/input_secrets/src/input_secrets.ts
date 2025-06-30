@@ -76,7 +76,7 @@ export function isEncryptedValueForFieldType(value: string, fieldType: 'string' 
     const [, prefix] = match;
 
     // For backward compatibility, we allow the old prefix only for string values.
-    if (['string'].includes(fieldType) && prefix !== ENCRYPTED_STRING_VALUE_PREFIX) return false;
+    if (prefix === ENCRYPTED_STRING_VALUE_PREFIX && fieldType !== 'string') return false;
 
     return true;
 }
