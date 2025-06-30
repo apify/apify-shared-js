@@ -19,8 +19,10 @@ const BASE64_REGEXP = /[-A-Za-z0-9+/]*={0,3}/;
 // - The encrypted password is used to decrypt the value.
 // - The encrypted value is the actual encrypted data.
 
+// used for backward compatibility with old encrypted string values
 const ENCRYPTED_STRING_VALUE_PREFIX = 'ENCRYPTED_VALUE';
-const ENCRYPTED_JSON_VALUE_PREFIX = 'ENCRYPTED_JSON_VALUE';
+// we use this for all types of encrypted values (string, object, array)
+const ENCRYPTED_JSON_VALUE_PREFIX = 'ENCRYPTED_JSON';
 
 // All encrypted values must match this regular expression.
 const ENCRYPTED_VALUE_REGEXP = new RegExp(`^(${ENCRYPTED_STRING_VALUE_PREFIX}|${ENCRYPTED_JSON_VALUE_PREFIX}):(?:(${BASE64_REGEXP.source}):)?(${BASE64_REGEXP.source}):(${BASE64_REGEXP.source})$`);
@@ -46,13 +48,7 @@ export function encryptInputSecretValue<T extends string | object>(
 
     const schemaHash = schema ? getFieldSchemaHash(schema) : null;
 
-    // For string values, we encrypt the value directly.
-    if (typeof value === 'string') {
-        const { encryptedValue, encryptedPassword } = publicEncrypt({ value, publicKey });
-        return `${ENCRYPTED_STRING_VALUE_PREFIX}:${schemaHash ? `${schemaHash}:` : ''}${encryptedPassword}:${encryptedValue}`;
-    }
-
-    // For object values, we need to stringify the value first.
+    // We are encrypting the value as a JSON string, so we need to stringify it first.
     let valueStr: string;
     try {
         valueStr = JSON.stringify(value);
@@ -79,8 +75,8 @@ export function isEncryptedValueForFieldType(value: string, fieldType: 'string' 
 
     const [, prefix] = match;
 
+    // For backward compatibility, we allow the old prefix only for string values.
     if (['string'].includes(fieldType) && prefix !== ENCRYPTED_STRING_VALUE_PREFIX) return false;
-    if (['object', 'array'].includes(fieldType) && prefix !== ENCRYPTED_JSON_VALUE_PREFIX) return false;
 
     return true;
 }

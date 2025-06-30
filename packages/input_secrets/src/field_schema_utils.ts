@@ -35,7 +35,8 @@ function normalizeFieldSchema(value: any): any {
 export function getFieldSchemaHash(fieldSchema: Record<string, any>): string {
     try {
         const stringifiedSchema = JSON.stringify(normalizeFieldSchema(fieldSchema));
-        return crypto.createHash('sha256').update(stringifiedSchema).digest('base64');
+        // Create a SHA-256 hash of the stringified schema and return the first 10 characters in base64.
+        return crypto.createHash('sha256').update(stringifiedSchema).digest('base64').slice(0, 10);
     } catch (err) {
         throw new Error(`The field schema could not be stringified for hash: ${err}`);
     }
