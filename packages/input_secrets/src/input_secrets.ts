@@ -1,8 +1,10 @@
-import crypto, { KeyObject } from 'node:crypto';
+import { KeyObject } from 'node:crypto';
 
 import _testOw, { type Ow } from 'ow';
 
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
+
+import { getFieldSchemaHash } from './field_schema_utils.js';
 
 // eslint-disable-next-line no-underscore-dangle
 declare const __injectedOw: Ow;
@@ -11,9 +13,16 @@ const ow: Ow = typeof __injectedOw === 'undefined' ? _testOw : __injectedOw || _
 
 const BASE64_REGEXP = /[-A-Za-z0-9+/]*={0,3}/;
 
+// The encrypted value has a prefix, optional schema hash, encrypted password and encrypted value.
+// - The prefix tells if the value is a string or a JSON object and needs to be parsed back after decryption.
+// - The schema hash is optional and is used to verify if the schema has changed since the value was encrypted.
+// - The encrypted password is used to decrypt the value.
+// - The encrypted value is the actual encrypted data.
+
 const ENCRYPTED_STRING_VALUE_PREFIX = 'ENCRYPTED_VALUE';
 const ENCRYPTED_JSON_VALUE_PREFIX = 'ENCRYPTED_JSON_VALUE';
 
+// All encrypted values must match this regular expression.
 const ENCRYPTED_VALUE_REGEXP = new RegExp(`^(${ENCRYPTED_STRING_VALUE_PREFIX}|${ENCRYPTED_JSON_VALUE_PREFIX}):(?:(${BASE64_REGEXP.source}):)?(${BASE64_REGEXP.source}):(${BASE64_REGEXP.source})$`);
 
 /**
@@ -22,36 +31,6 @@ const ENCRYPTED_VALUE_REGEXP = new RegExp(`^(${ENCRYPTED_STRING_VALUE_PREFIX}|${
 export function getInputSchemaSecretFieldKeys(inputSchema: any): string[] {
     return Object.keys(inputSchema.properties)
         .filter((key) => !!inputSchema.properties[key].isSecret);
-}
-
-const OMIT_KEYS = new Set(['title', 'description', 'sectionCaption', 'sectionDescription', 'nullable', 'example', 'editor']);
-
-function normalizeFieldSchema(value: any): any {
-    if (Array.isArray(value)) {
-        return value.map(normalizeFieldSchema);
-    }
-
-    if (value && typeof value === 'object') {
-        const result: Record<string, any> = {};
-        Object.keys(value)
-            .filter((key) => !OMIT_KEYS.has(key))
-            .sort()
-            .forEach((key) => {
-                result[key] = normalizeFieldSchema(value[key]);
-            });
-        return result;
-    }
-
-    return value;
-}
-
-function getFieldSchemaHash(fieldSchema: Record<string, any>): string {
-    try {
-        const stringifiedSchema = JSON.stringify(normalizeFieldSchema(fieldSchema));
-        return crypto.createHash('sha256').update(stringifiedSchema).digest('base64');
-    } catch (err) {
-        throw new Error(`The field schema could not be stringified for hash: ${err}`);
-    }
 }
 
 /**
@@ -67,11 +46,13 @@ export function encryptInputSecretValue<T extends string | object>(
 
     const schemaHash = schema ? getFieldSchemaHash(schema) : null;
 
+    // For string values, we encrypt the value directly.
     if (typeof value === 'string') {
         const { encryptedValue, encryptedPassword } = publicEncrypt({ value, publicKey });
         return `${ENCRYPTED_STRING_VALUE_PREFIX}:${schemaHash ? `${schemaHash}:` : ''}${encryptedPassword}:${encryptedValue}`;
     }
 
+    // For object values, we need to stringify the value first.
     let valueStr: string;
     try {
         valueStr = JSON.stringify(value);
@@ -83,19 +64,34 @@ export function encryptInputSecretValue<T extends string | object>(
     return `${ENCRYPTED_JSON_VALUE_PREFIX}:${schemaHash ? `${schemaHash}:` : ''}${encryptedPassword}:${encryptedValue}`;
 }
 
+/**
+ * Checks if the value is an encrypted value for a specific field type.
+ * It validates the string value against the regular expression and checks the prefix.
+ * @param value - encrypted value to check
+ * @param fieldType - type of the field, can be 'string', 'object' or 'array'
+ */
 export function isEncryptedValueForFieldType(value: string, fieldType: 'string' | 'object' | 'array') {
+    ow(value, ow.string);
+    ow(fieldType, ow.string.oneOf(['string', 'object', 'array']));
+
     const match = value.match(ENCRYPTED_VALUE_REGEXP);
     if (!match) return false;
 
     const [, prefix] = match;
 
-    if (fieldType === 'string' && prefix !== ENCRYPTED_STRING_VALUE_PREFIX) return false;
-    if (fieldType === 'object' && prefix !== ENCRYPTED_JSON_VALUE_PREFIX) return false;
-    if (fieldType === 'array' && prefix !== ENCRYPTED_JSON_VALUE_PREFIX) return false;
+    if (['string'].includes(fieldType) && prefix !== ENCRYPTED_STRING_VALUE_PREFIX) return false;
+    if (['object', 'array'].includes(fieldType) && prefix !== ENCRYPTED_JSON_VALUE_PREFIX) return false;
 
     return true;
 }
 
+/**
+ * Checks if the value is an encrypted value for a specific field schema.
+ * It validates the string value against the regular expression and checks the schema hash in
+ * the encrypted value against the hash of the field schema.
+ * @param value - encrypted value to check
+ * @param fieldSchema - schema of the field, used to get the hash
+ */
 export function isEncryptedValueForFieldSchema(value: string, fieldSchema: Record<string, any>) {
     ow(value, ow.string);
     ow(fieldSchema, ow.object);
@@ -175,7 +171,7 @@ export function decryptInputSecrets<T>(
                 }
             } catch (err) {
                 throw new Error(`The input field "${key}" could not be decrypted. Try updating the field's value in the input editor. `
-                    + `Decryption error: ${err}`);
+                + `Decryption error: ${err}`);
             }
         }
     }

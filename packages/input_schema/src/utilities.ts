@@ -135,14 +135,14 @@ export function validateInputUsingValidator(
     if (!isValid) {
         errors = validator.errors!
             .filter((error) => {
-                // Remove type errors on encrypted object/array secrets
                 // We are storing encrypted objects/arrays as strings, so AJV will throw type the error here.
+                // So we need to skip these errors.
                 if (error.keyword === 'type' && error.instancePath) {
                     const path = error.instancePath.replace(/^\//, '').split('/')[0];
                     const propSchema = inputSchema.properties?.[path];
                     const value = input[path];
 
-                    // Check if the property is a secret and if the value is an encrypted object/array.
+                    // Check if the property is a secret and if the value is an encrypted value.
                     // We do additional validation of the field schema in the later part of this function
                     if (
                         propSchema?.isSecret
@@ -276,6 +276,7 @@ export function validateInputUsingValidator(
             // If the value is a valid encrypted string for the field type,
             // we check if the field schema is likely to be still valid (is unchanged from the time of encryption).
             if (isEncryptedValueForFieldType(value, type) && !isEncryptedValueForFieldSchema(value, properties[property])) {
+                // If not, we add an error message to the field errors and user needs to update the value in the input editor.
                 fieldErrors.push(m('inputSchema.validation.secretFieldSchemaChanged', { rootName: 'input', fieldKey: property }));
             }
         }
