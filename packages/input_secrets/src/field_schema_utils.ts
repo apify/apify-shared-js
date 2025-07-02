@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
  * These keys are omitted from the field schema normalization process
  * because they are not relevant for validation of values against the schema.
  */
-const OMIT_KEYS = new Set(['title', 'description', 'sectionCaption', 'sectionDescription', 'nullable', 'example', 'editor']);
+const OMIT_KEYS = new Set(['title', 'description', 'sectionCaption', 'sectionDescription', 'nullable', 'example', 'prefill', 'editor']);
 
 /**
  * Normalizes the field schema by removing irrelevant keys and sorting the remaining keys.
