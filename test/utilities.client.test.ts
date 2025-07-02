@@ -1111,23 +1111,28 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: 'value' };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const inputs = [
-                    // 2 invalid inputs
-                    { field: {} },
-                    { field: [] },
-                    // Valid
+                const validInputs = [
                     rawInput,
                     encryptedInput,
                     { field: null },
                 ];
 
-                const results = inputs
+                const invalidInputs = [
+                    { field: {} },
+                    { field: [] },
+                ];
+
+                let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
                     .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
 
-                // There should be 2 invalid inputs
-                expect(results.length).toEqual(2);
-                results.forEach((result) => {
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
                     // Only one error should be thrown
                     expect(result.length).toEqual(1);
                     expect(result[0].fieldKey).toEqual('field');
@@ -1147,23 +1152,27 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: { key1: 'value1', key2: 'value2' } };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const inputs = [
-                    // 2 invalid inputs
-                    { field: 'DATASET_ID' },
-                    { field: [] },
-                    // Valid
+                const validInputs = [
                     rawInput,
                     encryptedInput,
                     { field: null },
                 ];
+                const invalidInputs = [
+                    { field: 'DATASET_ID' },
+                    { field: [] },
+                ];
 
-                const results = inputs
+                let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
                     .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
 
-                // There should be 2 invalid inputs
-                expect(results.length).toEqual(2);
-                results.forEach((result) => {
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
                     // Only one error should be thrown
                     expect(result.length).toEqual(1);
                     expect(result[0].fieldKey).toEqual('field');
@@ -1183,23 +1192,27 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: ['value1', 'value2'] };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const inputs = [
-                    // 2 invalid inputs
-                    { field: 'DATASET_ID' },
-                    { field: {} },
-                    // Valid
+                const validInputs = [
                     rawInput,
                     encryptedInput,
                     { field: null },
                 ];
+                const invalidInputs = [
+                    { field: 'DATASET_ID' },
+                    { field: {} },
+                ];
 
-                const results = inputs
+                let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
                     .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
 
-                // There should be 2 invalid inputs
-                expect(results.length).toEqual(2);
-                results.forEach((result) => {
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
                     // Only one error should be thrown
                     expect(result.length).toEqual(1);
                     expect(result[0].fieldKey).toEqual('field');

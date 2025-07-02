@@ -209,7 +209,7 @@ describe('input_schema.json', () => {
             turnOffConsoleWarnErrors();
         });
 
-        describe('special cases for isSecret string type', () => {
+        describe('special cases for isSecret property', () => {
             const isSchemaValid = (fields: object, isSecret?: boolean) => {
                 return ajv.validate(inputSchema, {
                     title: 'Test input schema',
@@ -228,12 +228,21 @@ describe('input_schema.json', () => {
                 });
             };
 
-            it('should not allow all editors', () => {
+            it('string field should not allow all editors', () => {
                 ['textfield', 'textarea', 'hidden'].forEach((editor) => {
                     expect(isSchemaValid({ editor }, true)).toBe(true);
                 });
                 ['javascript', 'python'].forEach((editor) => {
                     expect(isSchemaValid({ editor }, true)).toBe(false);
+                });
+            });
+
+            it('string field should not allow some fields', () => {
+                ['minLength', 'maxLength'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                });
+                ['default', 'pattern'].forEach((stringField) => {
+                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });
 
@@ -250,15 +259,6 @@ describe('input_schema.json', () => {
                     { type: 'integer' },
                 ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(false);
-                });
-            });
-
-            it('should not allow some fields', () => {
-                ['minLength', 'maxLength'].forEach((intField) => {
-                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(true);
-                });
-                ['default'].forEach((stringField) => {
-                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });
 
