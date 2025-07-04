@@ -1,8 +1,11 @@
+import { createPublicKey } from 'node:crypto';
+
 import Ajv from 'ajv';
 import brokenClone from 'clone-deep';
 import _ from 'underscore';
 
 import { validateInputUsingValidator } from '@apify/input_schema';
+import { encryptInputSecrets } from '@apify/input_secrets';
 import {
     buildOrVersionNumberIntToStr,
     escapeForBson,
@@ -1086,6 +1089,186 @@ describe('utilities.client', () => {
                     expect(result.length).toEqual(1);
                     expect(result[0].fieldKey).toEqual('field');
                 });
+            });
+        });
+
+        describe('special cases for isSecret properties', () => {
+            const publicKey = createPublicKey({
+                // eslint-disable-next-line max-len
+                key: Buffer.from('LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0dis3NlNXbklhOFFKWC94RUQxRQpYdnBBQmE3ajBnQnVYenJNUU5adjhtTW1RU0t2VUF0TmpOL2xacUZpQ0haZUQxU2VDcGV1MnFHTm5XbGRxNkhUCnh5cXJpTVZEbFNKaFBNT09QSENISVNVdFI4Tk5lR1Y1MU0wYkxJcENabHcyTU9GUjdqdENWejVqZFRpZ1NvYTIKQWxrRUlRZWQ4UVlDKzk1aGJoOHk5bGcwQ0JxdEdWN1FvMFZQR2xKQ0hGaWNuaWxLVFFZay9MZzkwWVFnUElPbwozbUppeFl5bWFGNmlMZTVXNzg1M0VHWUVFVWdlWmNaZFNjaGVBMEdBMGpRSFVTdnYvMEZjay9adkZNZURJOTVsCmJVQ0JoQjFDbFg4OG4wZUhzUmdWZE5vK0NLMDI4T2IvZTZTK1JLK09VaHlFRVdPTi90alVMdGhJdTJkQWtGcmkKOFFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==', 'base64'),
+            });
+
+            it('should allow encrypted/raw input for secret string', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'json',
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+                const rawInput = { field: 'value' };
+                const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
+                const validInputs = [
+                    rawInput,
+                    encryptedInput,
+                    { field: null },
+                ];
+
+                const invalidInputs = [
+                    { field: {} },
+                    { field: [] },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow encrypted/raw input for secret object', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'json',
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+                const rawInput = { field: { key1: 'value1', key2: 'value2' } };
+                const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
+                const validInputs = [
+                    rawInput,
+                    encryptedInput,
+                    { field: null },
+                ];
+                const invalidInputs = [
+                    { field: 'DATASET_ID' },
+                    { field: [] },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow encrypted/raw input for secret array', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        editor: 'json',
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+                const rawInput = { field: ['value1', 'value2'] };
+                const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
+                const validInputs = [
+                    rawInput,
+                    encryptedInput,
+                    { field: null },
+                ];
+                const invalidInputs = [
+                    { field: 'DATASET_ID' },
+                    { field: {} },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                errorResults.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should throw error if field schema changed', () => {
+                const { inputSchema: originalSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'json',
+                        maxProperties: 5,
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+                const rawInput = { field: { key1: 'value1', key2: 'value2' } };
+                const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema: originalSchema, publicKey });
+                expect(validateInputUsingValidator(validator, originalSchema, rawInput)).toEqual([]);
+                expect(validateInputUsingValidator(validator, originalSchema, encryptedInput)).toEqual([]);
+
+                const { inputSchema: modifiedTitleSchema, validator: modifiedTitleValidator } = buildInputSchema({
+                    field: {
+                        title: 'Field new title',
+                        description: 'My new field',
+                        type: 'object',
+                        editor: 'json',
+                        maxProperties: 5,
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+
+                expect(validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, rawInput)).toEqual([]);
+                expect(validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, encryptedInput)).toEqual([]);
+
+                const { inputSchema: modifiedSchema, validator: modifiedValidator } = buildInputSchema({
+                    field: {
+                        title: 'Field new title',
+                        description: 'My new field',
+                        type: 'object',
+                        editor: 'json',
+                        maxProperties: 8,
+                        minProperties: 1,
+                        nullable: true,
+                        isSecret: true,
+                    },
+                });
+
+                expect(validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, rawInput)).toEqual([]);
+                const errors = validateInputUsingValidator(modifiedValidator, modifiedSchema, encryptedInput);
+                expect(errors).not.toEqual([]);
+                // eslint-disable-next-line max-len
+                expect(errors[0].message).toEqual('The field schema.properties.field is a secret field, but its schema has changed. Please update the value in the input editor.');
             });
         });
     });

@@ -3,6 +3,7 @@ import type { ValidateFunction } from 'ajv';
 import { countries } from 'countries-list';
 
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
+import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
 
 import { parseAjvError } from './input_schema';
 import { m } from './intl';
@@ -133,13 +134,34 @@ export function validateInputUsingValidator(
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors!
+            .filter((error) => {
+                // We are storing encrypted objects/arrays as strings, so AJV will throw type the error here.
+                // So we need to skip these errors.
+                if (error.keyword === 'type' && error.instancePath) {
+                    const path = error.instancePath.replace(/^\//, '').split('/')[0];
+                    const propSchema = inputSchema.properties?.[path];
+                    const value = input[path];
+
+                    // Check if the property is a secret and if the value is an encrypted value.
+                    // We do additional validation of the field schema in the later part of this function
+                    if (
+                        propSchema?.isSecret
+                        && typeof value === 'string'
+                        && (propSchema.type === 'object' || propSchema.type === 'array')
+                        && isEncryptedValueForFieldType(value, propSchema.type)
+                    ) {
+                        return false;
+                    }
+                }
+                return true;
+            })
             .map((error) => parseAjvError(error, 'input', properties, input))
             .filter((error) => !!error) as any[];
     }
 
     Object.keys(properties).forEach((property) => {
         const value = input[property];
-        const { type, editor, patternKey, patternValue } = properties[property];
+        const { type, editor, patternKey, patternValue, isSecret } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
@@ -215,7 +237,7 @@ export function validateInputUsingValidator(
             }
         }
         // Check that object items fit patternKey and patternValue
-        if (type === 'object' && value) {
+        if (type === 'object' && value && typeof value === 'object') {
             if (patternKey) {
                 const check = new RegExp(patternKey);
                 const invalidKeys: any[] = [];
@@ -246,6 +268,16 @@ export function validateInputUsingValidator(
                         pattern: patternValue,
                     }));
                 }
+            }
+        }
+
+        // Additional validation for secret fields
+        if (isSecret && value && typeof value === 'string') {
+            // If the value is a valid encrypted string for the field type,
+            // we check if the field schema is likely to be still valid (is unchanged from the time of encryption).
+            if (isEncryptedValueForFieldType(value, type) && !isEncryptedValueForFieldSchema(value, properties[property])) {
+                // If not, we add an error message to the field errors and user needs to update the value in the input editor.
+                fieldErrors.push(m('inputSchema.validation.secretFieldSchemaChanged', { fieldKey: property }));
             }
         }
 
