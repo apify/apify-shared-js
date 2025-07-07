@@ -33,6 +33,8 @@ const intlStrings = {
         'Field schema.properties.{fieldKey} does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
     'inputSchema.validation.proxyGroupMustBeArrayOfStrings':
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
+    'inputSchema.validation.secretFieldSchemaChanged':
+        'The field schema.properties.{fieldKey} is a secret field, but its schema has changed. Please update the value in the input editor.',
 };
 
 /**

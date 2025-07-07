@@ -200,13 +200,13 @@ describe('input_schema.json', () => {
                         isSecret: true,
                         description: 'Some description ...',
                         editor: 'textfield',
-                        maxLength: true,
+                        default: true,
                     },
                 },
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Property schema.properties.myField.maxLength is not allowed.)',
+                'Input schema is not valid (Property schema.properties.myField.default is not allowed.)',
             );
         });
 

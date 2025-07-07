@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.76...@apify/input_secrets@1.2.0) (2025-07-04)
+
+
+### Features
+
+* **input_schema:** Enable secret objects ([#515](https://github.com/apify/apify-shared-js/issues/515)) ([2662ed3](https://github.com/apify/apify-shared-js/commit/2662ed3971a73169df69f400381b033844dc5b97))
+
+
+
+
+
+## [1.1.76](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.75...@apify/input_secrets@1.1.76) (2025-06-13)
+
+**Note:** Version bump only for package @apify/input_secrets
+
+
+
+
+
+## [1.1.75](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.74...@apify/input_secrets@1.1.75) (2025-06-10)
+
+**Note:** Version bump only for package @apify/input_secrets
+
+
+
+
+
+## [1.1.74](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.73...@apify/input_secrets@1.1.74) (2025-06-10)
+
+**Note:** Version bump only for package @apify/input_secrets
+
+
+
+
+
 ## [1.1.73](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.72...@apify/input_secrets@1.1.73) (2025-06-09)
 
 **Note:** Version bump only for package @apify/input_secrets

@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.16.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.2...@apify/input_schema@3.16.0) (2025-07-04)
+
+
+### Features
+
+* **input_schema:** Enable secret objects ([#515](https://github.com/apify/apify-shared-js/issues/515)) ([2662ed3](https://github.com/apify/apify-shared-js/commit/2662ed3971a73169df69f400381b033844dc5b97))
+
+
+
+
+
+## [3.15.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.1...@apify/input_schema@3.15.2) (2025-06-13)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 ## [3.15.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.0...@apify/input_schema@3.15.1) (2025-06-09)
 
 **Note:** Version bump only for package @apify/input_schema
