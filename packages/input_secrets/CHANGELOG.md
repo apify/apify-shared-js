@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.2.0...@apify/input_secrets@1.2.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* **input_secret:** For string secret revert to old form until SDK is updated ([#522](https://github.com/apify/apify-shared-js/issues/522)) ([4309a04](https://github.com/apify/apify-shared-js/commit/4309a0489d97fba53e1fc97a12e248c8567cb1f2))
+
+
+
+
+
 # [1.2.0](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.1.76...@apify/input_secrets@1.2.0) (2025-07-04)
 
 
