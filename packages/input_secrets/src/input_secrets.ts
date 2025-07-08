@@ -46,6 +46,13 @@ export function encryptInputSecretValue<T extends string | object>(
     ow(publicKey, ow.object.instanceOf(KeyObject));
     ow(schema, ow.optional.object);
 
+    // TODO to make string encryption compatible with current SDK, we need to use the old form.
+    //  Remove this once SDK is updated to use the new form
+    if (typeof value === 'string') {
+        const { encryptedValue, encryptedPassword } = publicEncrypt({ value, publicKey });
+        return `${ENCRYPTED_STRING_VALUE_PREFIX}:${encryptedPassword}:${encryptedValue}`;
+    }
+
     const schemaHash = schema ? getFieldSchemaHash(schema) : null;
 
     // We are encrypting the value as a JSON string, so we need to stringify it first.
