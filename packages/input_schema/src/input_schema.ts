@@ -38,12 +38,10 @@ export function parseAjvError(
     let fieldKey: string;
     let message: string;
 
+    // remove leading and trailing slashes and replace remaining slashes with dots
     const cleanPropertyName = (name: string) => {
-        // remove leading and trailing slashes and replace remaining slashes with dots
         return name.replace(/^\/|\/$/g, '').replace(/\//g, '.');
     };
-
-    console.log(error);
 
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
@@ -102,22 +100,30 @@ function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): a
 
 /**
  * Validates particular field against it's schema.
+ * @param validator An instance of AJV validator (must support draft 2019-09).
+ * @param fieldSchema Schema of the field to validate.
+ * @param fieldKey Key of the field in the input schema.
+ * @param subField If true, the field is a sub-field of another field, so we need to skip some definitions.
  */
 function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string, subField = false): asserts fieldSchema is FieldDefinition {
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
+            // Because the definitions contains not only the root properties definitions, but also sub-schema definitions
+            // and utility definitions, we need to filter them out and validate only against the appropriate ones.
+            // We do this by checking prefix of the definition title (Utils: or Sub-schema:)
+
             if (definition.title.startsWith('Utils:')) {
                 // Utility definitions are not used for property validation.
-                // They are used for their internal logic.
+                // They are used for their internal logic. Filter them out.
                 return false;
             }
             if (!subField && definition.title.startsWith('Sub-schema:')) {
-                // This is a sub-schema definition, so we skip it.
+                // This is a sub-schema definition, but we are validating a root field, so we skip it.
                 return false;
             }
-            if (subField && !definition.title.startsWith('Sub-schema')) {
-                // This is a normal definition, so we skip it.
+            if (subField && !definition.title.startsWith('Sub-schema:')) {
+                // This is a normal definition, but we are validating a sub-field, so we skip it.
                 return false;
             }
 
@@ -134,14 +140,15 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
         throw new Error(`Input schema is not valid (${errorMessage})`);
     }
 
-    // When validating against schema of one definition, the definition can reference other definitions.
-    // So we need to add all of them to the schema.
-    function enhanceDefinition(definition: any) {
+    // We are validating a field schema against one of the definitions, but one definition can reference other definitions.
+    // So this basically creates a new JSON Schema with a picked definition at root and puts all definitions from the `schema.json`
+    // into the `definitions` property of this final schema.
+    const enhanceDefinition = (definition: object) => {
         return {
             ...definition,
             definitions,
         };
-    }
+    };
 
     // If there is only one matching then we are done and simply compare it.
     if (matchingDefinitions.length === 1) {
@@ -171,10 +178,18 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
 }
 
+/**
+ * Validates all subfields (and their subfields) of a given field schema.
+ */
 function validateSubFields(validator: Ajv, fieldSchema: InputSchemaBaseChecked, fieldKey: string) {
-    Object.entries(fieldSchema.properties).forEach(([subFieldKey, subFieldSchema]) => (
-        validateField(validator, subFieldSchema, `${fieldKey}.${subFieldKey}`, true)),
-    );
+    Object.entries(fieldSchema.properties).forEach(([subFieldKey, subFieldSchema]) => {
+        // The sub-properties has to be validated first, so we got more relevant error messages.
+        if ((subFieldSchema as any).properties) {
+            // If the field has sub-fields, we need to validate them as well.
+            validateSubFields(validator, subFieldSchema as any as InputSchemaBaseChecked, `${fieldKey}.${subFieldKey}`);
+        }
+        validateField(validator, subFieldSchema, `${fieldKey}.${subFieldKey}`, true);
+    });
 }
 
 /**

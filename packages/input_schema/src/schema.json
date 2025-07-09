@@ -198,34 +198,59 @@
                 },
                 "unevaluatedProperties": false,
                 "oneOf": [
-                    { "properties": {
-                        "editor": { "enum": ["select"] },
-                        "items": { "$ref": "#/definitions/arrayItemsSelect" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["keyValue"] },
-                        "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["stringList"] },
-                        "items": { "$ref": "#/definitions/arrayItemsStringList" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["globs"] },
-                        "items": { "$ref": "#/definitions/arrayItemsGlobs" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["pseudoUrls"] },
-                        "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["requestListSources"] },
-                        "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
-                    }},
-                    { "properties": {
-                        "editor": { "enum": ["json", "schemaBased", "hidden"] },
-                        "items": { "$ref": "#/definitions/arrayItems" }
-                    }}
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["select"] },
+                            "items": { "$ref": "#/definitions/arrayItemsSelect" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["keyValue"] },
+                            "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["stringList"] },
+                            "items": { "$ref": "#/definitions/arrayItemsStringList" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["globs"] },
+                            "items": { "$ref": "#/definitions/arrayItemsGlobs" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["pseudoUrls"] },
+                            "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["requestListSources"] },
+                            "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
+                        }
+                    },
+                    {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "enum": ["json", "schemaBased", "hidden"] },
+                            "items": { "$ref": "#/definitions/arrayItems" }
+                        }
+                    },
+                    {
+                        "not": { "required": ["editor"] },
+                        "properties": { "items": { "$ref": "#/definitions/arrayItems" } }
+                    }
                 ]
             },
             "else": {
@@ -585,34 +610,59 @@
             "required": ["type", "title", "description"],
             "unevaluatedProperties": false,
             "oneOf": [
-                { "properties": {
-                    "editor": { "enum": ["select"] },
-                    "items": { "$ref": "#/definitions/arrayItemsSelect" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["keyValue"] },
-                    "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["stringList"] },
-                    "items": { "$ref": "#/definitions/arrayItemsStringList" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["globs"] },
-                    "items": { "$ref": "#/definitions/arrayItemsGlobs" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["pseudoUrls"] },
-                    "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["requestListSources"] },
-                    "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
-                }},
-                { "properties": {
-                    "editor": { "enum": ["json", "schemaBased", "hidden"] },
-                    "items": { "$ref": "#/definitions/arrayItems" }
-                }}
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["select"] },
+                        "items": { "$ref": "#/definitions/arrayItemsSelect" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["keyValue"] },
+                        "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["stringList"] },
+                        "items": { "$ref": "#/definitions/arrayItemsStringList" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["globs"] },
+                        "items": { "$ref": "#/definitions/arrayItemsGlobs" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["pseudoUrls"] },
+                        "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["requestListSources"] },
+                        "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["json", "schemaBased", "hidden"] },
+                        "items": { "$ref": "#/definitions/arrayItems" }
+                    }
+                },
+                {
+                    "not": { "required": ["editor"] },
+                    "properties": { "items": { "$ref": "#/definitions/arrayItems" } }
+                }
             ]
         },
         "subSchemaIntegerProperty": {
