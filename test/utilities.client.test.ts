@@ -1,6 +1,6 @@
 import { createPublicKey } from 'node:crypto';
 
-import Ajv from 'ajv/dist/2019';
+import Ajv from 'ajv';
 import brokenClone from 'clone-deep';
 import _ from 'underscore';
 
