@@ -43,6 +43,8 @@ export function parseAjvError(
         return name.replace(/^\/|\/$/g, '').replace(/\//g, '.');
     };
 
+    console.log(error);
+
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
     if (error.keyword === 'type') {
@@ -57,6 +59,9 @@ export function parseAjvError(
         message = m('inputSchema.validation.required', { rootName, fieldKey });
     } else if (error.keyword === 'additionalProperties') {
         fieldKey = cleanPropertyName(`${error.instancePath}/${error.params.additionalProperty}`);
+        message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
+    } else if (error.keyword === 'unevaluatedProperties') {
+        fieldKey = cleanPropertyName(`${error.instancePath}/${error.params.unevaluatedProperty}`);
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
     } else if (error.keyword === 'enum') {
         fieldKey = cleanPropertyName(error.instancePath);
@@ -102,12 +107,12 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     const matchingDefinitions = Object
         .values<any>(definitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
-            if (definition.title.startsWith('Utils')) {
+            if (definition.title.startsWith('Utils:')) {
                 // Utility definitions are not used for property validation.
                 // They are used for their internal logic.
                 return false;
             }
-            if (!subField && definition.title.startsWith('Sub-schema')) {
+            if (!subField && definition.title.startsWith('Sub-schema:')) {
                 // This is a sub-schema definition, so we skip it.
                 return false;
             }
@@ -207,6 +212,10 @@ export function validateExistenceOfRequiredFields(inputSchema: InputSchema) {
  * then checks that all required fields are present and finally checks fully against the whole schema.
  *
  * This way we get the most accurate error message for user.
+ *
+ * @param validator An instance of AJV validator. Important: The JSON Schema that the passed input schema is validated against
+ *  is using features from JSON Schema 2019 draft, so the AJV instance must support it.
+ * @param inputSchema Input schema to validate.
  */
 export function validateInputSchema(validator: Ajv, inputSchema: Record<string, unknown>): asserts inputSchema is InputSchema {
     // First validate just basic structure without fields.

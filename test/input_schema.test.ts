@@ -1,4 +1,4 @@
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2019';
 
 import { validateInputSchema } from '@apify/input_schema';
 
@@ -554,25 +554,22 @@ describe('input_schema.json', () => {
                             description: 'Description',
                             editor: 'schemaBased',
                             additionalProperties: false,
-                            // required: ['key2'],
                             properties: {
                                 key: {
                                     type: 'object',
                                     title: 'Key',
                                     description: 'Key description',
-                                    editor: 'schemaBased',
+                                    editor: 'json',
                                     properties: {
                                         key1: {
                                             type: 'string',
                                             title: 'Key 1',
                                             description: 'Key 1 description',
-                                            editor: 'textfield',
                                         },
                                         key2: {
                                             type: 'string',
                                             title: 'Key 2',
                                             description: 'Key 2 description',
-                                            editor: 'textfield',
                                         },
                                     },
                                 },
@@ -602,19 +599,17 @@ describe('input_schema.json', () => {
                                         type: 'object',
                                         title: 'Key',
                                         description: 'Key description',
-                                        editor: 'schemaBased',
+                                        editor: 'json',
                                         properties: {
                                             key1: {
                                                 type: 'string',
                                                 title: 'Key 1',
                                                 description: 'Key 1 description',
-                                                editor: 'textfield',
                                             },
                                             key2: {
                                                 type: 'string',
                                                 title: 'Key 2',
                                                 description: 'Key 2 description',
-                                                editor: 'textfield',
                                             },
                                         },
                                     },
@@ -647,19 +642,17 @@ describe('input_schema.json', () => {
                                             type: 'object',
                                             title: 'Key',
                                             description: 'Key description',
-                                            editor: 'schemaBased',
+                                            editor: 'json',
                                             properties: {
                                                 key1: {
                                                     type: 'string',
                                                     title: 'Key 1',
                                                     description: 'Key 1 description',
-                                                    editor: 'textfield',
                                                 },
                                                 key2: {
                                                     type: 'string',
                                                     title: 'Key 2',
                                                     description: 'Key 2 description',
-                                                    editor: 'textfield',
                                                 },
                                             },
                                         },
