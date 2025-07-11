@@ -1,4 +1,4 @@
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2019';
 
 import { validateInputSchema } from '@apify/input_schema';
 
@@ -413,7 +413,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
 
                 const schema2 = {
@@ -431,7 +432,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema2)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myFieldArray.0 must be equal to one of the allowed values: "READ", "WRITE")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myFieldArray.resourcePermissions.0 must be equal to one of the allowed values: "READ", "WRITE")',
                 );
             });
 
@@ -536,6 +538,301 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.resourcePermissions must contain at least 1 valid item(s))',
                 );
+            });
+        });
+
+        describe('special cases for sub-schema', () => {
+            it('should accept valid object sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            additionalProperties: false,
+                            properties: {
+                                key: {
+                                    type: 'object',
+                                    title: 'Key',
+                                    description: 'Key description',
+                                    editor: 'json',
+                                    properties: {
+                                        key1: {
+                                            type: 'string',
+                                            title: 'Key 1',
+                                            description: 'Key 1 description',
+                                        },
+                                        key2: {
+                                            type: 'string',
+                                            title: 'Key 2',
+                                            description: 'Key 2 description',
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept valid array sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    key: {
+                                        type: 'object',
+                                        title: 'Key',
+                                        description: 'Key description',
+                                        editor: 'json',
+                                        properties: {
+                                            key1: {
+                                                type: 'string',
+                                                title: 'Key 1',
+                                                description: 'Key 1 description',
+                                            },
+                                            key2: {
+                                                type: 'string',
+                                                title: 'Key 2',
+                                                description: 'Key 2 description',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept valid 2D array sub-schema', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        key: {
+                                            type: 'object',
+                                            title: 'Key',
+                                            description: 'Key description',
+                                            editor: 'json',
+                                            properties: {
+                                                key1: {
+                                                    type: 'string',
+                                                    title: 'Key 1',
+                                                    description: 'Key 1 description',
+                                                },
+                                                key2: {
+                                                    type: 'string',
+                                                    title: 'Key 2',
+                                                    description: 'Key 2 description',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+        });
+
+        describe('sub-schema restrictions based on editor', () => {
+            it('should not allow unknown properties for proxy editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        proxy: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'proxy',
+                            properties: {
+                                unknownProperty: {
+                                    type: 'string',
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow();
+            });
+
+            it('should allow only specific properties for proxy editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        proxy: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'proxy',
+                            properties: {
+                                useApifyProxy: {
+                                    type: 'boolean',
+                                    title: 'Use Apify Proxy',
+                                    description: 'Whether to use Apify Proxy or not',
+                                },
+                                apifyProxyGroups: {
+                                    type: 'array',
+                                    title: 'Apify Proxy Groups',
+                                    description: 'Apify Proxy groups to use',
+                                    items: {
+                                        type: 'string',
+                                    },
+                                },
+                                proxyUrls: {
+                                    type: 'array',
+                                    title: 'Custom Proxy URLs',
+                                    description: 'Custom proxy URLs to use',
+                                    items: {
+                                        type: 'string',
+                                    },
+                                },
+                                apifyProxyCountry: {
+                                    type: 'string',
+                                    title: 'Apify Proxy Country',
+                                    description: 'Country code for Apify Proxy',
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not allow unknown properties for keyValue array editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        keyValueArray: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            editor: 'keyValueArray',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    key: {
+                                        type: 'string',
+                                        title: 'Key',
+                                        description: 'The key of the key-value pair',
+                                    },
+                                    value: {
+                                        type: 'string',
+                                        title: 'Value',
+                                        description: 'The value of the key-value pair',
+                                    },
+                                    extraProperty: {
+                                        type: 'string',
+                                        title: 'Extra Property',
+                                        description: 'This property should not be allowed',
+                                    },
+                                },
+                                required: ['key', 'value'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow();
+            });
+
+            it('should allow only specific properties for keyValue array editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        keyValueArray: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            editor: 'keyValue',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    key: {
+                                        type: 'string',
+                                        title: 'Key',
+                                        description: 'The key of the key-value pair',
+                                    },
+                                    value: {
+                                        type: 'string',
+                                        title: 'Value',
+                                        description: 'The value of the key-value pair',
+                                    },
+                                },
+                                required: ['key', 'value'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should allow any properties for json editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        jsonField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            properties: {
+                                anyProperty: {
+                                    type: 'string',
+                                    title: 'Field title',
+                                    description: 'My test field',
+                                },
+                                anotherProperty: {
+                                    type: 'integer',
+                                    title: 'Another field title',
+                                    description: 'Another test field',
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
             });
         });
     });
