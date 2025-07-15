@@ -1,5 +1,6 @@
 import { parse } from 'acorn-loose';
 import type { ValidateFunction } from 'ajv';
+import type Ajv from 'ajv/dist/2019';
 import { countries } from 'countries-list';
 
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
@@ -348,4 +349,15 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
     niceJson = niceJson.split('\n').join(`\n${globalSpaces}`);
 
     return niceJson;
+}
+
+const DRAFT_2019_09_META_SCHEMA = 'https://json-schema.org/draft/2019-09/schema';
+
+export function ensureAjvSupportsDraft2019(ajvInstance: Ajv) {
+    const metaSchema = ajvInstance.getSchema(DRAFT_2019_09_META_SCHEMA);
+    if (!metaSchema) {
+        throw new Error(
+            `The provided Ajv instance does not support draft-2019-09 (missing meta-schema ${DRAFT_2019_09_META_SCHEMA}).`,
+        );
+    }
 }
