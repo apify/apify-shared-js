@@ -1271,6 +1271,159 @@ describe('utilities.client', () => {
                 expect(errors[0].message).toEqual('The field schema.properties.field is a secret field, but its schema has changed. Please update the value in the input editor.');
             });
         });
+
+        describe('special cases for sub-schema', () => {
+            it('should allow sub-schema for object property', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'schemaBased',
+                        properties: {
+                            key1: {
+                                type: 'string',
+                                title: 'Key 1',
+                                description: 'Description for key 1',
+                                editor: 'textfield',
+                            },
+                            key2: {
+                                type: 'string',
+                                title: 'Key 2',
+                                description: 'Description for key 2',
+                                editor: 'textfield',
+                            },
+                        },
+                        additionalProperties: false,
+                        required: ['key1'],
+                    },
+                });
+                const validInputs = [
+                    { field: { key1: 'value' } },
+                    { field: { key1: 'value', key2: 'value' } },
+                ];
+                const invalidInputs = [
+                    { field: [] },
+                    { field: {} },
+                    { field: { key2: 'value' } },
+                    { field: { key3: 'value' } },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(4);
+
+                expect(errorResults[0][0].message).toEqual('Field input.field must be object');
+                expect(errorResults[1][0].message).toEqual('Field input.field.key1 is required');
+                expect(errorResults[2][0].message).toEqual('Field input.field.key1 is required');
+                expect(errorResults[3][0].message).toEqual('Field input.field.key1 is required');
+            });
+
+            it('should allow sub-schema for array property', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        editor: 'schemaBased',
+                        items: {
+                            type: 'object',
+                            properties: {
+                                key1: {
+                                    type: 'string',
+                                    title: 'Key 1',
+                                    description: 'Description for key 1',
+                                    editor: 'textfield',
+                                },
+                                key2: {
+                                    type: 'string',
+                                    title: 'Key 2',
+                                    description: 'Description for key 2',
+                                    editor: 'textfield',
+                                },
+                            },
+                            additionalProperties: false,
+                            required: ['key1'],
+                        },
+                    },
+                });
+                const validInputs = [
+                    { field: [{ key1: 'value' }] },
+                    { field: [{ key1: 'value' }, { key1: 'value' }] },
+                    { field: [{ key1: 'value', key2: 'value' }, { key1: 'value' }] },
+                ];
+                const invalidInputs = [
+                    { field: {} },
+                    { field: [{ key2: 'value' }] },
+                    { field: [{ key3: 'value' }] },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(3);
+
+                expect(errorResults[0][0].message).toEqual('Field input.field must be array');
+                expect(errorResults[1][0].message).toEqual('Field input.field.0.key1 is required');
+                expect(errorResults[2][0].message).toEqual('Field input.field.0.key1 is required');
+            });
+
+            it('dot in property names should be allowed', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'schemaBased',
+                        properties: {
+                            'key.with.dot': {
+                                type: 'string',
+                                title: 'Key with dot',
+                                description: 'Description for key with dot',
+                                editor: 'textfield',
+                            },
+                        },
+                        additionalProperties: false,
+                        required: ['key.with.dot'],
+                    },
+                });
+                const validInputs = [
+                    { field: { 'key.with.dot': 'value' } },
+                ];
+                const invalidInputs = [
+                    { field: [] },
+                    { field: {} },
+                    { field: { 'key.with.dot2': 'value' } },
+                    { field: { key: { with: { dot: 'value' } } } },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(4);
+
+                expect(errorResults[0][0].message).toEqual('Field input.field must be object');
+                expect(errorResults[1][0].message).toEqual('Field input.field.key.with.dot is required');
+                expect(errorResults[2][0].message).toEqual('Field input.field.key.with.dot is required');
+                expect(errorResults[2][0].message).toEqual('Field input.field.key.with.dot is required');
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {
