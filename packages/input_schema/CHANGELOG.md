@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.17.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.16.1...@apify/input_schema@3.17.0) (2025-07-17)
+
+
+### Features
+
+* **input_schema:** Enable sub-schemas in input-schema ([#519](https://github.com/apify/apify-shared-js/issues/519)) ([d1a8e92](https://github.com/apify/apify-shared-js/commit/d1a8e929d7322878e9ed199314e4e8abd89d5ae9))
+
+
+
+
+
 ## [3.16.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.16.0...@apify/input_schema@3.16.1) (2025-07-08)
 
 **Note:** Version bump only for package @apify/input_schema
