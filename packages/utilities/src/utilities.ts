@@ -202,7 +202,7 @@ export function weightedAverage(val1: number, weight1: number, val2: number, wei
  * so we need to prohibit any username that might be part of our website or confusing in anyway.
  */
 const FORBIDDEN_USERNAMES_REGEXPS = [
-    // Meteor app routes
+    // App routes
     'page-not-found', 'docs', 'terms-of-use', 'about', 'pricing', 'privacy-policy', 'customers',
     'request-form', 'request-solution', 'release-notes', 'jobs', 'api-reference', 'video-tutorials',
     'acts', 'key-value-stores', 'schedules', 'account', 'sign-up', 'sign-in-discourse', 'admin',
@@ -231,7 +231,8 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
     'discord', 'praguecrawl', 'prague-crawl', 'bob', 'ai-agents', 'reel', 'video-reel',
-    'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com',
+    'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com', 'design-kit', 'press-kit',
+    'scrapers', 'professional-services', 
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
