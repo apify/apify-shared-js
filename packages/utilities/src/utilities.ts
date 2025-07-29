@@ -322,7 +322,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 // Regex matching forbidden usernames.
 const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAMES_REGEXPS.join('|')})$`, 'i');
 
-const FORBIDDEN_APIFY_KEYWORD = new RegExp('apify', 'i');
+const FORBIDDEN_APIFY_KEYWORD = /apify/i;
 
 /**
  * Checks whether username is listed in FORBIDDEN_USERNAMES

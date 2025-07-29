@@ -152,7 +152,7 @@ export const ACTOR_NAME = {
 export const ACTOR_TITLE = {
     REGEX: /^(?!.*[aA][pP][iI][fF][yY].*$).*$/,
     ADMIN_REGEX: /^.*$/,
-}
+};
 
 /**
  * Length of short crawler ID for nice public crawlers path.
