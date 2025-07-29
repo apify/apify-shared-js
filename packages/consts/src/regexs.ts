@@ -42,13 +42,7 @@ export const GIT_REPO_REGEX = /^(?:git|ssh|https?|git@[-\w.]+):(\/\/)?(.*?)(\/?|
 /**
  * Matches a string that might be used in a hostname (e.g. "my-host-name")
  */
-export const DNS_SAFE_NAME_REGEX = /^((?!.*[aA][pP][iI][fF][yY].*$)[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])$/;
-
-/**
- * Matches a string that might be used in a hostname (e.g. "my-host-name")
- * Less strict than DNS_SAFE_NAME_REGEX
- */
-export const DNS_SAFE_NAME_REGEX_ADMIN = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])$/;
+export const DNS_SAFE_NAME_REGEX = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])$/;
 
 /**
  * Regular expression to validate Apify Proxy group name and session ID.

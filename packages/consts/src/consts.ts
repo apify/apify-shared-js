@@ -1,5 +1,5 @@
 import type { ValueOf } from './helpers';
-import { DNS_SAFE_NAME_REGEX, DNS_SAFE_NAME_REGEX_ADMIN, EMAIL_REGEX } from './regexs';
+import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
@@ -145,8 +145,8 @@ export const DNS_SAFE_NAME_MAX_LENGTH = 63;
 export const ACTOR_NAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: DNS_SAFE_NAME_MAX_LENGTH, // DNS-safe string length
-    REGEX: DNS_SAFE_NAME_REGEX,
-    ADMIN_REGEX: DNS_SAFE_NAME_REGEX_ADMIN,
+    REGEX: /(?!.*[aA][pP][iI][fF][yY].*$)^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])$/,
+    ADMIN_REGEX: DNS_SAFE_NAME_REGEX,
 };
 
 export const ACTOR_TITLE = {
