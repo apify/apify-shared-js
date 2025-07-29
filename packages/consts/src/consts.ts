@@ -701,3 +701,15 @@ export const ACTOR_PERMISSION_LEVEL = {
 };
 
 export type ACTOR_PERMISSION_LEVEL = ValueOf<typeof ACTOR_PERMISSION_LEVEL>;
+
+/**
+ * Header to measure how long it takes for the Actor Standby Controller to proxy the request to the Worker.
+ * This is used for debugging purposes.
+ */
+export const ACTOR_STANDBY_CONTROLLER_PROXIED_AT_HEADER_NAME = 'X-Apify-Actor-Standby-Controller-Proxied-At';
+
+/**
+ * Header to measure how long it takes for the Conductor to proxy the request to the Worker.
+ * This is used for debugging purposes.
+ */
+export const CONDUCTOR_PROXIED_AT_HEADER_NAME = 'X-Apify-Conductorr-Proxied-At';
