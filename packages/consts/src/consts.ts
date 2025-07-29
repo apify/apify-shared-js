@@ -712,4 +712,4 @@ export const ACTOR_STANDBY_CONTROLLER_PROXIED_AT_HEADER_NAME = 'X-Apify-Actor-St
  * Header to measure how long it takes for the Conductor to proxy the request to the Worker.
  * This is used for debugging purposes.
  */
-export const CONDUCTOR_PROXIED_AT_HEADER_NAME = 'X-Apify-Conductorr-Proxied-At';
+export const CONDUCTOR_PROXIED_AT_HEADER_NAME = 'X-Apify-Conductor-Proxied-At';
