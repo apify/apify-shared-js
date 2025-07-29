@@ -1,5 +1,5 @@
 import type { ValueOf } from './helpers';
-import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
+import { DNS_SAFE_NAME_REGEX, DNS_SAFE_NAME_REGEX_ADMIN, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 
@@ -117,7 +117,8 @@ export const USERNAME = {
 
     // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+    ADMIN_REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+    REGEX: /^(?!.*[aA][pP][iI][fF][yY].*$)[a-zA-Z0-9_.-]{3,30}$/,
 };
 
 export const EMAIL = {
@@ -145,7 +146,13 @@ export const ACTOR_NAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: DNS_SAFE_NAME_MAX_LENGTH, // DNS-safe string length
     REGEX: DNS_SAFE_NAME_REGEX,
+    ADMIN_REGEX: DNS_SAFE_NAME_REGEX_ADMIN,
 };
+
+export const ACTOR_TITLE = {
+    REGEX: /^(?!.*[aA][pP][iI][fF][yY].*$).*$/,
+    ADMIN_REGEX: /^.*$/,
+}
 
 /**
  * Length of short crawler ID for nice public crawlers path.
