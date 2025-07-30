@@ -232,7 +232,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
     'discord', 'praguecrawl', 'prague-crawl', 'bob', 'ai-agents', 'reel', 'video-reel',
     'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com', 'design-kit', 'press-kit',
-    'scrapers', 'professional-services', 
+    'scrapers', 'professional-services',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
