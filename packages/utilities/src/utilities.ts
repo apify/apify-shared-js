@@ -328,9 +328,9 @@ const FORBIDDEN_APIFY_KEYWORD = /apify/i;
  * Checks whether username is listed in FORBIDDEN_USERNAMES
  * or matches any root route path.
  */
-export function isForbiddenUsername(username: string, options: { isAdmin?: boolean, isApifier?: boolean } = { isAdmin: false, isApifier: false }): boolean {
+export function isForbiddenUsername(username: string, options: { isAdmin?: boolean } = { isAdmin: false }): boolean {
     return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_REGEXP)
-        || (!options.isAdmin && !options.isApifier && !!username.match(FORBIDDEN_APIFY_KEYWORD));
+        || (!options.isAdmin && !!username.match(FORBIDDEN_APIFY_KEYWORD));
 }
 
 /**
