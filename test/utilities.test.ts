@@ -127,8 +127,8 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karel.novak')).toBe(false);
 
             // Regular user vs Admin
-            expect(utils.isForbiddenUsername('my-aPifY-actor')).toBe(true);
-            expect(utils.isForbiddenUsername('my-aPifY-actor', { isAdmin: true })).toBe(false);
+            expect(utils.isForbiddenUsername('my-aPifY-username')).toBe(true);
+            expect(utils.isForbiddenUsername('my-aPifY-username', { isAdmin: true })).toBe(false);
         });
     });
 
