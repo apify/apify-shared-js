@@ -129,6 +129,7 @@ describe('utilities', () => {
             // Regular user vs Admin
             expect(utils.isForbiddenUsername('aPifY')).toBe(true);
             expect(utils.isForbiddenUsername('aPifY', { isAdmin: true })).toBe(false);
+            expect(utils.isForbiddenUsername('aPifY', { isApifier: true })).toBe(false);
         });
     });
 
