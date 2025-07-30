@@ -835,5 +835,84 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).not.toThrow();
             });
         });
+
+        describe('nullable field influence default type', () => {
+            it('should allow default null if nullable', () => {
+                const types = [
+                    { type: 'string', editor: 'textfield' },
+                    { type: 'integer', editor: 'number' },
+                    { type: 'boolean', editor: 'checkbox' },
+                    { type: 'array', editor: 'json' },
+                    { type: 'object', editor: 'json' },
+                ];
+
+                types.forEach((type) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                ...type,
+                                nullable: true,
+                                default: null,
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).not.toThrow();
+                });
+            });
+
+            it('should not allow default null if not nullable', () => {
+                const types = [
+                    { type: 'string', editor: 'textfield' },
+                    { type: 'integer', editor: 'number' },
+                    { type: 'boolean', editor: 'checkbox' },
+                    { type: 'array', editor: 'json' },
+                    { type: 'object', editor: 'json' },
+                ];
+
+                types.forEach((type) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                ...type,
+                                default: null,
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).toThrow(
+                        `Input schema is not valid (Field schema.properties.myField.default must be ${type.type})`,
+                    );
+                });
+
+                types.forEach((type) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                ...type,
+                                nullable: false,
+                                default: null,
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).toThrow(
+                        `Input schema is not valid (Field schema.properties.myField.default must be ${type.type})`,
+                    );
+                });
+            });
+        });
     });
 });

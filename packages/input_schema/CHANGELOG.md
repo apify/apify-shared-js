@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.18.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.17.0...@apify/input_schema@3.18.0) (2025-07-23)
+
+
+### Features
+
+* **input_schema:** Allow nullable field default to null ([#523](https://github.com/apify/apify-shared-js/issues/523)) ([f0fc860](https://github.com/apify/apify-shared-js/commit/f0fc860d4b7f9ad468072a973066c6a5a4e73f31))
+
+
+
+
+
 # [3.17.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.16.1...@apify/input_schema@3.17.0) (2025-07-17)
 
 
