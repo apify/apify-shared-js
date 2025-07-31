@@ -115,10 +115,10 @@ export const USERNAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: 30,
 
-    // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
+    // Regexes matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    ADMIN_REGEX: /^[a-z0-9_.-]{3,30}$/i,
-    REGEX: /^(?!.*apify)[a-z0-9_.-]{3,30}$/i,
+    REGEX: /^[a-z0-9_.-]{3,30}$/i,
+    RESTRICTED_REGEX: /^(?!.*apify)[a-z0-9_.-]{3,30}$/i,
 };
 
 export const EMAIL = {
@@ -145,15 +145,15 @@ export const DNS_SAFE_NAME_MAX_LENGTH = 63;
 export const ACTOR_NAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: DNS_SAFE_NAME_MAX_LENGTH, // DNS-safe string length
-    REGEX: /^(?!.*apify)([a-z0-9]|[a-z0-9][a-z0-9-]*[a-z0-9])$/i,
-    ADMIN_REGEX: DNS_SAFE_NAME_REGEX,
+    REGEX: DNS_SAFE_NAME_REGEX,
+    RESTRICTED_REGEX: /^(?!.*apify)([a-z0-9]|[a-z0-9][a-z0-9-]*[a-z0-9])$/i,
 };
 
 export const ACTOR_TITLE = {
     MIN_LENGTH: 3,
     MAX_LENGTH: DNS_SAFE_NAME_MAX_LENGTH,
-    REGEX: /^(?!.*apify).*$/i,
-    ADMIN_REGEX: /^.*$/,
+    REGEX: /^.*$/,
+    RESTRICTED_REGEX: /^(?!.*apify).*$/i,
 };
 
 /**
