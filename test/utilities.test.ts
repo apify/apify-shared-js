@@ -105,6 +105,8 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karl__.yolo')).toBe(true);
 
             // Test valid usernames
+            expect(!utils.isForbiddenUsername('apify')).toBe(true);
+            expect(!utils.isForbiddenUsername('APIFY')).toBe(true);
             expect(!utils.isForbiddenUsername('jannovak')).toBe(true);
             expect(!utils.isForbiddenUsername('jan.novak')).toBe(true);
             expect(!utils.isForbiddenUsername('jan.novak.YOLO')).toBe(true);
@@ -125,10 +127,6 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karel')).toBe(false);
             expect(utils.isForbiddenUsername('karel1234')).toBe(false);
             expect(utils.isForbiddenUsername('karel.novak')).toBe(false);
-
-            // Regular user vs Admin
-            expect(utils.isForbiddenUsername('my.aPifY.username')).toBe(true);
-            expect(utils.isForbiddenUsername('my.aPifY.username', { isAdmin: true })).toBe(false);
         });
     });
 
