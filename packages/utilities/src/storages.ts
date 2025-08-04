@@ -15,7 +15,7 @@ export function createStorageContentSignature({
 }: {
     resourceId: string;
     urlSigningSecretKey: string;
-    expiresInMillis: number | undefined;
+    expiresInMillis?: number;
     version?: number;
 }) {
     const expiresAt = expiresInMillis ? new Date().getTime() + expiresInMillis : 0;

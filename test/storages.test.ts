@@ -8,7 +8,6 @@ describe('createStorageContentSignature()', () => {
         const signature = createStorageContentSignature({
             resourceId: message,
             urlSigningSecretKey: secretKey,
-            expiresInMillis: undefined,
         });
 
         const [version, expiresAt, hmac] = Buffer.from(signature, 'base64url').toString('utf8').split('.');
