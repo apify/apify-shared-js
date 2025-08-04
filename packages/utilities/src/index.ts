@@ -9,3 +9,4 @@ export * from './crypto';
 export * from './url_params_utils';
 export * from './code_hash_manager';
 export * from './hmac';
+export * from './storages';
