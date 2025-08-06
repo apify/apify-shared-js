@@ -55,7 +55,7 @@ export const ACTOR_JOB_TERMINAL_STATUSES = [
     ACTOR_JOB_STATUSES.FAILED,
     ACTOR_JOB_STATUSES.TIMED_OUT,
     ACTOR_JOB_STATUSES.ABORTED,
-];
+] as const;
 
 // NOTE: for legacy reasons these are lower-case, maybe we should migrate to upper case later.
 // these strings are also referenced from upstart-worker.conf !
