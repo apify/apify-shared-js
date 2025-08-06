@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.44.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.43.0...@apify/consts@2.44.0) (2025-08-06)
+
+
+### Features
+
+* **consts:** make terminal statuses array const ([#528](https://github.com/apify/apify-shared-js/issues/528)) ([b342a80](https://github.com/apify/apify-shared-js/commit/b342a80494f5d12ebae5ddc4c75ddf8e55afdfd3))
+
+
+
+
+
 # [2.43.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.42.0...@apify/consts@2.43.0) (2025-06-13)
 
 
