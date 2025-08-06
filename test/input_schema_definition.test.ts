@@ -1,5 +1,6 @@
+import Ajv from 'ajv/dist/2019';
+
 import { inputSchema } from '@apify/input_schema';
-import Ajv from 'ajv';
 
 /**
  * Temporarily replace console.warn with implementation that throws error instead
@@ -208,7 +209,7 @@ describe('input_schema.json', () => {
             turnOffConsoleWarnErrors();
         });
 
-        describe('special cases for isSecret string type', () => {
+        describe('special cases for isSecret property', () => {
             const isSchemaValid = (fields: object, isSecret?: boolean) => {
                 return ajv.validate(inputSchema, {
                     title: 'Test input schema',
@@ -219,6 +220,7 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
+                            editor: 'textfield',
                             isSecret,
                             ...fields,
                         },
@@ -226,7 +228,7 @@ describe('input_schema.json', () => {
                 });
             };
 
-            it('should not allow all editors', () => {
+            it('string field should not allow all editors', () => {
                 ['textfield', 'textarea', 'hidden'].forEach((editor) => {
                     expect(isSchemaValid({ editor }, true)).toBe(true);
                 });
@@ -235,26 +237,28 @@ describe('input_schema.json', () => {
                 });
             });
 
-            it('should allow only string type', () => {
-                [{ type: 'string', editor: 'textfield' }].forEach((fields) => {
+            it('string field should not allow some fields', () => {
+                ['minLength', 'maxLength'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                });
+                ['default', 'pattern'].forEach((stringField) => {
+                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
+                });
+            });
+
+            it('should allow only string, object and array type', () => {
+                [
+                    { type: 'string', editor: 'textfield' },
+                    { type: 'object', editor: 'json' },
+                    { type: 'array', editor: 'json' },
+                ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(true);
                 });
                 [
-                    { type: 'array', editor: 'stringList' },
-                    { type: 'object', editor: 'json' },
                     { type: 'boolean' },
                     { type: 'integer' },
                 ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(false);
-                });
-            });
-
-            it('should not allow some fields', () => {
-                ['minLength', 'maxLength'].forEach((intField) => {
-                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
-                });
-                ['default', 'prefill', 'pattern'].forEach((stringField) => {
-                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });
 
@@ -293,6 +297,84 @@ describe('input_schema.json', () => {
                             maxLength: 100,
                             default: 'blablablablabla',
                             prefill: 'blablablablablablablablablablabla',
+                            bla: 'bla', // Validation failed because additional property
+                        },
+                    },
+                })).toBe(false);
+            });
+        });
+
+        describe('special cases for isSecret object type', () => {
+            const isSchemaValid = (fields: object, isSecret?: boolean) => {
+                return ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            isSecret,
+                            ...fields,
+                        },
+                    },
+                });
+            };
+
+            it('should not allow all editors', () => {
+                ['json', 'hidden'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(true);
+                });
+                ['proxy'].forEach((editor) => {
+                    expect(isSchemaValid({ editor }, true)).toBe(false);
+                });
+            });
+
+            it('should not allow some fields', () => {
+                ['minProperties', 'maxProperties'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
+                });
+                ['patternKey', 'patternValue', 'prefill', 'example'].forEach((stringField) => {
+                    expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
+                });
+            });
+
+            it('should work without isSecret with all editors and properties', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            isSecret: false,
+                            minProperties: 2,
+                            maxProperties: 100,
+                            default: { key: 'value' },
+                            prefill: { key: 'value', key2: 'value2' },
+                        },
+                    },
+                })).toBe(true);
+
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            isSecret: false,
+                            minProperties: 2,
+                            maxProperties: 100,
+                            default: { key: 'value' },
+                            prefill: { key: 'value', key2: 'value2' },
                             bla: 'bla', // Validation failed because additional property
                         },
                     },

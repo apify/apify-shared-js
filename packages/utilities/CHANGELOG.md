@@ -3,6 +3,147 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.17.0...@apify/utilities@2.18.0) (2025-08-05)
+
+
+### Features
+
+* add createStorageContentSignature ([#527](https://github.com/apify/apify-shared-js/issues/527)) ([890acab](https://github.com/apify/apify-shared-js/commit/890acab89ee4e37cb88cad8424e910bbcea7444e))
+
+
+
+
+
+# [2.17.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.16.2...@apify/utilities@2.17.0) (2025-07-30)
+
+
+### Features
+
+* **internal:** Added more forbidden usernames ([#524](https://github.com/apify/apify-shared-js/issues/524)) ([937cdc5](https://github.com/apify/apify-shared-js/commit/937cdc56ad43f65cc8b67d1992fe9a7f6fab07cd))
+
+
+
+
+
+## [2.16.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.16.1...@apify/utilities@2.16.2) (2025-06-13)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.16.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.16.0...@apify/utilities@2.16.1) (2025-06-10)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.16.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.6...@apify/utilities@2.16.0) (2025-06-10)
+
+
+### Features
+
+* **internal:** Update utilities.ts ([#513](https://github.com/apify/apify-shared-js/issues/513)) ([bcf9f73](https://github.com/apify/apify-shared-js/commit/bcf9f73558d541190ddb3a594402e1aea8ef5e5a))
+
+
+
+
+
+## [2.15.6](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.5...@apify/utilities@2.15.6) (2025-06-09)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.15.5](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.4...@apify/utilities@2.15.5) (2025-04-30)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.15.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.3...@apify/utilities@2.15.4) (2025-04-14)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.15.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.2...@apify/utilities@2.15.3) (2025-04-08)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.15.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.1...@apify/utilities@2.15.2) (2025-04-08)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.15.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.15.0...@apify/utilities@2.15.1) (2025-03-12)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.15.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.14.0...@apify/utilities@2.15.0) (2025-03-10)
+
+
+### Features
+
+* **internal:** Added more prohibited usernames ([#504](https://github.com/apify/apify-shared-js/issues/504)) ([e1e60b7](https://github.com/apify/apify-shared-js/commit/e1e60b74c5d5b5bbf4f00e3a551b9df98234cff5))
+
+
+
+
+
+# [2.14.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.13.1...@apify/utilities@2.14.0) (2025-02-23)
+
+
+### Features
+
+* **internal:** Added few more prohibited usernames ([#502](https://github.com/apify/apify-shared-js/issues/502)) ([2ff85d0](https://github.com/apify/apify-shared-js/commit/2ff85d00280ebe07a55580436b0a7b78ed22bf7a))
+
+
+
+
+
+## [2.13.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.13.0...@apify/utilities@2.13.1) (2025-02-17)
+
+
+### Bug Fixes
+
+* **internal:** Updated FORBIDDEN_USERNAMES_REGEXPS ([#501](https://github.com/apify/apify-shared-js/issues/501)) ([94bc9cf](https://github.com/apify/apify-shared-js/commit/94bc9cfad496172acb2f768993fe8dfe3c7ab29f))
+
+
+
+
+
+# [2.13.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.12.2...@apify/utilities@2.13.0) (2025-02-12)
+
+
+### Features
+
+* add create hmac signature ([#500](https://github.com/apify/apify-shared-js/issues/500)) ([fe937f2](https://github.com/apify/apify-shared-js/commit/fe937f2f3d6adb22d1222a7cd95e73ae4081bc1d))
+
+
+
+
+
 ## [2.12.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.12.1...@apify/utilities@2.12.2) (2025-01-21)
 
 **Note:** Version bump only for package @apify/utilities

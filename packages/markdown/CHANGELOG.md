@@ -3,6 +3,126 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.27](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.26...@apify/markdown@3.0.27) (2025-08-05)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.26](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.25...@apify/markdown@3.0.26) (2025-07-30)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.25](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.24...@apify/markdown@3.0.25) (2025-06-13)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.24](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.23...@apify/markdown@3.0.24) (2025-06-10)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.23](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.22...@apify/markdown@3.0.23) (2025-06-10)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.22](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.21...@apify/markdown@3.0.22) (2025-06-09)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.21](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.20...@apify/markdown@3.0.21) (2025-04-30)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.20](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.19...@apify/markdown@3.0.20) (2025-04-14)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.19](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.18...@apify/markdown@3.0.19) (2025-04-08)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.18](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.17...@apify/markdown@3.0.18) (2025-04-08)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.17](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.16...@apify/markdown@3.0.17) (2025-03-12)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.16](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.15...@apify/markdown@3.0.16) (2025-03-10)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.15](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.14...@apify/markdown@3.0.15) (2025-02-23)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.14](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.13...@apify/markdown@3.0.14) (2025-02-17)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
+## [3.0.13](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.12...@apify/markdown@3.0.13) (2025-02-12)
+
+**Note:** Version bump only for package @apify/markdown
+
+
+
+
+
 ## [3.0.12](https://github.com/apify/apify-shared-js/compare/@apify/markdown@3.0.11...@apify/markdown@3.0.12) (2025-01-21)
 
 **Note:** Version bump only for package @apify/markdown

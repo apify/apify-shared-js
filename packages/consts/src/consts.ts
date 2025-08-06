@@ -1,3 +1,4 @@
+import type { ValueOf } from './helpers';
 import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
@@ -277,13 +278,13 @@ export const APIFY_ENV_VARS = {
     INPUT_SECRETS_PRIVATE_KEY_PASSPHRASE: 'APIFY_INPUT_SECRETS_PRIVATE_KEY_PASSPHRASE',
     IS_AT_HOME: 'APIFY_IS_AT_HOME',
     LOCAL_STORAGE_DIR: 'APIFY_LOCAL_STORAGE_DIR',
-    LOG_LEVEL: 'APIFY_LOG_LEVEL',
     LOG_FORMAT: 'APIFY_LOG_FORMAT',
-    META_ORIGIN: 'APIFY_META_ORIGIN',
+    LOG_LEVEL: 'APIFY_LOG_LEVEL',
     METAMORPH_AFTER_SLEEP_MILLIS: 'APIFY_METAMORPH_AFTER_SLEEP_MILLIS',
+    META_ORIGIN: 'APIFY_META_ORIGIN',
     PERSIST_STATE_INTERVAL_MILLIS: 'APIFY_PERSIST_STATE_INTERVAL_MILLIS',
-    PROXY_PASSWORD: 'APIFY_PROXY_PASSWORD',
     PROXY_HOSTNAME: 'APIFY_PROXY_HOSTNAME',
+    PROXY_PASSWORD: 'APIFY_PROXY_PASSWORD',
     PROXY_PORT: 'APIFY_PROXY_PORT',
     PROXY_STATUS_URL: 'APIFY_PROXY_STATUS_URL',
     PURGE_ON_START: 'APIFY_PURGE_ON_START',
@@ -291,6 +292,8 @@ export const APIFY_ENV_VARS = {
     SYSTEM_INFO_INTERVAL_MILLIS: 'APIFY_SYSTEM_INFO_INTERVAL_MILLIS',
     TOKEN: 'APIFY_TOKEN',
     USER_ID: 'APIFY_USER_ID',
+    USER_IS_PAYING: 'APIFY_USER_IS_PAYING',
+    USER_PRICING_TIER: 'APIFY_USER_PRICING_TIER',
     WORKFLOW_KEY: 'APIFY_WORKFLOW_KEY',
     XVFB: 'APIFY_XVFB',
 
@@ -450,6 +453,7 @@ export const MAX_PAYLOAD_SIZE_BYTES = 9437184; // 9MB
  */
 export const ACTOR_CATEGORIES = {
     AI: 'AI',
+    AGENTS: 'Agents',
     AUTOMATION: 'Automation',
     BUSINESS: 'Business',
     COVID_19: 'Covid-19',
@@ -472,6 +476,7 @@ export const ACTOR_CATEGORIES = {
     INTEGRATIONS: 'Integrations',
     OTHER: 'Other',
     OPEN_SOURCE: 'Open source',
+    MCP_SERVERS: 'MCP servers',
 } as const;
 
 // TODO: Remove this once it's no longer used, now that LEGACY_ACTOR_CATEGORIES is also gone
@@ -630,3 +635,69 @@ export const ISSUES_STATUS_TYPES = {
  * This is used for filtering issues. All issue types to be considered.
  */
 export const ISSUES_STATUS_ALL = 'ALL';
+
+/**
+ * Storage setting determining how others can access the storage.
+ *
+ * This setting overrides the user setting of the storage owner.
+ */
+export const STORAGE_GENERAL_ACCESS = {
+    /** Respect the user setting of the storage owner (default behavior). */
+    FOLLOW_USER_SETTING: 'FOLLOW_USER_SETTING',
+
+    /** Only signed-in users with explicit access can read this storage. */
+    RESTRICTED: 'RESTRICTED',
+
+    /** Anyone with a link, or the unique storage ID, can read the storage. */
+    ANYONE_WITH_ID_CAN_READ: 'ANYONE_WITH_ID_CAN_READ',
+
+    /** Anyone with a link, the unique storage ID, or the storage name, can read the storage. */
+    ANYONE_WITH_NAME_CAN_READ: 'ANYONE_WITH_NAME_CAN_READ',
+} as const;
+
+export type STORAGE_GENERAL_ACCESS = ValueOf<typeof STORAGE_GENERAL_ACCESS>
+
+/**
+ * Run setting determining how others can access the run.
+ *
+ * This setting overrides the user setting of the run owner.
+ */
+export const RUN_GENERAL_ACCESS = {
+    /** Respect the user setting of the run owner (default behavior). */
+    FOLLOW_USER_SETTING: 'FOLLOW_USER_SETTING',
+
+    /** Only signed-in users with explicit access can read this run. */
+    RESTRICTED: 'RESTRICTED',
+
+    /** Anyone with a link, or the unique run ID, can read the run. */
+    ANYONE_WITH_ID_CAN_READ: 'ANYONE_WITH_ID_CAN_READ',
+} as const;
+
+export type RUN_GENERAL_ACCESS = ValueOf<typeof RUN_GENERAL_ACCESS>
+
+/**
+ * Determines permissions that the Actor requires to run.
+ *
+ * Based on this value, the Apify platform generates a scoped run token with a corresponding permission scope and
+ * injects it into the Actor runtime.
+ *
+ * Warning: Make sure you know what you are doing when changing this value, in particular for public Actors!
+ */
+export const ACTOR_PERMISSION_LEVEL = {
+    /** Full permission Actors have access to all user data in the account. */
+    FULL_PERMISSIONS: 'FULL_PERMISSIONS',
+
+    /**
+     * Limited permission Actors have access only to specific resources:
+     * - default storages
+     * - storages provided via input
+     * - the current run
+     * - ...
+     *
+     * Broadly speaking, limited permission Actors cannot access any account data not related to the current run.
+     * For details refer to the Apify documentation.
+     */
+    LIMITED_PERMISSIONS: 'LIMITED_PERMISSIONS',
+};
+
+export type ACTOR_PERMISSION_LEVEL = ValueOf<typeof ACTOR_PERMISSION_LEVEL>;

@@ -3,6 +3,72 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.43.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.42.0...@apify/consts@2.43.0) (2025-06-13)
+
+
+### Features
+
+* add MCP server category ([#520](https://github.com/apify/apify-shared-js/issues/520)) ([993a146](https://github.com/apify/apify-shared-js/commit/993a14642f079c08aae111ffd11d0671d99763a9))
+
+
+
+
+
+# [2.42.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.41.0...@apify/consts@2.42.0) (2025-06-09)
+
+
+### Features
+
+* **const:** add ACTOR_PERMISSION_LEVEL ([#516](https://github.com/apify/apify-shared-js/issues/516)) ([9f86bf0](https://github.com/apify/apify-shared-js/commit/9f86bf07c6331131c5715226ba21c3d4056ed0c7))
+
+
+
+
+
+# [2.41.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.40.0...@apify/consts@2.41.0) (2025-04-30)
+
+
+### Features
+
+* **consts:** add user env vars for tiered pricing ([#511](https://github.com/apify/apify-shared-js/issues/511)) ([ef3b493](https://github.com/apify/apify-shared-js/commit/ef3b493e511dc19901e4078ec3e34693e2326f1e))
+
+
+
+
+
+# [2.40.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.39.0...@apify/consts@2.40.0) (2025-04-14)
+
+
+### Features
+
+* add FOLLOW_USER_SETTING to generalAccess enum ([#510](https://github.com/apify/apify-shared-js/issues/510)) ([06d06fc](https://github.com/apify/apify-shared-js/commit/06d06fcab07c471a77f2b11a8cd59c14fcf99696))
+
+
+
+
+
+# [2.39.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.38.0...@apify/consts@2.39.0) (2025-04-08)
+
+
+### Features
+
+* add general access enum to consts ([#507](https://github.com/apify/apify-shared-js/issues/507)) ([71fd1a5](https://github.com/apify/apify-shared-js/commit/71fd1a56029374ee413410953c8f25b3fa6a8f38)), closes [/github.com/apify/apify-core/blob/ba052eedd7490952fa1b8c1447c261a9cfd3acb3/src/packages/consts/src/iam.ts#L101](https://github.com//github.com/apify/apify-core/blob/ba052eedd7490952fa1b8c1447c261a9cfd3acb3/src/packages/consts/src/iam.ts/issues/L101)
+
+
+
+
+
+# [2.38.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.37.0...@apify/consts@2.38.0) (2025-03-12)
+
+
+### Features
+
+* add Agents to category ([#505](https://github.com/apify/apify-shared-js/issues/505)) ([234a30f](https://github.com/apify/apify-shared-js/commit/234a30f048d00eabf2f80ee4e830301c1cd8a2aa))
+
+
+
+
+
 # [2.37.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.36.0...@apify/consts@2.37.0) (2025-01-21)
 
 

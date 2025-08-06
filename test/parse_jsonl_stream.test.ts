@@ -85,7 +85,7 @@ describe('parse_jsonl_stream', () => {
         const parseJsonl = new ParseJsonlStream();
 
         parseJsonl.on('error', (err) => {
-            expect(err.message.indexOf('Cannot parse JSON stream data') >= 0).toBe(true);
+            expect(err.message.includes('Cannot parse JSON stream data')).toBe(true);
         });
 
         parseJsonl.write('');

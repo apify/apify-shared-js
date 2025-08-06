@@ -1,7 +1,7 @@
 import c from 'ansi-colors';
 
 import { IS_APIFY_LOGGER_EXCEPTION, LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
-import { LimitedError } from './log_helpers';
+import type { LimitedError } from './log_helpers';
 import { Logger } from './logger';
 import { getStackFrames } from './node_internals';
 
@@ -56,7 +56,7 @@ export class LoggerText extends Logger {
         prefix = prefix ? ` ${prefix}${PREFIX_DELIMITER}` : '';
         suffix = suffix ? ` ${suffix}` : '';
 
-        const line = `${c.gray(maybeDate)}${c[color](levelStr)}${levelIndent}${c.yellow(prefix)} ${message || ''}${c.gray(dataStr)}${c.yellow(suffix)}${errStack}`; // eslint-disable-line
+        const line = `${c.gray(maybeDate)}${c[color](levelStr)}${levelIndent}${c.yellow(prefix)} ${message || ''}${c.gray(dataStr)}${c.yellow(suffix)}${errStack}`;
         this._outputWithConsole(level, line);
 
         return line;

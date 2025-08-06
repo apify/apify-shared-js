@@ -1,7 +1,8 @@
 /* eslint-disable max-len */
-import { APIFY_ENV_VARS } from '@apify/consts';
-import { Log, LEVELS, Logger, LoggerText, IS_APIFY_LOGGER_EXCEPTION } from '@apify/log';
 import stripAnsi from 'strip-ansi';
+
+import { APIFY_ENV_VARS } from '@apify/consts';
+import { IS_APIFY_LOGGER_EXCEPTION, LEVELS, Log, Logger, LoggerText } from '@apify/log';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 
@@ -14,7 +15,7 @@ describe('log', () => {
     beforeEach(() => {
         loggerSpy = jest.spyOn(Logger.prototype, 'log');
         loggedLines = {};
-        CONSOLE_METHODS.map((method) => {
+        CONSOLE_METHODS.forEach((method) => {
             originalConsoleMethods[method] = console[method];
             console[method] = (line: string) => {
                 loggedLines[method] = stripAnsi(line);
@@ -24,7 +25,7 @@ describe('log', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
-        CONSOLE_METHODS.map((method) => {
+        CONSOLE_METHODS.forEach((method) => {
             console[method] = originalConsoleMethods[method];
         });
     });

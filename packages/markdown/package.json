@@ -1,6 +1,6 @@
 {
     "name": "@apify/markdown",
-    "version": "3.0.12",
+    "version": "3.0.27",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -48,8 +48,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.37.0",
-        "@apify/utilities": "^2.12.2",
+        "@apify/consts": "^2.43.0",
+        "@apify/utilities": "^2.18.0",
         "marked": "^15.0.0",
         "match-all": "^1.2.6"
     },

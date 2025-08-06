@@ -1,21 +1,8 @@
+import { setTimeout } from 'node:timers/promises';
+
+import { addTimeoutToPromise, tryCancel } from '@apify/timeout';
+
 describe('timeout with abort controller', () => {
-    it('empty', async () => {
-        // empty test so jest won't fail in node < 15 due to no tests being executed
-    });
-
-    const [nodeVersion] = process.versions.node.split('.', 1);
-
-    if (+nodeVersion < 15) {
-        // skip tests as this package requires node 15+
-        return;
-    }
-
-    // we need to import via require after the above check to not fail on node < 15
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-    const { addTimeoutToPromise, tryCancel } = require('@apify/timeout');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-    const { setTimeout } = require('timers/promises');
-
     let position = 0;
 
     async function handler() {
@@ -57,7 +44,7 @@ describe('timeout with abort controller', () => {
             async () => handler(),
             100,
             'timed out',
-        )).rejects.toThrowError();
+        )).rejects.toThrow();
         expect(position).toBe(3);
     });
 
@@ -67,7 +54,7 @@ describe('timeout with abort controller', () => {
             async () => handler(),
             100,
             err,
-        )).rejects.toThrowError(err);
+        )).rejects.toThrow(err);
         expect(position).toBe(3);
     });
 
@@ -85,7 +72,7 @@ describe('timeout with abort controller', () => {
             async () => handler2(),
             200,
             'err 2',
-        )).rejects.toThrowError('err 1');
+        )).rejects.toThrow('err 1');
         expect(position).toBe(3);
     });
 });

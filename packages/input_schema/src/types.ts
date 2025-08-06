@@ -11,7 +11,7 @@ type CommonFieldDefinition<T> = {
 
 export type StringFieldDefinition = CommonFieldDefinition<string> & {
     type: 'string'
-    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json';
+    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json' | 'fileupload';
     pattern?: string;
     minLength?: number;
     maxLength?: number;
@@ -46,7 +46,7 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     minProperties?: number;
 }
 
-export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
+export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     type: 'array'
     editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'hidden';
     placeholderKey?: string;
@@ -62,6 +62,7 @@ export type ArrayFieldDefinition = CommonFieldDefinition<Array<unknown>> & {
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
     resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
+    resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
 export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {

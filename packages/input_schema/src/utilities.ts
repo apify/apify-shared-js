@@ -1,7 +1,10 @@
-import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { parse } from 'acorn-loose';
-import { ValidateFunction } from 'ajv';
+import type { ValidateFunction } from 'ajv';
+import type Ajv from 'ajv/dist/2019';
 import { countries } from 'countries-list';
+
+import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
+import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
 
 import { parseAjvError } from './input_schema';
 import { m } from './intl';
@@ -71,7 +74,7 @@ function validateProxyField(
     if (!options) return fieldErrors;
 
     // if apifyProxyGroups exists it must be an array of strings
-    const isStringsArray = (array: Array<string>) => array.every((item) => typeof item === 'string');
+    const isStringsArray = (array: string[]) => array.every((item) => typeof item === 'string');
     if (apifyProxyGroups && !(Array.isArray(apifyProxyGroups) && isStringsArray(apifyProxyGroups))) {
         fieldErrors.push(m('inputSchema.validation.proxyGroupMustBeArrayOfStrings', { rootName: 'input', fieldKey }));
         return fieldErrors;
@@ -132,13 +135,34 @@ export function validateInputUsingValidator(
     // Process AJV validation errors
     if (!isValid) {
         errors = validator.errors!
+            .filter((error) => {
+                // We are storing encrypted objects/arrays as strings, so AJV will throw type the error here.
+                // So we need to skip these errors.
+                if (error.keyword === 'type' && error.instancePath) {
+                    const path = error.instancePath.replace(/^\//, '').split('/')[0];
+                    const propSchema = inputSchema.properties?.[path];
+                    const value = input[path];
+
+                    // Check if the property is a secret and if the value is an encrypted value.
+                    // We do additional validation of the field schema in the later part of this function
+                    if (
+                        propSchema?.isSecret
+                        && typeof value === 'string'
+                        && (propSchema.type === 'object' || propSchema.type === 'array')
+                        && isEncryptedValueForFieldType(value, propSchema.type)
+                    ) {
+                        return false;
+                    }
+                }
+                return true;
+            })
             .map((error) => parseAjvError(error, 'input', properties, input))
             .filter((error) => !!error) as any[];
     }
 
     Object.keys(properties).forEach((property) => {
         const value = input[property];
-        const { type, editor, patternKey, patternValue } = properties[property];
+        const { type, editor, patternKey, patternValue, isSecret } = properties[property];
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
@@ -214,7 +238,7 @@ export function validateInputUsingValidator(
             }
         }
         // Check that object items fit patternKey and patternValue
-        if (type === 'object' && value) {
+        if (type === 'object' && value && typeof value === 'object') {
             if (patternKey) {
                 const check = new RegExp(patternKey);
                 const invalidKeys: any[] = [];
@@ -248,6 +272,16 @@ export function validateInputUsingValidator(
             }
         }
 
+        // Additional validation for secret fields
+        if (isSecret && value && typeof value === 'string') {
+            // If the value is a valid encrypted string for the field type,
+            // we check if the field schema is likely to be still valid (is unchanged from the time of encryption).
+            if (isEncryptedValueForFieldType(value, type) && !isEncryptedValueForFieldSchema(value, properties[property])) {
+                // If not, we add an error message to the field errors and user needs to update the value in the input editor.
+                fieldErrors.push(m('inputSchema.validation.secretFieldSchemaChanged', { fieldKey: property }));
+            }
+        }
+
         if (fieldErrors.length > 0) {
             const message = fieldErrors.join(', ');
             errors.push({ fieldKey: property, message });
@@ -276,7 +310,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
         let ast;
         try {
             ast = parse(maybeFunction, { ecmaVersion: 'latest' });
-        } catch (err) {
+        } catch {
             // Don't do anything in a case of invalid JS code.
             return;
         }
@@ -315,4 +349,15 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
     niceJson = niceJson.split('\n').join(`\n${globalSpaces}`);
 
     return niceJson;
+}
+
+const DRAFT_2019_09_META_SCHEMA = 'https://json-schema.org/draft/2019-09/schema';
+
+export function ensureAjvSupportsDraft2019(ajvInstance: Ajv) {
+    const metaSchema = ajvInstance.getSchema(DRAFT_2019_09_META_SCHEMA);
+    if (!metaSchema) {
+        throw new Error(
+            `The provided Ajv instance does not support draft-2019-09 (missing meta-schema ${DRAFT_2019_09_META_SCHEMA}).`,
+        );
+    }
 }

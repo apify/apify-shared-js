@@ -1,16 +1,17 @@
-import { IS_APIFY_LOGGER_EXCEPTION, LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
 import stripAnsi from 'strip-ansi';
+
+import { IS_APIFY_LOGGER_EXCEPTION, LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';
 
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 const DATE_REGEX = '\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d';
 
 describe('loggerText', () => {
     let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
-    const originalConsoleMethods = {};
+    const originalConsoleMethods: Record<string, any> = {};
 
     beforeEach(() => {
         loggedLines = {};
-        CONSOLE_METHODS.map((method) => {
+        CONSOLE_METHODS.forEach((method) => {
             originalConsoleMethods[method] = console[method];
             console[method] = (line: string) => {
                 loggedLines[method] = stripAnsi(line);
@@ -19,7 +20,7 @@ describe('loggerText', () => {
     });
 
     afterEach(() => {
-        CONSOLE_METHODS.map((method) => {
+        CONSOLE_METHODS.forEach((method) => {
             console[method] = originalConsoleMethods[method];
         });
     });

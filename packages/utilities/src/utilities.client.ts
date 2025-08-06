@@ -6,7 +6,7 @@
  *
  */
 
-import { VERSION_INT_MAJOR_BASE, VERSION_INT_MINOR_BASE, RELATIVE_URL_REGEX } from '@apify/consts';
+import { RELATIVE_URL_REGEX, VERSION_INT_MAJOR_BASE, VERSION_INT_MINOR_BASE } from '@apify/consts';
 
 /**
  * Returns true if object equals null or undefined, otherwise returns false.
@@ -164,7 +164,7 @@ export function markedSetNofollowLinks(href: string, title: string, text: string
     let urlParsed: URL;
     try {
         urlParsed = new URL(href);
-    } catch (e) {
+    } catch {
         // Probably invalid url, go on
     }
     const isApifyLink = (urlParsed! && /(\.|^)apify\.com$/i.test(urlParsed.hostname));

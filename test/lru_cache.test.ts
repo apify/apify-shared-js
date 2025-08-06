@@ -1,5 +1,6 @@
-import { LruCache } from '@apify/datastructures';
 import _ from 'underscore';
+
+import { LruCache } from '@apify/datastructures';
 
 // asserts that linked list and dictionary is equivalent to an array of [{key: Object, value: Object}] objects
 const assertSame = function (lru: LruCache, array: any[]) {

@@ -3,6 +3,141 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.18.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.18.1...@apify/input_schema@3.18.2) (2025-08-05)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.18.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.18.0...@apify/input_schema@3.18.1) (2025-07-30)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.18.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.17.0...@apify/input_schema@3.18.0) (2025-07-23)
+
+
+### Features
+
+* **input_schema:** Allow nullable field default to null ([#523](https://github.com/apify/apify-shared-js/issues/523)) ([f0fc860](https://github.com/apify/apify-shared-js/commit/f0fc860d4b7f9ad468072a973066c6a5a4e73f31))
+
+
+
+
+
+# [3.17.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.16.1...@apify/input_schema@3.17.0) (2025-07-17)
+
+
+### Features
+
+* **input_schema:** Enable sub-schemas in input-schema ([#519](https://github.com/apify/apify-shared-js/issues/519)) ([d1a8e92](https://github.com/apify/apify-shared-js/commit/d1a8e929d7322878e9ed199314e4e8abd89d5ae9))
+
+
+
+
+
+## [3.16.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.16.0...@apify/input_schema@3.16.1) (2025-07-08)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.16.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.2...@apify/input_schema@3.16.0) (2025-07-04)
+
+
+### Features
+
+* **input_schema:** Enable secret objects ([#515](https://github.com/apify/apify-shared-js/issues/515)) ([2662ed3](https://github.com/apify/apify-shared-js/commit/2662ed3971a73169df69f400381b033844dc5b97))
+
+
+
+
+
+## [3.15.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.1...@apify/input_schema@3.15.2) (2025-06-13)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.15.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.15.0...@apify/input_schema@3.15.1) (2025-06-09)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.15.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.14.1...@apify/input_schema@3.15.0) (2025-06-04)
+
+
+### Features
+
+* **schema:** add support for resource permissions ([#514](https://github.com/apify/apify-shared-js/issues/514)) ([edb7fda](https://github.com/apify/apify-shared-js/commit/edb7fdad92df8b17546470138cbacd0981f4dc72))
+
+
+
+
+
+## [3.14.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.14.0...@apify/input_schema@3.14.1) (2025-04-30)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.14.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.13.4...@apify/input_schema@3.14.0) (2025-04-15)
+
+
+### Features
+
+* fileUrl as string editor type ([#509](https://github.com/apify/apify-shared-js/issues/509)) ([8464554](https://github.com/apify/apify-shared-js/commit/84645544eb86411ef77fec5e9fae698e268b6ec3))
+
+
+
+
+
+## [3.13.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.13.3...@apify/input_schema@3.13.4) (2025-04-14)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.13.3](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.13.2...@apify/input_schema@3.13.3) (2025-04-08)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.13.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.13.1...@apify/input_schema@3.13.2) (2025-04-08)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.13.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.13.0...@apify/input_schema@3.13.1) (2025-03-12)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 # [3.13.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.12.4...@apify/input_schema@3.13.0) (2025-01-21)
 
 

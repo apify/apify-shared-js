@@ -91,7 +91,9 @@ describe('HealthChecker', () => {
     });
 
     it('should fail when some of the checks timeouts', async () => {
-        redis.get.mockReturnValueOnce(new Promise((resolve) => setTimeout(resolve, 200))); // Timeouts.
+        redis.get.mockReturnValueOnce(new Promise((resolve) => {
+            setTimeout(resolve, 200);
+        })); // Timeouts.
 
         await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "REDIS" failed with an error: Check has timed-out');
 

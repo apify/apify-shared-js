@@ -7,10 +7,11 @@
  *
  */
 
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
-import log, { Log, LoggerJson, LogLevel } from '@apify/log';
+import type { Log } from '@apify/log';
+import log, { LoggerJson, LogLevel } from '@apify/log';
 
 /**
  * Generates a random cryptographically strong string consisting of 17 alphanumeric characters.
@@ -106,7 +107,10 @@ export function http404Route(req: RequestLike, res: ResponseLike) {
  */
 export function expressErrorHandler(err: Error, req: RequestLike, res: ResponseLike, next: (...a: unknown[]) => unknown) {
     log.warning('Client HTTP request failed', { url: req.url, errMsg: err.message });
-    if (res.headersSent) { return next(err); }
+    if (res.headersSent) {
+        next(err);
+        return;
+    }
     res.status(505);
     res.send('Internal server error');
 }
@@ -130,7 +134,9 @@ export function betterSetInterval(func: ((a: (...args: unknown[]) => unknown) =>
     const funcWrapper = function () {
         // Historically, the function was passed a callback that it needed to call to signal it was done.
         // We keep passing this callback for backwards compatibility, but it has no effect anymore.
-        void new Promise((resolve) => resolve(func(() => undefined))).finally(scheduleNextRun);
+        void new Promise((resolve) => {
+            resolve(func(() => undefined));
+        }).finally(scheduleNextRun);
     };
     scheduleNextRun = function () {
         if (isRunning) timeoutId = setTimeout(funcWrapper, delay);
@@ -196,7 +202,7 @@ export function weightedAverage(val1: number, weight1: number, val2: number, wei
  * so we need to prohibit any username that might be part of our website or confusing in anyway.
  */
 const FORBIDDEN_USERNAMES_REGEXPS = [
-    // Meteor app routes
+    // App routes
     'page-not-found', 'docs', 'terms-of-use', 'about', 'pricing', 'privacy-policy', 'customers',
     'request-form', 'request-solution', 'release-notes', 'jobs', 'api-reference', 'video-tutorials',
     'acts', 'key-value-stores', 'schedules', 'account', 'sign-up', 'sign-in-discourse', 'admin',
@@ -224,6 +230,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'covid', 'covid19', 'matfyz', 'ideas', 'public-actors', 'resources', 'partners', 'affiliate',
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
+    'discord', 'praguecrawl', 'prague-crawl', 'bob', 'ai-agents', 'reel', 'video-reel',
+    'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com', 'design-kit', 'press-kit',
+    'scrapers', 'professional-services',
 
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
@@ -296,7 +305,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'site', 'sitemap', 'sites', 'smartphone', 'smtp', 'soporte', 'source', 'spec', 'special', 'sql',
     'src', 'ssh', 'ssl', 'ssladmin', 'ssladministrator', 'sslwebmaster', 'staff', 'stage', 'staging',
     'start', 'stat', 'state', 'static', 'stats', 'status', 'store', 'stores', 'stories', 'style',
-    'styleguide', 'stylesheet', 'stylesheets', 'subdomain', 'subscribe', 'subscriptions', 'suporte',
+    'styleguide', 'stylesheet', 'stylesheets', 'subdomain', 'subscribe', 'subscription', 'subscriptions', 'suporte',
     'support', 'svn', 'swf', 'sys', 'sysadmin', 'sysadministrator', 'system', 'tablet', 'tablets',
     'tag', 'talk', 'task', 'tasks', 'team', 'teams', 'tech', 'telnet', 'term', 'terms',
     'terms-of-service', 'terms_of_service', 'termsofservice', 'test', 'test1', 'test2', 'test3',
@@ -409,7 +418,10 @@ export async function timeoutPromise<T>(promise: Promise<T>, timeoutMillis: numb
             if (hasFulfilled) return;
             clearTimeout(timeout);
             hasFulfilled = true;
-            if (err) return reject(err);
+            if (err) {
+                reject(err);
+                return;
+            }
             resolve(result);
         };
 
