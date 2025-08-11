@@ -115,9 +115,10 @@ export const USERNAME = {
     MIN_LENGTH: 3,
     MAX_LENGTH: 30,
 
-    // Regex matching a potentially allowed username. The numbers must match MIN and MAX!
+    // Regexes matching a potentially allowed username. The numbers must match MIN and MAX!
     // Note that username must also pass isForbiddenUser() test to be allowed!
-    REGEX: /^[a-zA-Z0-9_.-]{3,30}$/,
+    REGEX: /^[a-z0-9_.-]{3,30}$/i,
+    RESTRICTED_REGEX: /^(?!.*apify)[a-z0-9_.-]{3,30}$/i,
 };
 
 export const EMAIL = {
