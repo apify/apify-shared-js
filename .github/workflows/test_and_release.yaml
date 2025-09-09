@@ -18,9 +18,9 @@ jobs:
                 node-version: [ 16, 18, 20, 22 ]
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
             -   name: Use Node.js ${{ matrix.node-version }}
-                uses: actions/setup-node@v4
+                uses: actions/setup-node@v5
                 with:
                     node-version: ${{ matrix.node-version }}
             -   name: Cache node_modules
@@ -41,11 +41,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
             -   name: Use Node.js 20
-                uses: actions/setup-node@v4
+                uses: actions/setup-node@v5
                 with:
-                    node-version: 20
+                    node-version: 22
             -   name: Cache node_modules
                 uses: actions/cache@v4
                 with:
@@ -60,11 +60,11 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
             -   name: Use Node.js 20
-                uses: actions/setup-node@v4
+                uses: actions/setup-node@v5
                 with:
-                    node-version: 20
+                    node-version: 22
             -   name: Cache node_modules
                 uses: actions/cache@v4
                 with:
@@ -80,14 +80,14 @@ jobs:
         needs: [ test, build, lint ]
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
                 with:
                     token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                     fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
                     ref: master
-            -   uses: actions/setup-node@v4
+            -   uses: actions/setup-node@v5
                 with:
-                    node-version: 20
+                    node-version: 22
             -   name: Cache node_modules
                 uses: actions/cache@v4
                 with:
