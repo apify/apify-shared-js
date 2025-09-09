@@ -68,7 +68,7 @@ export function parseAjvError(
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
     if (error.keyword === 'type') {
-        fieldKey = error.instancePath.split('/').pop()!;
+        fieldKey = cleanPropertyName(error.instancePath);
         // Check if value is null and field is nullable, if yes, then skip this error
         if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
             return null;
