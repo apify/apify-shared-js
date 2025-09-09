@@ -167,7 +167,7 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}.enum`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
     // If the definition contains "resourceType" property then it's resource type.
