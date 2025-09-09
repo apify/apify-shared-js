@@ -45,6 +45,8 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     maxProperties?: number;
     minProperties?: number;
     properties?: Record<string, unknown>;
+    required?: string[];
+    additionalProperties?: boolean;
 }
 
 export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
