@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.19.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.18.4...@apify/input_schema@3.19.0) (2025-09-10)
+
+
+### Features
+
+* **input_schema:** Update sub-schema related types ([#534](https://github.com/apify/apify-shared-js/issues/534)) ([5537424](https://github.com/apify/apify-shared-js/commit/553742479310fe850065776a805b3fe0d9a9a904))
+
+
+
+
+
 ## [3.18.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.18.3...@apify/input_schema@3.18.4) (2025-08-11)
 
 **Note:** Version bump only for package @apify/input_schema
