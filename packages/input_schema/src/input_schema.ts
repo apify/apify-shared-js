@@ -68,7 +68,7 @@ export function parseAjvError(
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null
     if (error.keyword === 'type') {
-        fieldKey = error.instancePath.split('/').pop()!;
+        fieldKey = cleanPropertyName(error.instancePath);
         // Check if value is null and field is nullable, if yes, then skip this error
         if (properties[fieldKey] && properties[fieldKey].nullable && input[fieldKey] === null) {
             return null;
@@ -167,7 +167,7 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}.enum`);
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
     // If the definition contains "resourceType" property then it's resource type.

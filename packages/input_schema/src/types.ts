@@ -39,16 +39,19 @@ export type IntegerFieldDefinition = CommonFieldDefinition<number> & {
 
 export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     type: 'object'
-    editor: 'json' | 'proxy' | 'hidden';
+    editor: 'json' | 'proxy' | 'schemaBased' | 'hidden';
     patternKey?: string;
     patternValue?: string;
     maxProperties?: number;
     minProperties?: number;
+    properties?: Record<string, unknown>;
+    required?: string[];
+    additionalProperties?: boolean;
 }
 
 export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     type: 'array'
-    editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'hidden';
+    editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'schemaBased' | 'hidden';
     placeholderKey?: string;
     placeholderValue?: string;
     patternKey?: string;

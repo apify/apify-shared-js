@@ -246,7 +246,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.enum.enum must NOT have fewer than 1 items)',
+                'Input schema is not valid (Field schema.properties.myField.enum must NOT have fewer than 1 items)',
             );
         });
 
@@ -267,7 +267,7 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.enum.enumTitles must NOT have fewer than 1 items)',
+                'Input schema is not valid (Field schema.properties.myField.enumTitles must NOT have fewer than 1 items)',
             );
         });
 
