@@ -429,3 +429,10 @@ export async function timeoutPromise<T>(promise: Promise<T>, timeoutMillis: numb
         timeout = setTimeout(() => callback(new Error(errorMessage)), timeoutMillis) as unknown as number;
     });
 }
+
+/**
+ * Removes the leading ^ and trailing $ from regex
+ */
+export function createInjectableRegExp(regex: RegExp) {
+    return new RegExp(regex.source.replace(/^\^|\$$/g, ''));
+}

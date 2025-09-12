@@ -398,3 +398,21 @@ describe('BetterSetInterval', () => {
         expect(fn).toHaveBeenCalledTimes(4);
     });
 });
+
+describe('createInjectableRegExp()', () => {
+    it('works with leading ^ and trailing $', () => {
+        expect(utils.createInjectableRegExp(/^[\w._~]+$/)).toStrictEqual(/[\w._~]+/);
+    });
+
+    it('works with leading ^', () => {
+        expect(utils.createInjectableRegExp(/^[\w._~]+/)).toStrictEqual(/[\w._~]+/);
+    });
+
+    it('works with trailing $', () => {
+        expect(utils.createInjectableRegExp(/[\w._~]+$/)).toStrictEqual(/[\w._~]+/);
+    });
+
+    it('works when regex is already injectable', () => {
+        expect(utils.createInjectableRegExp(/[\w._~]+/)).toStrictEqual(/[\w._~]+/);
+    });
+});
