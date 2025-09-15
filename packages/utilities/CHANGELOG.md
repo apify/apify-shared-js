@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.18.2...@apify/utilities@2.19.0) (2025-09-15)
+
+
+### Features
+
+* create injectable regex utility function ([#536](https://github.com/apify/apify-shared-js/issues/536)) ([598952e](https://github.com/apify/apify-shared-js/commit/598952e15b108ed6e353598aa05ae3bff623f9ae)), closes [/github.com/apify/apify-shared-js/blob/master/packages/consts/src/regexs.ts#L51](https://github.com//github.com/apify/apify-shared-js/blob/master/packages/consts/src/regexs.ts/issues/L51) [/github.com/apify/apify-proxy/blob/develop/src/proxy_utils.ts#L20](https://github.com//github.com/apify/apify-proxy/blob/develop/src/proxy_utils.ts/issues/L20)
+
+
+
+
+
 ## [2.18.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.18.1...@apify/utilities@2.18.2) (2025-08-11)
 
 **Note:** Version bump only for package @apify/utilities
