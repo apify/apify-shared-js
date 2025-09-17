@@ -1,0 +1,129 @@
+{
+    "$id": "dataset.json",
+    "title": "JSON schema of Apify Actor dataset schema",
+    "type": "object",
+    "properties": {
+        "actorSpecification": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "fields": {
+            "$ref": "json_schema_draft_07.json"
+        },
+        "views": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "transformation": {
+                            "type": "object",
+                            "properties": {
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true
+                                },
+                                "clean": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "omit": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true
+                                },
+                                "unwind": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true
+                                },
+                                "desc": {
+                                    "type": "boolean"
+                                },
+                                "skipHidden": {
+                                    "type": "boolean"
+                                },
+                                "skipEmpty": {
+                                    "type": "boolean"
+                                }
+                            }
+                        },
+                        "display": {
+                            "type": "object",
+                            "properties": {
+                                "component": {
+                                    "type": "string",
+                                    "enum": [
+                                        "table",
+                                        "grid"
+                                    ]
+                                },
+                                "options": {
+                                    "type": "object"
+                                },
+                                "properties": {
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "component"
+                            ]
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "title",
+                                "transformation"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "title",
+                                "display"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "anyOf": [
+        {
+            "required": [
+                "actorSpecification",
+                "views"
+            ]
+        },
+        {
+            "required": [
+                "actorSpecification",
+                "fields"
+            ]
+        }
+    ],
+    "additionalProperties": false
+}
