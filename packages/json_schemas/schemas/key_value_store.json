@@ -42,7 +42,7 @@
                             "type": "string"
                         },
                         "jsonSchema": {
-                            "$ref": "json_schema_draft_07.json"
+                            "$ref": "http://json-schema.org/draft-07/schema#"
                         }
                     },
                     "oneOf": [

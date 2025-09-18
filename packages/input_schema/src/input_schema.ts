@@ -1,7 +1,7 @@
 import type { ErrorObject, Schema } from 'ajv';
 import type Ajv from 'ajv';
 
-import schema from '@apify/json_schemas/schemas/input.json';
+import { inputSchema as schema } from '@apify/json_schemas';
 
 import { m } from './intl';
 import type {
