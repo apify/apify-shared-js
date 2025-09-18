@@ -1,8 +1,9 @@
 import type { ErrorObject, Schema } from 'ajv';
 import type Ajv from 'ajv';
 
+import schema from '@apify/json_schemas/schemas/input.json';
+
 import { m } from './intl';
-import schema from './schema.json';
 import type {
     CommonResourceFieldDefinition,
     FieldDefinition,

@@ -2,27 +2,20 @@
     "name": "@apify/json_schemas",
     "version": "0.1.0",
     "description": "Publicly available JSON schemas for Apify platform",
-    "main": "./dist/cjs/index.cjs",
-    "module": "./dist/esm/index.mjs",
-    "typings": "./dist/cjs/index.d.ts",
-    "exports": {
-        ".": {
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.cjs"
-            }
-        }
-    },
     "files": [
         "dist/",
         "schemas/"
     ],
+    "exports": {
+        "./actor.json": "./schemas/actor.json",
+        "./dataset.json": "./schemas/dataset.json",
+        "./key_value_store.json": "./schemas/key_value_store.json",
+        "./input.json": "./schemas/input.json",
+        "./output.json": "./schemas/output.json"
+    },
     "keywords": [
-        "apify"
+        "apify",
+        "json-schema"
     ],
     "author": {
         "name": "Apify",
@@ -39,19 +32,15 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run compile && npm run build-schemas && npm run copy",
+        "build": "npm run clean && npm run build-schemas && npm run copy",
         "clean": "rimraf ./dist",
         "build-schemas": "ts-node scripts/build-schemas.ts",
-        "compile": "tsup",
-        "copy": "ts-node -T ../../scripts/copy.ts"
+        "copy": "mkdir ./dist && ts-node -T ../../scripts/copy.ts"
     },
     "publishConfig": {
         "access": "public"
     },
     "dependencies": {
         "@apify/consts": "^2.44.1"
-    },
-    "peerDependencies": {
-        "ajv": "^8.0.0"
     }
 }

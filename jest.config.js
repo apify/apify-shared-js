@@ -12,6 +12,7 @@ module.exports = {
         '<rootDir>/packages/*/src/**/*.ts',
     ],
     moduleNameMapper: {
+        '^@apify/json_schemas/(.*)$': '<rootDir>/packages/json_schemas/$1',
         '@apify/(.*)': '<rootDir>/packages/$1/src',
     },
     modulePathIgnorePatterns: [
