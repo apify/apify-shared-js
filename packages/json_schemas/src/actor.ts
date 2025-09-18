@@ -1,5 +1,8 @@
 import { ACTOR_LIMITS } from '@apify/consts';
 
+// NOTE: When updating actor.json schema, always update this file not the schemas/actor.json file directly.
+// The schemas/actor.json file is generated from this file during the build step.
+
 export const actorSchema = {
     $id: 'actor.json',
     title: 'JSON schema of Apify Actor actor.json file',

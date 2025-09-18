@@ -1,3 +1,4 @@
+// We're using the 2019, because input schema requires it (it uses "unevaluatedProperties" keyword)
 import Ajv from 'ajv/dist/2019.js';
 import draft7MetaSchema from 'ajv/lib/refs/json-schema-draft-07.json';
 
@@ -16,12 +17,12 @@ const ajv = new Ajv({
         inputSchema,
         keyValueStoreSchema,
         outputSchema,
+        // We need to provide draft-07 metaschema, because other schemas reference it
+        // using "$ref": "http://json-schema.org/draft-07/schema#"
         draft7MetaSchema,
     ],
     allowUnionTypes: true,
 });
-
-// ajv.addMetaSchema(draft7MetaSchema);
 
 export const getActorSchemaValidator = () => ajv.compile(actorSchema);
 
