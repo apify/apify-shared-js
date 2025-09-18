@@ -8,7 +8,7 @@ import {
     inputSchema,
     keyValueStoreSchema,
     outputSchema,
-} from './schemas.js';
+} from './schemas';
 
 const ajv = new Ajv({
     schemas: [
