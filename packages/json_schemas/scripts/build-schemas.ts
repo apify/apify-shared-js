@@ -3,10 +3,10 @@
 
 import { writeFileSync } from 'node:fs';
 
-import { actorSchema } from '../src/actor';
+import { actorSchema } from '../src/actor.schema';
 
 const schemasToBuild = [
-    { schema: actorSchema, filename: 'schemas/actor.json' },
+    { schema: actorSchema, filename: 'schemas/actor.schema.json' },
 ];
 
 for (const { schema, filename } of schemasToBuild) {
