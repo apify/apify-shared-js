@@ -1,0 +1,58 @@
+name: Check JSON schemas consistency
+
+# The json_schemas package contains TypeScript code that generates JSON schema files.
+# This workflow ensures that any changes to the TypeScript code are reflected in the generated JSON schema files.
+# If there is a mismatch, the workflow fails, prompting the developer to regenerate the JSON schema files.
+
+on:
+    pull_request:
+        # List all .ts - .json file pairs that need to be kept in sync
+        paths:
+            - 'packages/json_schemas/src/actor.schema.ts'
+            - 'packages/json_schemas/schemas/actor.schema.json'
+
+jobs:
+    check_json_schemas:
+        name: 'Check JSON schemas consistency'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v5
+              with:
+                node-version: ${{ matrix.node-version }}
+
+            - name: Cache node_modules
+              uses: actions/cache@v4
+              with:
+                path: '**/node_modules'
+                key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Install Dependencies
+              run: npm ci --no-audit
+            - run: cd packages/json_schemas && npm run build
+
+            - name: Check JSON consistency
+              run: |
+                files_to_check=(
+                    "packages/json_schemas/src/actor.schema.ts|packages/json_schemas/schemas/actor.schema.json"
+                    # add more ts|json pairs here
+                )
+
+                failed=0
+
+                for pair in "${files_to_check[@]}"; do
+                    ts_file="${pair%%|*}"
+                    json_file="${pair##*|}"
+
+                    if ! git diff --exit-code "$json_file" >/dev/null; then
+                        echo "ERROR: $json_file is out of sync with $ts_file."
+                        echo "Please update $json_file by running the build script (npm run build:json)."
+                        failed=1
+                    fi
+                done
+
+                if [ $failed -eq 1 ]; then
+                    exit 1
+                fi
