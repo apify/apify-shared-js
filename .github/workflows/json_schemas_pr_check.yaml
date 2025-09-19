@@ -31,7 +31,7 @@ jobs:
 
             - name: Install Dependencies
               run: npm ci --no-audit
-            - run: cd packages/json_schemas && npm run build
+            - run: npm run build
 
             - name: Check JSON consistency
               run: |
