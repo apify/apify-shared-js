@@ -48,7 +48,7 @@ jobs:
 
                     if ! git diff --exit-code "$json_file" >/dev/null; then
                         echo "ERROR: $json_file is out of sync with $ts_file."
-                        echo "Please put the changes to .ts file ($ts_file) and update the .json file ($json_file) by running the build script (npm run build)."
+                        echo "Please put the schema changes to .ts file ($ts_file) and update the .json file ($json_file) by running the build script (npm run build)."
                         failed=1
                     fi
                 done
