@@ -1,0 +1,80 @@
+{
+    "$id": "key_value_store.json",
+    "title": "JSON schema of Apify Actor key-value store schema",
+    "type": "object",
+    "properties": {
+        "actorKeyValueStoreSchemaVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "type": { "const": "object" },
+        "collections": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "contentTypes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1,
+                            "uniqueItems": true
+                        },
+                        "keyPrefix": {
+                            "type": "string"
+                        },
+                        "key": {
+                            "type": "string"
+                        },
+                        "jsonSchema": {
+                            "$ref": "http://json-schema.org/draft-07/schema#"
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "key"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "keyPrefix"
+                            ]
+                        }
+                    ],
+                    "dependencies": {
+                        "jsonSchema": {
+                            "properties": {
+                                "contentTypes": { "const": [ "application/json" ] }
+                            },
+                            "required": [
+                                "contentTypes"
+                            ]
+
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "actorKeyValueStoreSchemaVersion",
+        "title",
+        "collections"
+    ]
+}
