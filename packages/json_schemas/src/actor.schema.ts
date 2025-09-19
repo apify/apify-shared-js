@@ -14,7 +14,7 @@ export const actorSchema = {
             maximum: 1,
         },
         name: {
-            type: 'integer',
+            type: 'string',
         },
         title: {
             type: 'string',
