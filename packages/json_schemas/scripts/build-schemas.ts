@@ -10,5 +10,5 @@ const schemasToBuild = [
 ];
 
 for (const { schema, filename } of schemasToBuild) {
-    writeFileSync(filename, JSON.stringify(schema, null, 2));
+    writeFileSync(filename, `${JSON.stringify(schema, null, 2)}\n`);
 }
