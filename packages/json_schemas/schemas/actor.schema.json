@@ -9,7 +9,7 @@
       "maximum": 1
     },
     "name": {
-      "type": "string"
+      "type": "integer"
     },
     "title": {
       "type": "string"
