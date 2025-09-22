@@ -34,7 +34,7 @@
       }
     },
     "dockerfile": {
-      "type": "string",
+      "type": "number",
       "default": "../Dockerfile"
     },
     "readme": {
