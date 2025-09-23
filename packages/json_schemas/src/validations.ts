@@ -1,7 +1,8 @@
 // We're using the 2019, because input schema requires it (it uses "unevaluatedProperties" keyword)
 import Ajv from 'ajv/dist/2019.js';
-import draft7MetaSchema from 'ajv/lib/refs/json-schema-draft-07.json';
 
+// TODO: it might be better to import this from ajv package
+import draft7MetaSchema from '../schemas/json-schema-draft-07.json';
 import {
     actorSchema,
     datasetSchema,
