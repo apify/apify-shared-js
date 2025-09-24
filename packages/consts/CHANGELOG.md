@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.45.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.44.1...@apify/consts@2.45.0) (2025-09-24)
+
+
+### Features
+
+* add new pricing info env vars ([#541](https://github.com/apify/apify-shared-js/issues/541)) ([cf68ed8](https://github.com/apify/apify-shared-js/commit/cf68ed86033ad6a240b3ca272709b7eda2f66d0e))
+
+
+
+
+
 ## [2.44.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.44.0...@apify/consts@2.44.1) (2025-08-11)
 
 **Note:** Version bump only for package @apify/consts
