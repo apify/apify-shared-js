@@ -55,6 +55,13 @@ jobs:
                 run: npm ci --no-audit
             -   run: npm run build
 
+            -   name: Check build consistency
+                run: |
+                    git diff --exit-code || {
+                        echo -e "Some files changed after running npm run build! Please build the project locally and commit the changes.";
+                        exit 1;
+                    }
+
     lint:
         name: Lint
         runs-on: ubuntu-latest
