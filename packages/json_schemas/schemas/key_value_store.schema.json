@@ -1,8 +1,11 @@
 {
-    "$id": "key_value_store.json",
+    "$id": "https://apify.com/schemas/v1/key-value-store.json",
     "title": "JSON schema of Apify Actor key-value store schema",
     "type": "object",
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "actorKeyValueStoreSchemaVersion": {
             "type": "integer",
             "minimum": 1,

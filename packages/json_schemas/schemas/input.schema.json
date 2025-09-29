@@ -1,4 +1,5 @@
 {
+    "$id": "https://apify.com/schemas/v1/input.json",
     "title": "JSON schema of Apify Actor input",
     "type": "object",
     "properties": {

@@ -1,8 +1,11 @@
 {
-  "$id": "actor.json",
+  "$id": "https://apify.com/schemas/v1/actor.json",
   "title": "JSON schema of Apify Actor actor.json file",
   "type": "object",
   "properties": {
+    "$schema": {
+      "type": "string"
+    },
     "actorSpecification": {
       "type": "integer",
       "minimum": 1,
@@ -77,7 +80,7 @@
           "type": "string"
         },
         {
-          "$ref": "output.json"
+          "$ref": "https://apify.com/schemas/v1/output.json"
         }
       ]
     },
@@ -87,7 +90,7 @@
           "type": "string"
         },
         {
-          "$ref": "output.json"
+          "$ref": "https://apify.com/schemas/v1/output.json"
         }
       ]
     },
@@ -100,7 +103,7 @@
               "type": "string"
             },
             {
-              "$ref": "key_value_store.json"
+              "$ref": "https://apify.com/schemas/v1/key-value-store.json"
             }
           ]
         },
@@ -110,7 +113,7 @@
               "type": "string"
             },
             {
-              "$ref": "dataset.json"
+              "$ref": "https://apify.com/schemas/v1/dataset.json"
             }
           ]
         },

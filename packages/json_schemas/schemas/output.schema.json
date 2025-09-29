@@ -1,8 +1,11 @@
 {
-    "$id": "output.json",
+    "$id": "https://apify.com/schemas/v1/output.json",
     "title": "JSON schema of Apify Actor output schema",
     "type": "object",
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "actorOutputSchemaVersion": {
             "type": "integer",
             "minimum": 1,
