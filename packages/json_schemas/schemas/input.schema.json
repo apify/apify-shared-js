@@ -179,7 +179,7 @@
             "type": "object",
             "properties": {
                 "type": { "enum": ["array"] },
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "schemaBased", "hidden"] },
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "schemaBased", "hidden"] },
                 "isSecret": { "type": "boolean" }
             },
             "required": ["type", "title", "description", "editor"],
@@ -223,6 +223,13 @@
                                 "properties": {
                                     "editor": { "enum": ["keyValue"] },
                                     "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                                }
+                            },
+                            {
+                                "required": ["editor"],
+                                "properties": {
+                                    "editor": { "enum": ["fileupload"] },
+                                    "items": { "$ref": "#/definitions/arrayItemsFileupload" }
                                 }
                             },
                             {
@@ -679,7 +686,7 @@
             "type": "object",
             "properties": {
                 "type": { "enum": ["array"] },
-                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "select", "hidden"] },
+                "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "hidden"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "nullable": { "type": "boolean" },
@@ -706,6 +713,13 @@
                     "properties": {
                         "editor": { "enum": ["keyValue"] },
                         "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                    }
+                },
+                {
+                    "required": ["editor"],
+                    "properties": {
+                        "editor": { "enum": ["fileupload"] },
+                        "items": { "$ref": "#/definitions/arrayItemsFileupload" }
                     }
                 },
                 {
@@ -997,6 +1011,18 @@
         },
         "arrayItemsStringList": {
             "title": "Utils: Array items stringList definition",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "pattern": { "type": "string" },
+                "minLength": { "type": "integer" },
+                "maxLength": { "type": "integer" }
+            },
+            "required": ["type"]
+        },
+        "arrayItemsFileupload": {
+            "title": "Utils: Array items fileupload definition",
             "type": "object",
             "additionalProperties": false,
             "properties": {
