@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.2.2...@apify/json_schemas@0.3.0) (2025-09-30)
+
+
+### Features
+
+* **json_schemas:** Add $id property to JSON schemas ([#544](https://github.com/apify/apify-shared-js/issues/544)) ([0033f9c](https://github.com/apify/apify-shared-js/commit/0033f9cb09d7d748840fd0be35b9572b75ed458d))
+
+
+
+
+
 ## [0.2.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.2.1...@apify/json_schemas@0.2.2) (2025-09-24)
 
 **Note:** Version bump only for package @apify/json_schemas
