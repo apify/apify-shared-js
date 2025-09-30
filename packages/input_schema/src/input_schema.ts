@@ -114,8 +114,11 @@ const validateAgainstSchemaOrThrow = (validator: Ajv, obj: Record<string, unknow
  * We override schema.properties.properties not to validate field definitions.
  */
 function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): asserts obj is InputSchemaBaseChecked {
+    // We need to remove $id from the schema, because AJV cache the schema by id and if we provide
+    // different schema instance with the same id, it will throw an error.
+    const { $id, ...schemaWithoutId } = schema;
     const schemaWithoutProperties = {
-        ...schema,
+        ...schemaWithoutId,
         properties: { ...schema.properties, properties: { type: 'object' } as any },
     };
     validateAgainstSchemaOrThrow(validator, obj, schemaWithoutProperties, 'schema');

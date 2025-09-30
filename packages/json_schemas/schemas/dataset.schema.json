@@ -1,8 +1,11 @@
 {
-    "$id": "dataset.json",
+    "$id": "https://apify.com/schemas/v1/dataset.json",
     "title": "JSON schema of Apify Actor dataset schema",
     "type": "object",
     "properties": {
+        "$schema": {
+            "type": "string"
+        },
         "actorSpecification": {
             "type": "integer",
             "minimum": 1,
