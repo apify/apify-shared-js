@@ -39,6 +39,12 @@ describe('input_schema.json', () => {
                         description: 'Some description ...',
                         editor: 'fileupload',
                     },
+                    myfield5: {
+                        title: 'Array fileupload title',
+                        type: 'array',
+                        description: 'Some description...',
+                        editor: 'fileupload',
+                    },
                 },
             };
 
