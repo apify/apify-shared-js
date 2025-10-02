@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.3.0...@apify/json_schemas@0.4.0) (2025-10-02)
+
+
+### Features
+
+* add fileupload editor for string arrays ([#545](https://github.com/apify/apify-shared-js/issues/545)) ([a9726fa](https://github.com/apify/apify-shared-js/commit/a9726faeaa8e11856f2561c28ca13585e1932007))
+
+
+
+
+
 # [0.3.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.2.2...@apify/json_schemas@0.3.0) (2025-09-30)
 
 
