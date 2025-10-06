@@ -229,5 +229,29 @@ describe('dataset.json', () => {
                 }),
             );
         });
+
+        it('should not allow colon (:) in field names', () => {
+            const schema = {
+                actorSpecification: 1,
+                title: 'My Dataset',
+                description: 'This is my dataset',
+                fields: {
+                    properties: {
+                        'my:field': {
+                            type: 'string',
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    instancePath: '/fields/properties',
+                    message: 'must match pattern "^[^:]+$"',
+                }),
+            );
+        });
     });
 });

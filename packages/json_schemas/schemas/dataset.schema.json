@@ -18,7 +18,20 @@
             "type": "string"
         },
         "fields": {
-            "$ref": "http://json-schema.org/draft-07/schema#"
+            "allOf": [
+                { "$ref": "http://json-schema.org/draft-07/schema#" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "properties": {
+                            "type": "object",
+                            "propertyNames": {
+                                "pattern": "^[^:]+$"
+                            }
+                        }
+                    }
+                }
+            ]
         },
         "views": {
             "type": "object",
