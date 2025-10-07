@@ -587,8 +587,8 @@ describe('utilities.client', () => {
             required: ['field'],
         };
         const ajv = new Ajv({ strict: false });
-        const buildInputSchema = (properties: any) => {
-            const inputSchema = { ...baseInputSchema, properties };
+        const buildInputSchema = (properties: any, otherFields = {}) => {
+            const inputSchema = { ...baseInputSchema, properties, ...otherFields };
             const validator = ajv.compile(inputSchema);
             return { inputSchema, validator };
         };
@@ -1422,6 +1422,126 @@ describe('utilities.client', () => {
                 expect(errorResults[1][0].message).toEqual('Field input.field.key.with.dot is required');
                 expect(errorResults[2][0].message).toEqual('Field input.field.key.with.dot is required');
                 expect(errorResults[2][0].message).toEqual('Field input.field.key.with.dot is required');
+            });
+        });
+
+        describe('special cases for number and integer fields', () => {
+            it('should allow float number only for number field', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    numberField: {
+                        title: 'Field 1',
+                        description: 'My test field 1',
+                        type: 'number',
+                        editor: 'number',
+                    },
+                    intField: {
+                        title: 'Field 2',
+                        description: 'My test field 2',
+                        type: 'integer',
+                        editor: 'number',
+                    },
+                }, { required: [] });
+
+                const validInputs = [
+                    { numberField: 1 },
+                    { numberField: 1.5 },
+                    { numberField: -1.5 },
+                    { intField: 1 },
+                    { intField: 1.0 },
+                    { intField: -1 },
+                    { intField: 0 },
+                ];
+
+                const invalidInputs = [
+                    { numberField: '1' },
+                    { numberField: 'a' },
+                    { numberField: [] },
+                    { numberField: {} },
+                    { intField: 1.5 },
+                    { intField: -1.5 },
+                    { intField: '1' },
+                    { intField: 'a' },
+                    { intField: [] },
+                    { intField: {} },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(10);
+                errorResults.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(['numberField', 'intField']).toContain(result[0].fieldKey);
+                });
+
+                let i;
+                for (i = 0; i < 4; i++) {
+                    expect(errorResults[i][0].message).toEqual('Field input.numberField must be number');
+                }
+                for (i; i < 10; i++) {
+                    expect(errorResults[i][0].message).toEqual('Field input.intField must be integer');
+                }
+            });
+
+            it('should respect minimum, maximum for number and integer fields', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    numberField: {
+                        title: 'Field 1',
+                        description: 'My test field 1',
+                        type: 'number',
+                        editor: 'number',
+                        minimum: 1.5,
+                        maximum: 5.5,
+                    },
+                    intField: {
+                        title: 'Field 2',
+                        description: 'My test field 2',
+                        type: 'integer',
+                        editor: 'number',
+                        exclusiveMinimum: 1,
+                        exclusiveMaximum: 5,
+                    },
+                }, { required: [] });
+
+                const validInputs = [
+                    { numberField: 1.5 },
+                    { numberField: 3 },
+                    { numberField: 5.5 },
+                    { intField: 2 },
+                    { intField: 3 },
+                    { intField: 4 },
+                ];
+
+                const invalidInputs = [
+                    { numberField: 1.4 },
+                    { numberField: 5.6 },
+                    { intField: 1 },
+                    { intField: 5 },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(4);
+                errorResults.forEach((result) => {
+                    // Only one error should be thrown
+                    expect(result.length).toEqual(1);
+                    expect(['numberField', 'intField']).toContain(result[0].fieldKey);
+                });
+
+                expect(errorResults[0][0].message).toEqual('Field input.numberField must be >= 1.5');
+                expect(errorResults[1][0].message).toEqual('Field input.numberField must be <= 5.5');
+                expect(errorResults[2][0].message).toEqual('Field input.intField must be > 1');
+                expect(errorResults[3][0].message).toEqual('Field input.intField must be < 5');
             });
         });
     });

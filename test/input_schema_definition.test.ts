@@ -32,7 +32,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         nullable: false,
                         description: 'Some description ...',
                         editor: 'json',
@@ -97,7 +97,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         nullable: false,
                         description: 'Some description ...',
                         editor: 'json',
@@ -209,6 +209,45 @@ describe('input_schema.json', () => {
             turnOffConsoleWarnErrors();
         });
 
+        describe('special cases for number and integer types', () => {
+            const isSchemaValid = (fields: object, type: 'number' | 'integer') => {
+                return ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type,
+                            editor: 'number',
+                            ...fields,
+                        },
+                    },
+                });
+            };
+
+            it('should allow all number/integer specific fields', () => {
+                ['minimum', 'maximum', 'default', 'prefill', 'example'].forEach((intField) => {
+                    expect(isSchemaValid({ [intField]: 10 }, 'integer')).toBe(true);
+                    expect(isSchemaValid({ [intField]: 10.0 }, 'integer')).toBe(true);
+                    expect(isSchemaValid({ [intField]: 10.5 }, 'integer')).toBe(false);
+
+                    expect(isSchemaValid({ [intField]: 10 }, 'number')).toBe(true);
+                    expect(isSchemaValid({ [intField]: 10.5 }, 'number')).toBe(true);
+                    expect(isSchemaValid({ [intField]: 10.5 }, 'number')).toBe(true);
+                });
+            });
+
+            it('should allow only number editor', () => {
+                expect(isSchemaValid({ editor: 'number' }, 'integer')).toBe(true);
+                expect(isSchemaValid({ editor: 'textfield' }, 'integer')).toBe(false);
+
+                expect(isSchemaValid({ editor: 'number' }, 'number')).toBe(true);
+                expect(isSchemaValid({ editor: 'textfield' }, 'number')).toBe(false);
+            });
+        });
+
         describe('special cases for isSecret property', () => {
             const isSchemaValid = (fields: object, isSecret?: boolean) => {
                 return ajv.validate(inputSchema, {
@@ -257,6 +296,7 @@ describe('input_schema.json', () => {
                 [
                     { type: 'boolean' },
                     { type: 'integer' },
+                    { type: 'number' },
                 ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(false);
                 });
