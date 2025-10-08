@@ -14,7 +14,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         description: 'Some description ...',
                         editor: 'json',
                     },
@@ -60,7 +60,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         description: 'Some description ...',
                         editor: 'json',
                     },
@@ -78,7 +78,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         description: 'Some description ...',
                         editor: 'json',
                     },
@@ -98,7 +98,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'boolean'],
+                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
                         description: 'Some description ...',
                         editor: 'textfield',
                     },
@@ -847,6 +847,7 @@ describe('input_schema.json', () => {
                 const types = [
                     { type: 'string', editor: 'textfield' },
                     { type: 'integer', editor: 'number' },
+                    { type: 'number', editor: 'number' },
                     { type: 'boolean', editor: 'checkbox' },
                     { type: 'array', editor: 'json' },
                     { type: 'object', editor: 'json' },
@@ -875,6 +876,7 @@ describe('input_schema.json', () => {
                 const types = [
                     { type: 'string', editor: 'textfield' },
                     { type: 'integer', editor: 'number' },
+                    { type: 'number', editor: 'number' },
                     { type: 'boolean', editor: 'checkbox' },
                     { type: 'array', editor: 'json' },
                     { type: 'object', editor: 'json' },

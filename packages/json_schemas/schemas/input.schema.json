@@ -39,6 +39,7 @@
                         { "$ref": "#/definitions/arrayProperty" },
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
+                        { "$ref": "#/definitions/numberProperty" },
                         { "$ref": "#/definitions/booleanProperty" },
                         { "$ref": "#/definitions/resourceProperty" },
                         { "$ref": "#/definitions/resourceArrayProperty" },
@@ -434,6 +435,35 @@
                 "properties": { "default": { "type": ["integer", "null"] } }
             }
         },
+        "numberProperty": {
+            "title": "Number property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": { "enum": ["number"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "prefill": { "type": "number" },
+                "example": { "type": "number" },
+                "nullable": { "type": "boolean" },
+                "minimum": { "type": "number" },
+                "maximum": { "type": "number" },
+                "unit": { "type": "string" },
+                "editor": { "enum": ["number", "hidden"] },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" }
+            },
+            "required": ["type", "title", "description"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "number" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["number", "null"] } }
+            }
+        },
         "booleanProperty": {
             "title": "Boolean property",
             "type": "object",
@@ -586,7 +616,7 @@
                     "type": ["array"],
                     "items": {
                         "type": "string",
-                        "enum": ["object", "array", "string", "integer", "boolean"]
+                        "enum": ["object", "array", "string", "integer", "number", "boolean"]
                     },
                     "uniqueItems": true,
                     "additionalItems": false,
@@ -594,8 +624,8 @@
                 },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
-                "prefill": { "type": ["object", "array", "string", "integer", "boolean"] },
-                "example": { "type": ["object", "array", "string", "integer", "boolean"] },
+                "prefill": { "type": ["object", "array", "string", "integer", "number", "boolean"] },
+                "example": { "type": ["object", "array", "string", "integer", "number", "boolean"] },
                 "nullable": { "type": "boolean" },
                 "editor": { "enum": ["json", "hidden"] },
                 "sectionCaption": { "type": "string" },
@@ -606,10 +636,10 @@
                 "properties": { "nullable": { "const": false } }
             },
             "then": {
-                "properties": { "default": { "type": ["object", "array", "string", "integer", "boolean"] } }
+                "properties": { "default": { "type": ["object", "array", "string", "integer", "number", "boolean"] } }
             },
             "else": {
-                "properties": { "default": { "type": ["object", "array", "string", "integer", "boolean", "null"] } }
+                "properties": { "default": { "type": ["object", "array", "string", "integer", "number", "boolean", "null"] } }
             }
         },
         "subSchemaStringEnumProperty": {
@@ -779,6 +809,22 @@
             },
             "required": ["type", "title", "description"]
         },
+        "subSchemaNumberProperty": {
+            "title": "Sub-schema: Number property",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": { "enum": ["number"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "minimum": { "type": "number" },
+                "maximum": { "type": "number" },
+                "unit": { "type": "string" },
+                "editor": { "enum": ["number", "hidden"] }
+            },
+            "required": ["type", "title", "description"]
+        },
         "subSchemaBooleanProperty": {
             "title": "Sub-schema: Boolean property",
             "type": "object",
@@ -902,6 +948,7 @@
                                     { "$ref": "#/definitions/subSchemaArrayProperty" },
                                     { "$ref": "#/definitions/subSchemaObjectProperty" },
                                     { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                                    { "$ref": "#/definitions/subSchemaNumberProperty" },
                                     { "$ref": "#/definitions/subSchemaBooleanProperty" },
                                     { "$ref": "#/definitions/subSchemaResourceProperty" },
                                     { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
@@ -1293,6 +1340,7 @@
                         { "$ref": "#/definitions/subSchemaArrayProperty" },
                         { "$ref": "#/definitions/subSchemaObjectProperty" },
                         { "$ref": "#/definitions/subSchemaIntegerProperty" },
+                        { "$ref": "#/definitions/subSchemaNumberProperty" },
                         { "$ref": "#/definitions/subSchemaBooleanProperty" },
                         { "$ref": "#/definitions/subSchemaResourceProperty" },
                         { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
