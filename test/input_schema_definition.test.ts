@@ -234,7 +234,7 @@ describe('input_schema.json', () => {
                     expect(isSchemaValid({ [intField]: 10.5 }, 'integer')).toBe(false);
 
                     expect(isSchemaValid({ [intField]: 10 }, 'number')).toBe(true);
-                    expect(isSchemaValid({ [intField]: 10.5 }, 'number')).toBe(true);
+                    expect(isSchemaValid({ [intField]: 10.0 }, 'number')).toBe(true);
                     expect(isSchemaValid({ [intField]: 10.5 }, 'number')).toBe(true);
                 });
             });
