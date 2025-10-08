@@ -4,6 +4,7 @@ export {
     StringFieldDefinition,
     BooleanFieldDefinition,
     IntegerFieldDefinition,
+    NumberFieldDefinition,
     ObjectFieldDefinition,
     ArrayFieldDefinition,
     MixedFieldDefinition,

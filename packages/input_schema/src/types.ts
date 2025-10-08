@@ -37,6 +37,14 @@ export type IntegerFieldDefinition = CommonFieldDefinition<number> & {
     unit?: string;
 }
 
+export type NumberFieldDefinition = CommonFieldDefinition<number> & {
+    type: 'number'
+    editor?: 'number' | 'hidden';
+    maximum?: number;
+    minimum?: number;
+    unit?: string;
+}
+
 export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     type: 'object'
     editor: 'json' | 'proxy' | 'schemaBased' | 'hidden';
@@ -82,6 +90,7 @@ export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[
 type AllTypes = StringFieldDefinition['type']
     | BooleanFieldDefinition['type']
     | IntegerFieldDefinition['type']
+    | NumberFieldDefinition['type']
     | ObjectFieldDefinition['type']
     | ArrayFieldDefinition['type']
 
@@ -93,6 +102,7 @@ export type MixedFieldDefinition = CommonFieldDefinition<never> & {
 export type FieldDefinition = StringFieldDefinition
     | BooleanFieldDefinition
     | IntegerFieldDefinition
+    | NumberFieldDefinition
     | ObjectFieldDefinition
     | ArrayFieldDefinition
     | MixedFieldDefinition
