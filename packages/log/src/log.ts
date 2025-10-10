@@ -1,5 +1,5 @@
-import { LogFormat, LogLevel, PREFIX_DELIMITER } from './log_consts';
-import { getFormatFromEnv, getLevelFromEnv, limitDepth } from './log_helpers';
+import { LogFormat, LogLevel, PREFIX_DELIMITER, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers';
 import type { Logger } from './logger';
 import { LoggerJson } from './logger_json';
 import { LoggerText } from './logger_text';
@@ -14,10 +14,18 @@ export interface LoggerOptions {
     maxDepth?: number;
     /** Max length of the string to be logged. Longer strings will be truncated. */
     maxStringLength?: number;
+    /** Max number of properties to be logged. More properties will be omitted. */
+    maxProperties?: number;
+    /** Max number of array items to be logged. More items will be omitted. */
+    maxArrayLength?: number;
     /** Prefix to be prepended the each logged line. */
     prefix?: string | null;
     /** Suffix that will be appended the each logged line. */
     suffix?: string | null;
+    /** Suffix that will be appended to truncated strings, objects and arrays. */
+    truncationSuffix?: string;
+    /** Key of the flag property that will be added to the object if it is truncated. */
+    truncationFlagKey?: string;
     /**
      * Logger implementation to be used. Default one is log.LoggerText to log messages as easily readable
      * strings. Optionally you can use `log.LoggerJson` that formats each log line as a JSON.
@@ -40,9 +48,13 @@ const getLoggerForFormat = (format: LogFormat): Logger => {
 const getDefaultOptions = () => ({
     level: getLevelFromEnv(),
     maxDepth: 4,
-    maxStringLength: 2000,
+    maxStringLength: 1000,
+    maxProperties: 10,
+    maxArrayLength: 10,
     prefix: null,
     suffix: null,
+    truncationSuffix: TRUNCATION_SUFFIX,
+    truncationFlagKey: TRUNCATION_FLAG_KEY,
     logger: getLoggerForFormat(getFormatFromEnv()),
     data: {},
 });
@@ -130,14 +142,28 @@ export class Log {
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
         if (typeof this.options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
+        if (typeof this.options.maxProperties !== 'number') throw new Error('Options "maxProperties" must be a number!');
+        if (typeof this.options.maxArrayLength !== 'number') throw new Error('Options "maxArrayLength" must be a number!');
         if (this.options.prefix && typeof this.options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
         if (this.options.suffix && typeof this.options.suffix !== 'string') throw new Error('Options "suffix" must be a string!');
+        if (typeof this.options.truncationSuffix !== 'string') throw new Error('Options "truncationSuffix" must be a string!');
+        if (typeof this.options.truncationFlagKey !== 'string') throw new Error('Options "truncationFlagKey" must be a string!');
         if (typeof this.options.logger !== 'object') throw new Error('Options "logger" must be an object!');
         if (typeof this.options.data !== 'object') throw new Error('Options "data" must be an object!');
     }
 
-    private _limitDepth(obj: any) {
-        return limitDepth(obj, this.options.maxDepth);
+    private _sanitizeData(obj: any) {
+        return sanitizeData(
+            obj,
+            {
+                maxDepth: this.options.maxDepth,
+                maxStringLength: this.options.maxStringLength,
+                maxProperties: this.options.maxProperties,
+                maxArrayLength: this.options.maxArrayLength,
+                truncationSuffix: this.options.truncationSuffix,
+                truncationFlagKey: this.options.truncationFlagKey,
+            },
+        );
     }
 
     /**
@@ -170,8 +196,8 @@ export class Log {
         if (level > this.options.level) return;
 
         data = { ...this.options.data, ...data };
-        data = Reflect.ownKeys(data).length > 0 ? this._limitDepth(data) : undefined;
-        exception = this._limitDepth(exception);
+        data = Reflect.ownKeys(data).length > 0 ? this._sanitizeData(data) : undefined;
+        exception = this._sanitizeData(exception);
 
         this.options.logger.log(level, message, data, exception, {
             prefix: this.options.prefix,
