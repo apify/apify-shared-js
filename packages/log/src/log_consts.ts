@@ -24,6 +24,37 @@ export const LEVELS = LogLevel;
 export const TRUNCATION_FLAG_KEY = '[TRUNCATED]';
 export const TRUNCATION_SUFFIX = '...[truncated]';
 
+export const PREFERRED_FIELDS = [
+    // Core JS Error fields
+    'name',
+    'message',
+    'stack',
+    'cause',
+
+    // Axios / HTTP-related error metadata
+    'url',
+    'method',
+    'code',
+    'status',
+    'statusCode',
+    'statusText',
+
+    // Response-related / API-specific identifiers
+    'errorCode',
+    'errorMessage',
+    'errorResponse',
+
+    // Potentially large nested objects (kept last)
+    'response',
+    'request',
+    'data',
+    'payload',
+    'details',
+    'exception',
+    'config',
+    'headers',
+] as const;
+
 // Inverse of LOG_LEVELS = maps log level to string.
 export const LEVEL_TO_STRING = Object.keys(LogLevel).filter((x) => Number.isNaN(+x));
 

@@ -1,6 +1,13 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
 
-import { IS_APIFY_LOGGER_EXCEPTION, LogFormat, LogLevel, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import {
+    IS_APIFY_LOGGER_EXCEPTION,
+    LogFormat,
+    LogLevel,
+    PREFERRED_FIELDS,
+    TRUNCATION_FLAG_KEY,
+    TRUNCATION_SUFFIX,
+} from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -113,12 +120,25 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     if (typeof data === 'object' && data !== null) {
         if (maxDepth <= 0) return '[object]';
 
+        // Sort preferred fields to the front
+        const allKeys = Reflect.ownKeys(data);
+        allKeys.sort((a, b) => {
+            const aIndex = PREFERRED_FIELDS.findIndex((field) => field === a);
+            const bIndex = PREFERRED_FIELDS.findIndex((field) => field === b);
+
+            if (aIndex === -1 && bIndex === -1) return 0; // none is preferred
+            if (aIndex === -1) return 1; // a is not preferred
+            if (bIndex === -1) return -1; // b is not preferred
+            return aIndex - bIndex; // both are preferred, sort by index
+        });
+
+        // Sanitize only up to maxProperties fields (keeping preferred ones first)
         const sanitized: Record<PropertyKey, unknown> = {};
-        Reflect.ownKeys(data)
+        allKeys
             .slice(0, maxProperties)
             .forEach((key) => { sanitized[key] = nextCall(data[key as keyof typeof data]); });
 
-        if (Reflect.ownKeys(data).length > maxProperties) {
+        if (allKeys.length > maxProperties) {
             sanitized[truncationFlagKey] = true;
         }
 
