@@ -21,6 +21,9 @@ export enum LogFormat {
 export const PREFIX_DELIMITER = ':';
 export const LEVELS = LogLevel;
 
+export const TRUNCATION_FLAG_KEY = '[TRUNCATED]';
+export const TRUNCATION_SUFFIX = '...[truncated]';
+
 // Inverse of LOG_LEVELS = maps log level to string.
 export const LEVEL_TO_STRING = Object.keys(LogLevel).filter((x) => Number.isNaN(+x));
 
