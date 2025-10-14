@@ -61,6 +61,7 @@ export function getFormatFromEnv(): LogFormat {
 
 type SanitizeDataOptions = {
     maxDepth?: number;
+    gradualLimitFactor?: number;
     maxStringLength?: number;
     maxArrayLength?: number;
     maxFields?: number;
@@ -78,6 +79,7 @@ type SanitizeDataOptions = {
 export function sanitizeData(data: unknown, options: SanitizeDataOptions): unknown {
     const {
         maxDepth = Infinity,
+        gradualLimitFactor = 1,
         maxStringLength = Infinity,
         maxArrayLength = Infinity,
         maxFields = Infinity,
@@ -104,7 +106,19 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
-    const nextCall = (dat: unknown) => sanitizeData(dat, { ...options, maxDepth: maxDepth - 1 });
+    const nextCall = (dat: unknown) => sanitizeData(
+        dat,
+        {
+            ...options,
+            maxDepth: maxDepth - 1,
+            maxStringLength: Math.max(
+                Math.floor(maxStringLength * gradualLimitFactor),
+                truncationSuffix.length, // always at least the length of the truncation suffix
+            ),
+            maxArrayLength: Math.floor(maxArrayLength * gradualLimitFactor),
+            maxFields: Math.floor(maxFields * gradualLimitFactor),
+        },
+    );
 
     if (Array.isArray(data)) {
         if (maxDepth <= 0) return '[array]';

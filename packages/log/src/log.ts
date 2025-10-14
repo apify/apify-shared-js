@@ -12,6 +12,15 @@ export interface LoggerOptions {
     level?: number;
     /** Max depth of data object that will be logged. Anything deeper than the limit will be stripped off. */
     maxDepth?: number;
+    /**
+     * Factor by which the limits (`maxStringLength`, `maxArrayLength`, `maxFields`) will be adjusted at each depth level.
+     *
+     * Examples
+     * - If the factor is 0.5, the limits will be halved at each depth level.
+     * - If the factor is 1, the limits will be kept the same at each depth level.
+     * - If the factor is 2, the limits will be doubled at each depth level.
+     */
+    gradualLimitFactor?: number;
     /** Max length of the string to be logged. Longer strings will be truncated. */
     maxStringLength?: number;
     /** Max number of array items to be logged. More items will be omitted. */
@@ -52,9 +61,10 @@ const getLoggerForFormat = (format: LogFormat): Logger => {
 const getDefaultOptions = () => ({
     level: getLevelFromEnv(),
     maxDepth: 4,
+    gradualLimitFactor: 1 / 2, // at each depth level, the limits will be reduced by half
     maxStringLength: 1000,
-    maxArrayLength: 10,
-    maxFields: 10,
+    maxArrayLength: 500,
+    maxFields: 20,
     preferredFields: [...PREFERRED_FIELDS],
     prefix: null,
     suffix: null,
@@ -147,6 +157,7 @@ export class Log {
 
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
+        if (typeof this.options.gradualLimitFactor !== 'number') throw new Error('Options "gradualLimitFactor" must be a number!');
         if (typeof this.options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
         if (typeof this.options.maxArrayLength !== 'number') throw new Error('Options "maxArrayLength" must be a number!');
         if (typeof this.options.maxFields !== 'number') throw new Error('Options "maxFields" must be a number!');
@@ -168,6 +179,7 @@ export class Log {
             obj,
             {
                 maxDepth: this.options.maxDepth,
+                gradualLimitFactor: this.options.gradualLimitFactor,
                 maxStringLength: this.options.maxStringLength,
                 maxArrayLength: this.options.maxArrayLength,
                 maxFields: this.options.maxFields,
