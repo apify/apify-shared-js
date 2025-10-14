@@ -35,6 +35,7 @@ export const TRUNCATION_SUFFIX = '...[truncated]';
 
 /** ID fields used in Apify system */
 export const PREFERRED_ID_FIELDS = [
+    '_id',
     'id',
     'userId',
     'impersonatedUserId',

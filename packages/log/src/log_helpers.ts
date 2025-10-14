@@ -4,7 +4,6 @@ import {
     IS_APIFY_LOGGER_EXCEPTION,
     LogFormat,
     LogLevel,
-    PREFERRED_FIELDS,
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
 } from './log_consts';
@@ -63,8 +62,9 @@ export function getFormatFromEnv(): LogFormat {
 type SanitizeDataOptions = {
     maxDepth?: number;
     maxStringLength?: number;
-    maxProperties?: number;
     maxArrayLength?: number;
+    maxFields?: number;
+    preferredFieldsMap?: Record<PropertyKey, number>;
     truncationSuffix?: string;
     truncationFlagKey?: string;
 };
@@ -79,8 +79,9 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     const {
         maxDepth = Infinity,
         maxStringLength = Infinity,
-        maxProperties = Infinity,
         maxArrayLength = Infinity,
+        maxFields = Infinity,
+        preferredFieldsMap = {},
         truncationSuffix = TRUNCATION_SUFFIX,
         truncationFlagKey = TRUNCATION_FLAG_KEY,
     } = options;
@@ -123,8 +124,8 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         // Sort preferred fields to the front
         const allKeys = Reflect.ownKeys(data);
         allKeys.sort((a, b) => {
-            const aIndex = PREFERRED_FIELDS.findIndex((field) => field === a);
-            const bIndex = PREFERRED_FIELDS.findIndex((field) => field === b);
+            const aIndex = preferredFieldsMap[String(a)] ?? -1;
+            const bIndex = preferredFieldsMap[String(b)] ?? -1;
 
             if (aIndex === -1 && bIndex === -1) return 0; // none is preferred
             if (aIndex === -1) return 1; // a is not preferred
@@ -132,13 +133,13 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
             return aIndex - bIndex; // both are preferred, sort by index
         });
 
-        // Sanitize only up to maxProperties fields (keeping preferred ones first)
+        // Sanitize only up to maxFields fields (keeping preferred ones first)
         const sanitized: Record<PropertyKey, unknown> = {};
         allKeys
-            .slice(0, maxProperties)
+            .slice(0, maxFields)
             .forEach((key) => { sanitized[key] = nextCall(data[key as keyof typeof data]); });
 
-        if (allKeys.length > maxProperties) {
+        if (allKeys.length > maxFields) {
             sanitized[truncationFlagKey] = true;
         }
 

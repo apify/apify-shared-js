@@ -1,4 +1,4 @@
-import { LogFormat, LogLevel, PREFIX_DELIMITER, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import { LogFormat, LogLevel, PREFERRED_FIELDS, PREFIX_DELIMITER, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
 import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers';
 import type { Logger } from './logger';
 import { LoggerJson } from './logger_json';
@@ -14,10 +14,12 @@ export interface LoggerOptions {
     maxDepth?: number;
     /** Max length of the string to be logged. Longer strings will be truncated. */
     maxStringLength?: number;
-    /** Max number of properties to be logged. More properties will be omitted. */
-    maxProperties?: number;
     /** Max number of array items to be logged. More items will be omitted. */
     maxArrayLength?: number;
+    /** Max number of fields to be logged. More fields will be omitted. */
+    maxFields?: number;
+    /** Ordered list of fields that should be prioritized when logging objects. */
+    preferredFields?: PropertyKey[];
     /** Prefix to be prepended the each logged line. */
     prefix?: string | null;
     /** Suffix that will be appended the each logged line. */
@@ -35,6 +37,8 @@ export interface LoggerOptions {
     data?: Record<string, unknown>,
 }
 
+type AdditionalData = Record<string, any> | null;
+
 const getLoggerForFormat = (format: LogFormat): Logger => {
     switch (format) {
         case LogFormat.JSON:
@@ -49,8 +53,9 @@ const getDefaultOptions = () => ({
     level: getLevelFromEnv(),
     maxDepth: 4,
     maxStringLength: 1000,
-    maxProperties: 10,
     maxArrayLength: 10,
+    maxFields: 10,
+    preferredFields: [...PREFERRED_FIELDS],
     prefix: null,
     suffix: null,
     truncationSuffix: TRUNCATION_SUFFIX,
@@ -58,8 +63,6 @@ const getDefaultOptions = () => ({
     logger: getLoggerForFormat(getFormatFromEnv()),
     data: {},
 });
-
-type AdditionalData = Record<string, any> | null;
 
 /**
  * The log instance enables level aware logging of messages and we advise
@@ -134,6 +137,9 @@ export class Log {
 
     private options: Required<LoggerOptions>;
 
+    /** Maps preferred fields to their index for faster lookup */
+    private readonly preferredFieldsMap: Record<string, number>;
+
     private readonly warningsOnceLogged: Set<string> = new Set();
 
     constructor(options: Partial<LoggerOptions> = {}) {
@@ -142,14 +148,19 @@ export class Log {
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
         if (typeof this.options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
-        if (typeof this.options.maxProperties !== 'number') throw new Error('Options "maxProperties" must be a number!');
         if (typeof this.options.maxArrayLength !== 'number') throw new Error('Options "maxArrayLength" must be a number!');
+        if (typeof this.options.maxFields !== 'number') throw new Error('Options "maxFields" must be a number!');
+        if (!Array.isArray(this.options.preferredFields)) throw new Error('Options "preferredFields" must be an array!');
         if (this.options.prefix && typeof this.options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
         if (this.options.suffix && typeof this.options.suffix !== 'string') throw new Error('Options "suffix" must be a string!');
         if (typeof this.options.truncationSuffix !== 'string') throw new Error('Options "truncationSuffix" must be a string!');
         if (typeof this.options.truncationFlagKey !== 'string') throw new Error('Options "truncationFlagKey" must be a string!');
         if (typeof this.options.logger !== 'object') throw new Error('Options "logger" must be an object!');
         if (typeof this.options.data !== 'object') throw new Error('Options "data" must be an object!');
+
+        this.preferredFieldsMap = Object.fromEntries(
+            this.options.preferredFields.map((field, index) => [field, index]),
+        );
     }
 
     private _sanitizeData(obj: any) {
@@ -158,8 +169,9 @@ export class Log {
             {
                 maxDepth: this.options.maxDepth,
                 maxStringLength: this.options.maxStringLength,
-                maxProperties: this.options.maxProperties,
                 maxArrayLength: this.options.maxArrayLength,
+                maxFields: this.options.maxFields,
+                preferredFieldsMap: this.preferredFieldsMap,
                 truncationSuffix: this.options.truncationSuffix,
                 truncationFlagKey: this.options.truncationFlagKey,
             },
