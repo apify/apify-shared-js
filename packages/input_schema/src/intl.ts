@@ -35,6 +35,10 @@ const intlStrings = {
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
     'inputSchema.validation.secretFieldSchemaChanged':
         'The field schema.properties.{fieldKey} is a secret field, but its schema has changed. Please update the value in the input editor.',
+    'inputSchema.validation.regexpNotValid':
+        'The regular expression "{pattern}" in field schema.properties.{fieldKey} must be valid.',
+    'inputSchema.validation.regexpNotSafe':
+        'The regular expression "{pattern}" in field schema.properties.{fieldKey} is not safe to use.',
 };
 
 /**

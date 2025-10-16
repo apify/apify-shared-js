@@ -922,5 +922,149 @@ describe('input_schema.json', () => {
                 });
             });
         });
+
+        describe('validate pattern regexps', () => {
+            it('should accept valid regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            pattern: '^[A-Z]{3}$',
+                        },
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            patternKey: '^[a-z]+$',
+                            patternValue: '^[0-9]+$',
+                        },
+                        arrayField: {
+                            title: 'Array field',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            patternKey: '^[a-z]+$',
+                            patternValue: '^[0-9]+$',
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should throw error on invalid pattern regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            pattern: '[A-Z{3}', // invalid regexp
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (The regular expression "[A-Z{3}" in field schema.properties.myField.pattern must be valid.)',
+                );
+            });
+
+            it('should throw error on invalid patternKey regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            patternKey: '[a-z+$', // invalid regexp
+                            patternValue: '^[0-9]+$',
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (The regular expression "[a-z+$" in field schema.properties.objectField.patternKey must be valid.)',
+                );
+            });
+
+            it('should throw error on invalid patternValue regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            patternKey: '^[a-z]+$',
+                            patternValue: '^[0-9+$', // invalid regexp
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
+                );
+            });
+
+            it('should throw error on not safe regexp', () => {
+                const invalidRegexps = [
+                    '(a+)+$',
+                    '^(a|a?)+$',
+                    '^(a|a*)+$',
+                    '^(a|a+)+$',
+                    '^(a?)+$',
+                    '^(a*)+$',
+                    '^(a+)*$',
+                    '^(a|aa?)+$',
+                    '^(a|aa*)+$',
+                    '^(a|a+)*$',
+                    '^(a|a?)*$',
+                    '^(a|a*)*$',
+                    '^(a?)*$',
+                    '^(a*)*$',
+                    '^(a+)?$',
+                    '^(a*)?$',
+                ];
+
+                for (const pattern of invalidRegexps) {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                type: 'string',
+                                description: 'Some description ...',
+                                editor: 'textfield',
+                                pattern,
+                            },
+                        },
+                    };
+
+                    expect(() => validateInputSchema(validator, schema)).toThrow(
+                        `Input schema is not valid (The regular expression "${pattern}" in field schema.properties.myField.pattern is not safe to use.)`,
+                    );
+                }
+            });
+        });
     });
 });
