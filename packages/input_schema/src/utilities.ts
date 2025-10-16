@@ -363,6 +363,11 @@ export function ensureAjvSupportsDraft2019(ajvInstance: Ajv) {
     }
 }
 
+/**
+ * Validates that the provided pattern is a valid and safe regular expression.
+ * @param pattern The regular expression pattern to validate.
+ * @param fieldKey The field key where the pattern is used (for error messages).
+ */
 export function validateRegexpPattern(pattern: string, fieldKey: string) {
     let regex: RegExp;
 
