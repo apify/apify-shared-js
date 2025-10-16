@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.4.0...@apify/json_schemas@0.5.0) (2025-10-14)
+
+
+### Features
+
+* **json_schemas:** (float) number input property in input schema ([#549](https://github.com/apify/apify-shared-js/issues/549)) ([a216094](https://github.com/apify/apify-shared-js/commit/a21609404aaa1fe5be1cc9f830afdcaca3521824))
+
+
+
+
+
 # [0.4.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.3.0...@apify/json_schemas@0.4.0) (2025-10-02)
 
 
