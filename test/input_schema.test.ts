@@ -1062,7 +1062,7 @@ describe('input_schema.json', () => {
                     };
 
                     expect(() => validateInputSchema(validator, schema)).toThrow(
-                        `Input schema is not valid (The regular expression "${pattern}" in field schema.properties.myField.pattern is not safe to use.)`,
+                        `Input schema is not valid (The regular expression "${pattern}" in field schema.properties.myField.pattern may cause excessive backtracking or be unsafe to execute.)`,
                     );
                 }
             });
