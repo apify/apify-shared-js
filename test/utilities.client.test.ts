@@ -1379,6 +1379,50 @@ describe('utilities.client', () => {
                 expect(errorResults[2][0].message).toEqual('Field input.field.0.key1 is required');
             });
 
+            it('validates array items', () => {
+                // test that pattern, minLength, minimum, etc. are validated for array items
+
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        editor: 'schemaBased',
+                        items: {
+                            type: 'string',
+                            pattern: '^\\d+$',
+                            minLength: 2,
+                            maxLength: 4,
+                        },
+                    },
+                });
+
+                const validInputs = [
+                    { field: ['12', '345', '6789'] },
+                    { field: [] },
+                ];
+
+                const invalidInputs = [
+                    { field: ['1', '23'] }, // '1' is too short
+                    { field: ['12345'] }, // '12345' is too long
+                    { field: ['12', 'ab'] }, // 'ab' does not match pattern
+                    { field: [123, '456'] }, // 123 is not a string
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(4);
+                expect(errorResults[0][0].message).toEqual('Field input.field.0 must NOT have fewer than 2 characters');
+                expect(errorResults[1][0].message).toEqual('Field input.field.0 must NOT have more than 4 characters');
+                expect(errorResults[2][0].message).toEqual('Field input.field.1 must match pattern "^\\d+$"');
+                expect(errorResults[3][0].message).toEqual('Field input.field.0 must be string');
+            });
+
             it('dot in property names should be allowed', () => {
                 const { inputSchema, validator } = buildInputSchema({
                     field: {
