@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.23.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.2...@apify/input_schema@3.23.0) (2025-10-17)
+
+
+### Features
+
+* **input_schema:** Validate regexp patterns ([#553](https://github.com/apify/apify-shared-js/issues/553)) ([931ef44](https://github.com/apify/apify-shared-js/commit/931ef4437f7f92368486fb3437abfa9ca3b61b43))
+
+
+
+
+
 ## [3.22.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.1...@apify/input_schema@3.22.2) (2025-10-16)
 
 **Note:** Version bump only for package @apify/input_schema
