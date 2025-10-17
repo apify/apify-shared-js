@@ -645,12 +645,14 @@
         "subSchemaStringEnumProperty": {
             "title": "Sub-schema: Enum property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["string"] },
                 "editor": { "enum": ["select"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
                 "enum": {
                     "type": "array",
@@ -664,52 +666,65 @@
                     "minItems": 1
                 }
             },
-            "required": ["type", "title", "description", "enum"]
+            "required": ["type", "title", "description", "enum"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "string" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["string", "null"] } }
+            }
         },
         "subSchemaStringProperty": {
             "title": "Sub-schema: String property",
             "type": "object",
-            "additionalProperties": true,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["string"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
+                "pattern": { "type": "string" },
                 "nullable": { "type": "boolean" },
+                "minLength": { "type": "integer" },
+                "maxLength": { "type": "integer" },
                 "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "fileupload"] }
             },
             "required": ["type", "title", "description"],
-            "if": {
-                "properties": {
-                    "editor": { "const": "datepicker" }
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "editor": { "const": "datepicker" }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "editor": { "enum": ["datepicker"] },
+                            "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] }
+                        }
+                    },
+                    "else": {
+                        "properties": {
+                            "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "nullable": { "const": false } }
+                    },
+                    "then": {
+                        "properties": { "default": { "type": "string" } }
+                    },
+                    "else": {
+                        "properties": { "default": { "type": ["string", "null"] } }
+                    }
                 }
-            },
-            "then": {
-                "additionalProperties": false,
-                "properties": {
-                    "type": { "enum": ["string"] },
-                    "title": { "type": "string" },
-                    "description": { "type": "string" },
-                    "pattern": { "type": "string" },
-                    "nullable": { "type": "boolean" },
-                    "minLength": { "type": "integer" },
-                    "maxLength": { "type": "integer" },
-                    "editor": { "enum": ["datepicker"] },
-                    "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] }
-                }
-            },
-            "else": {
-                "additionalProperties": false,
-                "properties": {
-                    "type": { "enum": ["string"] },
-                    "title": { "type": "string" },
-                    "description": { "type": "string" },
-                    "pattern": { "type": "string" },
-                    "nullable": { "type": "boolean" },
-                    "minLength": { "type": "integer" },
-                    "maxLength": { "type": "integer" },
-                    "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
-                }
-            }
+            ]
         },
         "subSchemaArrayProperty": {
             "title": "Sub-schema: Array property",
@@ -719,6 +734,8 @@
                 "editor": { "enum": ["json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "hidden"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
                 "nullable": { "type": "boolean" },
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
@@ -730,124 +747,174 @@
             },
             "required": ["type", "title", "description"],
             "unevaluatedProperties": false,
-            "oneOf": [
+            "allOf": [
                 {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["select"] },
-                        "items": { "$ref": "#/definitions/arrayItemsSelect" }
-                    }
+                    "oneOf": [
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["select"] },
+                                "items": { "$ref": "#/definitions/arrayItemsSelect" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["keyValue"] },
+                                "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["fileupload"] },
+                                "items": { "$ref": "#/definitions/arrayItemsFileupload" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["stringList"] },
+                                "items": { "$ref": "#/definitions/arrayItemsStringList" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["globs"] },
+                                "items": { "$ref": "#/definitions/arrayItemsGlobs" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["pseudoUrls"] },
+                                "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["requestListSources"] },
+                                "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
+                            }
+                        },
+                        {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "enum": ["json", "schemaBased", "hidden"] },
+                                "items": { "$ref": "#/definitions/arrayItems" }
+                            }
+                        },
+                        {
+                            "not": { "required": ["editor"] },
+                            "properties": { "items": { "$ref": "#/definitions/arrayItems" } }
+                        }
+                    ]
                 },
                 {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["keyValue"] },
-                        "items": { "$ref": "#/definitions/arrayItemsKeyValue" }
+                    "if": {
+                        "properties": { "nullable": { "const": false } }
+                    },
+                    "then": {
+                        "properties": { "default": { "type": "array" } }
+                    },
+                    "else": {
+                        "properties": { "default": { "type": ["array", "null"] } }
                     }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["fileupload"] },
-                        "items": { "$ref": "#/definitions/arrayItemsFileupload" }
-                    }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["stringList"] },
-                        "items": { "$ref": "#/definitions/arrayItemsStringList" }
-                    }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["globs"] },
-                        "items": { "$ref": "#/definitions/arrayItemsGlobs" }
-                    }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["pseudoUrls"] },
-                        "items": { "$ref": "#/definitions/arrayItemsPseudoUrls" }
-                    }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["requestListSources"] },
-                        "items": { "$ref": "#/definitions/arrayItemsRequestListSources" }
-                    }
-                },
-                {
-                    "required": ["editor"],
-                    "properties": {
-                        "editor": { "enum": ["json", "schemaBased", "hidden"] },
-                        "items": { "$ref": "#/definitions/arrayItems" }
-                    }
-                },
-                {
-                    "not": { "required": ["editor"] },
-                    "properties": { "items": { "$ref": "#/definitions/arrayItems" } }
                 }
             ]
         },
         "subSchemaIntegerProperty": {
             "title": "Sub-schema: Integer property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["integer"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "integer" },
+                "example": { "type": "integer" },
                 "nullable": { "type": "boolean" },
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] }
             },
-            "required": ["type", "title", "description"]
+            "required": ["type", "title", "description"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "integer" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["integer", "null"] } }
+            }
         },
         "subSchemaNumberProperty": {
             "title": "Sub-schema: Number property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["number"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "number" },
+                "example": { "type": "number" },
                 "nullable": { "type": "boolean" },
                 "minimum": { "type": "number" },
                 "maximum": { "type": "number" },
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] }
             },
-            "required": ["type", "title", "description"]
+            "required": ["type", "title", "description"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "number" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["number", "null"] } }
+            }
         },
         "subSchemaBooleanProperty": {
             "title": "Sub-schema: Boolean property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["boolean"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "boolean" },
+                "example": { "type": "boolean" },
                 "nullable": { "type": "boolean" },
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
                 "editor": { "enum": ["checkbox", "hidden"] }
             },
-            "required": ["type", "title", "description"]
+            "required": ["type", "title", "description"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "boolean" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["boolean", "null"] } }
+            }
         },
         "subSchemaObjectProperty": {
             "title": "Sub-schema: Object property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["object"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
+                "prefill": { "type": "object" },
+                "example": { "type": "object" },
                 "patternKey": { "type": "string" },
                 "patternValue": { "type": "string" },
                 "nullable": { "type": "boolean" },
@@ -865,12 +932,21 @@
                     "type": "boolean"
                 }
             },
-            "required": ["type", "title", "description"]
+            "required": ["type", "title", "description"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "object" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["object", "null"] } }
+            }
         },
         "subSchemaResourceProperty": {
             "title": "Sub-schema: Resource property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["string"] },
                 "title": { "type": "string" },
@@ -889,14 +965,25 @@
                         "const": "READ"
                     }
                 },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
                 "nullable": { "type": "boolean" }
             },
-            "required": ["type", "title", "description", "resourceType"]
+            "required": ["type", "title", "description", "resourceType"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "string" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["string", "null"] } }
+            }
         },
         "subSchemaResourceArrayProperty": {
             "title": "Sub-schema: Resource array property",
             "type": "object",
-            "additionalProperties": false,
+            "unevaluatedProperties": false,
             "properties": {
                 "type": { "enum": ["array"] },
                 "title": { "type": "string" },
@@ -914,19 +1001,30 @@
                         "const": "READ"
                     }
                 },
+                "prefill": { "type": "array" },
+                "example": { "type": "array" },
                 "nullable": { "type": "boolean" },
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
                 "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] }
             },
-            "required": ["type", "title", "description", "resourceType"]
+            "required": ["type", "title", "description", "resourceType"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "array" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["array", "null"] } }
+            }
         },
         "arrayItems": {
             "title": "Utils: Array items definition",
             "type": "object",
             "properties": {
-                "type": { "enum": ["string", "integer", "boolean", "object", "array"] }
+                "type": { "enum": ["string", "integer", "number", "boolean", "object", "array"] }
             },
             "required": ["type"],
             "if": {
@@ -982,10 +1080,40 @@
                     }
                 },
                 "else": {
-                    "additionalProperties": false,
+                    "unevaluatedProperties": false,
                     "properties": {
-                        "type": { "enum": ["string", "integer", "boolean"] }
-                    }
+                        "type": { "enum": ["string", "integer", "number", "boolean"] }
+                    },
+                    "required": ["type"],
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "type": { "const": "string" },
+                                "pattern": { "type": "string" },
+                                "minLength": { "type": "integer" },
+                                "maxLength": { "type": "integer" }
+                            }
+                        },
+                        {
+                            "properties": {
+                                "type": { "const": "integer" },
+                                "minimum": { "type": "integer" },
+                                "maximum": { "type": "integer" }
+                            }
+                        },
+                        {
+                            "properties": {
+                                "type": { "const": "number" },
+                                "minimum": { "type": "number" },
+                                "maximum": { "type": "number" }
+                            }
+                        },
+                        {
+                            "properties": {
+                                "type": { "const": "boolean" }
+                            }
+                        }
+                    ]
                 }
             }
         },

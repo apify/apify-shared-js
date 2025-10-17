@@ -566,17 +566,38 @@ describe('input_schema.json', () => {
                                     title: 'Key',
                                     description: 'Key description',
                                     editor: 'json',
+                                    prefill: { key1: 'prefill value' },
                                     properties: {
                                         key1: {
                                             type: 'string',
                                             title: 'Key 1',
                                             description: 'Key 1 description',
+                                            default: 'default value',
                                         },
                                         key2: {
                                             type: 'string',
                                             title: 'Key 2',
                                             description: 'Key 2 description',
                                         },
+                                    },
+                                },
+                            },
+                        },
+                        myArray: {
+                            title: 'Array field',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    arrayKey: {
+                                        type: 'string',
+                                        title: 'Array Key',
+                                        description: 'Array Key description',
+                                        default: 'default value',
+                                        prefill: 'prefill value',
+                                        example: 'example value',
                                     },
                                 },
                             },
