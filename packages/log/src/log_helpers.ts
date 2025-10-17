@@ -1,12 +1,18 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
 
-import { IS_APIFY_LOGGER_EXCEPTION, LogFormat, LogLevel } from './log_consts';
+import {
+    IS_APIFY_LOGGER_EXCEPTION,
+    LogFormat,
+    LogLevel,
+    TRUNCATION_FLAG_KEY,
+    TRUNCATION_SUFFIX,
+} from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
  * (copied from utilities package so logger do not have to depend on all of its dependencies)
  */
-export function truncate(str: string, maxLength: number, suffix = '...[truncated]'): string {
+export function truncate(str: string, maxLength: number, suffix = TRUNCATION_SUFFIX): string {
     maxLength = Math.floor(maxLength);
 
     // TODO: we should just ignore rest of the suffix...
@@ -53,55 +59,115 @@ export function getFormatFromEnv(): LogFormat {
     }
 }
 
+type SanitizeDataOptions = {
+    maxDepth?: number;
+    gradualLimitFactor?: number;
+    maxStringLength?: number;
+    maxArrayLength?: number;
+    maxFields?: number;
+    preferredFieldsMap?: Record<PropertyKey, number>;
+    truncationSuffix?: string;
+    truncationFlagKey?: string;
+};
+
 /**
- * Limits given object to given depth and escapes function with [function] string.
+ * Sanitizes given object based on the given options.
  *
  * ie. Replaces object's content by '[object]' and array's content
- * by '[array]' when the value is nested more than given limit.
+ * by '[array]' when the value is nested more than given depth limit.
  */
-export function limitDepth<T>(record: T, depth: number, maxStringLength?: number): T | undefined {
+export function sanitizeData(data: unknown, options: SanitizeDataOptions): unknown {
+    const {
+        maxDepth = Infinity,
+        gradualLimitFactor = 1,
+        maxStringLength = Infinity,
+        maxArrayLength = Infinity,
+        maxFields = Infinity,
+        preferredFieldsMap = {},
+        truncationSuffix = TRUNCATION_SUFFIX,
+        truncationFlagKey = TRUNCATION_FLAG_KEY,
+    } = options;
+
     // handle common cases quickly
-    if (typeof record === 'string') {
-        return maxStringLength && record.length > maxStringLength ? truncate(record, maxStringLength) as unknown as T : record;
+    if (typeof data === 'string') {
+        return data.length > maxStringLength
+            ? truncate(data, maxStringLength, truncationSuffix)
+            : data;
     }
 
-    if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof record) || record == null || record instanceof Date) {
-        return record;
+    if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof data) || data == null || data instanceof Date) {
+        return data;
     }
 
     // WORKAROUND: Error's properties are not iterable, convert it to a simple object and preserve custom properties
     // NOTE: _.isError() doesn't work on Match.Error
-    if (record instanceof Error) {
-        const { name, message, stack, cause, ...rest } = record;
-        record = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true } as unknown as T;
+    if (data instanceof Error) {
+        const { name, message, stack, cause, ...rest } = data;
+        data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
-    const nextCall = (rec: T) => limitDepth(rec, depth - 1, maxStringLength);
+    const nextCall = (dat: unknown) => sanitizeData(
+        dat,
+        {
+            ...options,
+            maxDepth: maxDepth - 1,
+            maxStringLength: Math.max(
+                Math.floor(maxStringLength * gradualLimitFactor),
+                truncationSuffix.length, // always at least the length of the truncation suffix
+            ),
+            maxArrayLength: Math.floor(maxArrayLength * gradualLimitFactor),
+            maxFields: Math.floor(maxFields * gradualLimitFactor),
+        },
+    );
 
-    if (Array.isArray(record)) {
-        return (depth ? record.map(nextCall) : '[array]') as unknown as T;
+    if (Array.isArray(data)) {
+        if (maxDepth <= 0) return '[array]';
+
+        const sanitized = data.slice(0, maxArrayLength).map(nextCall);
+
+        if (data.length > maxArrayLength) {
+            sanitized.push(truncationSuffix);
+        }
+
+        return sanitized;
     }
 
-    if (typeof record === 'object' && record !== null) {
-        const mapObject = <U extends Record<PropertyKey, any>> (obj: U) => {
-            const res = {} as U;
-            Reflect.ownKeys(obj).forEach((key: keyof U) => {
-                res[key as keyof U] = nextCall(obj[key]) as U[keyof U];
-            });
-            return res;
-        };
+    if (typeof data === 'object' && data !== null) {
+        if (maxDepth <= 0) return '[object]';
 
-        return depth ? mapObject(record) : '[object]' as unknown as T;
+        // Sort preferred fields to the front
+        const allKeys = Reflect.ownKeys(data);
+        allKeys.sort((a, b) => {
+            const aIndex = preferredFieldsMap[String(a)] ?? -1;
+            const bIndex = preferredFieldsMap[String(b)] ?? -1;
+
+            if (aIndex === -1 && bIndex === -1) return 0; // none is preferred
+            if (aIndex === -1) return 1; // a is not preferred
+            if (bIndex === -1) return -1; // b is not preferred
+            return aIndex - bIndex; // both are preferred, sort by index
+        });
+
+        // Sanitize only up to maxFields fields (keeping preferred ones first)
+        const sanitized: Record<PropertyKey, unknown> = {};
+        allKeys
+            .slice(0, maxFields)
+            .forEach((key) => { sanitized[key] = nextCall(data[key as keyof typeof data]); });
+
+        if (allKeys.length > maxFields) {
+            sanitized[truncationFlagKey] = true;
+        }
+
+        return sanitized;
     }
 
     // Replaces all function with [function] string
-    if (typeof record === 'function') {
-        return '[function]' as unknown as T;
+    if (typeof data === 'function') {
+        return '[function]';
     }
 
     // this shouldn't happen
     // eslint-disable-next-line no-console
-    console.log(`WARNING: Object cannot be logged: ${record}`);
+    console.log(`WARNING: Object cannot be logged: ${data}`);
 
     return undefined;
 }

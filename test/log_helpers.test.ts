@@ -1,5 +1,5 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
-import { getLevelFromEnv, IS_APIFY_LOGGER_EXCEPTION, limitDepth, LogLevel } from '@apify/log';
+import { getLevelFromEnv, IS_APIFY_LOGGER_EXCEPTION, LogLevel, sanitizeData } from '@apify/log';
 
 describe('getLevelFromEnv()', () => {
     it('should support integers', () => {
@@ -24,7 +24,7 @@ describe('getLevelFromEnv()', () => {
     });
 });
 
-describe('limitDepth()', () => {
+describe('sanitizeData()', () => {
     it('works', () => {
         const date = new Date();
         const object = {
@@ -44,7 +44,7 @@ describe('limitDepth()', () => {
             date,
         };
 
-        expect(limitDepth(object, 2)).toEqual({
+        expect(sanitizeData(object, { maxDepth: 2 })).toEqual({
             a: {
                 b: '[object]',
             },
@@ -75,7 +75,7 @@ describe('limitDepth()', () => {
             err: { name: err.name, message: err.message, stack: err.stack, ...err as any, cause: undefined, [IS_APIFY_LOGGER_EXCEPTION]: true },
         };
 
-        expect(limitDepth(object, 2)).toEqual(limited);
+        expect(sanitizeData(object, { maxDepth: 2 })).toEqual(limited);
         expect(err).not.toBe(limited.err);
 
         expect(object).toEqual({
@@ -100,7 +100,7 @@ describe('limitDepth()', () => {
             foo: 'abcdefghihabcdefghihabcdefghihabcdefghihgg',
         };
 
-        expect(limitDepth(object, 2, 18)).toEqual({
+        expect(sanitizeData(object, { maxDepth: 2, maxStringLength: 18 })).toEqual({
             a: {
                 bar: 'abcd...[truncated]',
                 b: '[object]',
@@ -119,7 +119,7 @@ describe('limitDepth()', () => {
             rest: 'bla bla',
         };
 
-        expect(limitDepth(object, 2, 18)).toEqual({
+        expect(sanitizeData(object, { maxDepth: 2, maxStringLength: 18 })).toEqual({
             foo: {
                 arrow: '[function]',
                 fce: '[function]',
@@ -131,7 +131,7 @@ describe('limitDepth()', () => {
         const error = new Error('My Error') as any;
         error.injectedArrow = () => {};
         error.injectedFce = function () {};
-        expect(limitDepth(error, 2)).toEqual({
+        expect(sanitizeData(error, { maxDepth: 2 })).toEqual({
             name: error.name,
             message: error.message,
             stack: error.stack,
