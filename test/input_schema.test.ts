@@ -1,4 +1,5 @@
 import Ajv from 'ajv/dist/2019';
+import ajvErrors from 'ajv-errors';
 
 import { validateInputSchema } from '@apify/input_schema';
 
@@ -1066,6 +1067,35 @@ describe('input_schema.json', () => {
                     );
                 }
             });
+        });
+    });
+
+    describe('test custom error messages', () => {
+        const ajv = new Ajv({ strict: false, unicodeRegExp: false, allErrors: true });
+        ajvErrors(ajv);
+
+        it('should return custom error message for missing required field', () => {
+            const schema = {
+                title: 'Test input schema',
+                type: 'object',
+                schemaVersion: 1,
+                properties: {
+                    myField: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'textfield',
+                        errorMessage: {
+                            type: 'myField must be string',
+                        },
+                    },
+                },
+                required: ['myField'],
+            };
+            const validate = ajv.compile(schema);
+
+            validate({ myField: 1 });
+            expect(validate.errors?.[0].message).toBe('myField must be string');
         });
     });
 });

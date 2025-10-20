@@ -76,6 +76,18 @@
                     "type": "array",
                     "items": { "type": "string" },
                     "minItems": 1
+                },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
                 }
             },
             "required": ["type", "title", "description", "enum"],
@@ -124,7 +136,19 @@
                     "maxLength": { "type": "integer" },
                     "sectionCaption": { "type": "string" },
                     "sectionDescription": { "type": "string" },
-                    "isSecret": { "enum": [false] }
+                    "isSecret": { "enum": [false] },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 },
                 "unevaluatedProperties": false,
                 "allOf": [
@@ -171,7 +195,19 @@
                     "editor": { "enum": ["textfield", "textarea", "hidden"] },
                     "isSecret": { "enum": [true] },
                     "sectionCaption": { "type": "string" },
-                    "sectionDescription": { "type": "string" }
+                    "sectionDescription": { "type": "string" },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 }
             }
         },
@@ -206,7 +242,19 @@
                     "placeholderValue": { "type": "string" },
                     "patternKey": { "type": "string" },
                     "patternValue": { "type": "string" },
-                    "isSecret": { "enum": [false] }
+                    "isSecret": { "enum": [false] },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 },
                 "unevaluatedProperties": false,
                 "allOf": [
@@ -303,7 +351,19 @@
                     "sectionCaption": { "type": "string" },
                     "sectionDescription": { "type": "string" },
                     "items": { "$ref": "#/definitions/arrayItems" },
-                    "isSecret": { "enum": [true] }
+                    "isSecret": { "enum": [true] },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 }
             }
         },
@@ -347,6 +407,18 @@
                     },
                     "additionalProperties": {
                         "type": "boolean"
+                    },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
                     }
                 },
                 "unevaluatedProperties": false,
@@ -402,6 +474,18 @@
                     },
                     "additionalProperties": {
                         "type": "boolean"
+                    },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
                     }
                 }
             }
@@ -422,7 +506,19 @@
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -451,7 +547,19 @@
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -479,7 +587,19 @@
                 "groupDescription": { "type": "string" },
                 "editor": { "enum": ["checkbox", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -518,7 +638,19 @@
                 "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
@@ -577,7 +709,19 @@
                 "uniqueItems": { "type": "boolean" },
                 "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
@@ -629,7 +773,19 @@
                 "nullable": { "type": "boolean" },
                 "editor": { "enum": ["json", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description", "editor"],
             "if": {
@@ -662,6 +818,18 @@
                     "type": "array",
                     "items": { "type": "string" },
                     "minItems": 1
+                },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
                 }
             },
             "required": ["type", "title", "description", "enum"]
@@ -694,7 +862,19 @@
                     "minLength": { "type": "integer" },
                     "maxLength": { "type": "integer" },
                     "editor": { "enum": ["datepicker"] },
-                    "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] }
+                    "dateType": { "enum": ["absolute", "relative", "absoluteOrRelative"] },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 }
             },
             "else": {
@@ -707,7 +887,19 @@
                     "nullable": { "type": "boolean" },
                     "minLength": { "type": "integer" },
                     "maxLength": { "type": "integer" },
-                    "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
+                    "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] },
+                    "errorMessage": {
+                        "oneOf": [
+                            { "type": "string" },
+                            {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^": { "type": "string" }
+                                },
+                                "additionalProperties": false
+                            }
+                        ]
+                    }
                 }
             }
         },
@@ -726,7 +918,19 @@
                 "placeholderKey": { "type": "string" },
                 "placeholderValue": { "type": "string" },
                 "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" }
+                "patternValue": { "type": "string" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"],
             "unevaluatedProperties": false,
@@ -805,7 +1009,19 @@
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
                 "unit": { "type": "string" },
-                "editor": { "enum": ["number", "hidden"] }
+                "editor": { "enum": ["number", "hidden"] },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"]
         },
@@ -821,7 +1037,19 @@
                 "minimum": { "type": "number" },
                 "maximum": { "type": "number" },
                 "unit": { "type": "string" },
-                "editor": { "enum": ["number", "hidden"] }
+                "editor": { "enum": ["number", "hidden"] },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"]
         },
@@ -836,7 +1064,19 @@
                 "nullable": { "type": "boolean" },
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
-                "editor": { "enum": ["checkbox", "hidden"] }
+                "editor": { "enum": ["checkbox", "hidden"] },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description"]
         },
@@ -863,6 +1103,18 @@
                 },
                 "additionalProperties": {
                     "type": "boolean"
+                },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
                 }
             },
             "required": ["type", "title", "description"]
@@ -889,7 +1141,19 @@
                         "const": "READ"
                     }
                 },
-                "nullable": { "type": "boolean" }
+                "nullable": { "type": "boolean" },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description", "resourceType"]
         },
@@ -918,7 +1182,19 @@
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] }
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "errorMessage": {
+                    "oneOf": [
+                        { "type": "string" },
+                        {
+                            "type": "object",
+                            "patternProperties": {
+                                "^": { "type": "string" }
+                            },
+                            "additionalProperties": false
+                        }
+                    ]
+                }
             },
             "required": ["type", "title", "description", "resourceType"]
         },

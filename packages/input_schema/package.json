@@ -52,6 +52,7 @@
         "@apify/input_secrets": "^1.2.9",
         "@apify/json_schemas": "^0.5.1",
         "acorn-loose": "^8.4.0",
+        "ajv-errors": "^3.0.0",
         "countries-list": "^3.0.0",
         "safe-regex": "^2.1.1"
     },
