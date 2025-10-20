@@ -1,5 +1,5 @@
-import { LogFormat, LogLevel, PREFIX_DELIMITER } from './log_consts';
-import { getFormatFromEnv, getLevelFromEnv, limitDepth } from './log_helpers';
+import { LogFormat, LogLevel, PREFERRED_FIELDS, PREFIX_DELIMITER, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers';
 import type { Logger } from './logger';
 import { LoggerJson } from './logger_json';
 import { LoggerText } from './logger_text';
@@ -12,12 +12,31 @@ export interface LoggerOptions {
     level?: number;
     /** Max depth of data object that will be logged. Anything deeper than the limit will be stripped off. */
     maxDepth?: number;
+    /**
+     * Factor by which the limits (`maxStringLength`, `maxArrayLength`, `maxFields`) will be adjusted at each depth level.
+     *
+     * Examples
+     * - If the factor is 0.5, the limits will be halved at each depth level.
+     * - If the factor is 1, the limits will be kept the same at each depth level.
+     * - If the factor is 2, the limits will be doubled at each depth level.
+     */
+    gradualLimitFactor?: number;
     /** Max length of the string to be logged. Longer strings will be truncated. */
     maxStringLength?: number;
+    /** Max number of array items to be logged. More items will be omitted. */
+    maxArrayLength?: number;
+    /** Max number of fields to be logged. More fields will be omitted. */
+    maxFields?: number;
+    /** Ordered list of fields that should be prioritized when logging objects. */
+    preferredFields?: PropertyKey[];
     /** Prefix to be prepended the each logged line. */
     prefix?: string | null;
     /** Suffix that will be appended the each logged line. */
     suffix?: string | null;
+    /** Suffix that will be appended to truncated strings, objects and arrays. */
+    truncationSuffix?: string;
+    /** Key of the flag property that will be added to the object if it is truncated. */
+    truncationFlagKey?: string;
     /**
      * Logger implementation to be used. Default one is log.LoggerText to log messages as easily readable
      * strings. Optionally you can use `log.LoggerJson` that formats each log line as a JSON.
@@ -26,6 +45,8 @@ export interface LoggerOptions {
     /** Additional data to be added to each log line. */
     data?: Record<string, unknown>,
 }
+
+type AdditionalData = Record<string, any> | null;
 
 const getLoggerForFormat = (format: LogFormat): Logger => {
     switch (format) {
@@ -40,14 +61,18 @@ const getLoggerForFormat = (format: LogFormat): Logger => {
 const getDefaultOptions = () => ({
     level: getLevelFromEnv(),
     maxDepth: 4,
-    maxStringLength: 2000,
+    gradualLimitFactor: 1 / 2, // at each depth level, the limits will be reduced by half
+    maxStringLength: 1000,
+    maxArrayLength: 500,
+    maxFields: 20,
+    preferredFields: [...PREFERRED_FIELDS],
     prefix: null,
     suffix: null,
+    truncationSuffix: TRUNCATION_SUFFIX,
+    truncationFlagKey: TRUNCATION_FLAG_KEY,
     logger: getLoggerForFormat(getFormatFromEnv()),
     data: {},
 });
-
-type AdditionalData = Record<string, any> | null;
 
 /**
  * The log instance enables level aware logging of messages and we advise
@@ -122,6 +147,9 @@ export class Log {
 
     private options: Required<LoggerOptions>;
 
+    /** Maps preferred fields to their index for faster lookup */
+    private readonly preferredFieldsMap: Record<string, number>;
+
     private readonly warningsOnceLogged: Set<string> = new Set();
 
     constructor(options: Partial<LoggerOptions> = {}) {
@@ -129,15 +157,37 @@ export class Log {
 
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
+        if (typeof this.options.gradualLimitFactor !== 'number') throw new Error('Options "gradualLimitFactor" must be a number!');
         if (typeof this.options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
+        if (typeof this.options.maxArrayLength !== 'number') throw new Error('Options "maxArrayLength" must be a number!');
+        if (typeof this.options.maxFields !== 'number') throw new Error('Options "maxFields" must be a number!');
+        if (!Array.isArray(this.options.preferredFields)) throw new Error('Options "preferredFields" must be an array!');
         if (this.options.prefix && typeof this.options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
         if (this.options.suffix && typeof this.options.suffix !== 'string') throw new Error('Options "suffix" must be a string!');
+        if (typeof this.options.truncationSuffix !== 'string') throw new Error('Options "truncationSuffix" must be a string!');
+        if (typeof this.options.truncationFlagKey !== 'string') throw new Error('Options "truncationFlagKey" must be a string!');
         if (typeof this.options.logger !== 'object') throw new Error('Options "logger" must be an object!');
         if (typeof this.options.data !== 'object') throw new Error('Options "data" must be an object!');
+
+        this.preferredFieldsMap = Object.fromEntries(
+            this.options.preferredFields.map((field, index) => [field, index]),
+        );
     }
 
-    private _limitDepth(obj: any) {
-        return limitDepth(obj, this.options.maxDepth);
+    private _sanitizeData(obj: any) {
+        return sanitizeData(
+            obj,
+            {
+                maxDepth: this.options.maxDepth,
+                gradualLimitFactor: this.options.gradualLimitFactor,
+                maxStringLength: this.options.maxStringLength,
+                maxArrayLength: this.options.maxArrayLength,
+                maxFields: this.options.maxFields,
+                preferredFieldsMap: this.preferredFieldsMap,
+                truncationSuffix: this.options.truncationSuffix,
+                truncationFlagKey: this.options.truncationFlagKey,
+            },
+        );
     }
 
     /**
@@ -170,8 +220,8 @@ export class Log {
         if (level > this.options.level) return;
 
         data = { ...this.options.data, ...data };
-        data = Reflect.ownKeys(data).length > 0 ? this._limitDepth(data) : undefined;
-        exception = this._limitDepth(exception);
+        data = Reflect.ownKeys(data).length > 0 ? this._sanitizeData(data) : undefined;
+        exception = this._sanitizeData(exception);
 
         this.options.logger.log(level, message, data, exception, {
             prefix: this.options.prefix,
