@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.47.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.46.0...@apify/consts@2.47.0) (2025-10-20)
+
+
+### Features
+
+* add restart on error env var ([#546](https://github.com/apify/apify-shared-js/issues/546)) ([41adeab](https://github.com/apify/apify-shared-js/commit/41adeabf2d6a8e889e3962f0aeded35fd7611299))
+
+
+
+
+
 # [2.46.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.45.0...@apify/consts@2.46.0) (2025-10-16)
 
 
