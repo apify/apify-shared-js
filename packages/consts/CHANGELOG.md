@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.46.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.45.0...@apify/consts@2.46.0) (2025-10-16)
+
+
+### Features
+
+* **consts:** add actor permission level env var ([#554](https://github.com/apify/apify-shared-js/issues/554)) ([e23b8ec](https://github.com/apify/apify-shared-js/commit/e23b8ec167316129e926e22abd30fc7f201ef3d2))
+
+
+
+
+
 # [2.45.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.44.1...@apify/consts@2.45.0) (2025-09-24)
 
 

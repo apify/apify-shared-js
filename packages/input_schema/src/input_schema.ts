@@ -5,13 +5,15 @@ import { inputSchema as schema } from '@apify/json_schemas';
 
 import { m } from './intl';
 import type {
+    ArrayFieldDefinition,
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
     InputSchemaBaseChecked,
+    ObjectFieldDefinition,
     StringFieldDefinition,
 } from './types';
-import { ensureAjvSupportsDraft2019 } from './utilities';
+import { ensureAjvSupportsDraft2019, validateRegexpPattern } from './utilities';
 
 export { schema as inputSchema };
 
@@ -114,8 +116,11 @@ const validateAgainstSchemaOrThrow = (validator: Ajv, obj: Record<string, unknow
  * We override schema.properties.properties not to validate field definitions.
  */
 function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): asserts obj is InputSchemaBaseChecked {
+    // We need to remove $id from the schema, because AJV cache the schema by id and if we provide
+    // different schema instance with the same id, it will throw an error.
+    const { $id, ...schemaWithoutId } = schema;
     const schemaWithoutProperties = {
-        ...schema,
+        ...schemaWithoutId,
         properties: { ...schema.properties, properties: { type: 'object' } as any },
     };
     validateAgainstSchemaOrThrow(validator, obj, schemaWithoutProperties, 'schema');
@@ -128,7 +133,12 @@ function validateBasicStructure(validator: Ajv, obj: Record<string, unknown>): a
  * @param fieldKey Key of the field in the input schema.
  * @param isSubField If true, the field is a sub-field of another field, so we need to skip some definitions.
  */
-function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string, isSubField = false): asserts fieldSchema is FieldDefinition {
+function validateFieldAgainstSchemaDefinition(
+    validator: Ajv,
+    fieldSchema: Record<string, unknown>,
+    fieldKey: string,
+    isSubField = false,
+): asserts fieldSchema is FieldDefinition {
     const relevantDefinitions = isSubField ? subFieldDefinitions : fieldDefinitions;
 
     const matchingDefinitions = Object
@@ -183,6 +193,26 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
     validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+}
+
+/**
+ * Validates particular field against it's schema and other rules (like regex patterns).
+ * @param validator An instance of AJV validator (must support draft 2019-09).
+ * @param fieldSchema Schema of the field to validate.
+ * @param fieldKey Key of the field in the input schema.
+ * @param isSubField If true, the field is a sub-field of another field, so we need to skip some definitions.
+ */
+function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string, isSubField = false): asserts fieldSchema is FieldDefinition {
+    // Validate against schema definition first.
+    validateFieldAgainstSchemaDefinition(validator, fieldSchema, fieldKey, isSubField);
+
+    // Validate regex patterns if defined.
+    const { pattern } = fieldSchema as Partial<StringFieldDefinition>;
+    const { patternKey, patternValue } = fieldSchema as Partial<ObjectFieldDefinition & ArrayFieldDefinition>;
+
+    if (pattern) validateRegexpPattern(pattern, `${fieldKey}.pattern`);
+    if (patternKey) validateRegexpPattern(patternKey, `${fieldKey}.patternKey`);
+    if (patternValue) validateRegexpPattern(patternValue, `${fieldKey}.patternValue`);
 }
 
 /**

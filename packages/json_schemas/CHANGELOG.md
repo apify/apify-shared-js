@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.5.0...@apify/json_schemas@0.5.1) (2025-10-16)
+
+**Note:** Version bump only for package @apify/json_schemas
+
+
+
+
+
+# [0.5.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.4.0...@apify/json_schemas@0.5.0) (2025-10-14)
+
+
+### Features
+
+* **json_schemas:** (float) number input property in input schema ([#549](https://github.com/apify/apify-shared-js/issues/549)) ([a216094](https://github.com/apify/apify-shared-js/commit/a21609404aaa1fe5be1cc9f830afdcaca3521824))
+
+
+
+
+
+# [0.4.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.3.0...@apify/json_schemas@0.4.0) (2025-10-02)
+
+
+### Features
+
+* add fileupload editor for string arrays ([#545](https://github.com/apify/apify-shared-js/issues/545)) ([a9726fa](https://github.com/apify/apify-shared-js/commit/a9726faeaa8e11856f2561c28ca13585e1932007))
+
+
+
+
+
+# [0.3.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.2.2...@apify/json_schemas@0.3.0) (2025-09-30)
+
+
+### Features
+
+* **json_schemas:** Add $id property to JSON schemas ([#544](https://github.com/apify/apify-shared-js/issues/544)) ([0033f9c](https://github.com/apify/apify-shared-js/commit/0033f9cb09d7d748840fd0be35b9572b75ed458d))
+
+
+
+
+
 ## [0.2.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.2.1...@apify/json_schemas@0.2.2) (2025-09-24)
 
 **Note:** Version bump only for package @apify/json_schemas

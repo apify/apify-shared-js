@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.23.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.2...@apify/input_schema@3.23.0) (2025-10-17)
+
+
+### Features
+
+* **input_schema:** Validate regexp patterns ([#553](https://github.com/apify/apify-shared-js/issues/553)) ([931ef44](https://github.com/apify/apify-shared-js/commit/931ef4437f7f92368486fb3437abfa9ca3b61b43))
+
+
+
+
+
+## [3.22.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.1...@apify/input_schema@3.22.2) (2025-10-16)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.22.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.0...@apify/input_schema@3.22.1) (2025-10-15)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.22.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.21.1...@apify/input_schema@3.22.0) (2025-10-14)
+
+
+### Features
+
+* **json_schemas:** (float) number input property in input schema ([#549](https://github.com/apify/apify-shared-js/issues/549)) ([a216094](https://github.com/apify/apify-shared-js/commit/a21609404aaa1fe5be1cc9f830afdcaca3521824))
+
+
+
+
+
+## [3.21.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.21.0...@apify/input_schema@3.21.1) (2025-10-02)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.21.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.20.2...@apify/input_schema@3.21.0) (2025-09-30)
+
+
+### Features
+
+* **json_schemas:** Add $id property to JSON schemas ([#544](https://github.com/apify/apify-shared-js/issues/544)) ([0033f9c](https://github.com/apify/apify-shared-js/commit/0033f9cb09d7d748840fd0be35b9572b75ed458d))
+
+
+
+
+
 ## [3.20.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.20.1...@apify/input_schema@3.20.2) (2025-09-24)
 
 **Note:** Version bump only for package @apify/input_schema

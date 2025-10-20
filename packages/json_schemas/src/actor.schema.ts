@@ -4,10 +4,13 @@ import { ACTOR_LIMITS } from '@apify/consts';
 // The schemas/actor.schema.json file is generated from this file during the build step.
 
 export const actorSchema = {
-    $id: 'actor.json',
+    $id: 'https://apify.com/schemas/v1/actor.json',
     title: 'JSON schema of Apify Actor actor.json file',
     type: 'object',
     properties: {
+        $schema: {
+            type: 'string',
+        },
         actorSpecification: {
             type: 'integer',
             minimum: 1,
@@ -82,7 +85,7 @@ export const actorSchema = {
                     type: 'string',
                 },
                 {
-                    $ref: 'output.json',
+                    $ref: 'https://apify.com/schemas/v1/output.json',
                 },
             ],
         },
@@ -92,7 +95,7 @@ export const actorSchema = {
                     type: 'string',
                 },
                 {
-                    $ref: 'output.json',
+                    $ref: 'https://apify.com/schemas/v1/output.json',
                 },
             ],
         },
@@ -105,7 +108,7 @@ export const actorSchema = {
                             type: 'string',
                         },
                         {
-                            $ref: 'key_value_store.json',
+                            $ref: 'https://apify.com/schemas/v1/key-value-store.json',
                         },
                     ],
                 },
@@ -115,7 +118,7 @@ export const actorSchema = {
                             type: 'string',
                         },
                         {
-                            $ref: 'dataset.json',
+                            $ref: 'https://apify.com/schemas/v1/dataset.json',
                         },
                     ],
                 },

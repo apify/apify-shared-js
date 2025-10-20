@@ -2,6 +2,7 @@ import { parse } from 'acorn-loose';
 import type { ValidateFunction } from 'ajv';
 import type Ajv from 'ajv/dist/2019';
 import { countries } from 'countries-list';
+import safe from 'safe-regex';
 
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
@@ -359,5 +360,28 @@ export function ensureAjvSupportsDraft2019(ajvInstance: Ajv) {
         throw new Error(
             `The provided Ajv instance does not support draft-2019-09 (missing meta-schema ${DRAFT_2019_09_META_SCHEMA}).`,
         );
+    }
+}
+
+/**
+ * Validates that the provided pattern is a valid and safe regular expression.
+ * @param pattern The regular expression pattern to validate.
+ * @param fieldKey The field key where the pattern is used (for error messages).
+ */
+export function validateRegexpPattern(pattern: string, fieldKey: string) {
+    let regex: RegExp;
+
+    try {
+        // Validate that the pattern is a valid regular expression
+        regex = new RegExp(pattern);
+    } catch {
+        const message = m('inputSchema.validation.regexpNotValid', { pattern, fieldKey });
+        throw new Error(`Input schema is not valid (${message})`);
+    }
+
+    // Check if the regex is safe (to avoid ReDoS attacks)
+    if (!safe(regex)) {
+        const message = m('inputSchema.validation.regexpNotSafe', { pattern, fieldKey });
+        throw new Error(`Input schema is not valid (${message})`);
     }
 }
