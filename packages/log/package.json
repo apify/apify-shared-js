@@ -1,6 +1,6 @@
 {
     "name": "@apify/log",
-    "version": "2.5.25",
+    "version": "2.5.26",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
