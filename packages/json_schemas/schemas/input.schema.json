@@ -954,7 +954,7 @@
                 "type": { "enum": ["string"] },
                 "title": { "type": "string" },
                 "description": { "type": "string" },
-                "editor": { "enum": ["resourcePicker", "hidden"] },
+                "editor": { "enum": ["resourcePicker", "textfield", "hidden"] },
                 "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
                 "resourcePermissions": {
                     "type": "array",
@@ -970,7 +970,10 @@
                 },
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
-                "nullable": { "type": "boolean" }
+                "nullable": { "type": "boolean" },
+                "pattern": { "type": "string" },
+                "minLength": { "type": "integer" },
+                "maxLength": { "type": "integer" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "if": {
