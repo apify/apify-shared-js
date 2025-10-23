@@ -350,6 +350,27 @@ describe('input_schema.json', () => {
                 );
             });
 
+            it('should accept valid editor', () => {
+                const validEditors = ['resourcePicker', 'textfield', 'hidden'];
+                validEditors.forEach((editor) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'keyValueStore',
+                                editor,
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).not.toThrow();
+                });
+            });
+
             it('should not accept invalid editor', () => {
                 const schema = {
                     title: 'Test input schema',
@@ -361,12 +382,13 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'keyValueStore',
-                            editor: 'textfield',
+                            editor: 'textarea',
                         },
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "hidden")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "textfield", "hidden")',
                 );
             });
 
