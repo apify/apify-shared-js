@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.6.0...@apify/json_schemas@0.7.0) (2025-10-23)
+
+
+### Features
+
+* **input_schema:** Add textfield editor support to resource property ([#557](https://github.com/apify/apify-shared-js/issues/557)) ([227475f](https://github.com/apify/apify-shared-js/commit/227475f816d4090dbfec08cf2e23a597ea0e207e))
+
+
+
+
+
 # [0.6.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.5.2...@apify/json_schemas@0.6.0) (2025-10-22)
 
 
