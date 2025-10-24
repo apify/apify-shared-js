@@ -1580,13 +1580,16 @@
                     "properties": {
                         "type": { "type": "string" },
                         "pattern": { "type": "string" },
-                        "minItems": { "type": "string" },
-                        "maxItems": { "type": "string" },
+                        "minLength": { "type": "string" },
+                        "maxLength": { "type": "string" },
+                        "enum": { "type": "string" },
                         "minimum": { "type": "string" },
                         "maximum": { "type": "string" },
-                        "required": { "type": "string" },
-                        "enum": { "type": "string" },
-                        "additionalProperties": { "type": "string" }
+                        "minItems": { "type": "string" },
+                        "maxItems": { "type": "string" },
+                        "uniqueItems": { "type": "string" },
+                        "minProperties": { "type": "string" },
+                        "maxProperties": { "type": "string" }
                     },
                     "additionalProperties": false
                 }

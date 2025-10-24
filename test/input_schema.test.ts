@@ -1123,22 +1123,102 @@ describe('input_schema.json', () => {
                 type: 'object',
                 schemaVersion: 1,
                 properties: {
-                    myField: {
+                    stringField: {
                         title: 'Field title',
                         description: 'My test field',
                         type: 'string',
                         editor: 'textfield',
+                        pattern: '^[A-Z]*$',
+                        minLength: 2,
+                        maxLength: 5,
                         errorMessage: {
-                            type: 'myField must be string',
+                            type: 'stringField must be string',
+                            pattern: 'stringField must have only uppercase letters',
+                            minLength: 'stringField must be at least 2 characters long',
+                            maxLength: 'stringField must be at most 5 characters long',
+                        },
+                    },
+                    enumField: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        editor: 'textfield',
+                        enum: ['A', 'B', 'C'],
+                        errorMessage: {
+                            enum: 'myField must be one of the allowed values: A, B, C',
+                        },
+                    },
+                    intField: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'integer',
+                        editor: 'number',
+                        minimum: 1,
+                        maximum: 10,
+                        errorMessage: {
+                            minimum: 'intField must be >= 1',
+                            maximum: 'intField must be <= 10',
+                        },
+                    },
+                    arrayField: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        editor: 'json',
+                        minItems: 2,
+                        maxItems: 4,
+                        uniqueItems: true,
+                        errorMessage: {
+                            minItems: 'arrayField must have at least 2 items',
+                            maxItems: 'arrayField must have at most 4 items',
+                            uniqueItems: 'arrayField must have unique items',
+                        },
+                    },
+                    objectField: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'json',
+                        minProperties: 1,
+                        maxProperties: 3,
+                        errorMessage: {
+                            minProperties: 'objectField must have at least 1 property',
+                            maxProperties: 'objectField must have at most 3 properties',
                         },
                     },
                 },
-                required: ['myField'],
+                required: [],
             };
             const validate = ajv.compile(schema);
 
-            validate({ myField: 1 });
-            expect(validate.errors?.[0].message).toBe('myField must be string');
+            validate({ stringField: 1 });
+            expect(validate.errors?.[0].message).toBe('stringField must be string');
+            validate({ stringField: 'abc' });
+            expect(validate.errors?.[0].message).toBe('stringField must have only uppercase letters');
+            validate({ stringField: 'A' });
+            expect(validate.errors?.[0].message).toBe('stringField must be at least 2 characters long');
+            validate({ stringField: 'ABCDEFG' });
+            expect(validate.errors?.[0].message).toBe('stringField must be at most 5 characters long');
+
+            validate({ enumField: 'D' });
+            expect(validate.errors?.[0].message).toBe('myField must be one of the allowed values: A, B, C');
+
+            validate({ intField: 0 });
+            expect(validate.errors?.[0].message).toBe('intField must be >= 1');
+            validate({ intField: 11 });
+            expect(validate.errors?.[0].message).toBe('intField must be <= 10');
+
+            validate({ arrayField: [1] });
+            expect(validate.errors?.[0].message).toBe('arrayField must have at least 2 items');
+            validate({ arrayField: [1, 2, 3, 4, 5] });
+            expect(validate.errors?.[0].message).toBe('arrayField must have at most 4 items');
+            validate({ arrayField: [1, 2, 2] });
+            expect(validate.errors?.[0].message).toBe('arrayField must have unique items');
+
+            validate({ objectField: {} });
+            expect(validate.errors?.[0].message).toBe('objectField must have at least 1 property');
+            validate({ objectField: { a: 1, b: 2, c: 3, d: 4 } });
+            expect(validate.errors?.[0].message).toBe('objectField must have at most 3 properties');
         });
     });
 });
