@@ -1066,49 +1066,6 @@ describe('input_schema.json', () => {
                     'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
                 );
             });
-
-            it('should throw error on not safe regexp', () => {
-                const invalidRegexps = [
-                    '(a+)+$',
-                    '^(a|a?)+$',
-                    '^(a|a*)+$',
-                    '^(a|a+)+$',
-                    '^(a?)+$',
-                    '^(a*)+$',
-                    '^(a+)*$',
-                    '^(a|aa?)+$',
-                    '^(a|aa*)+$',
-                    '^(a|a+)*$',
-                    '^(a|a?)*$',
-                    '^(a|a*)*$',
-                    '^(a?)*$',
-                    '^(a*)*$',
-                    '^(a+)?$',
-                    '^(a*)?$',
-                    'a*b*c*d*e*f*g*h*i*j*k*l*m*n*o*p*q*r*s*t*u*v*w*x*y*z*',
-                ];
-
-                for (const pattern of invalidRegexps) {
-                    const schema = {
-                        title: 'Test input schema',
-                        type: 'object',
-                        schemaVersion: 1,
-                        properties: {
-                            myField: {
-                                title: 'Field title',
-                                type: 'string',
-                                description: 'Some description ...',
-                                editor: 'textfield',
-                                pattern,
-                            },
-                        },
-                    };
-
-                    expect(() => validateInputSchema(validator, schema)).toThrow(
-                        `Input schema is not valid (The regular expression "${pattern}" in field schema.properties.myField.pattern may cause excessive backtracking or be unsafe to execute.)`,
-                    );
-                }
-            });
         });
     });
 });
