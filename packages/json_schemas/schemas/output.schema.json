@@ -24,7 +24,8 @@
                         "title": { "type": "string" },
                         "type": { "const": "string" },
                         "description": { "type": "string" },
-                        "template": { "type": "string" }
+                        "template": { "type": "string" },
+                        "autoRefresh": { "type": "boolean" }
                     },
                     "required": [
                         "type",
