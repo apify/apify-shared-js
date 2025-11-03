@@ -1,0 +1,51 @@
+name: Publish to NPM
+
+on:
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: Git ref to publish (branch, tag, or commit SHA)
+                required: true
+                type: string
+
+permissions:
+    id-token: write # Required for OIDC
+    contents: write # Required to push changelog/lock file updates
+
+jobs:
+    publish_to_npm:
+        name: Publish to NPM
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+              with:
+                  ref: ${{ inputs.ref }}
+                  token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+                  fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
+            - name: Use Node.js 24
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24
+                  cache: 'npm'
+                  cache-dependency-path: 'package-lock.json'
+            - name: Update NPM
+              run: npm install -g npm@latest
+            - name: Install dependencies
+              run: npm ci --no-audit
+            - name: Build module
+              run: npm run build
+            - name: Publish to NPM
+              run: |
+                  git checkout -- .
+                  npx lerna publish --contents dist --yes --no-verify-access
+                  npm i --no-audit # reinstall to have updated lock file
+                  npx lerna ls --json | node scripts/sync-root-changelog.ts
+              env:
+                  GIT_USER: "noreply@apify.com:${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}"
+                  GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+            - name: Commit changes
+              uses: EndBug/add-and-commit@v9
+              with:
+                  author_name: Apify Release Bot
+                  author_email: noreply@apify.com
+                  message: 'chore: update root lock file and changelog [skip ci]'
