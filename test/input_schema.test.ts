@@ -14,7 +14,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
+                        type: 'object',
                         description: 'Some description ...',
                         editor: 'json',
                     },
@@ -87,26 +87,6 @@ describe('input_schema.json', () => {
 
             expect(() => validateInputSchema(validator, schema2)).toThrow(
                 'Input schema is not valid (Field schema.schemaVersion must be <= 1)',
-            );
-        });
-
-        it('should throw error on field structure level for a type ANY', () => {
-            const schema = {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
-                        description: 'Some description ...',
-                        editor: 'textfield',
-                    },
-                },
-            };
-
-            expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "json", "hidden")',
             );
         });
 

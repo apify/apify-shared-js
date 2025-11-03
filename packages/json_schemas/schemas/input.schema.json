@@ -42,8 +42,7 @@
                         { "$ref": "#/definitions/numberProperty" },
                         { "$ref": "#/definitions/booleanProperty" },
                         { "$ref": "#/definitions/resourceProperty" },
-                        { "$ref": "#/definitions/resourceArrayProperty" },
-                        { "$ref": "#/definitions/anyProperty" }
+                        { "$ref": "#/definitions/resourceArrayProperty" }
                     ]
                 }
             }
@@ -609,41 +608,6 @@
                     }
                 }
             ]
-        },
-        "anyProperty": {
-            "title": "Any property",
-            "type": "object",
-            "unevaluatedProperties": false,
-            "properties": {
-                "type": {
-                    "type": ["array"],
-                    "items": {
-                        "type": "string",
-                        "enum": ["object", "array", "string", "integer", "number", "boolean"]
-                    },
-                    "uniqueItems": true,
-                    "additionalItems": false,
-                    "minItems": 1
-                },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "prefill": { "type": ["object", "array", "string", "integer", "number", "boolean"] },
-                "example": { "type": ["object", "array", "string", "integer", "number", "boolean"] },
-                "nullable": { "type": "boolean" },
-                "editor": { "enum": ["json", "hidden"] },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
-            },
-            "required": ["type", "title", "description", "editor"],
-            "if": {
-                "properties": { "nullable": { "const": false } }
-            },
-            "then": {
-                "properties": { "default": { "type": ["object", "array", "string", "integer", "number", "boolean"] } }
-            },
-            "else": {
-                "properties": { "default": { "type": ["object", "array", "string", "integer", "number", "boolean", "null"] } }
-            }
         },
         "subSchemaStringEnumProperty": {
             "title": "Sub-schema: Enum property",

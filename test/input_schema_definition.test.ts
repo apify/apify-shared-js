@@ -32,7 +32,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
+                        type: 'object',
                         nullable: false,
                         description: 'Some description ...',
                         editor: 'json',
@@ -48,7 +48,7 @@ describe('input_schema.json', () => {
                 properties: {
                     myField: {
                         title: 'Field title',
-                        type: ['array', 'nonexisting'],
+                        type: 'nonexisting',
                         nullable: false,
                         description: 'Some description ...',
                         editor: 'json',
