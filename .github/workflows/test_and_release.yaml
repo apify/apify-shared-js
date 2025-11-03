@@ -89,9 +89,7 @@ jobs:
         steps:
             -   uses: actions/checkout@v5
                 with:
-                    token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                     fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
-                    ref: master
             -   uses: actions/setup-node@v6
                 with:
                     node-version: 24
@@ -103,24 +101,10 @@ jobs:
             -   name: Check for changes
                 id: changed_packages
                 run: |
-                    echo "::set-output name=changed_packages::$(npx lerna changed -p | wc -l | xargs)"
-            -   name: Release
+                    echo "changed_packages=$(npx lerna changed -p | wc -l | xargs)" | tee -a $GITHUB_OUTPUT
+            -   name: Execute publish workflow
                 if: steps.changed_packages.outputs.changed_packages != '0'
-                run: |
-                    git config --global user.name 'Apify Release Bot'
-                    git config --global user.email 'noreply@apify.com'
-                    echo "access=public" >> .npmrc
-                    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-                    npm ci --no-audit
-                    npm run build
-                    git checkout -- .
-                    npx lerna publish --contents dist --yes --no-verify-access
-                    npm i --no-audit # reinstall to have updated lock file
-                    npx lerna ls --json | npx ts-node -T scripts/sync-root-changelog.ts
-                    git commit -am 'chore: update root lock file and changelog [skip ci]'
-                    git push
-                env:
-                    NODE_AUTH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_NPM_TOKEN }}
-                    GIT_USER: "noreply@apify.com:${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}"
-                    GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
-                    NPM_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_NPM_TOKEN }}
+                uses: apify/workflows/execute-workflow@main
+                with:
+                    workflow: publish_to_npm.yaml
+                    inputs: '{ "ref": "${{ github.sha }}" }'
