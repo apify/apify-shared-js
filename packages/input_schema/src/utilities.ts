@@ -2,7 +2,6 @@ import { parse } from 'acorn-loose';
 import type { ValidateFunction } from 'ajv';
 import type Ajv from 'ajv/dist/2019';
 import { countries } from 'countries-list';
-import safe from 'safe-regex';
 
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
@@ -369,19 +368,19 @@ export function ensureAjvSupportsDraft2019(ajvInstance: Ajv) {
  * @param fieldKey The field key where the pattern is used (for error messages).
  */
 export function validateRegexpPattern(pattern: string, fieldKey: string) {
-    let regex: RegExp;
-
     try {
         // Validate that the pattern is a valid regular expression
-        regex = new RegExp(pattern);
+        // eslint-disable-next-line
+        new RegExp(pattern);
     } catch {
         const message = m('inputSchema.validation.regexpNotValid', { pattern, fieldKey });
         throw new Error(`Input schema is not valid (${message})`);
     }
 
+    // TODO: add check for safe regex but figure out how to avoid false positives with some valid regexes
     // Check if the regex is safe (to avoid ReDoS attacks)
-    if (!safe(regex)) {
-        const message = m('inputSchema.validation.regexpNotSafe', { pattern, fieldKey });
-        throw new Error(`Input schema is not valid (${message})`);
-    }
+    // if (!safe(regex)) {
+    //     const message = m('inputSchema.validation.regexpNotSafe', { pattern, fieldKey });
+    //     throw new Error(`Input schema is not valid (${message})`);
+    // }
 }

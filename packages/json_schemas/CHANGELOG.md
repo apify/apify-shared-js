@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.6.0...@apify/json_schemas@0.7.0) (2025-10-23)
+
+
+### Features
+
+* **input_schema:** Add textfield editor support to resource property ([#557](https://github.com/apify/apify-shared-js/issues/557)) ([227475f](https://github.com/apify/apify-shared-js/commit/227475f816d4090dbfec08cf2e23a597ea0e207e))
+
+
+
+
+
+# [0.6.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.5.2...@apify/json_schemas@0.6.0) (2025-10-22)
+
+
+### Features
+
+* **input_schema:** Support default, prefill and example in sub-properties ([#555](https://github.com/apify/apify-shared-js/issues/555)) ([115f5bb](https://github.com/apify/apify-shared-js/commit/115f5bbc4e5d8850794d97615842c6fe7b2e8084))
+
+
+
+
+
+## [0.5.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.5.1...@apify/json_schemas@0.5.2) (2025-10-20)
+
+**Note:** Version bump only for package @apify/json_schemas
+
+
+
+
+
 ## [0.5.1](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.5.0...@apify/json_schemas@0.5.1) (2025-10-16)
 
 **Note:** Version bump only for package @apify/json_schemas

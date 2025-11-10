@@ -349,6 +349,27 @@ describe('input_schema.json', () => {
                 );
             });
 
+            it('should accept valid editor', () => {
+                const validEditors = ['resourcePicker', 'textfield', 'hidden'];
+                validEditors.forEach((editor) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'keyValueStore',
+                                editor,
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).not.toThrow();
+                });
+            });
+
             it('should not accept invalid editor', () => {
                 const schema = {
                     title: 'Test input schema',
@@ -360,12 +381,13 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'keyValueStore',
-                            editor: 'textfield',
+                            editor: 'textarea',
                         },
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "hidden")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "resourcePicker", "textfield", "hidden")',
                 );
             });
 
@@ -566,17 +588,38 @@ describe('input_schema.json', () => {
                                     title: 'Key',
                                     description: 'Key description',
                                     editor: 'json',
+                                    prefill: { key1: 'prefill value' },
                                     properties: {
                                         key1: {
                                             type: 'string',
                                             title: 'Key 1',
                                             description: 'Key 1 description',
+                                            default: 'default value',
                                         },
                                         key2: {
                                             type: 'string',
                                             title: 'Key 2',
                                             description: 'Key 2 description',
                                         },
+                                    },
+                                },
+                            },
+                        },
+                        myArray: {
+                            title: 'Array field',
+                            type: 'array',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    arrayKey: {
+                                        type: 'string',
+                                        title: 'Array Key',
+                                        description: 'Array Key description',
+                                        default: 'default value',
+                                        prefill: 'prefill value',
+                                        example: 'example value',
                                     },
                                 },
                             },
@@ -1022,49 +1065,6 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
                 );
-            });
-
-            it('should throw error on not safe regexp', () => {
-                const invalidRegexps = [
-                    '(a+)+$',
-                    '^(a|a?)+$',
-                    '^(a|a*)+$',
-                    '^(a|a+)+$',
-                    '^(a?)+$',
-                    '^(a*)+$',
-                    '^(a+)*$',
-                    '^(a|aa?)+$',
-                    '^(a|aa*)+$',
-                    '^(a|a+)*$',
-                    '^(a|a?)*$',
-                    '^(a|a*)*$',
-                    '^(a?)*$',
-                    '^(a*)*$',
-                    '^(a+)?$',
-                    '^(a*)?$',
-                    'a*b*c*d*e*f*g*h*i*j*k*l*m*n*o*p*q*r*s*t*u*v*w*x*y*z*',
-                ];
-
-                for (const pattern of invalidRegexps) {
-                    const schema = {
-                        title: 'Test input schema',
-                        type: 'object',
-                        schemaVersion: 1,
-                        properties: {
-                            myField: {
-                                title: 'Field title',
-                                type: 'string',
-                                description: 'Some description ...',
-                                editor: 'textfield',
-                                pattern,
-                            },
-                        },
-                    };
-
-                    expect(() => validateInputSchema(validator, schema)).toThrow(
-                        `Input schema is not valid (The regular expression "${pattern}" in field schema.properties.myField.pattern may cause excessive backtracking or be unsafe to execute.)`,
-                    );
-                }
             });
         });
     });

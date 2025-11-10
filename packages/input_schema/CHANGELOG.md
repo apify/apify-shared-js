@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.23.5](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.4...@apify/input_schema@3.23.5) (2025-10-28)
+
+
+### Bug Fixes
+
+* **input_schema:** Remove safe regex check ([#558](https://github.com/apify/apify-shared-js/issues/558)) ([4a92fcc](https://github.com/apify/apify-shared-js/commit/4a92fccbf87dcf1d1e2a83c35628dd0e178da885))
+
+
+
+
+
+## [3.23.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.3...@apify/input_schema@3.23.4) (2025-10-23)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.23.3](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.2...@apify/input_schema@3.23.3) (2025-10-22)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.23.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.1...@apify/input_schema@3.23.2) (2025-10-20)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.23.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.0...@apify/input_schema@3.23.1) (2025-10-20)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 # [3.23.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.22.2...@apify/input_schema@3.23.0) (2025-10-17)
 
 
