@@ -117,6 +117,7 @@
                     },
                     {
                         "if": {
+                            "required": ["editor"],
                             "properties": {
                                 "editor": { "const": "select" }
                             }
@@ -718,6 +719,7 @@
                 },
                 {
                     "if": {
+                        "required": ["editor"],
                         "properties": {
                             "editor": { "const": "select" }
                         }
