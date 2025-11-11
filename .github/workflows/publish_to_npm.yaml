@@ -37,7 +37,7 @@ jobs:
             - name: Publish to NPM
               run: |
                   git checkout -- .
-                  npx lerna publish --contents dist --yes --no-verify-access
+                  npx lerna publish --contents dist --yes
                   npm i --no-audit # reinstall to have updated lock file
                   npx lerna ls --json | node scripts/sync-root-changelog.ts
               env:
