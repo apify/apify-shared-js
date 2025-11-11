@@ -169,7 +169,7 @@ describe('input_schema.json', () => {
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
                 'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: '
-                + '"javascript", "python", "textfield", "textarea", "hidden", "fileupload")',
+                + '"javascript", "python", "textfield", "textarea", "select", "fileupload", "hidden")',
             );
         });
 
@@ -290,6 +290,275 @@ describe('input_schema.json', () => {
                 // eslint-disable-next-line
                 'Field schema.properties.something does not exist, but it is specified in schema.required. Either define the field or remove it from schema.required.',
             );
+        });
+
+        describe('special cases for enums', () => {
+            it('should accept enum with select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            enum: ['a', 'b', 'c'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept enumSuggestedValues with select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            enumSuggestedValues: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept enum and enumTitles with select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            enum: ['a', 'b', 'c'],
+                            enumTitles: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept enumSuggestedValues and enumTitles with select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            enumSuggestedValues: ['a', 'b', 'c'],
+                            enumTitles: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept enumTitles without enum', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            editor: 'select',
+                            description: 'Some description ...',
+                            enumTitles: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.enum is required)',
+                );
+            });
+
+            it('should not accept enum without select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            enum: ['a', 'b', 'c'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.enum is not allowed.)',
+                );
+            });
+
+            it('should not accept enumSuggestedValues without select editor', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            enumSuggestedValues: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.enumSuggestedValues is not allowed.)',
+                );
+            });
+
+            it('should not accept both enum and enumSuggestedValues', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'string',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            enum: ['a', 'b', 'c'],
+                            enumSuggestedValues: ['A', 'B', 'C'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField. must match exactly one schema in oneOf)',
+                );
+            });
+
+            it('should accept enum and select editor for array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            items: {
+                                type: 'string',
+                                enum: ['a', 'b', 'c'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept enumSuggestedValues and select editor for array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            items: {
+                                type: 'string',
+                                enumSuggestedValues: ['A', 'B', 'C'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept enum without select editor for array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            items: {
+                                type: 'string',
+                                enum: ['a', 'b', 'c'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
+                );
+            });
+
+            it('should not accept enumSuggestedValues without select editor for array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'textfield',
+                            items: {
+                                type: 'string',
+                                enumSuggestedValues: ['A', 'B', 'C'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
+                );
+            });
+
+            it('should not accept both enum and enumSuggestedValues for array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'select',
+                            items: {
+                                type: 'string',
+                                enum: ['a', 'b', 'c'],
+                                enumSuggestedValues: ['A', 'B', 'C'],
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.items must match exactly one schema in oneOf)',
+                );
+            });
         });
 
         describe('special cases for resourceProperty', () => {

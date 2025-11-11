@@ -16,7 +16,8 @@ export type StringFieldDefinition = CommonFieldDefinition<string> & {
     minLength?: number;
     maxLength?: number;
     enum?: readonly string[]; // required if editor is 'select'
-    enumTitles?: readonly string[]
+    enumTitles?: readonly string[];
+    enumSuggestedValues?: readonly string[];
     isSecret?: boolean;
     // Used for 'datepicker' editor, absolute is considered as default value
     dateType?: 'absolute' | 'relative' | 'absoluteOrRelative';
