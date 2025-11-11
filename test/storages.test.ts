@@ -64,9 +64,7 @@ describe('createStorageContentSignatureAsync()', () => {
         expect(version).toBe('0');
         expect(expiresAt).not.toBe('0');
     });
-});
 
-describe('both storage signature functions should create the same signatures', () => {
     it('should create same storage signature for same inputs', async () => {
         for (let i = 0; i < 1e3; i++) {
             const secretKey = cryptoRandomObjectId();

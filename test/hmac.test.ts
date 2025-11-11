@@ -30,9 +30,7 @@ describe('createHmacSignatureAsync()', () => {
             await expect(createHmacSignatureAsync(secretKey, message)).resolves.toBe('FYMcmTIm3idXqleF1Sw5');
         }
     });
-});
 
-describe('both HMAC functions should create same signatures', () => {
     it('should create same HMAC signature for same inputs', async () => {
         for (let i = 0; i < 1e3; i++) {
             const secretKey = cryptoRandomObjectId();
