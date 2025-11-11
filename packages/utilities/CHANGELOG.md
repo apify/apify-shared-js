@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.20.3...@apify/utilities@2.21.0) (2025-11-11)
+
+
+### Features
+
+* **utilities:** add Node-less implementations of signature functions ([#563](https://github.com/apify/apify-shared-js/issues/563)) ([7bc56be](https://github.com/apify/apify-shared-js/commit/7bc56bee8b1251c2ffac3153655bdd91bc4e41a0)), closes [#537](https://github.com/apify/apify-shared-js/issues/537)
+
+
+
+
+
 ## [2.20.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.20.2...@apify/utilities@2.20.3) (2025-10-20)
 
 **Note:** Version bump only for package @apify/utilities
