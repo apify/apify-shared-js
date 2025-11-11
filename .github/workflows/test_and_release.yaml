@@ -107,4 +107,7 @@ jobs:
                 uses: apify/workflows/execute-workflow@main
                 with:
                     workflow: publish_to_npm.yaml
-                    inputs: '{ "ref": "${{ github.sha }}" }'
+                    inputs: >
+                        { 
+                            "ref": "master" 
+                        }
