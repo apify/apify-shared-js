@@ -41,8 +41,11 @@ jobs:
                   npm i --no-audit # reinstall to have updated lock file
                   npx lerna ls --json | node scripts/sync-root-changelog.ts
               env:
-                  GIT_USER: "noreply@apify.com:${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}"
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+                  GIT_AUTHOR_NAME: Apify Release Bot
+                  GIT_COMMITTER_NAME: Apify Release Bot
+                  GIT_AUTHOR_EMAIL: noreply@apify.com
+                  GIT_COMMITTER_EMAIL: noreply@apify.com
             - name: Commit changes
               uses: EndBug/add-and-commit@v9
               with:
