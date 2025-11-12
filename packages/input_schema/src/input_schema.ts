@@ -174,6 +174,13 @@ function validateFieldAgainstSchemaDefinition(
     }
 
     // If there are more matching definitions then we need to get the right one.
+    // If the definition contains "enum" property then it's enum type.
+    if ((fieldSchema as StringFieldDefinition).enum) {
+        const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
+        if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+        return;
+    }
     // If the definition contains "resourceType" property then it's resource type.
     if ((fieldSchema as CommonResourceFieldDefinition<unknown>).resourceType) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.resourceType).pop();
@@ -181,10 +188,9 @@ function validateFieldAgainstSchemaDefinition(
         validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
-
     // Otherwise we use the other definition.
-    const definition = matchingDefinitions.filter((item) => !item.properties.resourceType).pop();
-    if (!definition) throw new Error('Input schema validation failed to find other than "resource property" definition');
+    const definition = matchingDefinitions.filter((item) => !item.properties.enum && !item.properties.resourceType).pop();
+    if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
 
     validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
 }

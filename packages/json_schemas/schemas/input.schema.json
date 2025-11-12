@@ -35,6 +35,7 @@
                 "^": {
                     "oneOf": [
                         { "$ref": "#/definitions/stringProperty" },
+                        { "$ref": "#/definitions/stringEnumProperty" },
                         { "$ref": "#/definitions/arrayProperty" },
                         { "$ref": "#/definitions/objectProperty" },
                         { "$ref": "#/definitions/integerProperty" },
@@ -51,6 +52,43 @@
     "additionalProperties": false,
     "required": ["title", "type", "properties", "schemaVersion"],
     "definitions": {
+        "stringEnumProperty": {
+            "title": "Enum property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "editor": { "enum": ["select"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "prefill": { "type": "string" },
+                "example": { "type": "string" },
+                "nullable": { "type": "boolean" },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" },
+                "enum": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "enumTitles": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1
+                }
+            },
+            "required": ["type", "title", "description", "enum"],
+            "if": {
+                "properties": { "nullable": { "const": false } }
+            },
+            "then": {
+                "properties": { "default": { "type": "string" } }
+            },
+            "else": {
+                "properties": { "default": { "type": ["string", "null"] } }
+            }
+        },
         "stringProperty": {
             "title": "String property",
             "type": "object",
@@ -124,12 +162,6 @@
                         },
                         "then": {
                             "properties": {
-                                "enum": {
-                                    "type": "array",
-                                    "items": { "type": "string" },
-                                    "minItems": 1,
-                                    "uniqueItems": true
-                                },
                                 "enumSuggestedValues": {
                                     "type": "array",
                                     "items": { "type": "string" },
@@ -141,10 +173,7 @@
                                     "minItems": 1
                                 }
                             },
-                            "oneOf": [
-                                { "required": ["enum"] },
-                                { "required": ["enumSuggestedValues"] }
-                            ]
+                            "required": ["enumSuggestedValues"]
                         }
                     }
                 ]
@@ -726,12 +755,6 @@
                     },
                     "then": {
                         "properties": {
-                            "enum": {
-                                "type": "array",
-                                "items": { "type": "string" },
-                                "minItems": 1,
-                                "uniqueItems": true
-                            },
                             "enumSuggestedValues": {
                                 "type": "array",
                                 "items": { "type": "string" },
@@ -743,10 +766,7 @@
                                 "minItems": 1
                             }
                         },
-                        "oneOf": [
-                            { "required": ["enum"] },
-                            { "required": ["enumSuggestedValues"] }
-                        ]
+                        "required": ["enumSuggestedValues"]
                     }
                 }
             ]
@@ -1070,6 +1090,7 @@
                             "^": {
                                 "oneOf": [
                                     { "$ref": "#/definitions/subSchemaStringProperty" },
+                                    { "$ref": "#/definitions/subSchemaStringEnumProperty" },
                                     { "$ref": "#/definitions/subSchemaArrayProperty" },
                                     { "$ref": "#/definitions/subSchemaObjectProperty" },
                                     { "$ref": "#/definitions/subSchemaIntegerProperty" },
@@ -1499,6 +1520,7 @@
                 "^": {
                     "oneOf": [
                         { "$ref": "#/definitions/subSchemaStringProperty" },
+                        { "$ref": "#/definitions/subSchemaStringEnumProperty" },
                         { "$ref": "#/definitions/subSchemaArrayProperty" },
                         { "$ref": "#/definitions/subSchemaObjectProperty" },
                         { "$ref": "#/definitions/subSchemaIntegerProperty" },

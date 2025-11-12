@@ -226,7 +226,6 @@ describe('input_schema.json', () => {
                         title: 'Field title',
                         type: 'string',
                         description: 'Some description ...',
-                        editor: 'select',
                         enum: [123],
                     },
                 },
@@ -247,7 +246,6 @@ describe('input_schema.json', () => {
                         title: 'Field title',
                         type: 'string',
                         description: 'Some description ...',
-                        editor: 'select',
                         enum: [],
                     },
                 },
@@ -268,7 +266,6 @@ describe('input_schema.json', () => {
                         title: 'Field title',
                         type: 'string',
                         description: 'Some description ...',
-                        editor: 'select',
                         enum: ['abcd'],
                         enumTitles: [],
                     },
@@ -370,7 +367,7 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).not.toThrow();
             });
 
-            it('should not accept enumTitles without enum', () => {
+            it('should not accept enumTitles without enum or enumSuggestedValues', () => {
                 const schema = {
                     title: 'Test input schema',
                     type: 'object',
@@ -386,7 +383,7 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.enum is required)',
+                    'Input schema is not valid (Field schema.properties.myField.enumSuggestedValues is required)',
                 );
             });
 
@@ -406,7 +403,7 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Property schema.properties.myField.enum is not allowed.)',
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
                 );
             });
 
@@ -447,7 +444,7 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField. must match exactly one schema in oneOf)',
+                    'Input schema is not valid (Property schema.properties.myField.enumSuggestedValues is not allowed.)',
                 );
             });
 
