@@ -6,7 +6,7 @@ import { countries } from 'countries-list';
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
 
-import { parseAjvError } from './input_schema';
+import { getCustomErrorMessage, parseAjvError } from './input_schema';
 import { m } from './intl';
 
 /**
@@ -197,7 +197,8 @@ export function validateInputUsingValidator(
                     if (!check.test(item.key)) invalidIndexes.push(index);
                 });
                 if (invalidIndexes.length) {
-                    fieldErrors.push(m('inputSchema.validation.arrayKeysInvalid', {
+                    const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternKey`);
+                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayKeysInvalid', {
                         rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
@@ -213,7 +214,8 @@ export function validateInputUsingValidator(
                     if (!check.test(item.value)) invalidIndexes.push(index);
                 });
                 if (invalidIndexes.length) {
-                    fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                    const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
+                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayValuesInvalid', {
                         rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
@@ -228,7 +230,8 @@ export function validateInputUsingValidator(
                     if (!check.test(item)) invalidIndexes.push(index);
                 });
                 if (invalidIndexes.length) {
-                    fieldErrors.push(m('inputSchema.validation.arrayValuesInvalid', {
+                    const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
+                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayValuesInvalid', {
                         rootName: 'input',
                         fieldKey: property,
                         invalidIndexes: invalidIndexes.join(','),
@@ -246,7 +249,8 @@ export function validateInputUsingValidator(
                     if (!check.test(key)) invalidKeys.push(key);
                 });
                 if (invalidKeys.length) {
-                    fieldErrors.push(m('inputSchema.validation.objectKeysInvalid', {
+                    const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternKey`);
+                    fieldErrors.push(customError ?? m('inputSchema.validation.objectKeysInvalid', {
                         rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
@@ -262,7 +266,8 @@ export function validateInputUsingValidator(
                     if (typeof propertyValue !== 'string' || !check.test(propertyValue)) invalidKeys.push(key);
                 });
                 if (invalidKeys.length) {
-                    fieldErrors.push(m('inputSchema.validation.objectValuesInvalid', {
+                    const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
+                    fieldErrors.push(customError ?? m('inputSchema.validation.objectValuesInvalid', {
                         rootName: 'input',
                         fieldKey: property,
                         invalidKeys: invalidKeys.join(','),
