@@ -1,0 +1,185 @@
+import { all, create, type EvalFunction } from 'mathjs/number';
+
+import log from '@apify/log';
+
+import type { LruCache } from '../../datastructures/src/lru_cache';
+
+type ActorRunOptions = {
+    build?: string;
+    timeoutSecs?: number;
+    memoryMbytes?: number; // probably no one will need it, but let's keep it consistent
+    diskMbytes?: number; // probably no one will need it, but let's keep it consistent
+    maxItems?: number;
+    maxTotalChargeUsd?: number;
+    restartOnError?: boolean;
+}
+
+type MemoryEvaluationContext = {
+    runOptions: ActorRunOptions;
+    input: Record<string, unknown>;
+}
+
+export const DEFAULT_MEMORY_MBYTES_MAX_CHARS = 1000;
+
+/**
+ * A Set of allowed keys from ActorRunOptions that can be used in
+ * the {{variable}} syntax.
+ */
+const ALLOWED_RUN_OPTION_KEYS = new Set<keyof ActorRunOptions>([
+    'build',
+    'timeoutSecs',
+    'memoryMbytes',
+    'diskMbytes',
+    'maxItems',
+    'maxTotalChargeUsd',
+    'restartOnError',
+]);
+
+/**
+ * Create a mathjs instance with all functions, then disable potentially dangerous ones.
+ * Was taken from official mathjs security recommendations: https://mathjs.org/docs/expressions/security.html
+ */
+const math = create(all);
+const limitedEvaluate = math.evaluate;
+const limitedCompile = math.compile;
+
+// Disable potentially dangerous functions
+math.import({
+    // most important (hardly any functional impact)
+    import() { throw new Error('Function import is disabled'); },
+    createUnit() { throw new Error('Function createUnit is disabled'); },
+    reviver() { throw new Error('Function reviver is disabled'); },
+
+    // extra (has functional impact)
+    evaluate() { throw new Error('Function evaluate is disabled'); },
+    parse() { throw new Error('Function parse is disabled'); },
+    simplify() { throw new Error('Function simplify is disabled'); },
+    derivative() { throw new Error('Function derivative is disabled'); },
+    resolve() { throw new Error('Function resolve is disabled'); },
+}, { override: true });
+
+/**
+ * Safely retrieves a nested property from an object using a dot-notation string path.
+ *
+ * This is custom function designed to be injected into the math expression evaluator,
+ * allowing expressions like `get(input, 'user.settings.memory', 512)`.
+ *
+ * @param obj The source object to search within.
+ * @param path A dot-separated string representing the nested path (e.g., "input.payload.size").
+ * @param defaultVal The value to return if the path is not found or the value is `null` or `undefined`.
+ * @returns The retrieved value, or `defaultVal` if the path is unreachable.
+*/
+const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
+    return (path.split('.').reduce((current, key) => current?.[key], obj)) ?? defaultVal;
+};
+
+/**
+ * Rounds a number to the closest power of 2.
+ * @param num The number to round.
+ * @returns The closest power of 2.
+*/
+const roundToClosestPowerOf2 = (num: number): number | undefined => {
+    // Handle 0 or negative values. The smallest power of 2 is 2^7 = 128.
+    if (num <= 0) {
+        throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}`);
+    }
+    if (typeof num !== 'number' || num <= 0 || Number.isNaN(num)) {
+        log.warning('Failed to round number to a power of 2.', { num });
+        throw new Error(`Failed to round number to a power of 2.`);
+    }
+
+    const log2n = Math.log2(num);
+
+    const roundedLog = Math.round(log2n);
+
+    return 2 ** roundedLog;
+};
+
+/**
+ * Replaces `{{variable}}` placeholders in an expression string with `runOptions.variable`.
+ *
+ * This function also validates that the variable is one of the allowed 'runOptions' keys.
+ *
+ * @example
+ * // Returns "runOptions.memoryMbytes + 1024"
+ * preprocessDefaultMemoryExpression("{{memoryMbytes}} + 1024");
+ *
+ * @param defaultMemoryMbytes The raw string expression, e.g., "{{memoryMbytes}} * 2".
+ * @returns A safe, processed expression for evaluation, e.g., "runOptions.memoryMbytes * 2".
+ */
+const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string => {
+    // This regex captures the variable name inside {{...}}
+    const variableRegex = /{{\s*([a-zA-Z0-9_]+)\s*}}/g;
+
+    const processedExpression = defaultMemoryMbytes.replace(
+        variableRegex,
+        (_, variableName: string) => {
+            // Check if the captured variable name is in our allowlist
+            if (!ALLOWED_RUN_OPTION_KEYS.has(variableName as keyof ActorRunOptions)) {
+                throw new Error(
+                    `Invalid variable '{{${variableName}}}' in expression.`,
+                );
+            }
+
+            return `runOptions.${variableName}`;
+        },
+    );
+
+    return processedExpression;
+};
+
+/**
+ * Evaluates a dynamic string expression to calculate a memory value,
+ * then rounds the result to the closest power of 2.
+ *
+ * This function provides a sandboxed environment for the expression and injects
+ * a `get(obj, path, defaultVal)` helper to safely access properties
+ * from the `context` (e.g., `input` and `runOptions`).
+ *
+ * @param defaultMemoryMbytes The string expression to evaluate (e.g., "get(input, 'size', 10) * 1024").
+ * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
+ * @returns The calculated memory value rounded to the closest power of 2,
+ * or `undefined` if the expression fails, is non-numeric,
+ * or results in a non-positive value.
+*/
+export const calculateDefaultMemoryFromExpression = (
+    defaultMemoryMbytes: string,
+    context: MemoryEvaluationContext,
+    options: { cache: LruCache<EvalFunction> } | undefined = undefined,
+) => {
+    if (defaultMemoryMbytes.length > DEFAULT_MEMORY_MBYTES_MAX_CHARS) {
+        throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_MAX_CHARS} characters.`);
+    }
+
+    // Replaces all occurrences of {{variable}} with runOptions.variable
+    // e.g., "{{memoryMbytes}} + 1024" becomes "runOptions.memoryMbytes + 1024"
+    const preProcessedExpression = preprocessDefaultMemoryExpression(defaultMemoryMbytes);
+
+    const preparedContext = {
+        ...context,
+        get: customGetFunc,
+    };
+
+    let finalResult: number | { entries: number[] };
+
+    if (options?.cache) {
+        let compiledExpr = options.cache.get(preProcessedExpression);
+
+        if (!compiledExpr) {
+            compiledExpr = limitedCompile(preProcessedExpression);
+            options.cache.add(preProcessedExpression, compiledExpr!);
+        }
+
+        finalResult = compiledExpr.evaluate(preparedContext);
+    } else {
+        finalResult = limitedEvaluate(preProcessedExpression, preparedContext);
+    }
+
+    // Mathjs wraps multi-line expressions in an object, extract the last evaluated entry.
+    if (finalResult && typeof finalResult === 'object' && 'entries' in finalResult) {
+        const { entries } = finalResult;
+        finalResult = entries[entries.length - 1];
+    }
+
+    return roundToClosestPowerOf2(finalResult);
+};
