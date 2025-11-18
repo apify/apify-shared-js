@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.23.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.1...@apify/utilities@2.23.2) (2025-11-18)
+
+
+### Bug Fixes
+
+* improve `createHmacSignatureAsync` compatibility with worker-based environments ([#573](https://github.com/apify/apify-shared-js/issues/573)) ([3689d59](https://github.com/apify/apify-shared-js/commit/3689d59514c1183854509fff4133d2da784805bc)), closes [#570](https://github.com/apify/apify-shared-js/issues/570)
+
+
+
+
+
+## [2.23.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.0...@apify/utilities@2.23.1) (2025-11-18)
+
+
+### Bug Fixes
+
+* dynamic `require` imports for `crypto` package in HMAC signature function ([#572](https://github.com/apify/apify-shared-js/issues/572)) ([1c55aa5](https://github.com/apify/apify-shared-js/commit/1c55aa56f1e34b99933688ac911812f78906f913))
+
+
+
+
+
 # [2.23.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.20.3...@apify/utilities@2.23.0) (2025-11-11)
 
 
