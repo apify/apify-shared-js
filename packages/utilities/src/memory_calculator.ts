@@ -38,7 +38,7 @@ const ALLOWED_RUN_OPTION_KEYS = new Set<keyof ActorRunOptions>([
 
 /**
  * Create a mathjs instance with all functions, then disable potentially dangerous ones.
- * Was taken from official mathjs security recommendations: https://mathjs.org/docs/expressions/security.html
+ * MathJS security recommendations: https://mathjs.org/docs/expressions/security.html
  */
 const math = create(all);
 const limitedEvaluate = math.evaluate;
@@ -81,7 +81,7 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
  * @returns The closest power of 2 within min/max range.
 */
 const roundToClosestPowerOf2 = (num: number): number | undefined => {
-    // Handle 0 or negative values. The smallest power of 2 is 2^7 = 128.
+    // Handle 0 or negative values.
     if (num <= 0) {
         throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}`);
     }
@@ -159,9 +159,7 @@ const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string 
  *
  * @param defaultMemoryMbytes The string expression to evaluate (e.g., "get(input, 'size', 10) * 1024").
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
- * @returns The calculated memory value rounded to the closest power of 2,
- * or `undefined` if the expression fails, is non-numeric,
- * or results in a non-positive value.
+ * @returns The calculated memory value rounded to the closest power of 2 clamped within allowed limits.
 */
 export const calculateDefaultMemoryFromExpression = (
     defaultMemoryMbytes: string,
@@ -172,8 +170,8 @@ export const calculateDefaultMemoryFromExpression = (
         throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_MAX_CHARS} characters.`);
     }
 
-    // Replaces all occurrences of {{variable}} with runOptions.variable
-    // e.g., "{{memoryMbytes}} + 1024" becomes "runOptions.memoryMbytes + 1024"
+    // Replaces all occurrences of {{variable}} with variable
+    // e.g., "{{runOptions.memoryMbytes}} + 1024" becomes "runOptions.memoryMbytes + 1024"
     const preProcessedExpression = preprocessDefaultMemoryExpression(defaultMemoryMbytes);
 
     const preparedContext = {

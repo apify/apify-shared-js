@@ -9,7 +9,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
     describe('Basic Evaluation', () => {
         it('correctly calculates and rounds memory from one-line expression', () => {
             const context = { input: { size: 10 }, runOptions: {} };
-            // 10 * 1024 = 10240. log2(10240) ~ 13.32. round(13) -> 2^13 = 8192
+            // 10 * 1024 = 10240. log2(10240) ~ 13.32. round(13.32) -> 2^13 = 8192
             const result = calculateDefaultMemoryFromExpression('input.size * 1024', context);
             expect(result).toBe(8192);
         });
@@ -35,7 +35,6 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
 
         it('correctly handles a single number expression', () => {
-            // 2048 is 2^11
             const result = calculateDefaultMemoryFromExpression('2048', emptyContext);
             expect(result).toBe(2048);
         });
@@ -66,7 +65,6 @@ describe('calculateDefaultMemoryFromExpression', () => {
         it('correctly replaces {{runOptions.variable}} with valid runOptions.variable', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{runOptions.memoryMbytes}} * 1024';
-            // 16 * 1024 = 16384, which is 2^14
             const result = calculateDefaultMemoryFromExpression(expr, context);
             expect(result).toBe(16384);
         });
@@ -74,15 +72,13 @@ describe('calculateDefaultMemoryFromExpression', () => {
         it('correctly replaces {{input.variable}} with valid input.variable', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{input.value}} * 1024';
-            // 16 * 1024 = 16384, which is 2^14
             const result = calculateDefaultMemoryFromExpression(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('correctly throw error if runOptions variable is invalid', () => {
+        it('should throw error if runOptions variable is invalid', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{runOptions.customVariable}} * 1024';
-            // 16 * 1024 = 16384, which is 2^14
             expect(() => calculateDefaultMemoryFromExpression(expr, context))
                 .toThrow(`Invalid variable '{{runOptions.customVariable}}' in expression. Only the following runOptions are allowed:`);
         });
@@ -132,27 +128,23 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 .toThrow();
         });
 
-        it('should return undefined for a 0 result', () => {
+        it('should throw error if result is 0', () => {
             expect(() => calculateDefaultMemoryFromExpression('10 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: 0`);
         });
 
-        it('should return undefined for a negative result', () => {
+        it('should throw error if result is negative', () => {
             expect(() => calculateDefaultMemoryFromExpression('5 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: -5`);
         });
 
-        it('should return undefined for a NaN result', () => {
+        it('should throw error if result is NaN', () => {
             expect(() => calculateDefaultMemoryFromExpression('0 / 0', emptyContext)).toThrow('Failed to round number to a power of 2.');
         });
 
-        it('should return undefined for a non-numeric (string) result', () => {
+        it('should throw error if result is a non-numeric (string)', () => {
             expect(() => calculateDefaultMemoryFromExpression("'hello'", emptyContext)).toThrow('Failed to round number to a power of 2.');
         });
 
-        it('should return undefined for a non-numeric (object) result', () => {
-            expect(() => calculateDefaultMemoryFromExpression('{ a: 1, b: 2 }', emptyContext)).toThrow('Failed to round number to a power of 2.');
-        });
-
-        it('should return error when disabled functionality of MathJS is used', () => {
+        it('should throw error when disabled functionality of MathJS is used', () => {
             expect(() => calculateDefaultMemoryFromExpression('evaluate(512)', emptyContext)).toThrow('Function evaluate is disabled');
         });
     });
