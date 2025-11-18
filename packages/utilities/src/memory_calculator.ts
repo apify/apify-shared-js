@@ -96,32 +96,49 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
 };
 
 /**
- * Replaces `{{variable}}` placeholders in an expression string with `runOptions.variable`.
- *
- * This function also validates that the variable is one of the allowed 'runOptions' keys.
+ * Replaces `{{variable}}` placeholders in an expression string with the variable name.
+ * Enforces strict validation to only allow `input.*` paths or whitelisted `runOptions.*` keys.
  *
  * @example
  * // Returns "runOptions.memoryMbytes + 1024"
- * preprocessDefaultMemoryExpression("{{memoryMbytes}} + 1024");
+ * preprocessDefaultMemoryExpression("{{runOptions.memoryMbytes}} + 1024");
  *
- * @param defaultMemoryMbytes The raw string expression, e.g., "{{memoryMbytes}} * 2".
+ * @param defaultMemoryMbytes The raw string expression, e.g., "{{runOptions.memoryMbytes}} * 2".
  * @returns A safe, processed expression for evaluation, e.g., "runOptions.memoryMbytes * 2".
  */
 const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string => {
-    // This regex captures the variable name inside {{...}}
-    const variableRegex = /{{\s*([a-zA-Z0-9_]+)\s*}}/g;
+    const variableRegex = /{{\s*([a-zA-Z0-9_.]+)\s*}}/g;
 
     const processedExpression = defaultMemoryMbytes.replace(
         variableRegex,
         (_, variableName: string) => {
-            // Check if the captured variable name is in our allowlist
-            if (!ALLOWED_RUN_OPTION_KEYS.has(variableName as keyof ActorRunOptions)) {
+            // 1. Validate that the variable starts with either 'input.' or 'runOptions.'
+            if (!variableName.startsWith('runOptions.') && !variableName.startsWith('input.')) {
                 throw new Error(
-                    `Invalid variable '{{${variableName}}}' in expression.`,
+                    `Invalid variable '{{${variableName}}}' in expression. Variables must start with 'input.' or 'runOptions.'.`,
                 );
             }
 
-            return `runOptions.${variableName}`;
+            // 2. Check if the variable is accessing Input (e.g. {{input.someValue}})
+            // We do not validate the specific property name because input is dynamic.
+            if (variableName.startsWith('input.')) {
+                return variableName;
+            }
+
+            if (variableName.startsWith('runOptions.')) {
+                const key = variableName.slice('runOptions.'.length);
+                if (!ALLOWED_RUN_OPTION_KEYS.has(key as keyof ActorRunOptions)) {
+                    throw new Error(
+                        `Invalid variable '{{${variableName}}}' in expression. Only the following runOptions are allowed: ${Array.from(ALLOWED_RUN_OPTION_KEYS).map((k) => `runOptions.${k}`).join(', ')}.`,
+                    );
+                }
+                return variableName;
+            }
+
+            // 3. Throw error for unrecognized variables (e.g. {{process.env}})
+            throw new Error(
+                `Invalid variable '{{${variableName}}}' in expression.`,
+            );
         },
     );
 

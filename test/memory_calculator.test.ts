@@ -56,19 +56,35 @@ describe('calculateDefaultMemoryFromExpression', () => {
     });
 
     describe('Preprocessing with {{variable}}', () => {
-        it('correctly replaces {{variable}} with valid runOptions.variable', () => {
+        it('should throw error if variable doesn\'t start with .runOptions or .input', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
-            const expr = '{{memoryMbytes}} * 1024';
+            const expr = '{{unexistingVariable}} * 1024';
+            expect(() => calculateDefaultMemoryFromExpression(expr, context))
+                .toThrow(`Invalid variable '{{unexistingVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'.`);
+        });
+
+        it('correctly replaces {{runOptions.variable}} with valid runOptions.variable', () => {
+            const context = { input: {}, runOptions: { memoryMbytes: 16 } };
+            const expr = '{{runOptions.memoryMbytes}} * 1024';
             // 16 * 1024 = 16384, which is 2^14
             const result = calculateDefaultMemoryFromExpression(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('should throw error for invalid variable in {{variable}} syntax', () => {
-            const context = { input: {}, runOptions: { memoryMbytes: 16 } };
-            const expr = '{{unexistingVariable}} * 1024';
+        it('correctly replaces {{input.variable}} with valid input.variable', () => {
+            const context = { input: { value: 16 }, runOptions: { } };
+            const expr = '{{input.value}} * 1024';
+            // 16 * 1024 = 16384, which is 2^14
+            const result = calculateDefaultMemoryFromExpression(expr, context);
+            expect(result).toBe(16384);
+        });
+
+        it('correctly throw error if runOptions variable is invalid', () => {
+            const context = { input: { value: 16 }, runOptions: { } };
+            const expr = '{{runOptions.customVariable}} * 1024';
+            // 16 * 1024 = 16384, which is 2^14
             expect(() => calculateDefaultMemoryFromExpression(expr, context))
-                .toThrow(`Invalid variable '{{unexistingVariable}}' in expression.`);
+                .toThrow(`Invalid variable '{{runOptions.customVariable}}' in expression. Only the following runOptions are allowed:`);
         });
     });
 
