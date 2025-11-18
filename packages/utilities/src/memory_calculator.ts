@@ -1,5 +1,6 @@
 import { all, create, type EvalFunction } from 'mathjs/number';
 
+import { ACTOR_LIMITS } from '@apify/consts';
 import log from '@apify/log';
 
 import type { LruCache } from '../../datastructures/src/lru_cache';
@@ -23,7 +24,7 @@ export const DEFAULT_MEMORY_MBYTES_MAX_CHARS = 1000;
 
 /**
  * A Set of allowed keys from ActorRunOptions that can be used in
- * the {{variable}} syntax.
+ * the {{runOptions.variable}} syntax.
  */
 const ALLOWED_RUN_OPTION_KEYS = new Set<keyof ActorRunOptions>([
     'build',
@@ -75,8 +76,9 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
 
 /**
  * Rounds a number to the closest power of 2.
+ * The result is clamped to the allowed range (ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES - ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES).
  * @param num The number to round.
- * @returns The closest power of 2.
+ * @returns The closest power of 2 within min/max range.
 */
 const roundToClosestPowerOf2 = (num: number): number | undefined => {
     // Handle 0 or negative values. The smallest power of 2 is 2^7 = 128.
@@ -91,13 +93,14 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
     const log2n = Math.log2(num);
 
     const roundedLog = Math.round(log2n);
+    const result = 2 ** roundedLog;
 
-    return 2 ** roundedLog;
+    return Math.max(ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES, Math.min(result, ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES));
 };
 
 /**
  * Replaces `{{variable}}` placeholders in an expression string with the variable name.
- * Enforces strict validation to only allow `input.*` paths or whitelisted `runOptions.*` keys.
+ * Enforces strict validation to allow `{{input.*}}` paths or whitelisted `{{runOptions.*}}` keys.
  *
  * @example
  * // Returns "runOptions.memoryMbytes + 1024"
@@ -119,12 +122,13 @@ const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string 
                 );
             }
 
-            // 2. Check if the variable is accessing Input (e.g. {{input.someValue}})
+            // 2. Check if the variable is accessing input (e.g. {{input.someValue}})
             // We do not validate the specific property name because input is dynamic.
             if (variableName.startsWith('input.')) {
                 return variableName;
             }
 
+            // 3. Check if the variable is accessing runOptions (e.g. {{runOptions.memoryMbytes}}) and validate the keys.
             if (variableName.startsWith('runOptions.')) {
                 const key = variableName.slice('runOptions.'.length);
                 if (!ALLOWED_RUN_OPTION_KEYS.has(key as keyof ActorRunOptions)) {

@@ -106,6 +106,16 @@ describe('calculateDefaultMemoryFromExpression', () => {
             const result = calculateDefaultMemoryFromExpression('512', emptyContext);
             expect(result).toBe(512);
         });
+
+        it('should clamp to the minimum memory limit if the result is too low', () => {
+            const result = calculateDefaultMemoryFromExpression('64', emptyContext);
+            expect(result).toBe(128);
+        });
+
+        it('should clamp to the maximum memory limit if the result is too high', () => {
+            const result = calculateDefaultMemoryFromExpression('100000', emptyContext);
+            expect(result).toBe(32768);
+        });
     });
 
     describe('Invalid/Error Handling', () => {
