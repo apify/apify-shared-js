@@ -321,14 +321,14 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 ];
 
 // Regex matching forbidden usernames.
-const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAMES_REGEXPS.join('|')})$`, 'i');
+export const FORBIDDEN_USERNAME_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAMES_REGEXPS.join('|')})$`, 'i');
 
 /**
  * Checks whether username is listed in FORBIDDEN_USERNAMES
  * or matches any root route path.
  */
 export function isForbiddenUsername(username: string): boolean {
-    return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_REGEXP);
+    return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_USERNAME_REGEXP);
 }
 
 /**
