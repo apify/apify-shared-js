@@ -39,11 +39,13 @@ export function createHmacSignature(secretKey: string, message: string): string 
 
 let subtleCrypto = globalThis.crypto?.subtle;
 
-function ensureSubtleCryptoExists() {
+async function ensureSubtleCryptoExists() {
     if (!subtleCrypto) {
         if (require) {
             // eslint-disable-next-line @typescript-eslint/no-require-imports, global-require -- Backward compatibility for Node.js versions < 19
-            subtleCrypto = require('node:crypto')?.webcrypto.subtle;
+            subtleCrypto = require('node:crypto')?.webcrypto?.subtle;
+        } else {
+            subtleCrypto = (await import('node:crypto'))?.webcrypto?.subtle as SubtleCrypto;
         }
 
         if (!subtleCrypto) {
@@ -63,7 +65,7 @@ or submit an issue to https://github.com/apify/apify-shared-js so we can help yo
  * @returns Promise<string>
  */
 export async function createHmacSignatureAsync(secretKey: string, message: string): Promise<string> {
-    ensureSubtleCryptoExists();
+    await ensureSubtleCryptoExists();
     const encoder = new TextEncoder();
 
     const key = await subtleCrypto.importKey(
