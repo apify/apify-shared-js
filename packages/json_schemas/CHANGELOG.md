@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.7.0...@apify/json_schemas@0.8.0) (2025-11-18)
+
+
+### Features
+
+* **input_schema:** Add enumSuggestedValues property to input schema ([#569](https://github.com/apify/apify-shared-js/issues/569)) ([dc40a32](https://github.com/apify/apify-shared-js/commit/dc40a328763f7825a3e58464b7bf30ca174a42a4))
+
+
+
+
+
 # [0.7.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.6.0...@apify/json_schemas@0.7.0) (2025-10-23)
 
 
