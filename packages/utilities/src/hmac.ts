@@ -50,7 +50,7 @@ async function ensureSubtleCryptoExists() {
         }
 
         try {
-            subtleCrypto = (await import('node:crypto')).webcrypto.subtle as SubtleCrypto;
+            subtleCrypto = (await import('node:crypto'))?.webcrypto?.subtle as SubtleCrypto;
         } catch {
             // Ignore import error
         }
