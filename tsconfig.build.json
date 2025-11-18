@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
+    "module": "commonjs",
     "target": "es2022",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node16",
     "declaration": true,
     "sourceMap": false,
     "strict": true,
