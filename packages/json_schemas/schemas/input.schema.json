@@ -98,17 +98,13 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "nullable": { "type": "boolean" },
-                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "fileupload"] },
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "select", "fileupload", "hidden"] },
                 "isSecret": { "type": "boolean" }
             },
             "required": ["type", "title", "description", "editor"],
             "if": {
                 "properties": {
-                    "isSecret": {
-                        "not": {
-                            "const": true
-                        }
-                    }
+                    "isSecret": { "not": { "const": true } }
                 }
             },
             "then": {
@@ -142,7 +138,7 @@
                         },
                         "else": {
                             "properties": {
-                                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
+                                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "select", "fileupload", "hidden"] }
                             }
                         }
                     },
@@ -155,6 +151,30 @@
                         },
                         "else": {
                             "properties": { "default": { "type": ["string", "null"] } }
+                        }
+                    },
+                    {
+                        "if": {
+                            "required": ["editor"],
+                            "properties": {
+                                "editor": { "const": "select" }
+                            }
+                        },
+                        "then": {
+                            "properties": {
+                                "enumSuggestedValues": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "minItems": 1,
+                                    "uniqueItems": true
+                                },
+                                "enumTitles": {
+                                    "type": "array",
+                                    "items": { "type": "string" },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": ["enumSuggestedValues"]
                         }
                     }
                 ]
@@ -694,7 +714,7 @@
                 "nullable": { "type": "boolean" },
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
-                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "hidden", "fileupload"] }
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "select", "fileupload", "hidden"] }
             },
             "required": ["type", "title", "description"],
             "allOf": [
@@ -712,7 +732,7 @@
                     },
                     "else": {
                         "properties": {
-                            "editor": { "enum": ["javascript", "python", "textfield", "textarea", "hidden", "fileupload"] }
+                            "editor": { "enum": ["javascript", "python", "textfield", "textarea", "select", "fileupload", "hidden"] }
                         }
                     }
                 },
@@ -725,6 +745,30 @@
                     },
                     "else": {
                         "properties": { "default": { "type": ["string", "null"] } }
+                    }
+                },
+                {
+                    "if": {
+                        "required": ["editor"],
+                        "properties": {
+                            "editor": { "const": "select" }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "enumSuggestedValues": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            },
+                            "enumTitles": {
+                                "type": "array",
+                                "items": { "type": "string" },
+                                "minItems": 1
+                            }
+                        },
+                        "required": ["enumSuggestedValues"]
                     }
                 }
             ]
@@ -1137,9 +1181,18 @@
                 "enumTitles": {
                     "type": "array",
                     "items": { "type": "string" }
+                },
+                "enumSuggestedValues": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1,
+                    "uniqueItems": true
                 }
             },
-            "required": ["type", "enum"]
+            "oneOf": [
+                { "required": ["type", "enum"] },
+                { "required": ["type", "enumSuggestedValues"] }
+            ]
         },
         "arrayItemsKeyValue": {
             "title": "Utils: Array items keyValue definition",
