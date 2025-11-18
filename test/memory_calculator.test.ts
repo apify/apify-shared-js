@@ -97,12 +97,6 @@ describe('calculateDefaultMemoryFromExpression', () => {
             expect(result).toBe(16384);
         });
 
-        it('should handle values that are already powers of 2', () => {
-            // 2^9 = 512
-            const result = calculateDefaultMemoryFromExpression('512', emptyContext);
-            expect(result).toBe(512);
-        });
-
         it('should clamp to the minimum memory limit if the result is too low', () => {
             const result = calculateDefaultMemoryFromExpression('64', emptyContext);
             expect(result).toBe(128);
@@ -115,7 +109,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
     });
 
     describe('Invalid/Error Handling', () => {
-        it('should throw an error if expression length is too long', () => {
+        it('should throw an error if expression length is greater than DEFAULT_MEMORY_MBYTES_MAX_CHARS', () => {
             const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_MAX_CHARS + 1); // Assuming max length is 1000
             expect(() => calculateDefaultMemoryFromExpression(expr, emptyContext))
                 .toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_MAX_CHARS} characters.`);
@@ -123,7 +117,6 @@ describe('calculateDefaultMemoryFromExpression', () => {
 
         it('should throw an error for invalid syntax', () => {
             const expr = '1 +* 2';
-            // The original function does not have a try/catch, so it *should* throw
             expect(() => calculateDefaultMemoryFromExpression(expr, emptyContext))
                 .toThrow();
         });

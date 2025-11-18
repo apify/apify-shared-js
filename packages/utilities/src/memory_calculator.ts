@@ -1,3 +1,4 @@
+// MathJS bundle with only numbers is ~2x smaller than the default one.
 import { all, create, type EvalFunction } from 'mathjs/number';
 
 import { ACTOR_LIMITS } from '@apify/consts';
@@ -80,12 +81,13 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
  * @returns The closest power of 2 within min/max range.
 */
 const roundToClosestPowerOf2 = (num: number): number | undefined => {
+    if (typeof num !== 'number' || Number.isNaN(num)) {
+        throw new Error(`Failed to round number to a power of 2.`);
+    }
+
     // Handle 0 or negative values.
     if (num <= 0) {
         throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}`);
-    }
-    if (typeof num !== 'number' || num <= 0 || Number.isNaN(num)) {
-        throw new Error(`Failed to round number to a power of 2.`);
     }
 
     const log2n = Math.log2(num);
@@ -137,7 +139,7 @@ const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string 
                 return variableName;
             }
 
-            // 3. Throw error for unrecognized variables (e.g. {{process.env}})
+            // 3. Throw error for unrecognized variables (e.g. {{someVariable}})
             throw new Error(
                 `Invalid variable '{{${variableName}}}' in expression.`,
             );
@@ -188,7 +190,8 @@ export const calculateDefaultMemoryFromExpression = (
         finalResult = limitedEvaluate(preProcessedExpression, preparedContext);
     }
 
-    // Mathjs wraps multi-line expressions in an object, extract the last evaluated entry.
+    // Mathjs wraps multi-line expressions in an object, so we need to extract the last entry.
+    // Note: one-line expressions return a number directly.
     if (finalResult && typeof finalResult === 'object' && 'entries' in finalResult) {
         const { entries } = finalResult;
         finalResult = entries[entries.length - 1];
