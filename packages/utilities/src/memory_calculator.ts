@@ -1,7 +1,6 @@
 import { all, create, type EvalFunction } from 'mathjs/number';
 
 import { ACTOR_LIMITS } from '@apify/consts';
-import log from '@apify/log';
 
 import type { LruCache } from '../../datastructures/src/lru_cache';
 
@@ -86,7 +85,6 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
         throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}`);
     }
     if (typeof num !== 'number' || num <= 0 || Number.isNaN(num)) {
-        log.warning('Failed to round number to a power of 2.', { num });
         throw new Error(`Failed to round number to a power of 2.`);
     }
 
@@ -150,12 +148,8 @@ const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string 
 };
 
 /**
- * Evaluates a dynamic string expression to calculate a memory value,
- * then rounds the result to the closest power of 2.
- *
- * This function provides a sandboxed environment for the expression and injects
- * a `get(obj, path, defaultVal)` helper to safely access properties
- * from the `context` (e.g., `input` and `runOptions`).
+ * Evaluates a dynamic memory expression string using the provided context.
+ * Result is rounded to the closest power of 2 and clamped within allowed limits.
  *
  * @param defaultMemoryMbytes The string expression to evaluate (e.g., "get(input, 'size', 10) * 1024").
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
