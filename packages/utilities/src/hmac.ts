@@ -41,10 +41,18 @@ let subtleCrypto = globalThis.crypto?.subtle;
 
 async function ensureSubtleCryptoExists() {
     if (!subtleCrypto) {
-        if (globalThis.require) {
-            subtleCrypto = globalThis.require('node:crypto')?.webcrypto?.subtle;
-        } else {
-            subtleCrypto = (await import('node:crypto'))?.webcrypto?.subtle as SubtleCrypto;
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports, global-require -- Backward compatibility for Node.js versions < 19
+            subtleCrypto = require('node:crypto')?.webcrypto?.subtle;
+            if (subtleCrypto) return;
+        } catch {
+            // Ignore require error
+        }
+
+        try {
+            subtleCrypto = (await import('node:crypto')).webcrypto.subtle as SubtleCrypto;
+        } catch {
+            // Ignore import error
         }
 
         if (!subtleCrypto) {
