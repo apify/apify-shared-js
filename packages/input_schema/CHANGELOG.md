@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.24.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.10...@apify/input_schema@3.24.0) (2025-11-18)
+
+
+### Features
+
+* **input_schema:** Add enumSuggestedValues property to input schema ([#569](https://github.com/apify/apify-shared-js/issues/569)) ([dc40a32](https://github.com/apify/apify-shared-js/commit/dc40a328763f7825a3e58464b7bf30ca174a42a4))
+
+
+
+
+
+## [3.23.10](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.9...@apify/input_schema@3.23.10) (2025-11-18)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 ## [3.23.9](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.8...@apify/input_schema@3.23.9) (2025-11-18)
 
 **Note:** Version bump only for package @apify/input_schema
