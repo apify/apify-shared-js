@@ -55,7 +55,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
 
         describe('operations supported', () => {
             const context = {
-                input: { A: 200, B: 10, C: 4, nullVal: null, zeroVal: 0, startUrls: [1, 2, 3] },
+                input: { },
                 runOptions: { timeoutSecs: 60, memoryMbytes: 512 },
             };
 
@@ -70,7 +70,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 { expression: '(true or false) ? 5 : 0', desc: 'or allowed' },
                 { expression: '(true xor false) ? 5 : 0', desc: 'xor allowed' },
                 { expression: 'not(false) ? 5 : 0', desc: 'not allowed' },
-                { expression: 'input.nullVal ?? 256', desc: 'nullish coalescing allowed' },
+                { expression: 'null ?? 256', desc: 'nullish coalescing allowed' },
                 { expression: 'a = 5', desc: 'variable assignment' },
             ];
 
