@@ -1,7 +1,7 @@
 import type { EvalFunction } from 'mathjs';
 
 import { LruCache } from '@apify/datastructures';
-import { calculateDefaultMemoryFromExpression, DEFAULT_MEMORY_MBYTES_MAX_CHARS } from '@apify/utilities';
+import { calculateDefaultMemoryFromExpression, DEFAULT_MEMORY_MBYTES_MAX_CHARS } from '@apify/math-utils';
 
 describe('calculateDefaultMemoryFromExpression', () => {
     const emptyContext = { input: {}, runOptions: {} };
