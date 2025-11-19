@@ -52,6 +52,36 @@ describe('calculateDefaultMemoryFromExpression', () => {
             const result = calculateDefaultMemoryFromExpression(expr, context);
             expect(result).toBe(512);
         });
+
+        describe('operations supported', () => {
+            const context = {
+                input: { A: 200, B: 10, C: 4, nullVal: null, zeroVal: 0, startUrls: [1, 2, 3] },
+                runOptions: { timeoutSecs: 60, memoryMbytes: 512 },
+            };
+
+            const cases = [
+                { expression: '5 + 5', desc: '+ allowed' },
+                { expression: '6 - 5', desc: '- allowed' },
+                { expression: '5 / 5', desc: '/ allowed' },
+                { expression: '5 * 5', desc: '* allowed' },
+                { expression: 'max(1, 2, 3)', desc: 'max() allowed' },
+                { expression: 'min(1, 2, 3)', desc: 'min() allowed' },
+                { expression: '(true and false) ? 0 : 5', desc: 'and allowed' },
+                { expression: '(true or false) ? 5 : 0', desc: 'or allowed' },
+                { expression: '(true xor false) ? 5 : 0', desc: 'xor allowed' },
+                { expression: 'not(false) ? 5 : 0', desc: 'not allowed' },
+                { expression: 'input.nullVal ?? 256', desc: 'nullish coalescing allowed' },
+                { expression: 'a = 5', desc: 'variable assignment' },
+            ];
+
+            it.each(cases)(
+                '$desc',
+                ({ expression }) => {
+                    // in case operation is not supported, mathjs will throw
+                    expect(calculateDefaultMemoryFromExpression(expression, context)).toBeDefined();
+                },
+            );
+        });
     });
 
     describe('Preprocessing with {{variable}}', () => {

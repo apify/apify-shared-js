@@ -1,5 +1,21 @@
 // MathJS bundle with only numbers is ~2x smaller than the default one.
-import { all, create, type EvalFunction } from 'mathjs/number';
+import {
+    addDependencies,
+    andDependencies,
+    compileDependencies,
+    create,
+    divideDependencies,
+    type EvalFunction,
+    evaluateDependencies,
+    maxDependencies,
+    minDependencies,
+    multiplyDependencies,
+    notDependencies,
+    nullishDependencies,
+    orDependencies,
+    subtractDependencies,
+    xorDependencies,
+} from 'mathjs';
 
 import { ACTOR_LIMITS } from '@apify/consts';
 
@@ -37,10 +53,29 @@ const ALLOWED_RUN_OPTION_KEYS = new Set<keyof ActorRunOptions>([
 ]);
 
 /**
- * Create a mathjs instance with all functions, then disable potentially dangerous ones.
+ * Create a mathjs instance with selected dependencies, then disable potentially dangerous ones.
  * MathJS security recommendations: https://mathjs.org/docs/expressions/security.html
  */
-const math = create(all);
+const math = create({
+    // arithmetic dependencies
+    addDependencies,
+    subtractDependencies,
+    multiplyDependencies,
+    divideDependencies,
+    // expression dependencies
+    compileDependencies,
+    evaluateDependencies,
+    // statistics dependencies
+    maxDependencies,
+    minDependencies,
+    // logical dependencies
+    andDependencies,
+    notDependencies,
+    orDependencies,
+    xorDependencies,
+    // without that dependency 'null ?? 5', won't work
+    nullishDependencies,
+});
 const limitedEvaluate = math.evaluate;
 const limitedCompile = math.compile;
 
