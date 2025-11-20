@@ -145,7 +145,7 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
  * @param defaultMemoryMbytes The raw string expression, e.g., "{{runOptions.memoryMbytes}} * 2".
  * @returns A safe, processed expression for evaluation, e.g., "runOptions.memoryMbytes * 2".
  */
-const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string => {
+const preprocessRunMemoryExpression = (defaultMemoryMbytes: string): string => {
     const variableRegex = /{{\s*([a-zA-Z0-9_.]+)\s*}}/g;
 
     const processedExpression = defaultMemoryMbytes.replace(
@@ -193,7 +193,7 @@ const preprocessDefaultMemoryExpression = (defaultMemoryMbytes: string): string 
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
  * @returns The calculated memory value rounded to the closest power of 2 clamped within allowed limits.
 */
-export const calculateDefaultMemoryFromExpression = (
+export const calculateRunDynamicMemory = (
     defaultMemoryMbytes: string,
     context: MemoryEvaluationContext,
     options: { cache: LruCache<EvalFunction> } | undefined = undefined,
@@ -204,7 +204,7 @@ export const calculateDefaultMemoryFromExpression = (
 
     // Replaces all occurrences of {{variable}} with variable
     // e.g., "{{runOptions.memoryMbytes}} + 1024" becomes "runOptions.memoryMbytes + 1024"
-    const preProcessedExpression = preprocessDefaultMemoryExpression(defaultMemoryMbytes);
+    const preprocessedExpression = preprocessRunMemoryExpression(defaultMemoryMbytes);
 
     const preparedContext = {
         ...context,
@@ -214,16 +214,16 @@ export const calculateDefaultMemoryFromExpression = (
     let finalResult: number | { entries: number[] };
 
     if (options?.cache) {
-        let compiledExpr = options.cache.get(preProcessedExpression);
+        let compiledExpr = options.cache.get(preprocessedExpression);
 
         if (!compiledExpr) {
-            compiledExpr = limitedCompile(preProcessedExpression);
-            options.cache.add(preProcessedExpression, compiledExpr!);
+            compiledExpr = limitedCompile(preprocessedExpression);
+            options.cache.add(preprocessedExpression, compiledExpr!);
         }
 
         finalResult = compiledExpr.evaluate(preparedContext);
     } else {
-        finalResult = limitedEvaluate(preProcessedExpression, preparedContext);
+        finalResult = limitedEvaluate(preprocessedExpression, preparedContext);
     }
 
     // Mathjs wraps multi-line expressions in an object, so we need to extract the last entry.
