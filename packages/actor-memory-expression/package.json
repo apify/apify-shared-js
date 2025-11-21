@@ -1,5 +1,5 @@
 {
-    "name": "@apify/math-utils",
+    "name": "@apify/actor-memory-expression",
     "version": "0.0.1",
     "description": "Mathematical and numerical utility functions.",
     "main": "./dist/cjs/index.cjs",

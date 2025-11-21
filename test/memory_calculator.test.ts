@@ -1,7 +1,7 @@
 import type { EvalFunction } from 'mathjs';
 
+import { calculateRunDynamicMemory, DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH } from '@apify/actor-memory-expression';
 import { LruCache } from '@apify/datastructures';
-import { calculateRunDynamicMemory, DEFAULT_MEMORY_MBYTES_MAX_CHARS } from '@apify/math-utils';
 
 describe('calculateDefaultMemoryFromExpression', () => {
     const emptyContext = { input: {}, runOptions: {} };
@@ -59,54 +59,56 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 runOptions: { timeoutSecs: 60, memoryMbytes: 512 },
             };
 
+            // Note: all results are rounded to the closest power of 2 and clamped within limits.
             const cases = [
-                { expression: '5 + 5', desc: '+ allowed' },
-                { expression: '6 - 5', desc: '- allowed' },
-                { expression: '5 / 5', desc: '/ allowed' },
-                { expression: '5 * 5', desc: '* allowed' },
-                { expression: 'max(1, 2, 3)', desc: 'max() allowed' },
-                { expression: 'min(1, 2, 3)', desc: 'min() allowed' },
-                { expression: '(true and false) ? 0 : 5', desc: 'and allowed' },
-                { expression: '(true or false) ? 5 : 0', desc: 'or allowed' },
-                { expression: '(true xor false) ? 5 : 0', desc: 'xor allowed' },
-                { expression: 'not(false) ? 5 : 0', desc: 'not allowed' },
-                { expression: 'null ?? 256', desc: 'nullish coalescing allowed' },
-                { expression: 'a = 5', desc: 'variable assignment' },
+                { expression: '128 + 5', result: 128, name: '+' },
+                { expression: '128 - 5', result: 128, name: '-' },
+                { expression: '128 / 5', result: 128, name: '/' },
+                { expression: '128 * 5', result: 512, name: '*' },
+                { expression: 'max(128, 2, 3)', result: 128, name: 'max()' },
+                { expression: 'min(128, 512, 1024)', result: 128, name: 'min()' },
+                { expression: '(true and false) ? 0 : 128', result: 128, name: 'and' },
+                { expression: '(true or false) ? 128 : 0', result: 128, name: 'or' },
+                { expression: '(true xor false) ? 128 : 0', result: 128, name: 'xor' },
+                { expression: 'not(false) ? 128 : 0', result: 128, name: 'not' },
+                { expression: 'null ?? 256', result: 256, name: 'nullish coalescing' },
+                { expression: 'a = 128', result: 128, name: '=' },
             ];
 
             it.each(cases)(
-                '$desc',
-                ({ expression }) => {
+                `supports operation '$name'`,
+                ({ expression, result }) => {
                     // in case operation is not supported, mathjs will throw
-                    expect(calculateRunDynamicMemory(expression, context)).toBeDefined();
+                    // we round the result to the closest power of 2 and clamp within limits.
+                    expect(calculateRunDynamicMemory(expression, context)).toBe(result);
                 },
             );
         });
     });
 
-    describe('Preprocessing with {{variable}}', () => {
-        it('should throw error if variable doesn\'t start with .runOptions or .input', () => {
+    describe('Template {{variables}} support', () => {
+        it('should throw error if variable doesn\'t start with runOptions. or input.', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
-            const expr = '{{unexistingVariable}} * 1024';
+            const expr = '{{nonexistentVariable}} * 1024';
             expect(() => calculateRunDynamicMemory(expr, context))
-                .toThrow(`Invalid variable '{{unexistingVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'.`);
+                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'.`);
         });
 
-        it('correctly replaces {{runOptions.variable}} with valid runOptions.variable', () => {
+        it('correctly evaluates valid runOptions property', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{runOptions.memoryMbytes}} * 1024';
             const result = calculateRunDynamicMemory(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('correctly replaces {{input.variable}} with valid input.variable', () => {
+        it('correctly evaluates input property', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{input.value}} * 1024';
             const result = calculateRunDynamicMemory(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('should throw error if runOptions variable is invalid', () => {
+        it('should throw error if runOptions property is not supported', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{runOptions.customVariable}} * 1024';
             expect(() => calculateRunDynamicMemory(expr, context))
@@ -114,7 +116,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
     });
 
-    describe('Rounding Logic', () => {
+    describe('Rounding logic', () => {
         it('should round down (e.g., 10240 -> 8192)', () => {
             // 2^13 = 8192, 2^14 = 16384.
             const result = calculateRunDynamicMemory('10240', emptyContext);
@@ -140,9 +142,9 @@ describe('calculateDefaultMemoryFromExpression', () => {
 
     describe('Invalid/Error Handling', () => {
         it('should throw an error if expression length is greater than DEFAULT_MEMORY_MBYTES_MAX_CHARS', () => {
-            const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_MAX_CHARS + 1); // Assuming max length is 1000
+            const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH + 1); // Assuming max length is 1000
             expect(() => calculateRunDynamicMemory(expr, emptyContext))
-                .toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_MAX_CHARS} characters.`);
+                .toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
         });
 
         it('should throw an error for invalid syntax', () => {
@@ -160,11 +162,11 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
 
         it('should throw error if result is NaN', () => {
-            expect(() => calculateRunDynamicMemory('0 / 0', emptyContext)).toThrow('Failed to round number to a power of 2.');
+            expect(() => calculateRunDynamicMemory('0 / 0', emptyContext)).toThrow('Calculated memory value is not a valid number: NaN.');
         });
 
         it('should throw error if result is a non-numeric (string)', () => {
-            expect(() => calculateRunDynamicMemory("'hello'", emptyContext)).toThrow('Failed to round number to a power of 2.');
+            expect(() => calculateRunDynamicMemory("'hello'", emptyContext)).toThrow('Calculated memory value is not a valid number: hello.');
         });
 
         it('should throw error when disabled functionality of MathJS is used', () => {

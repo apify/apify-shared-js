@@ -21,23 +21,12 @@ import {
 import { ACTOR_LIMITS } from '@apify/consts';
 
 import type { LruCache } from '../../datastructures/src/lru_cache';
+import type { ActorRunOptions, MemoryEvaluationContext } from './types.js';
 
-type ActorRunOptions = {
-    build?: string;
-    timeoutSecs?: number;
-    memoryMbytes?: number; // probably no one will need it, but let's keep it consistent
-    diskMbytes?: number; // probably no one will need it, but let's keep it consistent
-    maxItems?: number;
-    maxTotalChargeUsd?: number;
-    restartOnError?: boolean;
-}
-
-type MemoryEvaluationContext = {
-    runOptions: ActorRunOptions;
-    input: Record<string, unknown>;
-}
-
-export const DEFAULT_MEMORY_MBYTES_MAX_CHARS = 1000;
+// In theory, users could create expressions longer than 1000 characters,
+// but in practice, it's unlikely anyone would need that much complexity.
+// Later we can increase this limit if needed.
+export const DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH = 1000;
 
 /**
  * A Set of allowed keys from ActorRunOptions that can be used in
@@ -58,14 +47,18 @@ const ALLOWED_RUN_OPTION_KEYS = new Set<keyof ActorRunOptions>([
  * MathJS security recommendations: https://mathjs.org/docs/expressions/security.html
  */
 const math = create({
+    // expression dependencies
+    // Required for compiling and evaluating root expressions.
+    // We disable it below to prevent users from calling `evaluate()` inside their expressions.
+    // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
+    compileDependencies,
+    evaluateDependencies,
+
     // arithmetic dependencies
     addDependencies,
     subtractDependencies,
     multiplyDependencies,
     divideDependencies,
-    // expression dependencies
-    compileDependencies,
-    evaluateDependencies,
     // statistics dependencies
     maxDependencies,
     minDependencies,
@@ -77,8 +70,7 @@ const math = create({
     // without that dependency 'null ?? 5', won't work
     nullishDependencies,
 });
-const limitedEvaluate = math.evaluate;
-const limitedCompile = math.compile;
+const { compile } = math;
 
 // Disable potentially dangerous functions
 math.import({
@@ -88,6 +80,8 @@ math.import({
     reviver() { throw new Error('Function reviver is disabled'); },
 
     // extra (has functional impact)
+    // We disable evaluate to prevent users from calling it inside their expressions.
+    // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
     evaluate() { throw new Error('Function evaluate is disabled'); },
     parse() { throw new Error('Function parse is disabled'); },
     simplify() { throw new Error('Function simplify is disabled'); },
@@ -118,7 +112,7 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
 */
 const roundToClosestPowerOf2 = (num: number): number | undefined => {
     if (typeof num !== 'number' || Number.isNaN(num)) {
-        throw new Error(`Failed to round number to a power of 2.`);
+        throw new Error(`Calculated memory value is not a valid number: ${num}.`);
     }
 
     // Handle 0 or negative values.
@@ -135,8 +129,14 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
 };
 
 /**
- * Replaces `{{variable}}` placeholders in an expression string with the variable name.
- * Enforces strict validation to allow `{{input.*}}` paths or whitelisted `{{runOptions.*}}` keys.
+ * Replaces all `{{variable}}` placeholders in an expression into direct
+ * property access (e.g. `{{runOptions.memoryMbytes}}` → `runOptions.memoryMbytes`).
+ *
+ * Only variables starting with `input.` or whitelisted `runOptions.` keys are allowed.
+ * All `input.*` values are accepted, while `runOptions.*` are validated (only 7 variables - ALLOWED_RUN_OPTION_KEYS).
+ *
+ * Note: this approach allows developers to use a consistent double-brace
+ * syntax (`{{runOptions.timeoutSecs}}`) across the platform.
  *
  * @example
  * // Returns "runOptions.memoryMbytes + 1024"
@@ -145,26 +145,25 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
  * @param defaultMemoryMbytes The raw string expression, e.g., "{{runOptions.memoryMbytes}} * 2".
  * @returns A safe, processed expression for evaluation, e.g., "runOptions.memoryMbytes * 2".
  */
-const preprocessRunMemoryExpression = (defaultMemoryMbytes: string): string => {
+const processTemplateVariables = (defaultMemoryMbytes: string): string => {
     const variableRegex = /{{\s*([a-zA-Z0-9_.]+)\s*}}/g;
 
     const processedExpression = defaultMemoryMbytes.replace(
         variableRegex,
         (_, variableName: string) => {
-            // 1. Validate that the variable starts with either 'input.' or 'runOptions.'
             if (!variableName.startsWith('runOptions.') && !variableName.startsWith('input.')) {
                 throw new Error(
                     `Invalid variable '{{${variableName}}}' in expression. Variables must start with 'input.' or 'runOptions.'.`,
                 );
             }
 
-            // 2. Check if the variable is accessing input (e.g. {{input.someValue}})
-            // We do not validate the specific property name because input is dynamic.
+            // 1. Check if the variable is accessing input (e.g. {{input.someValue}})
+            // We do not validate the specific property name because `input` is dynamic.
             if (variableName.startsWith('input.')) {
                 return variableName;
             }
 
-            // 3. Check if the variable is accessing runOptions (e.g. {{runOptions.memoryMbytes}}) and validate the keys.
+            // 2. Check if the variable is accessing runOptions (e.g. {{runOptions.memoryMbytes}}) and validate the keys.
             if (variableName.startsWith('runOptions.')) {
                 const key = variableName.slice('runOptions.'.length);
                 if (!ALLOWED_RUN_OPTION_KEYS.has(key as keyof ActorRunOptions)) {
@@ -185,11 +184,26 @@ const preprocessRunMemoryExpression = (defaultMemoryMbytes: string): string => {
     return processedExpression;
 };
 
+const getCompiledExpression = (expression: string, cache: LruCache<EvalFunction> | undefined): EvalFunction => {
+    if (!cache) {
+        return compile(expression);
+    }
+
+    let compiledExpression = cache.get(expression);
+
+    if (!compiledExpression) {
+        compiledExpression = compile(expression);
+        cache.add(expression, compiledExpression!);
+    }
+
+    return compiledExpression;
+};
+
 /**
  * Evaluates a dynamic memory expression string using the provided context.
  * Result is rounded to the closest power of 2 and clamped within allowed limits.
  *
- * @param defaultMemoryMbytes The string expression to evaluate (e.g., "get(input, 'size', 10) * 1024").
+ * @param defaultMemoryMbytes The string expression to evaluate (e.g., `get(input, 'urls.length', 10) * 1024` for `input = { urls: ['url1', 'url2'] }`).
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
  * @returns The calculated memory value rounded to the closest power of 2 clamped within allowed limits.
 */
@@ -198,33 +212,22 @@ export const calculateRunDynamicMemory = (
     context: MemoryEvaluationContext,
     options: { cache: LruCache<EvalFunction> } | undefined = undefined,
 ) => {
-    if (defaultMemoryMbytes.length > DEFAULT_MEMORY_MBYTES_MAX_CHARS) {
-        throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_MAX_CHARS} characters.`);
+    if (defaultMemoryMbytes.length > DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH) {
+        throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
     }
 
     // Replaces all occurrences of {{variable}} with variable
     // e.g., "{{runOptions.memoryMbytes}} + 1024" becomes "runOptions.memoryMbytes + 1024"
-    const preprocessedExpression = preprocessRunMemoryExpression(defaultMemoryMbytes);
+    const preprocessedExpression = processTemplateVariables(defaultMemoryMbytes);
 
     const preparedContext = {
         ...context,
         get: customGetFunc,
     };
 
-    let finalResult: number | { entries: number[] };
+    const compiledExpression = getCompiledExpression(preprocessedExpression, options?.cache);
 
-    if (options?.cache) {
-        let compiledExpr = options.cache.get(preprocessedExpression);
-
-        if (!compiledExpr) {
-            compiledExpr = limitedCompile(preprocessedExpression);
-            options.cache.add(preprocessedExpression, compiledExpr!);
-        }
-
-        finalResult = compiledExpr.evaluate(preparedContext);
-    } else {
-        finalResult = limitedEvaluate(preprocessedExpression, preparedContext);
-    }
+    let finalResult: number | { entries: number[] } = compiledExpression.evaluate(preparedContext);
 
     // Mathjs wraps multi-line expressions in an object, so we need to extract the last entry.
     // Note: one-line expressions return a number directly.
