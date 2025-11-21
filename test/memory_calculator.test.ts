@@ -6,7 +6,7 @@ import { LruCache } from '@apify/datastructures';
 describe('calculateDefaultMemoryFromExpression', () => {
     const emptyContext = { input: {}, runOptions: {} };
 
-    describe('Basic Evaluation', () => {
+    describe('Basic evaluation', () => {
         it('correctly calculates and rounds memory from one-line expression', () => {
             const context = { input: { size: 10 }, runOptions: {} };
             // 10 * 1024 = 10240. log2(10240) ~ 13.32. round(13.32) -> 2^13 = 8192
@@ -91,7 +91,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{nonexistentVariable}} * 1024';
             expect(() => calculateRunDynamicMemory(expr, context))
-                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'.`);
+                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'`);
         });
 
         it('correctly evaluates valid runOptions property', () => {
@@ -140,9 +140,9 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
     });
 
-    describe('Invalid/Error Handling', () => {
+    describe('Invalid/error handling', () => {
         it('should throw an error if expression length is greater than DEFAULT_MEMORY_MBYTES_MAX_CHARS', () => {
-            const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH + 1); // Assuming max length is 1000
+            const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH + 1);
             expect(() => calculateRunDynamicMemory(expr, emptyContext))
                 .toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
         });
@@ -154,11 +154,11 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
 
         it('should throw error if result is 0', () => {
-            expect(() => calculateRunDynamicMemory('10 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: 0`);
+            expect(() => calculateRunDynamicMemory('10 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: 0.`);
         });
 
         it('should throw error if result is negative', () => {
-            expect(() => calculateRunDynamicMemory('5 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: -5`);
+            expect(() => calculateRunDynamicMemory('5 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: -5.`);
         });
 
         it('should throw error if result is NaN', () => {
@@ -170,7 +170,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
         });
 
         it('should throw error when disabled functionality of MathJS is used', () => {
-            expect(() => calculateRunDynamicMemory('evaluate(512)', emptyContext)).toThrow('Function evaluate is disabled');
+            expect(() => calculateRunDynamicMemory('evaluate(512)', emptyContext)).toThrow('Function evaluate is disabled.');
         });
     });
 

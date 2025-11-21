@@ -75,25 +75,25 @@ const { compile } = math;
 // Disable potentially dangerous functions
 math.import({
     // most important (hardly any functional impact)
-    import() { throw new Error('Function import is disabled'); },
-    createUnit() { throw new Error('Function createUnit is disabled'); },
-    reviver() { throw new Error('Function reviver is disabled'); },
+    import() { throw new Error('Function import is disabled.'); },
+    createUnit() { throw new Error('Function createUnit is disabled.'); },
+    reviver() { throw new Error('Function reviver is disabled.'); },
 
     // extra (has functional impact)
     // We disable evaluate to prevent users from calling it inside their expressions.
     // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
-    evaluate() { throw new Error('Function evaluate is disabled'); },
-    parse() { throw new Error('Function parse is disabled'); },
-    simplify() { throw new Error('Function simplify is disabled'); },
-    derivative() { throw new Error('Function derivative is disabled'); },
-    resolve() { throw new Error('Function resolve is disabled'); },
+    evaluate() { throw new Error('Function evaluate is disabled.'); },
+    parse() { throw new Error('Function parse is disabled.'); },
+    simplify() { throw new Error('Function simplify is disabled.'); },
+    derivative() { throw new Error('Function derivative is disabled.'); },
+    resolve() { throw new Error('Function resolve is disabled.'); },
 }, { override: true });
 
 /**
  * Safely retrieves a nested property from an object using a dot-notation string path.
  *
  * This is custom function designed to be injected into the math expression evaluator,
- * allowing expressions like `get(input, 'user.settings.memory', 512)`.
+ * allowing expressions like `get(input, 'user.settings.memory', 512)` or `get(input, 'startUrls.length', 10)` to get array length.
  *
  * @param obj The source object to search within.
  * @param path A dot-separated string representing the nested path (e.g., "input.payload.size").
@@ -117,7 +117,7 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
 
     // Handle 0 or negative values.
     if (num <= 0) {
-        throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}`);
+        throw new Error(`Calculated memory value must be a positive number, greater than 0, got: ${num}.`);
     }
 
     const log2n = Math.log2(num);
@@ -132,11 +132,10 @@ const roundToClosestPowerOf2 = (num: number): number | undefined => {
  * Replaces all `{{variable}}` placeholders in an expression into direct
  * property access (e.g. `{{runOptions.memoryMbytes}}` → `runOptions.memoryMbytes`).
  *
- * Only variables starting with `input.` or whitelisted `runOptions.` keys are allowed.
  * All `input.*` values are accepted, while `runOptions.*` are validated (only 7 variables - ALLOWED_RUN_OPTION_KEYS).
  *
  * Note: this approach allows developers to use a consistent double-brace
- * syntax (`{{runOptions.timeoutSecs}}`) across the platform.
+ * syntax `{{runOptions.timeoutSecs}}` across the platform.
  *
  * @example
  * // Returns "runOptions.memoryMbytes + 1024"
@@ -184,6 +183,13 @@ const processTemplateVariables = (defaultMemoryMbytes: string): string => {
     return processedExpression;
 };
 
+/*
+* Retrieves a compiled expression from the cache or compiles it if not present.
+*
+* @param expression The expression string to compile.
+* @param cache An optional cache to store/retrieve compiled expressions.
+* @returns The compiled EvalFunction.
+*/
 const getCompiledExpression = (expression: string, cache: LruCache<EvalFunction> | undefined): EvalFunction => {
     if (!cache) {
         return compile(expression);
