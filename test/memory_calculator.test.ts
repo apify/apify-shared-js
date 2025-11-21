@@ -1,4 +1,5 @@
 import type { EvalFunction } from 'mathjs';
+import type { CompilationCache } from 'packages/actor-memory-expression/src/types';
 
 import { calculateRunDynamicMemory, DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH } from '@apify/actor-memory-expression';
 import { LruCache } from '@apify/datastructures';
@@ -175,12 +176,17 @@ describe('calculateDefaultMemoryFromExpression', () => {
     });
 
     describe('Caching', () => {
-        let cache: LruCache<EvalFunction>;
+        let cache: CompilationCache;
         const context = { input: { size: 10 }, runOptions: {} };
         const expr = 'input.size * 1024';
 
         beforeEach(() => {
-            cache = new LruCache<EvalFunction>({ maxLength: 10 });
+            const lruCache = new LruCache<EvalFunction>({ maxLength: 10 });
+            cache = {
+                get: (expression: string) => lruCache.get(expression),
+                set: (expression: string, compilationResult: EvalFunction) => lruCache.add(expression, compilationResult),
+                length: () => lruCache.length(),
+            };
         });
 
         it('correctly works with cache passed in options', () => {

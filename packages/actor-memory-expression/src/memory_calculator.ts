@@ -20,8 +20,7 @@ import {
 
 import { ACTOR_LIMITS } from '@apify/consts';
 
-import type { LruCache } from '../../datastructures/src/lru_cache';
-import type { ActorRunOptions, MemoryEvaluationContext } from './types.js';
+import type { ActorRunOptions, CompilationCache, MemoryEvaluationContext } from './types.js';
 
 // In theory, users could create expressions longer than 1000 characters,
 // but in practice, it's unlikely anyone would need that much complexity.
@@ -110,7 +109,7 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
  * @param num The number to round.
  * @returns The closest power of 2 within min/max range.
 */
-const roundToClosestPowerOf2 = (num: number): number | undefined => {
+const roundToClosestPowerOf2 = (num: number): number => {
     if (typeof num !== 'number' || Number.isNaN(num)) {
         throw new Error(`Calculated memory value is not a valid number: ${num}.`);
     }
@@ -190,7 +189,7 @@ const processTemplateVariables = (defaultMemoryMbytes: string): string => {
 * @param cache An optional cache to store/retrieve compiled expressions.
 * @returns The compiled EvalFunction.
 */
-const getCompiledExpression = (expression: string, cache: LruCache<EvalFunction> | undefined): EvalFunction => {
+const getCompiledExpression = (expression: string, cache: CompilationCache | undefined): EvalFunction => {
     if (!cache) {
         return compile(expression);
     }
@@ -199,7 +198,7 @@ const getCompiledExpression = (expression: string, cache: LruCache<EvalFunction>
 
     if (!compiledExpression) {
         compiledExpression = compile(expression);
-        cache.add(expression, compiledExpression!);
+        cache.set(expression, compiledExpression!);
     }
 
     return compiledExpression;
@@ -211,12 +210,13 @@ const getCompiledExpression = (expression: string, cache: LruCache<EvalFunction>
  *
  * @param defaultMemoryMbytes The string expression to evaluate (e.g., `get(input, 'urls.length', 10) * 1024` for `input = { urls: ['url1', 'url2'] }`).
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
- * @returns The calculated memory value rounded to the closest power of 2 clamped within allowed limits.
+ * @param options.cache Optional synchronous cache. Since compiled functions cannot be saved to a database/Redis, they are kept in local memory.
+ * @returns The calculated memory value rounded to the closest power of 2 and clamped within allowed limits.
 */
 export const calculateRunDynamicMemory = (
     defaultMemoryMbytes: string,
     context: MemoryEvaluationContext,
-    options: { cache: LruCache<EvalFunction> } | undefined = undefined,
+    options: { cache: CompilationCache } | undefined = undefined,
 ) => {
     if (defaultMemoryMbytes.length > DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH) {
         throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
