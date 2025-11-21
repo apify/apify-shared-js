@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "include": ["src/**/*"],
   "compilerOptions": {
-    "module": "node20",
+    "module": "node16",
     "moduleResolution": "node16",
   }
 }
