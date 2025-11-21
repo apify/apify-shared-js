@@ -131,7 +131,7 @@ const roundToClosestPowerOf2 = (num: number): number => {
  * Replaces all `{{variable}}` placeholders in an expression into direct
  * property access (e.g. `{{runOptions.memoryMbytes}}` → `runOptions.memoryMbytes`).
  *
- * All `input.*` values are accepted, while `runOptions.*` are validated (only 7 variables - ALLOWED_RUN_OPTION_KEYS).
+ * All `input.*` values are accepted, while `runOptions.*` are validated (7 variables from ALLOWED_RUN_OPTION_KEYS).
  *
  * Note: this approach allows developers to use a consistent double-brace
  * syntax `{{runOptions.timeoutSecs}}` across the platform.
