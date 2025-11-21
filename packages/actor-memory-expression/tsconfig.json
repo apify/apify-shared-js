@@ -1,8 +1,4 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["src/**/*"],
-  "compilerOptions": {
-    "module": "node16",
-    "moduleResolution": "node16",
-  }
+  "include": ["src/**/*"]
 }
