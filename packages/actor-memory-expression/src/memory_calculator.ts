@@ -103,7 +103,7 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
  * @returns The closest power of 2 within min/max range.
 */
 const roundToClosestPowerOf2 = (num: number): number => {
-    if (typeof num !== 'number' || Number.isNaN(num)) {
+    if (typeof num !== 'number' || Number.isNaN(num) || !Number.isFinite(num)) {
         throw new Error(`Calculated memory value is not a valid number: ${num}.`);
     }
 

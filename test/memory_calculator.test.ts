@@ -196,6 +196,11 @@ describe('calculateDefaultMemoryFromExpression', () => {
             await expect(calculateRunDynamicMemory('0 / 0', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: NaN.');
         });
 
+        it('should throw error if result is Infinity', async () => {
+            await expect(calculateRunDynamicMemory('Infinity', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: Infinity.');
+            await expect(calculateRunDynamicMemory('-Infinity', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: -Infinity.');
+        });
+
         it('should throw error if result is a non-numeric (string)', async () => {
             await expect(calculateRunDynamicMemory("'hello'", emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: hello.');
         });
@@ -215,29 +220,29 @@ describe('calculateDefaultMemoryFromExpression', () => {
             cache = {
                 get: async (expression: string) => lruCache.get(expression),
                 set: async (expression: string, compilationResult: EvalFunction) => { lruCache.add(expression, compilationResult); },
-                length: async () => lruCache.length(),
+                size: async () => lruCache.length(),
             };
         });
 
         it('correctly works with cache passed in options', async () => {
-            expect(await cache.length()).toBe(0);
+            expect(await cache.size()).toBe(0);
 
             // First call - cache miss
             const result1 = await calculateRunDynamicMemory(expr, context, { cache });
             expect(result1).toBe(8192);
-            expect(await cache.length()).toBe(1); // Expression is now cached
+            expect(await cache.size()).toBe(1); // Expression is now cached
 
             // Second call - cache hit
             const result2 = await calculateRunDynamicMemory(expr, context, { cache });
             expect(result2).toBe(8192);
-            expect(await cache.length()).toBe(1); // Cache length is unchanged
+            expect(await cache.size()).toBe(1); // Cache length is unchanged
         });
 
         it('should cache different expressions separately', async () => {
             const expr2 = 'input.size * 2048'; // 10 * 2048 = 20480 -> 16384
             await calculateRunDynamicMemory(expr, context, { cache });
             await calculateRunDynamicMemory(expr2, context, { cache });
-            expect(await cache.length()).toBe(2);
+            expect(await cache.size()).toBe(2);
         });
     });
 });
