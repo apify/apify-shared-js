@@ -85,6 +85,36 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 },
             );
         });
+
+        describe('operations supported', () => {
+            const context = {
+                input: { },
+                runOptions: { timeoutSecs: 60, memoryMbytes: 512 },
+            };
+
+            // Note: all results are rounded to the closest power of 2 and clamped within limits.
+            const cases = [
+                { expression: 'evaluate(\'5 + 1\')', name: 'evaluate', error: 'Function evaluate is disabled.' },
+                { expression: 'compile(\'5 + 1\')', name: 'compile', error: 'Function compile is disabled.' },
+                { expression: "parse('3^2 + 4^2')", name: 'parse', error: 'Function parse is disabled.' },
+                { expression: 'simplify(\'5 + 1\')', name: 'simplify', error: 'Undefined function simplify' },
+                { expression: 'derivative(\'5 + 1\')', name: 'derivative', error: 'Undefined function derivative' },
+                { expression: 'resolve(\'5 + 1\')', name: 'resolve', error: 'Undefined function resolve' },
+
+                { expression: 'import({ myvalue: 42 })', name: 'import', error: 'Undefined function import' },
+                { expression: 'createUnit(\'foo\')', name: 'createUnit', error: 'Undefined function createUnit' },
+                { expression: 'reviver(\'{"mathjs":"Unit"}\')', name: 'reviver', error: 'Undefined function reviver' },
+            ];
+
+            it.each(cases)(
+                `supports operation '$name'`,
+                ({ expression, error }) => {
+                    // in case operation is not supported, mathjs will throw
+                    // we round the result to the closest power of 2 and clamp within limits.
+                    expect(() => calculateRunDynamicMemory(expression, context)).toThrow(error);
+                },
+            );
+        });
     });
 
     describe('Template {{variables}} support', () => {
@@ -92,7 +122,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{nonexistentVariable}} * 1024';
             expect(() => calculateRunDynamicMemory(expr, context))
-                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression. Variables must start with 'input.' or 'runOptions.'`);
+                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression.`);
         });
 
         it('correctly evaluates valid runOptions property', () => {

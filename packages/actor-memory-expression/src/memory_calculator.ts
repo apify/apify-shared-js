@@ -73,19 +73,12 @@ const { compile } = math;
 
 // Disable potentially dangerous functions
 math.import({
-    // most important (hardly any functional impact)
-    import() { throw new Error('Function import is disabled.'); },
-    createUnit() { throw new Error('Function createUnit is disabled.'); },
-    reviver() { throw new Error('Function reviver is disabled.'); },
-
-    // extra (has functional impact)
     // We disable evaluate to prevent users from calling it inside their expressions.
     // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
     evaluate() { throw new Error('Function evaluate is disabled.'); },
+    compile() { throw new Error('Function compile is disabled.'); },
+    // We need to disable it, because compileDependencies imports parseDependencies.
     parse() { throw new Error('Function parse is disabled.'); },
-    simplify() { throw new Error('Function simplify is disabled.'); },
-    derivative() { throw new Error('Function derivative is disabled.'); },
-    resolve() { throw new Error('Function resolve is disabled.'); },
 }, { override: true });
 
 /**
@@ -133,8 +126,10 @@ const roundToClosestPowerOf2 = (num: number): number => {
  *
  * All `input.*` values are accepted, while `runOptions.*` are validated (7 variables from ALLOWED_RUN_OPTION_KEYS).
  *
- * Note: this approach allows developers to use a consistent double-brace
- * syntax `{{runOptions.timeoutSecs}}` across the platform.
+ * Note: While not really needed for Math.js, this approach allows developers
+ * to use a consistent double-brace templating syntax `{{runOptions.timeoutSecs}}`
+ * across the Apify platform. We also want to avoid compiling the expression with the
+ * actual values as that would make caching less effective.
  *
  * @example
  * // Returns "runOptions.memoryMbytes + 1024"
@@ -149,12 +144,6 @@ const processTemplateVariables = (defaultMemoryMbytes: string): string => {
     const processedExpression = defaultMemoryMbytes.replace(
         variableRegex,
         (_, variableName: string) => {
-            if (!variableName.startsWith('runOptions.') && !variableName.startsWith('input.')) {
-                throw new Error(
-                    `Invalid variable '{{${variableName}}}' in expression. Variables must start with 'input.' or 'runOptions.'.`,
-                );
-            }
-
             // 1. Check if the variable is accessing input (e.g. {{input.someValue}})
             // We do not validate the specific property name because `input` is dynamic.
             if (variableName.startsWith('input.')) {
