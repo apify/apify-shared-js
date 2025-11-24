@@ -16,7 +16,7 @@ export type MemoryEvaluationContext = {
 }
 
 export type CompilationCache = {
-    get: (expression: string) => EvalFunction | null;
-    set: (expression: string, compilationResult: EvalFunction) => void;
-    length: () => number;
+    get: (expression: string) => Promise<EvalFunction | null>;
+    set: (expression: string, compilationResult: EvalFunction) => Promise<void>;
+    length: () => Promise<number>;
 }

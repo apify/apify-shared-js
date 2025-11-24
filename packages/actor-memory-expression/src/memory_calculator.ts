@@ -178,16 +178,16 @@ const processTemplateVariables = (defaultMemoryMbytes: string): string => {
 * @param cache An optional cache to store/retrieve compiled expressions.
 * @returns The compiled EvalFunction.
 */
-const getCompiledExpression = (expression: string, cache: CompilationCache | undefined): EvalFunction => {
+const getCompiledExpression = async (expression: string, cache: CompilationCache | undefined): Promise<EvalFunction> => {
     if (!cache) {
         return compile(expression);
     }
 
-    let compiledExpression = cache.get(expression);
+    let compiledExpression = await cache.get(expression);
 
     if (!compiledExpression) {
         compiledExpression = compile(expression);
-        cache.set(expression, compiledExpression!);
+        await cache.set(expression, compiledExpression!);
     }
 
     return compiledExpression;
@@ -202,7 +202,7 @@ const getCompiledExpression = (expression: string, cache: CompilationCache | und
  * @param options.cache Optional synchronous cache. Since compiled functions cannot be saved to a database/Redis, they are kept in local memory.
  * @returns The calculated memory value rounded to the closest power of 2 and clamped within allowed limits.
 */
-export const calculateRunDynamicMemory = (
+export const calculateRunDynamicMemory = async (
     defaultMemoryMbytes: string,
     context: MemoryEvaluationContext,
     options: { cache: CompilationCache } | undefined = undefined,
@@ -220,7 +220,7 @@ export const calculateRunDynamicMemory = (
         get: customGetFunc,
     };
 
-    const compiledExpression = getCompiledExpression(preprocessedExpression, options?.cache);
+    const compiledExpression = await getCompiledExpression(preprocessedExpression, options?.cache);
 
     let finalResult: number | { entries: number[] } = compiledExpression.evaluate(preparedContext);
 
