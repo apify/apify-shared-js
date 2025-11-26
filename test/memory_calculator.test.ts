@@ -1,21 +1,22 @@
 import type { EvalFunction } from 'mathjs';
-import type { CompilationCache } from 'packages/actor-memory-expression/src/types';
 
-import { calculateRunDynamicMemory, DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH } from '@apify/actor-memory-expression';
-import { LruCache } from '@apify/datastructures';
+import { DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH, RunMemoryCalculator } from '@apify/actor-memory-expression';
+import type { LruCache } from '@apify/datastructures';
 
 describe('calculateDefaultMemoryFromExpression', () => {
     const emptyContext = { input: {}, runOptions: {} };
 
+    const memoryCalculator = new RunMemoryCalculator();
+
     describe('Basic evaluation', () => {
-        it('correctly calculates and rounds memory from one-line expression', async () => {
+        it('correctly calculates and rounds memory from one-line expression', () => {
             const context = { input: { size: 10 }, runOptions: {} };
             // 10 * 1024 = 10240. log2(10240) ~ 13.32. round(13.32) -> 2^13 = 8192
-            const result = await calculateRunDynamicMemory('input.size * 1024', context);
+            const result = memoryCalculator.calculateRunDynamicMemory('input.size * 1024', context);
             expect(result).toBe(8192);
         });
 
-        it('correctly calculates and rounds memory from multi-line expression', async () => {
+        it('correctly calculates and rounds memory from multi-line expression', () => {
             const context = { input: { base: 10, multiplier: 1024 }, runOptions: {} };
             const expr = `
                 baseVal = input.base;
@@ -23,34 +24,34 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 baseVal * multVal
             `;
             // 10 * 1024 = 10240. Rounds to 8192.
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(8192);
         });
 
-        it('correctly accesses runOptions from the context', async () => {
+        it('correctly accesses runOptions from the context', () => {
             const context = { input: {}, runOptions: { timeoutSecs: 60 } };
             const expr = 'runOptions.timeoutSecs * 100'; // 60 * 100 = 6000
             // log2(6000) ~ 12.55. round(13) -> 2^13 = 8192
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(8192);
         });
 
-        it('correctly handles a single number expression', async () => {
-            const result = await calculateRunDynamicMemory('2048', emptyContext);
+        it('correctly handles a single number expression', () => {
+            const result = memoryCalculator.calculateRunDynamicMemory('2048', emptyContext);
             expect(result).toBe(2048);
         });
 
-        it('correctly handles expressions with custom get() function', async () => {
+        it('correctly handles expressions with custom get() function', () => {
             const context = { input: { nested: { value: 20 } }, runOptions: {} };
             const expr = "get(input, 'nested.value', 10) * 50"; // 20 * 50 = 1000
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(1024);
         });
 
-        it('should use get() default value when path is invalid', async () => {
+        it('should use get() default value when path is invalid', () => {
             const context = { input: { user: {} }, runOptions: {} };
             const expr = "get(input, 'user.settings.memory', 512)";
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(512);
         });
 
@@ -81,7 +82,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 async ({ expression, result }) => {
                     // in case operation is not supported, mathjs will throw
                     // we round the result to the closest power of 2 and clamp within limits.
-                    expect(await calculateRunDynamicMemory(expression, context)).toBe(result);
+                    expect(memoryCalculator.calculateRunDynamicMemory(expression, context)).toBe(result);
                 },
             );
         });
@@ -111,7 +112,7 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 async ({ expression, error }) => {
                     // in case operation is not supported, mathjs will throw
                     // we round the result to the closest power of 2 and clamp within limits.
-                    await expect(calculateRunDynamicMemory(expression, context)).rejects.toThrow(error);
+                    expect(() => memoryCalculator.calculateRunDynamicMemory(expression, context)).toThrow(error);
                 },
             );
         });
@@ -121,128 +122,133 @@ describe('calculateDefaultMemoryFromExpression', () => {
         it('should throw error if variable doesn\'t start with runOptions. or input.', async () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{nonexistentVariable}} * 1024';
-            await expect(calculateRunDynamicMemory(expr, context))
-                .rejects.toThrow(`Invalid variable '{{nonexistentVariable}}' in expression.`);
+            expect(() => memoryCalculator.calculateRunDynamicMemory(expr, context))
+                .toThrow(`Invalid variable '{{nonexistentVariable}}' in expression.`);
         });
 
-        it('correctly evaluates valid runOptions property', async () => {
+        it('correctly evaluates valid runOptions property', () => {
             const context = { input: {}, runOptions: { memoryMbytes: 16 } };
             const expr = '{{runOptions.memoryMbytes}} * 1024';
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('correctly evaluates input property', async () => {
+        it('correctly evaluates input property', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{input.value}} * 1024';
-            const result = await calculateRunDynamicMemory(expr, context);
+            const result = memoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result).toBe(16384);
         });
 
-        it('should throw error if runOptions property is not supported', async () => {
+        it('should throw error if runOptions property is not supported', () => {
             const context = { input: { value: 16 }, runOptions: { } };
             const expr = '{{runOptions.customVariable}} * 1024';
-            await expect(calculateRunDynamicMemory(expr, context))
-                .rejects.toThrow(`Invalid variable '{{runOptions.customVariable}}' in expression. Only the following runOptions are allowed:`);
+            expect(() => memoryCalculator.calculateRunDynamicMemory(expr, context))
+                .toThrow(`Invalid variable '{{runOptions.customVariable}}' in expression. Only the following runOptions are allowed:`);
         });
     });
 
     describe('Rounding logic', () => {
-        it('should round down (e.g., 10240 -> 8192)', async () => {
+        it('should round down (e.g., 10240 -> 8192)', () => {
             // 2^13 = 8192, 2^14 = 16384.
-            const result = await calculateRunDynamicMemory('10240', emptyContext);
+            const result = memoryCalculator.calculateRunDynamicMemory('10240', emptyContext);
             expect(result).toBe(8192);
         });
 
-        it('should round up (e.g., 13000 -> 16384)', async () => {
+        it('should round up (e.g., 13000 -> 16384)', () => {
             // 13000 is closer to 16384 than 8192.
-            const result = await calculateRunDynamicMemory('13000', emptyContext);
+            const result = memoryCalculator.calculateRunDynamicMemory('13000', emptyContext);
             expect(result).toBe(16384);
         });
 
-        it('should clamp to the minimum memory limit if the result is too low', async () => {
-            const result = await calculateRunDynamicMemory('64', emptyContext);
+        it('should clamp to the minimum memory limit if the result is too low', () => {
+            const result = memoryCalculator.calculateRunDynamicMemory('64', emptyContext);
             expect(result).toBe(128);
         });
 
-        it('should clamp to the maximum memory limit if the result is too high', async () => {
-            const result = await calculateRunDynamicMemory('100000', emptyContext);
+        it('should clamp to the maximum memory limit if the result is too high', () => {
+            const result = memoryCalculator.calculateRunDynamicMemory('100000', emptyContext);
             expect(result).toBe(32768);
         });
     });
 
     describe('Invalid/error handling', () => {
-        it('should throw an error if expression length is greater than DEFAULT_MEMORY_MBYTES_MAX_CHARS', async () => {
+        it('should throw an error if expression length is greater than DEFAULT_MEMORY_MBYTES_MAX_CHARS', () => {
             const expr = '1'.repeat(DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH + 1);
-            await expect(calculateRunDynamicMemory(expr, emptyContext))
-                .rejects.toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
+            expect(() => memoryCalculator.calculateRunDynamicMemory(expr, emptyContext))
+                .toThrow(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
         });
 
-        it('should throw an error for invalid syntax', async () => {
+        it('should throw an error for invalid syntax', () => {
             const expr = '1 +* 2';
-            await expect(calculateRunDynamicMemory(expr, emptyContext))
-                .rejects.toThrow();
+            expect(() => memoryCalculator.calculateRunDynamicMemory(expr, emptyContext))
+                .toThrow();
         });
 
-        it('should throw error if result is 0', async () => {
-            await expect(calculateRunDynamicMemory('10 - 10', emptyContext)).rejects.toThrow(`Calculated memory value must be a positive number, greater than 0, got: 0.`);
+        it('should throw error if result is 0', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory('10 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: 0.`);
         });
 
-        it('should throw error if result is negative', async () => {
-            await expect(calculateRunDynamicMemory('5 - 10', emptyContext)).rejects.toThrow(`Calculated memory value must be a positive number, greater than 0, got: -5.`);
+        it('should throw error if result is negative', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory('5 - 10', emptyContext)).toThrow(`Calculated memory value must be a positive number, greater than 0, got: -5.`);
         });
 
-        it('should throw error if result is NaN', async () => {
-            await expect(calculateRunDynamicMemory('0 / 0', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: NaN.');
+        it('should throw error if result is NaN', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory('0 / 0', emptyContext)).toThrow('Calculated memory value is not a valid number: NaN.');
         });
 
-        it('should throw error if result is Infinity', async () => {
-            await expect(calculateRunDynamicMemory('Infinity', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: Infinity.');
-            await expect(calculateRunDynamicMemory('-Infinity', emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: -Infinity.');
+        it('should throw error if result is Infinity', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory('Infinity', emptyContext))
+                .toThrow('Calculated memory value is not a valid number: Infinity.');
+            expect(() => memoryCalculator.calculateRunDynamicMemory('-Infinity', emptyContext))
+                .toThrow('Calculated memory value is not a valid number: -Infinity.');
         });
 
-        it('should throw error if result is a non-numeric (string)', async () => {
-            await expect(calculateRunDynamicMemory("'hello'", emptyContext)).rejects.toThrow('Calculated memory value is not a valid number: hello.');
+        it('should throw error if result is a non-numeric (string)', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory("'hello'", emptyContext)).toThrow('Calculated memory value is not a valid number: hello.');
         });
 
-        it('should throw error when disabled functionality of MathJS is used', async () => {
-            await expect(calculateRunDynamicMemory('evaluate(512)', emptyContext)).rejects.toThrow('Function evaluate is disabled.');
+        it('should throw error when disabled functionality of MathJS is used', () => {
+            expect(() => memoryCalculator.calculateRunDynamicMemory('evaluate(512)', emptyContext)).toThrow('Function evaluate is disabled.');
         });
     });
 
     describe('Caching', () => {
-        let cache: CompilationCache;
+        let runMemoryCalculator: RunMemoryCalculator;
+        let cache: LruCache<EvalFunction> | undefined;
         const context = { input: { size: 10 }, runOptions: {} };
         const expr = 'input.size * 1024';
+        const expr2 = 'input.size * 2048';
 
         beforeEach(() => {
-            const lruCache = new LruCache<EvalFunction>({ maxLength: 10 });
-            cache = {
-                get: async (expression: string) => lruCache.get(expression),
-                set: async (expression: string, compilationResult: EvalFunction) => { lruCache.add(expression, compilationResult); },
-                size: async () => lruCache.length(),
-            };
+            runMemoryCalculator = new RunMemoryCalculator({ maxLength: 10 });
+            // @ts-expect-error cache is private property, we take it here for testing purposes.
+            cache = runMemoryCalculator.cache;
         });
 
-        it('correctly works with cache passed in options', async () => {
-            expect(await cache.size()).toBe(0);
+        it('correctly works with cache passed in options', () => {
+            expect(cache?.length()).toBe(0);
 
             // First call - cache miss
-            const result1 = await calculateRunDynamicMemory(expr, context, { cache });
+            const result1 = runMemoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result1).toBe(8192);
-            expect(await cache.size()).toBe(1); // Expression is now cached
+            expect(cache?.length()).toBe(1); // Expression is now cached
 
             // Second call - cache hit
-            const result2 = await calculateRunDynamicMemory(expr, context, { cache });
+            const result2 = runMemoryCalculator.calculateRunDynamicMemory(expr, context);
             expect(result2).toBe(8192);
-            expect(await cache.size()).toBe(1); // Cache length is unchanged
+            expect(cache?.length()).toBe(1); // Cache length is unchanged
         });
 
         it('should cache different expressions separately', async () => {
-            const expr2 = 'input.size * 2048'; // 10 * 2048 = 20480 -> 16384
-            await calculateRunDynamicMemory(expr, context, { cache });
-            await calculateRunDynamicMemory(expr2, context, { cache });
-            expect(await cache.size()).toBe(2);
+            runMemoryCalculator.calculateRunDynamicMemory(expr, context);
+            runMemoryCalculator.calculateRunDynamicMemory(expr2, context);
+            expect(cache?.length()).toBe(2);
+        });
+
+        it('if cache options not provided, caching is disabled', () => {
+            const runMemoryCalculatorNoCache = new RunMemoryCalculator();
+            expect((runMemoryCalculatorNoCache as any).cache).toBeUndefined();
         });
     });
 });

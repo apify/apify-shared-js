@@ -1,5 +1,3 @@
-import type { EvalFunction } from 'mathjs';
-
 export type ActorRunOptions = {
     build?: string;
     timeoutSecs?: number;
@@ -13,10 +11,4 @@ export type ActorRunOptions = {
 export type MemoryEvaluationContext = {
     runOptions: ActorRunOptions;
     input: Record<string, unknown>;
-}
-
-export type CompilationCache = {
-    get: (expression: string) => Promise<EvalFunction | null>;
-    set: (expression: string, compilationResult: EvalFunction) => Promise<void>;
-    size: () => Promise<number>;
 }
