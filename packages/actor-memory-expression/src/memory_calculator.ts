@@ -22,6 +22,9 @@ import { ACTOR_LIMITS } from '@apify/consts';
 
 import type { ActorRunOptions, CompilationCache, MemoryEvaluationContext } from './types.js';
 
+// Re-export EvalFunction type for external usage.
+export type { EvalFunction };
+
 // In theory, users could create expressions longer than 1000 characters,
 // but in practice, it's unlikely anyone would need that much complexity.
 // Later we can increase this limit if needed.
