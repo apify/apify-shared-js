@@ -1,4 +1,5 @@
 import Ajv from 'ajv/dist/2019';
+import cloneDeep from 'clone-deep';
 
 import { validateInputSchema } from '@apify/input_schema';
 
@@ -1335,6 +1336,206 @@ describe('input_schema.json', () => {
                     'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
                 );
             });
+        });
+    });
+
+    describe('Test conditionals in JSON schema', () => {
+        const ajv = new Ajv({strict: false});
+
+        function resolveSchema(schema: any, data: any) {
+            const s = cloneDeep(schema);
+
+            // Resolve allOf
+            if (s.allOf) {
+                for (const subschema of s.allOf) {
+                    const resolved = resolveSchema(subschema, data);
+                    mergeInto(s, resolved);
+                }
+                delete s.allOf;
+            }
+
+            // Resolve if/then/else
+            if (s.if) {
+                const valid = ajv.compile(s.if)(data);
+                if (valid && s.then) {
+                    const thenResolved = resolveSchema(s.then, data);
+                    mergeInto(s, thenResolved);
+                } else if (!valid && s.else) {
+                    const elseResolved = resolveSchema(s.else, data);
+                    mergeInto(s, elseResolved);
+                }
+                delete s.if;
+                delete s.then;
+                delete s.else;
+            }
+
+            // Resolve oneOf
+            if (s.oneOf) {
+                for (const option of s.oneOf) {
+                    if (ajv.compile(option)(data)) {
+                        const resolvedOption = resolveSchema(option, data);
+                        mergeInto(s, resolvedOption);
+                        break;
+                    }
+                }
+                delete s.oneOf;
+            }
+
+            return s;
+        }
+
+        function mergeInto(target: any, source: any) {
+            if (!source) return;
+
+            if (source.properties) {
+                target.properties = {
+                    ...target.properties,
+                    ...source.properties,
+                };
+            }
+
+            if (source.required) {
+                target.required = Array.from(
+                    new Set([...(target.required || []), ...source.required]),
+                );
+            }
+
+            for (const key of Object.keys(source)) {
+                if (!['properties', 'required'].includes(key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+
+        it('resolve used schema', () => {
+            const schema = {
+                title: 'Test input schema with conditionals',
+                type: 'object',
+                properties: {
+                    choiceField: {
+                        title: 'Choice Field',
+                        type: 'string',
+                        enum: ['option1', 'option2'],
+                        description: 'Choose an option',
+                    },
+                },
+                allOf: [
+                    {
+                        if: {
+                            properties: {
+                                choiceField: { const: 'option1' },
+                            },
+                        },
+                        then: {
+                            properties: {
+                                dependentField: {
+                                    title: 'Dependent Field',
+                                    type: 'string',
+                                    description: 'This field is shown only if option1 is selected',
+                                },
+                            },
+                            required: ['dependentField'],
+                        },
+                    },
+                ],
+            };
+
+            const ajvX = new Ajv();
+            const validateX = ajvX.compile(schema);
+            validateX({ choiceField: 'option2' });
+
+            console.log(JSON.stringify(validateX.schema, null, 2));
+
+            // ---- SAMPLE SCHEMA WITH CONDITIONS ----
+            // You can replace this with your schema.
+            const schemaY = {
+                type: 'object',
+                properties: {
+                    type: { type: 'string', enum: ['basic', 'advanced'] },
+                },
+                required: ['type'],
+
+                allOf: [
+                    {
+                        if: {
+                            properties: { type: { const: 'basic' } },
+                        },
+                        then: {
+                            properties: {
+                                basicField: { type: 'string' },
+                            },
+                            required: ['basicField'],
+                        },
+                    },
+                    {
+                        if: {
+                            properties: { type: { const: 'advanced' } },
+                        },
+                        then: {
+                            oneOf: [
+                                {
+                                    properties: {
+                                        mode: { const: 'full' },
+                                        fullOption: { type: 'number' },
+                                    },
+                                    required: ['mode', 'fullOption'],
+                                },
+                                {
+                                    properties: {
+                                        mode: { const: 'lite' },
+                                        liteOption: { type: 'boolean' },
+                                    },
+                                    required: ['mode', 'liteOption'],
+                                },
+                            ],
+                        },
+                    },
+                ],
+            };
+
+            // ---- INPUT TO TEST ----
+            // Try changing this to see resolution change.
+            const dataY = {
+                type: 'advanced',
+                mode: 'lite',
+                liteOption: true,
+            };
+
+            const dataZ = {
+                type: 'advanced',
+                mode: 'full',
+                fullOption: 42,
+            };
+
+            // ---- AJV SETUP ----
+            const ajvY = new Ajv({ strict: false });
+            const validate = ajvY.compile(schemaY);
+
+            // Validate the data (required to resolve branches)
+            validate(dataY);
+
+            // ---- GET THE RESOLVED FINAL SCHEMA ----
+            const resolvedSchemaY = validate.schema;
+
+            // ---- SHOW FINAL PROPERTIES ----
+            console.log('Resolved properties:');
+            console.log(Object.keys(resolvedSchemaY.properties));
+            console.log('\nFinal resolved schema:', JSON.stringify(resolvedSchemaY, null, 2));
+
+            // ---- SHOW VALIDATION ERRORS (IF ANY) ----
+            if (validate.errors) {
+                console.log('\nValidation errors:', validate.errors);
+            }
+
+            const resolved = validate.schemaEnv.root.schema;
+
+            console.log('Resolved schema:\n', JSON.stringify(resolved, null, 2));
+
+            const finalSchema = resolveSchema(schemaY, dataY);
+            console.log(finalSchema);
+
+            const finalSchemaZ = resolveSchema(schemaY, dataZ);
+            console.log(finalSchemaZ);
         });
     });
 });
