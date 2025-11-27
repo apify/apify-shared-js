@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.48.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.47.1...@apify/consts@2.48.0) (2025-11-27)
+
+
+### Features
+
+* **consts:** add `TIMING_OUT` Actor event ([#579](https://github.com/apify/apify-shared-js/issues/579)) ([a83c351](https://github.com/apify/apify-shared-js/commit/a83c351e3eb07419c9926003c21f6c6fc34ff9a9))
+
+
+
+
+
 ## [2.47.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.47.0...@apify/consts@2.47.1) (2025-11-27)
 
 **Note:** Version bump only for package @apify/consts
