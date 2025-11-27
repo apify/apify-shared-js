@@ -1588,6 +1588,195 @@ describe('utilities.client', () => {
                 expect(errorResults[3][0].message).toEqual('Field input.intField must be < 5');
             });
         });
+
+        describe('custom error messages', () => {
+            it('should return custom error messages for all validation keywords', () => {
+                const { inputSchema, validator } = buildInputSchema(
+                    {
+                        stringField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'textfield',
+                            pattern: '^[A-Z]*$',
+                            minLength: 2,
+                            maxLength: 5,
+                            errorMessage: {
+                                type: 'stringField must be string',
+                                pattern: 'stringField must have only uppercase letters',
+                                minLength: 'stringField must be at least 2 characters long',
+                                maxLength: 'stringField must be at most 5 characters long',
+                            },
+                        },
+                        enumField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'textfield',
+                            enum: ['A', 'B', 'C'],
+                            errorMessage: {
+                                enum: 'myField must be one of the allowed values: A, B, C',
+                            },
+                        },
+                        intField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'integer',
+                            editor: 'number',
+                            minimum: 1,
+                            maximum: 10,
+                            errorMessage: {
+                                minimum: 'intField must be >= 1',
+                                maximum: 'intField must be <= 10',
+                            },
+                        },
+                        arrayField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            editor: 'json',
+                            minItems: 2,
+                            maxItems: 4,
+                            uniqueItems: true,
+                            errorMessage: {
+                                minItems: 'arrayField must have at least 2 items',
+                                maxItems: 'arrayField must have at most 4 items',
+                                uniqueItems: 'arrayField must have unique items',
+                            },
+                        },
+                        objectField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'json',
+                            minProperties: 1,
+                            maxProperties: 3,
+                            errorMessage: {
+                                minProperties: 'objectField must have at least 1 property',
+                                maxProperties: 'objectField must have at most 3 properties',
+                            },
+                        },
+                        'subSchema.Field': {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'object',
+                            editor: 'schemaBased',
+                            properties: {
+                                nestedField: {
+                                    type: 'string',
+                                    title: 'Nested Field',
+                                    description: 'My nested field',
+                                    editor: 'textfield',
+                                    minLength: 3,
+                                    errorMessage: {
+                                        minLength: 'nestedField must be at least 3 characters long',
+                                    },
+                                },
+                            },
+                        },
+                        keyValue: {
+                            title: 'Key Value Field',
+                            description: 'My key value field',
+                            type: 'array',
+                            editor: 'keyValue',
+                            patternKey: '^key_[0-9]+$',
+                            patternValue: '^[A-Z]+$',
+                            errorMessage: {
+                                patternKey: 'All keys in keyValue must match the pattern ^key_[0-9]+$',
+                                patternValue: 'All values in keyValue must match the pattern ^[A-Z]+$',
+                            },
+                        },
+                        stringList: {
+                            title: 'String List Field',
+                            description: 'My string',
+                            type: 'array',
+                            editor: 'stringList',
+                            patternValue: '^string_[0-9]+$',
+                            errorMessage: {
+                                patternValue: 'All items in stringList must match the pattern ^string_[0-9]+$',
+                            },
+                        },
+                        object: {
+                            title: 'Object Field',
+                            description: 'My object field',
+                            type: 'object',
+                            editor: 'json',
+                            patternKey: '^object_[0-9]+$',
+                            patternValue: '^[a-z]+$',
+                            errorMessage: {
+                                patternKey: 'All keys in object must match the pattern ^object_[0-9]+$',
+                                patternValue: 'All values in object must match the pattern ^[a-z]+$',
+                            },
+                        },
+                        nullableField: {
+                            title: 'Nullable Field',
+                            description: 'My nullable field',
+                            type: 'string',
+                            editor: 'textfield',
+                            nullable: true,
+                            errorMessage: {
+                                type: 'nullableField must be string or null',
+                            },
+                        },
+                    },
+                    {
+                        required: [],
+                    },
+                );
+
+                let errors = validateInputUsingValidator(validator, inputSchema, { stringField: 1 });
+                expect(errors?.[0].message).toBe('stringField must be string');
+                errors = validateInputUsingValidator(validator, inputSchema, { stringField: 'abc' });
+                expect(errors?.[0].message).toBe('stringField must have only uppercase letters');
+                errors = validateInputUsingValidator(validator, inputSchema, { stringField: 'A' });
+                expect(errors?.[0].message).toBe('stringField must be at least 2 characters long');
+                errors = validateInputUsingValidator(validator, inputSchema, { stringField: 'ABCDEFG' });
+                expect(errors?.[0].message).toBe('stringField must be at most 5 characters long');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { enumField: 'D' });
+                expect(errors?.[0].message).toBe('myField must be one of the allowed values: A, B, C');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { intField: 0 });
+                expect(errors?.[0].message).toBe('intField must be >= 1');
+                errors = validateInputUsingValidator(validator, inputSchema, { intField: 11 });
+                expect(errors?.[0].message).toBe('intField must be <= 10');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { arrayField: [1] });
+                expect(errors?.[0].message).toBe('arrayField must have at least 2 items');
+                errors = validateInputUsingValidator(validator, inputSchema, { arrayField: [1, 2, 3, 4, 5] });
+                expect(errors?.[0].message).toBe('arrayField must have at most 4 items');
+                errors = validateInputUsingValidator(validator, inputSchema, { arrayField: [1, 2, 2] });
+                expect(errors?.[0].message).toBe('arrayField must have unique items');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { objectField: {} });
+                expect(errors?.[0].message).toBe('objectField must have at least 1 property');
+                errors = validateInputUsingValidator(validator, inputSchema, { objectField: { a: 1, b: 2, c: 3, d: 4 } });
+                expect(errors?.[0].message).toBe('objectField must have at most 3 properties');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { 'subSchema.Field': { nestedField: 'ab' } });
+                expect(errors?.[0].message).toBe('nestedField must be at least 3 characters long');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { keyValue: [{ key: 'invalidKey', value: 'VALUE' }] });
+                expect(errors?.[0].message).toBe('All keys in keyValue must match the pattern ^key_[0-9]+$');
+                errors = validateInputUsingValidator(validator, inputSchema, { keyValue: [{ key: 'key_1', value: 'invalidValue' }] });
+                expect(errors?.[0].message).toBe('All values in keyValue must match the pattern ^[A-Z]+$');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { stringList: ['invalidItem'] });
+                expect(errors?.[0].message).toBe('All items in stringList must match the pattern ^string_[0-9]+$');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { object: { invalidKey: 'value' } });
+                expect(errors?.[0].message).toBe('All keys in object must match the pattern ^object_[0-9]+$');
+                errors = validateInputUsingValidator(validator, inputSchema, { object: { object_1: 'InvalidValue' } });
+                expect(errors?.[0].message).toBe('All values in object must match the pattern ^[a-z]+$');
+
+                errors = validateInputUsingValidator(validator, inputSchema, { nullableField: 123 });
+                expect(errors?.[0].message).toBe('nullableField must be string or null');
+                errors = validateInputUsingValidator(validator, inputSchema, { nullableField: null });
+                expect(errors).toEqual([]);
+                errors = validateInputUsingValidator(validator, inputSchema, {});
+                expect(errors).toEqual([]);
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {
