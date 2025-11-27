@@ -704,6 +704,6 @@ export const ACTOR_PERMISSION_LEVEL = {
      * For details refer to the Apify documentation.
      */
     LIMITED_PERMISSIONS: 'LIMITED_PERMISSIONS',
-};
+} as const;
 
 export type ACTOR_PERMISSION_LEVEL = ValueOf<typeof ACTOR_PERMISSION_LEVEL>;
