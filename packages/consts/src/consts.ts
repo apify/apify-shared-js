@@ -22,6 +22,7 @@ export const ACTOR_EVENT_NAMES = {
     MIGRATING: 'migrating',
     PERSIST_STATE: 'persistState',
     ABORTING: 'aborting',
+    TIMING_OUT: 'timingOut',
 } as const;
 
 /**
