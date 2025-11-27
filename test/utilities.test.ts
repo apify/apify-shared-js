@@ -416,3 +416,17 @@ describe('createInjectableRegExp()', () => {
         expect(utils.createInjectableRegExp(/[\w._~]+/)).toStrictEqual(/[\w._~]+/);
     });
 });
+
+describe('parseBooleanOrNull', () => {
+    it.each([true, 'true', 'TRUE', 'TrUe', 1, '1'])('Return true for %s value', (value) => {
+        expect(utils.parseBooleanOrNull(value)).toBe(true);
+    });
+
+    it.each([false, 'false', 'FALSE', 'FaLsE', 0, '0'])('Return false for %s value', (value) => {
+        expect(utils.parseBooleanOrNull(value)).toBe(false);
+    });
+
+    it.each([undefined, null, 'null', {}, [], -1])('Return null for %s value', (value) => {
+        expect(utils.parseBooleanOrNull(value)).toBe(null);
+    });
+});
