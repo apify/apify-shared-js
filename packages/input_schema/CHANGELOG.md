@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.25.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.24.0...@apify/input_schema@3.25.0) (2025-11-27)
+
+
+### Features
+
+* **input_schema:** Custom error messages ([#567](https://github.com/apify/apify-shared-js/issues/567)) ([cded259](https://github.com/apify/apify-shared-js/commit/cded2591d13de1760807fdc6c0103af0a03b5bc2))
+
+
+
+
+
 # [3.24.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.10...@apify/input_schema@3.24.0) (2025-11-18)
 
 
