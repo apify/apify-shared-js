@@ -5,7 +5,6 @@ import {
     compileDependencies,
     create,
     divideDependencies,
-    type EvalFunction,
     evaluateDependencies,
     maxDependencies,
     minDependencies,
@@ -20,7 +19,7 @@ import {
 
 import { ACTOR_LIMITS } from '@apify/consts';
 
-import type { ActorRunOptions, CompilationCache, MemoryEvaluationContext } from './types.js';
+import type { ActorRunOptions, CompilationCache, CompilationResult, MemoryEvaluationContext } from './types.js';
 
 // In theory, users could create expressions longer than 1000 characters,
 // but in practice, it's unlikely anyone would need that much complexity.
@@ -176,9 +175,9 @@ const processTemplateVariables = (defaultMemoryMbytes: string): string => {
 *
 * @param expression The expression string to compile.
 * @param cache An optional cache to store/retrieve compiled expressions.
-* @returns The compiled EvalFunction.
+* @returns The compiled CompilationResult.
 */
-const getCompiledExpression = async (expression: string, cache: CompilationCache | undefined): Promise<EvalFunction> => {
+const getCompiledExpression = async (expression: string, cache: CompilationCache | undefined): Promise<CompilationResult> => {
     if (!cache) {
         return compile(expression);
     }
