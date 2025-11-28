@@ -1256,6 +1256,15 @@ describe('input_schema.json', () => {
                             editor: 'json',
                             patternKey: '^[a-z]+$',
                             patternValue: '^[0-9]+$',
+                            propertyNames: {
+                                pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$',
+                            },
+                            patternProperties: {
+                                '.*': {
+                                    type: 'string',
+                                    pattern: '^[0-9]+$',
+                                },
+                            },
                         },
                         arrayField: {
                             title: 'Array field',
@@ -1334,6 +1343,240 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
                 );
+            });
+
+            it('should throw error on invalid propertyNames regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            propertyNames: {
+                                pattern: '^[0-9+$', // invalid regexp
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.propertyNames.pattern must be valid.)',
+                );
+            });
+
+            it('should throw error on invalid patternProperties regexp', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'json',
+                            patternProperties: {
+                                '.*': {
+                                    type: 'string',
+                                    pattern: '^[0-9+$', // invalid regexp
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternProperties.*.pattern must be valid.)',
+                );
+            });
+        });
+
+        describe('propertyNames working correctly', () => {
+            it('should accept valid property names', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'My test field',
+                            editor: 'json',
+                            propertyNames: {
+                                pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$',
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should throw if pattern is missing', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'My test field',
+                            editor: 'json',
+                            propertyNames: {
+                                // missing pattern
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.propertyNames.pattern is required)',
+                );
+            });
+
+            it('should not allow propertyNames for other than object type', () => {
+                const types = {
+                    string: 'textfield',
+                    integer: 'number',
+                    number: 'number',
+                    boolean: 'checkbox',
+                    array: 'json',
+                };
+                Object.entries(types).forEach(([type, editor]) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                type,
+                                description: 'My test field',
+                                editor,
+                                propertyNames: {
+                                    pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$',
+                                },
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).toThrow(
+                        `Input schema is not valid (Property schema.properties.myField.propertyNames is not allowed.)`,
+                    );
+                });
+            });
+        });
+
+        describe('patternProperties working correctly', () => {
+            it('should accept valid patternProperties', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'My test field',
+                            editor: 'json',
+                            patternProperties: {
+                                '.*': {
+                                    type: 'string',
+                                    pattern: '^[0-9]+$',
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should throw if patternProperties value is missing type', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'My test field',
+                            editor: 'json',
+                            patternProperties: {
+                                '.*': {
+                                    // missing type
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.patternProperties..*.type is required)',
+                );
+            });
+
+            it('should not allow additional properties in patternProperties value', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'My test field',
+                            editor: 'json',
+                            patternProperties: {
+                                '.*': {
+                                    type: 'string',
+                                    pattern: '^[0-9]+$',
+                                    extraProperty: 'not allowed',
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.patternProperties..*.extraProperty is not allowed.)',
+                );
+            });
+
+            it('should not allow patternProperties for other than object type', () => {
+                const types = {
+                    string: 'textfield',
+                    integer: 'number',
+                    number: 'number',
+                    boolean: 'checkbox',
+                    array: 'json',
+                };
+                Object.entries(types).forEach(([type, editor]) => {
+                    const schema = {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                type,
+                                description: 'My test field',
+                                editor,
+                                patternProperties: {
+                                    '^[a-zA-Z_][a-zA-Z0-9_]*$': {
+                                        type: 'string',
+                                        regex: '^[0-9]+$',
+                                    },
+                                },
+                            },
+                        },
+                    };
+                    expect(() => validateInputSchema(validator, schema)).toThrow(
+                        `Input schema is not valid (Property schema.properties.myField.patternProperties is not allowed.)`,
+                    );
+                });
             });
         });
     });

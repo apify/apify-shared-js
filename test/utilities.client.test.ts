@@ -1588,6 +1588,85 @@ describe('utilities.client', () => {
                 expect(errorResults[3][0].message).toEqual('Field input.intField must be < 5');
             });
         });
+
+        describe('special cases for propertyNames', () => {
+            it('should validate propertyNames for object field', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'schemaBased',
+                        propertyNames: {
+                            type: 'string',
+                            pattern: '^key_\\d+$',
+                        },
+                    },
+                });
+                const validInputs = [
+                    { field: { key_1: 'value1', key_2: 'value2' } },
+                    { field: {} },
+                ];
+                const invalidInputs = [
+                    { field: { key1: 'value1' } },
+                    { field: { anotherKey: 'value2' } },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                expect(errorResults[0][0].message).toEqual('Property name of input.field.key1 must match pattern "^key_\\d+$".');
+                expect(errorResults[1][0].message).toEqual('Property name of input.field.anotherKey must match pattern "^key_\\d+$".');
+            });
+        });
+
+        describe('special cases for patternProperties', () => {
+            it('should validate patternProperties for object field', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'object',
+                        editor: 'schemaBased',
+                        patternProperties: {
+                            '.*': {
+                                type: 'string',
+                                pattern: '^value.*$',
+                            },
+                        },
+                    },
+                });
+                const validInputs = [
+                    { field: { key1: 'value1', key2: 'value2' } },
+                    { field: { another: 'value' } },
+                    { field: {} },
+                ];
+                const invalidInputs = [
+                    { field: { key1: 123 } },
+                    { field: { anotherKey: 'invalid' } },
+                ];
+
+                let errorResults = validInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(0);
+
+                errorResults = invalidInputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+                expect(errorResults.length).toEqual(2);
+
+                expect(errorResults[0][0].message).toEqual('Field input.field.key1 must be string');
+                expect(errorResults[1][0].message).toEqual('Field input.field.anotherKey must match pattern "^value.*$"');
+            });
+        });
     });
 
     describe('#jsonStringifyExtended()', () => {

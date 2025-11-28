@@ -5,12 +5,10 @@ import { inputSchema as schema } from '@apify/json_schemas';
 
 import { m } from './intl';
 import type {
-    ArrayFieldDefinition,
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
     InputSchemaBaseChecked,
-    ObjectFieldDefinition,
     StringFieldDefinition,
 } from './types';
 import { ensureAjvSupportsDraft2019, validateRegexpPattern } from './utilities';
@@ -93,6 +91,9 @@ export function parseAjvError(
     } else if (error.keyword === 'const') {
         fieldKey = cleanPropertyName(error.instancePath);
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
+    } else if (error.keyword === 'pattern' && error.propertyName && error.params?.pattern) {
+        fieldKey = cleanPropertyName(`${error.instancePath}/${error.propertyName}`);
+        message = m('inputSchema.validation.propertyName', { rootName, fieldKey, pattern: error.params.pattern });
     } else {
         fieldKey = cleanPropertyName(error.instancePath);
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: error.message });
@@ -207,12 +208,21 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     validateFieldAgainstSchemaDefinition(validator, fieldSchema, fieldKey, isSubField);
 
     // Validate regex patterns if defined.
-    const { pattern } = fieldSchema as Partial<StringFieldDefinition>;
-    const { patternKey, patternValue } = fieldSchema as Partial<ObjectFieldDefinition & ArrayFieldDefinition>;
-
-    if (pattern) validateRegexpPattern(pattern, `${fieldKey}.pattern`);
-    if (patternKey) validateRegexpPattern(patternKey, `${fieldKey}.patternKey`);
-    if (patternValue) validateRegexpPattern(patternValue, `${fieldKey}.patternValue`);
+    if ('pattern' in fieldSchema && fieldSchema.pattern) {
+        validateRegexpPattern(fieldSchema.pattern, `${fieldKey}.pattern`);
+    }
+    if ('patternKey' in fieldSchema && fieldSchema.patternKey) {
+        validateRegexpPattern(fieldSchema.patternKey, `${fieldKey}.patternKey`);
+    }
+    if ('patternValue' in fieldSchema && fieldSchema.patternValue) {
+        validateRegexpPattern(fieldSchema.patternValue, `${fieldKey}.patternValue`);
+    }
+    if ('propertyNames' in fieldSchema && fieldSchema.propertyNames?.pattern) {
+        validateRegexpPattern(fieldSchema.propertyNames.pattern, `${fieldKey}.propertyNames.pattern`);
+    }
+    if ('patternProperties' in fieldSchema && fieldSchema.patternProperties?.['.*'].pattern) {
+        validateRegexpPattern(fieldSchema.patternProperties['.*'].pattern, `${fieldKey}.patternProperties.*.pattern`);
+    }
 }
 
 /**
