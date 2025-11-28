@@ -39,6 +39,8 @@ const intlStrings = {
         'The regular expression "{pattern}" in field schema.properties.{fieldKey} must be valid.',
     'inputSchema.validation.regexpNotSafe':
         'The regular expression "{pattern}" in field schema.properties.{fieldKey} may cause excessive backtracking or be unsafe to execute.',
+    'inputSchema.validation.propertyName':
+        'Property name of {rootName}.{fieldKey} must match pattern "{pattern}".',
 };
 
 /**
