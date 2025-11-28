@@ -39,6 +39,48 @@ const [fieldDefinitions, subFieldDefinitions] = Object
     }, [[], []]);
 
 /**
+ * Retrieves a custom error message defined in the schema for a particular schema path.
+ * @param rootSchema json schema object
+ * @param schemaPath schema path to the failed validation keyword,
+ *  as provided in an AJV error object, including the keyword at the end, e.g. "#/properties/name/type"
+ */
+export function getCustomErrorMessage(rootSchema: Record<string, any>, schemaPath: string): string | null {
+    if (!schemaPath) return null;
+
+    const pathParts = schemaPath
+        .replace(/^#\//, '')
+        .split('/')
+        .filter(Boolean);
+
+    // The last part is the keyword
+    const keyword = pathParts.pop();
+    if (!keyword) return null;
+
+    // Navigate through the schema to find the relevant fragment
+    let schemaFragment: Record<string, any> = rootSchema;
+    for (const key of pathParts) {
+        if (schemaFragment && typeof schemaFragment === 'object') {
+            schemaFragment = schemaFragment[key];
+        } else {
+            return null;
+        }
+    }
+
+    if (typeof schemaFragment !== 'object') {
+        return null;
+    }
+
+    const { errorMessage } = schemaFragment;
+    if (!errorMessage) return null;
+
+    if (typeof errorMessage === 'object' && keyword in errorMessage) {
+        return errorMessage[keyword];
+    }
+
+    return null;
+}
+
+/**
  * This function parses AJV error and transforms it into a readable string.
  *
  * @param error An error as returned from AJV.
@@ -65,6 +107,14 @@ export function parseAjvError(
     const cleanPropertyName = (name: string) => {
         return name.replace(/^\/|\/$/g, '').replace(/\//g, '.');
     };
+
+    // First, try to get a custom error message from the schema
+    // If found, use it directly and skip further processing
+    const customError = getCustomErrorMessage({ properties }, error.schemaPath);
+    if (customError) {
+        fieldKey = cleanPropertyName(error.instancePath);
+        return { fieldKey, message: customError };
+    }
 
     // If error is with keyword type, it means that type of input is incorrect
     // this can mean that provided value is null

@@ -76,7 +76,8 @@
                     "type": "array",
                     "items": { "type": "string" },
                     "minItems": 1
-                }
+                },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "enum"],
             "if": {
@@ -120,7 +121,8 @@
                     "maxLength": { "type": "integer" },
                     "sectionCaption": { "type": "string" },
                     "sectionDescription": { "type": "string" },
-                    "isSecret": { "enum": [false] }
+                    "isSecret": { "enum": [false] },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 },
                 "unevaluatedProperties": false,
                 "allOf": [
@@ -191,7 +193,8 @@
                     "editor": { "enum": ["textfield", "textarea", "hidden"] },
                     "isSecret": { "enum": [true] },
                     "sectionCaption": { "type": "string" },
-                    "sectionDescription": { "type": "string" }
+                    "sectionDescription": { "type": "string" },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 }
             }
         },
@@ -226,7 +229,8 @@
                     "placeholderValue": { "type": "string" },
                     "patternKey": { "type": "string" },
                     "patternValue": { "type": "string" },
-                    "isSecret": { "enum": [false] }
+                    "isSecret": { "enum": [false] },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 },
                 "unevaluatedProperties": false,
                 "allOf": [
@@ -323,7 +327,8 @@
                     "sectionCaption": { "type": "string" },
                     "sectionDescription": { "type": "string" },
                     "items": { "$ref": "#/definitions/arrayItems" },
-                    "isSecret": { "enum": [true] }
+                    "isSecret": { "enum": [true] },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 }
             }
         },
@@ -369,7 +374,8 @@
                         "type": "boolean"
                     },
                     "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
-                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" }
+                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 },
                 "unevaluatedProperties": false,
                 "allOf": [
@@ -426,7 +432,8 @@
                         "type": "boolean"
                     },
                     "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
-                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" }
+                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
+                    "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 }
             }
         },
@@ -446,7 +453,8 @@
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -475,7 +483,8 @@
                 "unit": { "type": "string" },
                 "editor": { "enum": ["number", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -503,7 +512,8 @@
                 "groupDescription": { "type": "string" },
                 "editor": { "enum": ["checkbox", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -545,7 +555,8 @@
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
@@ -604,7 +615,8 @@
                 "uniqueItems": { "type": "boolean" },
                 "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
@@ -656,7 +668,8 @@
                 "nullable": { "type": "boolean" },
                 "editor": { "enum": ["json", "hidden"] },
                 "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" }
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "editor"],
             "if": {
@@ -691,7 +704,8 @@
                     "type": "array",
                     "items": { "type": "string" },
                     "minItems": 1
-                }
+                },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "enum"],
             "if": {
@@ -718,7 +732,8 @@
                 "nullable": { "type": "boolean" },
                 "minLength": { "type": "integer" },
                 "maxLength": { "type": "integer" },
-                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "select", "fileupload", "hidden"] }
+                "editor": { "enum": ["javascript", "python", "textfield", "textarea", "datepicker", "select", "fileupload", "hidden"] },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "allOf": [
@@ -794,7 +809,8 @@
                 "placeholderKey": { "type": "string" },
                 "placeholderValue": { "type": "string" },
                 "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" }
+                "patternValue": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "unevaluatedProperties": false,
@@ -890,7 +906,8 @@
                 "minimum": { "type": "integer" },
                 "maximum": { "type": "integer" },
                 "unit": { "type": "string" },
-                "editor": { "enum": ["number", "hidden"] }
+                "editor": { "enum": ["number", "hidden"] },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -917,7 +934,8 @@
                 "minimum": { "type": "number" },
                 "maximum": { "type": "number" },
                 "unit": { "type": "string" },
-                "editor": { "enum": ["number", "hidden"] }
+                "editor": { "enum": ["number", "hidden"] },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -943,7 +961,8 @@
                 "nullable": { "type": "boolean" },
                 "groupCaption": { "type": "string" },
                 "groupDescription": { "type": "string" },
-                "editor": { "enum": ["checkbox", "hidden"] }
+                "editor": { "enum": ["checkbox", "hidden"] },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -983,7 +1002,8 @@
                     "type": "boolean"
                 },
                 "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
-                "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" }
+                "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
             "if": {
@@ -1023,7 +1043,8 @@
                 "nullable": { "type": "boolean" },
                 "pattern": { "type": "string" },
                 "minLength": { "type": "integer" },
-                "maxLength": { "type": "integer" }
+                "maxLength": { "type": "integer" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "if": {
@@ -1063,7 +1084,8 @@
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] }
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "if": {
@@ -1607,6 +1629,27 @@
                     "required": ["type"]
                 }
             }
+        },
+        "errorMessage": {
+            "title": "Utils: Custom error message definition",
+            "type": "object",
+            "properties": {
+                "type": { "type": "string" },
+                "pattern": { "type": "string" },
+                "minLength": { "type": "string" },
+                "maxLength": { "type": "string" },
+                "enum": { "type": "string" },
+                "minimum": { "type": "string" },
+                "maximum": { "type": "string" },
+                "minItems": { "type": "string" },
+                "maxItems": { "type": "string" },
+                "uniqueItems": { "type": "string" },
+                "minProperties": { "type": "string" },
+                "maxProperties": { "type": "string" },
+                "patternKey": { "type": "string" },
+                "patternValue": { "type": "string" }
+            },
+            "additionalProperties": false
         },
         "propertyNamesDefinition": {
             "title": "Utils: Property names definition",

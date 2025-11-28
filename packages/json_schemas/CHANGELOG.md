@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.9.1...@apify/json_schemas@0.9.2) (2025-11-27)
+
+**Note:** Version bump only for package @apify/json_schemas
+
+
+
+
+
+## [0.9.1](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.9.0...@apify/json_schemas@0.9.1) (2025-11-27)
+
+**Note:** Version bump only for package @apify/json_schemas
+
+
+
+
+
+# [0.9.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.8.0...@apify/json_schemas@0.9.0) (2025-11-27)
+
+
+### Features
+
+* **input_schema:** Custom error messages ([#567](https://github.com/apify/apify-shared-js/issues/567)) ([cded259](https://github.com/apify/apify-shared-js/commit/cded2591d13de1760807fdc6c0103af0a03b5bc2))
+
+
+
+
+
 # [0.8.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.7.0...@apify/json_schemas@0.8.0) (2025-11-18)
 
 

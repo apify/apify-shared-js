@@ -20,3 +20,5 @@ export type CompilationCache = {
     set: (expression: string, compilationResult: EvalFunction) => Promise<void>;
     size: () => Promise<number>;
 }
+
+export type CompilationResult = EvalFunction;

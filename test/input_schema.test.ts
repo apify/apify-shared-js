@@ -1579,5 +1579,54 @@ describe('input_schema.json', () => {
                 });
             });
         });
+
+        describe('custom error messages', () => {
+            it('should allow defining custom error messages for validation keywords', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            editor: 'textfield',
+                            minLength: 5,
+                            maxLength: 10,
+                            pattern: '^[A-Z]+$',
+                            errorMessage: {
+                                minLength: 'Custom minLength error message',
+                                maxLength: 'Custom maxLength error message',
+                                pattern: 'Custom pattern error message',
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not allow custom error messages for unknown keywords', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            minLength: 5,
+                            errorMessage: {
+                                unknownKeyword: 'This should not be allowed',
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.errorMessage.unknownKeyword is not allowed.)',
+                );
+            });
+        });
     });
 });
