@@ -1567,7 +1567,7 @@ describe('input_schema.json', () => {
                                 patternProperties: {
                                     '^[a-zA-Z_][a-zA-Z0-9_]*$': {
                                         type: 'string',
-                                        regex: '^[0-9]+$',
+                                        pattern: '^[0-9]+$',
                                     },
                                 },
                             },

@@ -1787,7 +1787,6 @@ describe('utilities.client', () => {
                         type: 'object',
                         editor: 'schemaBased',
                         propertyNames: {
-                            type: 'string',
                             pattern: '^key_\\d+$',
                         },
                     },

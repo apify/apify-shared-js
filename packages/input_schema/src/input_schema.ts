@@ -270,7 +270,7 @@ function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fie
     if ('propertyNames' in fieldSchema && fieldSchema.propertyNames?.pattern) {
         validateRegexpPattern(fieldSchema.propertyNames.pattern, `${fieldKey}.propertyNames.pattern`);
     }
-    if ('patternProperties' in fieldSchema && fieldSchema.patternProperties?.['.*'].pattern) {
+    if ('patternProperties' in fieldSchema && fieldSchema.patternProperties?.['.*']?.pattern) {
         validateRegexpPattern(fieldSchema.patternProperties['.*'].pattern, `${fieldKey}.patternProperties.*.pattern`);
     }
 }

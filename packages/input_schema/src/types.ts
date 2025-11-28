@@ -57,7 +57,7 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     required?: string[];
     additionalProperties?: boolean;
     propertyNames?: { pattern: string };
-    patternProperties?: { '.*': { type: 'string', pattern: string } };
+    patternProperties?: { '.*': { type: 'string'; pattern: string; } };
 }
 
 export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
