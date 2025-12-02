@@ -208,7 +208,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'acts', 'key-value-stores', 'schedules', 'account', 'sign-up', 'sign-in-discourse', 'admin',
     'documentation', 'change-password', 'enroll-account', 'forgot-password', 'reset-password',
     'sign-in', 'verify-email', 'live-status', 'browser-info', 'webhooks', 'health-check', 'api',
-    'change-log', 'dashboard', 'community', 'crawlers', 'ext',
+    'change-log', 'dashboard', 'community', 'crawlers', 'ext', 'schemas',
 
     // Various strings
     'admin', 'administration', 'crawler', 'act', 'library', 'lib', 'apifier', 'team',
