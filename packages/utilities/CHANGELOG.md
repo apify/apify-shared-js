@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.4...@apify/utilities@2.24.0) (2025-12-02)
+
+
+### Features
+
+* **utils:** Add forbidden username "schemas" ([#581](https://github.com/apify/apify-shared-js/issues/581)) ([30fedb9](https://github.com/apify/apify-shared-js/commit/30fedb9792bb086934d0592b3964ec482d4953b5))
+
+
+
+
+
 ## [2.23.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.3...@apify/utilities@2.23.4) (2025-11-27)
 
 **Note:** Version bump only for package @apify/utilities
