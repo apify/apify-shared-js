@@ -244,6 +244,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // File starting with xxx-
     '(xxx-.*)',
 
+    // File starting with install-cli.
+    '(install-cli\..*)',
+
     // Strings not starting with letter or number
     '([^0-9a-z].*)',
 
