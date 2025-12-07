@@ -241,8 +241,11 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // All hidden files
     '(\\..*)',
 
-    // File starting with xxx-
+    // Username starting with xxx-
     '(xxx-.*)',
+
+    // Username starting with install-cli. (see https://docs.apify.com/cli/docs/installation)
+    '(install-cli\\..*)',
 
     // Strings not starting with letter or number
     '([^0-9a-z].*)',
