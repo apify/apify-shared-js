@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.24.1...@apify/utilities@2.25.0) (2025-12-17)
+
+
+### Features
+
+* parse boolean utility function ([#577](https://github.com/apify/apify-shared-js/issues/577)) ([a3cf1e1](https://github.com/apify/apify-shared-js/commit/a3cf1e1a6a3c000bc4b1ffeeffe18c1fd6650358))
+
+
+
+
+
 ## [2.24.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.24.0...@apify/utilities@2.24.1) (2025-12-07)
 
 
