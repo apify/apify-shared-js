@@ -27,7 +27,9 @@ describe('actor.json', () => {
                     API_KEY: 'my-api-key',
                 },
                 dockerfile: '../Dockerfile',
+                dockerContextDir: './docker',
                 readme: '../README.md',
+                changelog: '../CHANGELOG.md',
                 minMemoryMbytes: 256,
                 maxMemoryMbytes: 1024,
                 input: {
