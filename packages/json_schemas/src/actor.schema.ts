@@ -45,9 +45,15 @@ export const actorSchema = {
             type: 'string',
             default: '../Dockerfile',
         },
+        dockerContextDir: {
+            type: 'string',
+        },
         readme: {
             type: 'string',
             default: '../README.md',
+        },
+        changelog: {
+            type: 'string',
         },
         minMemoryMbytes: {
             type: 'integer',
