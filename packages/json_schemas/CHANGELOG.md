@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.10.0...@apify/json_schemas@0.11.0) (2026-01-11)
+
+
+### Features
+
+* **json_schemas:** Remove storages.requestQueue from actor definition ([#586](https://github.com/apify/apify-shared-js/issues/586)) ([34816f4](https://github.com/apify/apify-shared-js/commit/34816f4f6c2bb8395803c5943b394b01f32bc9c1))
+
+
+
+
+
 # [0.10.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.9.2...@apify/json_schemas@0.10.0) (2025-12-18)
 
 
