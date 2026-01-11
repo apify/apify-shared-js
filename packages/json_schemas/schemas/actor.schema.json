@@ -122,11 +122,9 @@
               "$ref": "https://apify.com/schemas/v1/dataset.json"
             }
           ]
-        },
-        "requestQueue": {
-          "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "usesStandbyMode": {
       "type": "boolean"

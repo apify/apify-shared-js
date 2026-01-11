@@ -89,7 +89,6 @@ describe('actor.json', () => {
                             },
                         },
                     },
-                    requestQueue: 'my-request-queue',
                 },
                 usesStandbyMode: true,
                 webServerSchema: {
@@ -119,7 +118,6 @@ describe('actor.json', () => {
                 storages: {
                     keyValueStore: 'key-value-store.json',
                     dataset: 'dataset.json',
-                    requestQueue: 'request-queue',
                 },
                 webServerSchema: 'web-server-schema.json',
             };

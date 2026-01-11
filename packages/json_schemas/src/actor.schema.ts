@@ -128,10 +128,8 @@ export const actorSchema = {
                         },
                     ],
                 },
-                requestQueue: {
-                    type: 'string',
-                },
             },
+            additionalProperties: false,
         },
         usesStandbyMode: {
             type: 'boolean',
