@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.48.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.0...@apify/consts@2.48.1) (2026-01-20)
+
+
+### Reverts
+
+* Revert "feat(consts): add `TIMING_OUT` Actor event (#579)" ([5f0aed9](https://github.com/apify/apify-shared-js/commit/5f0aed9021d584316d7c330b2be7d44928256b57)), closes [#579](https://github.com/apify/apify-shared-js/issues/579)
+
+
+
+
+
 # [2.48.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.47.1...@apify/consts@2.48.0) (2025-11-27)
 
 

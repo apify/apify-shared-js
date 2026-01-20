@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_schema",
-    "version": "3.25.7",
+    "version": "3.25.8",
     "description": "Tools and constants shared across Apify projects.",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -48,9 +48,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.48.0",
-        "@apify/input_secrets": "^1.2.21",
-        "@apify/json_schemas": "^0.11.0",
+        "@apify/consts": "^2.48.1",
+        "@apify/input_secrets": "^1.2.22",
+        "@apify/json_schemas": "^0.11.1",
         "acorn-loose": "^8.4.0",
         "countries-list": "^3.0.0"
     },
