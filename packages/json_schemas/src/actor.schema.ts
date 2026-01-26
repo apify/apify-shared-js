@@ -144,22 +144,8 @@ export const actorSchema = {
                     not: { required: ['default'] },
                 },
             },
-            oneOf: [
-                {
-                    required: ['dataset'],
-                    not: { required: ['datasets'] },
-                },
-                {
-                    required: ['datasets'],
-                    not: { required: ['dataset'] },
-                },
-                {
-                    allOf: [
-                        { not: { required: ['dataset'] } },
-                        { not: { required: ['datasets'] } },
-                    ],
-                },
-            ],
+            // Dataset and datasets are mutually exclusive
+            not: { required: ['dataset', 'datasets'] },
             additionalProperties: false,
         },
         usesStandbyMode: {

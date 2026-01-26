@@ -147,46 +147,12 @@
           }
         }
       },
-      "oneOf": [
-        {
-          "required": [
-            "dataset"
-          ],
-          "not": {
-            "required": [
-              "datasets"
-            ]
-          }
-        },
-        {
-          "required": [
-            "datasets"
-          ],
-          "not": {
-            "required": [
-              "dataset"
-            ]
-          }
-        },
-        {
-          "allOf": [
-            {
-              "not": {
-                "required": [
-                  "dataset"
-                ]
-              }
-            },
-            {
-              "not": {
-                "required": [
-                  "datasets"
-                ]
-              }
-            }
-          ]
-        }
-      ],
+      "not": {
+        "required": [
+          "dataset",
+          "datasets"
+        ]
+      },
       "additionalProperties": false
     },
     "usesStandbyMode": {

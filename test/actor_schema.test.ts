@@ -260,7 +260,7 @@ describe('actor.json', () => {
 
             expect(validator.errors).toContainEqual(
                 expect.objectContaining({
-                    message: 'must match exactly one schema in oneOf',
+                    message: 'must NOT be valid',
                 }),
             );
         });
