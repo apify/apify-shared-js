@@ -207,5 +207,62 @@ describe('actor.json', () => {
                 }),
             );
         });
+
+        it('should support multiple datasets', () => {
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                storages: {
+                    datasets: {
+                        first: './first_dataset.json',
+                        second: {
+                            actorSpecification: 1,
+                            fields: {
+                                type: 'object',
+                                properties: {
+                                    url: { type: 'string' },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(true);
+        });
+
+        it('should not allow both dataset and datasets', () => {
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                storages: {
+                    dataset: './default_dataset.json',
+                    datasets: {
+                        first: './first_dataset.json',
+                        second: {
+                            actorSpecification: 1,
+                            fields: {
+                                type: 'object',
+                                properties: {
+                                    url: { type: 'string' },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    message: 'must NOT be valid',
+                }),
+            );
+        });
     });
 });
