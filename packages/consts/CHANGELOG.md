@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.49.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.1...@apify/consts@2.49.0) (2026-01-27)
+
+
+### Features
+
+* added ACTOR_STORAGE_IDS env var, JSON_ENCODED_ENV_VARS group ([#589](https://github.com/apify/apify-shared-js/issues/589)) ([0297a58](https://github.com/apify/apify-shared-js/commit/0297a5891d70cf4a568ecbb64bd740e4d32224f8))
+
+
+
+
+
 ## [2.48.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.0...@apify/consts@2.48.1) (2026-01-20)
 
 
