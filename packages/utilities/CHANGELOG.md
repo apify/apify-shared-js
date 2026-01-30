@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.25.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.25.1...@apify/utilities@2.25.2) (2026-01-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.25.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.25.0...@apify/utilities@2.25.1) (2026-01-20)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+# [2.25.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.24.1...@apify/utilities@2.25.0) (2025-12-17)
+
+
+### Features
+
+* parse boolean utility function ([#577](https://github.com/apify/apify-shared-js/issues/577)) ([a3cf1e1](https://github.com/apify/apify-shared-js/commit/a3cf1e1a6a3c000bc4b1ffeeffe18c1fd6650358))
+
+
+
+
+
+## [2.24.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.24.0...@apify/utilities@2.24.1) (2025-12-07)
+
+
+### Bug Fixes
+
+* Add new entry to `FORBIDDEN_USERNAMES_REGEXPS`  ([#582](https://github.com/apify/apify-shared-js/issues/582)) ([389fa62](https://github.com/apify/apify-shared-js/commit/389fa624fb042c4a6fe782239b36c27848b66aa6))
+
+
+
+
+
+# [2.24.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.4...@apify/utilities@2.24.0) (2025-12-02)
+
+
+### Features
+
+* **utils:** Add forbidden username "schemas" ([#581](https://github.com/apify/apify-shared-js/issues/581)) ([30fedb9](https://github.com/apify/apify-shared-js/commit/30fedb9792bb086934d0592b3964ec482d4953b5))
+
+
+
+
+
+## [2.23.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.3...@apify/utilities@2.23.4) (2025-11-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
+## [2.23.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.2...@apify/utilities@2.23.3) (2025-11-27)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
 ## [2.23.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.23.1...@apify/utilities@2.23.2) (2025-11-18)
 
 

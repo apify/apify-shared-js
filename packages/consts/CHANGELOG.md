@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.49.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.1...@apify/consts@2.49.0) (2026-01-27)
+
+
+### Features
+
+* added ACTOR_STORAGE_IDS env var, JSON_ENCODED_ENV_VARS group ([#589](https://github.com/apify/apify-shared-js/issues/589)) ([0297a58](https://github.com/apify/apify-shared-js/commit/0297a5891d70cf4a568ecbb64bd740e4d32224f8))
+
+
+
+
+
+## [2.48.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.0...@apify/consts@2.48.1) (2026-01-20)
+
+
+### Reverts
+
+* Revert "feat(consts): add `TIMING_OUT` Actor event (#579)" ([5f0aed9](https://github.com/apify/apify-shared-js/commit/5f0aed9021d584316d7c330b2be7d44928256b57)), closes [#579](https://github.com/apify/apify-shared-js/issues/579)
+
+
+
+
+
+# [2.48.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.47.1...@apify/consts@2.48.0) (2025-11-27)
+
+
+### Features
+
+* **consts:** add `TIMING_OUT` Actor event ([#579](https://github.com/apify/apify-shared-js/issues/579)) ([a83c351](https://github.com/apify/apify-shared-js/commit/a83c351e3eb07419c9926003c21f6c6fc34ff9a9))
+
+
+
+
+
+## [2.47.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.47.0...@apify/consts@2.47.1) (2025-11-27)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
 # [2.47.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.46.0...@apify/consts@2.47.0) (2025-10-20)
 
 

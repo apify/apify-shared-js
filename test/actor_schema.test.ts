@@ -27,7 +27,9 @@ describe('actor.json', () => {
                     API_KEY: 'my-api-key',
                 },
                 dockerfile: '../Dockerfile',
+                dockerContextDir: './docker',
                 readme: '../README.md',
+                changelog: '../CHANGELOG.md',
                 minMemoryMbytes: 256,
                 maxMemoryMbytes: 1024,
                 input: {
@@ -87,7 +89,6 @@ describe('actor.json', () => {
                             },
                         },
                     },
-                    requestQueue: 'my-request-queue',
                 },
                 usesStandbyMode: true,
                 webServerSchema: {
@@ -117,7 +118,6 @@ describe('actor.json', () => {
                 storages: {
                     keyValueStore: 'key-value-store.json',
                     dataset: 'dataset.json',
-                    requestQueue: 'request-queue',
                 },
                 webServerSchema: 'web-server-schema.json',
             };
@@ -204,6 +204,63 @@ describe('actor.json', () => {
                         comparison: '>=',
                         limit: 128,
                     }),
+                }),
+            );
+        });
+
+        it('should support multiple datasets', () => {
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                storages: {
+                    datasets: {
+                        first: './first_dataset.json',
+                        second: {
+                            actorSpecification: 1,
+                            fields: {
+                                type: 'object',
+                                properties: {
+                                    url: { type: 'string' },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(true);
+        });
+
+        it('should not allow both dataset and datasets', () => {
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                storages: {
+                    dataset: './default_dataset.json',
+                    datasets: {
+                        first: './first_dataset.json',
+                        second: {
+                            actorSpecification: 1,
+                            fields: {
+                                type: 'object',
+                                properties: {
+                                    url: { type: 'string' },
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    message: 'must NOT be valid',
                 }),
             );
         });

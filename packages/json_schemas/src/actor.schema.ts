@@ -45,9 +45,15 @@ export const actorSchema = {
             type: 'string',
             default: '../Dockerfile',
         },
+        dockerContextDir: {
+            type: 'string',
+        },
         readme: {
             type: 'string',
             default: '../README.md',
+        },
+        changelog: {
+            type: 'string',
         },
         minMemoryMbytes: {
             type: 'integer',
@@ -122,10 +128,25 @@ export const actorSchema = {
                         },
                     ],
                 },
-                requestQueue: {
-                    type: 'string',
+                datasets: {
+                    type: 'object',
+                    minProperties: 1,
+                    maxProperties: 10,
+                    additionalProperties: {
+                        oneOf: [
+                            { type: 'string' },
+                            { $ref: 'https://apify.com/schemas/v1/dataset.json' },
+                        ],
+                    },
+                    propertyNames: {
+                        pattern: '^[A-Za-z][A-Za-z0-9_]{0,100}$',
+                    },
+                    not: { required: ['default'] },
                 },
             },
+            // Dataset and datasets are mutually exclusive
+            not: { required: ['dataset', 'datasets'] },
+            additionalProperties: false,
         },
         usesStandbyMode: {
             type: 'boolean',

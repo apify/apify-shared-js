@@ -3,6 +3,97 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.25.10](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.9...@apify/input_schema@3.25.10) (2026-01-27)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.9](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.8...@apify/input_schema@3.25.9) (2026-01-26)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.8](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.7...@apify/input_schema@3.25.8) (2026-01-20)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.7](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.6...@apify/input_schema@3.25.7) (2026-01-11)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.6](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.5...@apify/input_schema@3.25.6) (2025-12-18)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.5](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.4...@apify/input_schema@3.25.5) (2025-12-17)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.4](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.3...@apify/input_schema@3.25.4) (2025-12-07)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.3](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.2...@apify/input_schema@3.25.3) (2025-12-02)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.2](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.1...@apify/input_schema@3.25.2) (2025-11-27)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+## [3.25.1](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.0...@apify/input_schema@3.25.1) (2025-11-27)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
+# [3.25.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.24.0...@apify/input_schema@3.25.0) (2025-11-27)
+
+
+### Features
+
+* **input_schema:** Custom error messages ([#567](https://github.com/apify/apify-shared-js/issues/567)) ([cded259](https://github.com/apify/apify-shared-js/commit/cded2591d13de1760807fdc6c0103af0a03b5bc2))
+
+
+
+
+
 # [3.24.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.23.10...@apify/input_schema@3.24.0) (2025-11-18)
 
 
