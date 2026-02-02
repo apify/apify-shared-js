@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.50.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.49.0...@apify/consts@2.50.0) (2026-02-02)
+
+
+### Features
+
+* add STORAGE_OWNERSHIP_FILTER to consts ([#590](https://github.com/apify/apify-shared-js/issues/590)) ([c417cf0](https://github.com/apify/apify-shared-js/commit/c417cf0fe10f0a4c406250759baa28b86c4f14b0))
+
+
+
+
+
 # [2.49.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.48.1...@apify/consts@2.49.0) (2026-01-27)
 
 
