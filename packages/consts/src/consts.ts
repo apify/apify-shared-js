@@ -711,3 +711,17 @@ export const ACTOR_PERMISSION_LEVEL = {
 } as const;
 
 export type ACTOR_PERMISSION_LEVEL = ValueOf<typeof ACTOR_PERMISSION_LEVEL>;
+
+/**
+ * Filter for listing storages (datasets, key_value_stores & request_queues) by ownership.
+ * If omitted, we currently return both owned and shared storages
+ */
+export const STORAGE_OWNERSHIP_FILTER = {
+    /** Return only storages owned by the user. */
+    OWNED_BY_ME: 'ownedByMe',
+
+    /** Return only storages shared with the user. */
+    SHARED_WITH_ME: 'sharedWithMe',
+} as const;
+
+export type STORAGE_OWNERSHIP_FILTER = ValueOf<typeof STORAGE_OWNERSHIP_FILTER>;
