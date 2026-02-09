@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.51.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.50.0...@apify/consts@2.51.0) (2026-02-09)
+
+
+### Features
+
+* rename ACTOR_STORAGE_IDS to ACTOR_STORAGES_JSON ([#593](https://github.com/apify/apify-shared-js/issues/593)) ([02b2fd9](https://github.com/apify/apify-shared-js/commit/02b2fd9e9a4be7a618f63e43fa99b5e6b59aad2a))
+
+
+
+
+
 # [2.50.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.49.0...@apify/consts@2.50.0) (2026-02-02)
 
 
