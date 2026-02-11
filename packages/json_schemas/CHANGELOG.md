@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.12.3...@apify/json_schemas@0.13.0) (2026-02-11)
+
+
+### Features
+
+* require default dataset schema when using multiple datasets ([#595](https://github.com/apify/apify-shared-js/issues/595)) ([706e1aa](https://github.com/apify/apify-shared-js/commit/706e1aa7376470200279dc4a901549527d1c23ee))
+
+
+
+
+
 ## [0.12.3](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.12.2...@apify/json_schemas@0.12.3) (2026-02-09)
 
 **Note:** Version bump only for package @apify/json_schemas
