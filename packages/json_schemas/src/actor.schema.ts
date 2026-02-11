@@ -141,7 +141,7 @@ export const actorSchema = {
                     propertyNames: {
                         pattern: '^[A-Za-z][A-Za-z0-9_]{0,100}$',
                     },
-                    not: { required: ['default'] },
+                    required: ['default'],
                 },
             },
             // Dataset and datasets are mutually exclusive

@@ -215,7 +215,7 @@ describe('actor.json', () => {
                 version: '1.0.0',
                 storages: {
                     datasets: {
-                        first: './first_dataset.json',
+                        default: './default_dataset.json',
                         second: {
                             actorSpecification: 1,
                             fields: {
@@ -231,6 +231,30 @@ describe('actor.json', () => {
 
             const isValid = validator(schema);
             expect(isValid).toBe(true);
+        });
+
+        it('should require default dataset', () => {
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                storages: {
+                    datasets: {
+                        results: {
+                            actorSpecification: 1,
+                            fields: {},
+                        },
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    message: "must have required property 'default'",
+                }),
+            );
         });
 
         it('should not allow both dataset and datasets', () => {
