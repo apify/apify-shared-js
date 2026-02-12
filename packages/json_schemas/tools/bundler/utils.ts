@@ -88,7 +88,7 @@ export async function bundleJsonSchema(
     }
 
     if (!isPlainJsonObject(jsonSchema)) {
-        return jsonSchema ?? {};
+        return jsonSchema;
     }
 
     return await scopeJsonSchema(filePath, jsonSchema, jsonSchema);
