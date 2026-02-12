@@ -73,7 +73,7 @@
                             "markdownDescription": "Exact key for a single file in the collection. This is used when a collection contains only one specific file.\nThis attribute is mutually exclusive with `keyPrefix`."
                         },
                         "jsonSchema": {
-                            "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6",
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc",
                             "description": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only applicable when contentTypes includes \"application/json\".",
                             "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes &quot;application/json&quot;.</p>",
                             "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes &quot;application/json&quot;."
@@ -122,14 +122,14 @@
     ],
     "additionalProperties": false,
     "definitions": {
-        "draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6": {
+        "draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc": {
             "title": "Core schema meta-schema",
             "definitions": {
                 "schemaArray": {
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                     }
                 },
                 "nonNegativeInteger": {
@@ -139,7 +139,7 @@
                 "nonNegativeIntegerDefault0": {
                     "allOf": [
                         {
-                            "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeInteger"
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
                         },
                         {
                             "default": 0
@@ -210,72 +210,72 @@
                     "type": "number"
                 },
                 "maxLength": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeInteger"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
                 },
                 "minLength": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeIntegerDefault0"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
                 },
                 "pattern": {
                     "type": "string",
                     "format": "regex"
                 },
                 "additionalItems": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "items": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                         },
                         {
-                            "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/schemaArray"
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
                         }
                     ],
                     "default": true
                 },
                 "maxItems": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeInteger"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
                 },
                 "minItems": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeIntegerDefault0"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
                 },
                 "uniqueItems": {
                     "type": "boolean",
                     "default": false
                 },
                 "contains": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "maxProperties": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeInteger"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
                 },
                 "minProperties": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/nonNegativeIntegerDefault0"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
                 },
                 "required": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/stringArray"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/stringArray"
                 },
                 "additionalProperties": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "definitions": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                     },
                     "default": {}
                 },
                 "properties": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                     },
                     "default": {}
                 },
                 "patternProperties": {
                     "type": "object",
                     "additionalProperties": {
-                        "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                     },
                     "propertyNames": {
                         "format": "regex"
@@ -287,16 +287,16 @@
                     "additionalProperties": {
                         "anyOf": [
                             {
-                                "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                             },
                             {
-                                "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/stringArray"
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/stringArray"
                             }
                         ]
                     }
                 },
                 "propertyNames": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "const": true,
                 "enum": {
@@ -308,12 +308,12 @@
                 "type": {
                     "anyOf": [
                         {
-                            "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/simpleTypes"
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/simpleTypes"
                         },
                         {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/simpleTypes"
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/simpleTypes"
                             },
                             "minItems": 1,
                             "uniqueItems": true
@@ -330,25 +330,25 @@
                     "type": "string"
                 },
                 "if": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "then": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "else": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 },
                 "allOf": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/schemaArray"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
                 },
                 "anyOf": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/schemaArray"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
                 },
                 "oneOf": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6/definitions/schemaArray"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
                 },
                 "not": {
-                    "$ref": "#/definitions/draft-07-schema-ide-json-5fae07041db09b6d1f918e622b82b8d6"
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
                 }
             },
             "default": true

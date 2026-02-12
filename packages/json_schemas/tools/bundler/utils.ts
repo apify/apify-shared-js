@@ -126,11 +126,14 @@ export async function scopeJsonSchema(
                     ? externalSchemaAbsolutePath
                     : path.basename(externalSchemaAbsolutePath);
 
+                // Use the filename (or URL) for the hash to keep definition keys
+                // stable across machines (absolute paths differ in CI vs local).
+                const hashInput = isUrl ? externalSchemaAbsolutePath : externalSchemaFilename;
                 const defKey = externalSchemaFilename
                     .replace(/^https?:\/\//gi, '')
                     .replace(/[\W_]/g, '-')
                     .replace(/^-+|-+$/g, '')
-                    .concat('-', md5(externalSchemaAbsolutePath));
+                    .concat('-', md5(hashInput));
 
                 mainJsonSchema.definitions ??= {};
 
