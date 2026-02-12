@@ -64,9 +64,9 @@
                     ]
                 }
             },
-            "description": "Definition the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
-            "x-intellij-html-description": "<p>Definition the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
-            "markdownDescription": "Definition the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
+            "description": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
+            "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
+            "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
         }
     },
     "required": [
