@@ -14,21 +14,12 @@
     <ReplaceValue json-path="/properties/input/oneOf" type="json">
         [{ "type": "string" }, { "$ref": "input.ide.json" }]
     </ReplaceValue>
-    <!-- Replace values due to better DX -->
-    <ReplaceValue json-path="/properties/minMemoryMbytes" type="json">
-        {
-            "type": "integer",
-            "enum": [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
-        }
+    <!-- Replace values due to better DX, using js type to preserve descriptions from the describe step -->
+    <ReplaceValue json-path="/properties/minMemoryMbytes" type="js">
+        ({ ...value, type: "integer", enum: [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768] })
     </ReplaceValue>
-    <AddDescription json-path="/properties/minMemoryMbytes" format="markdown">
-        An integer between `128` and `32768` specifying the minimum memory in megabytes required.
-    </AddDescription>
-    <ReplaceValue json-path="/properties/maxMemoryMbytes" type="json">
-        {
-            "type": "integer",
-            "enum": [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
-        }
+    <ReplaceValue json-path="/properties/maxMemoryMbytes" type="js">
+        ({ ...value, type: "integer", enum: [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768] })
     </ReplaceValue>
     <!-- In the original schema there is no support for meta attribute which is part of default Actor templates -->
     <ReplaceValue json-path="/properties" type="js">

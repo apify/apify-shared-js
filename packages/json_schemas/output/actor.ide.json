@@ -51,6 +51,11 @@
         },
         "minMemoryMbytes": {
             "type": "integer",
+            "minimum": 128,
+            "maximum": 32768,
+            "description": "An integer between 128 and 32768 specifying the minimum memory in megabytes required.",
+            "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the minimum memory in megabytes required.</p>",
+            "markdownDescription": "An integer between `128` and `32768` specifying the minimum memory in megabytes required.",
             "enum": [
                 128,
                 256,
@@ -61,13 +66,15 @@
                 8192,
                 16384,
                 32768
-            ],
-            "description": "An integer between 128 and 32768 specifying the minimum memory in megabytes required.",
-            "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the minimum memory in megabytes required.</p>",
-            "markdownDescription": "An integer between `128` and `32768` specifying the minimum memory in megabytes required."
+            ]
         },
         "maxMemoryMbytes": {
             "type": "integer",
+            "minimum": 128,
+            "maximum": 32768,
+            "description": "An integer between 128 and 32768 specifying the maximum memory in megabytes allowed.",
+            "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the maximum memory in megabytes allowed.</p>",
+            "markdownDescription": "An integer between `128` and `32768` specifying the maximum memory in megabytes allowed.",
             "enum": [
                 128,
                 256,
@@ -4828,9 +4835,9 @@
                             ]
                         }
                     },
-                    "description": "Definition the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
-                    "x-intellij-html-description": "<p>Definition the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
-                    "markdownDescription": "Definition the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
+                    "description": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
+                    "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
+                    "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
                 }
             },
             "required": [

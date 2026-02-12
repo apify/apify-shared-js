@@ -36,7 +36,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run build-schemas && npm run compile && npm run copy",
+        "build": "npm run clean && npm run process-schemas && npm run compile && npm run copy",
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "build-schemas": "ts-node scripts/build-schemas.ts",

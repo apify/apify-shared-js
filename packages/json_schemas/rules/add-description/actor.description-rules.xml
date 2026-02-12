@@ -3,7 +3,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
     <AddDescription json-path="/properties/minMemoryMbytes" format="markdown">
-        An integer between `128` and `32768` specifying the minimum memory in megabytes required. HOVNO
+        An integer between `128` and `32768` specifying the minimum memory in megabytes required.
     </AddDescription>
     <AddDescription json-path="/properties/maxMemoryMbytes" format="markdown">
         An integer between `128` and `32768` specifying the maximum memory in megabytes allowed.
