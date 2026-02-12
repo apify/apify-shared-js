@@ -62,7 +62,7 @@ function* iterateJsonProperties(input: JsonObject, parentJsonPath = ''): Generat
                 parent: {
                     key: parentKey,
                     value: input,
-                    jsonPointer: parentJsonPath ?? '/',
+                    jsonPointer: parentJsonPath === '' ? '/' : parentJsonPath,
                 },
             });
         }
