@@ -86,7 +86,7 @@ function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json:
         propertyObject.value.markdownDescription ??= formatVsCodeDescription(reindentedContentInMarkdown);
     } else {
         // eslint-disable-next-line no-console
-        console.warn(`Cannot add description to "${objectPropertyInfo.jsonPointer}" (not and object type)!`);
+        console.warn(`Cannot add description to "${objectPropertyInfo.jsonPointer}" (not an object type)!`);
     }
 }
 
