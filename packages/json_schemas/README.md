@@ -1,165 +1,135 @@
 # @apify/json_schemas
 
-Publicly available JSON schemas for the Apify platform. This package provides raw schemas, validation utilities, and a processing pipeline that produces enriched schemas for IDE autocompletion.
+JSON schemas for the Apify platform — used for server-side validation, IDE autocompletion, and developer documentation.
 
-## Directory structure
+## Schema versions
+
+Each schema exists in three forms, each serving a different purpose:
+
+| Version | Location | Purpose | Consumed by |
+|---|---|---|---|
+| **Raw** | `schemas/*.json` | Minimal, machine-oriented. Used for runtime validation. | `@apify/input_schema`, Apify platform internals |
+| **Described** | `output/*.json` | Raw + human-readable descriptions in three formats (plain text, Markdown, HTML). | Available for tooling that needs rich descriptions |
+| **IDE** | `output/*.ide.json` | Described + structural tweaks for autocompletion: `$id` removed, `$ref` bundled inline, `additionalProperties: false`, enum dropdowns for memory fields. | VS Code, JetBrains IDEs (via `$schema` in `actor.json`, `.actor/INPUT_SCHEMA.json`, etc.) |
+
+The raw schemas are published to npm as part of this package and served at `https://apify.com/schemas/v1/*.json`. The IDE schemas are served at `https://apify-projects.github.io/actor-json-schemas/` and are what developers actually interact with in their editors.
+
+## Descriptions and rules
+
+Descriptions are verbose — multi-line Markdown with code examples, links, and formatting. Inlining them into the JSON schema source files would make those files hard to read and maintain. Instead, descriptions live in declarative XML rule files (`rules/add-description/*.xml`) that map JSON pointers to Markdown content. A build step merges them into the schemas automatically.
+
+This separation means schema structure and documentation can be reviewed and updated independently.
+
+## Directory overview
 
 ```
 packages/json_schemas/
 ├── src/                    # Published library source (npm package)
-├── schemas/                # Raw JSON schema files (source of truth)
+├── schemas/                # Raw JSON schemas (source of truth)
+├── rules/                  # Description & modification rules (XML)
+│   ├── add-description/    # Markdown descriptions for schema properties
+│   └── modifications/      # IDE-specific structural changes
 ├── scripts/                # Build & processing scripts
-├── tools/                  # Build-time utilities (not published)
-│   ├── modificator/        # Schema enchantment engine
-│   └── bundler/            # $ref bundling engine
-├── rules/                  # XML rule definitions for schema processing
-│   ├── add-description/    # Description enrichment rules
-│   └── modifications/      # IDE modification rules
-├── output/                 # Generated schemas (committed)
+├── tools/                  # Build-time processing engine (not published)
+│   ├── modificator/        # Applies XML rules to schemas
+│   └── bundler/            # Inlines $ref references
+├── output/                 # Generated described & IDE schemas (committed)
 └── dist/                   # Compiled npm package (gitignored)
 ```
 
-## What each directory does
+## Source files you should edit
 
-### `src/` — Published library code
+### Schema definitions
 
-The TypeScript source that gets compiled and published to npm. Exports the raw schemas and AJV-based validation functions.
+- **`src/actor.schema.ts`** — The actor schema, defined as a TypeScript object. This is the source of truth for `schemas/actor.schema.json` (which is generated from it — don't edit the JSON directly).
+- **`schemas/dataset.schema.json`**, **`input.schema.json`**, **`key_value_store.schema.json`**, **`output.schema.json`** — Static JSON files. Edit these directly when changing schema structure.
+- **`schemas/json-schema-draft-07.json`** — Standard JSON Schema Draft-07 meta-schema, used as a `$ref` target by other schemas.
 
-| File | Purpose |
-|---|---|
-| `index.ts` | Package entry point, re-exports schemas and validations |
-| `schemas.ts` | Imports and re-exports raw JSON schemas from `schemas/` |
-| `validations.ts` | AJV-based validator functions for each schema type |
-| `actor.schema.ts` | Code-first actor schema definition (TypeScript object) |
+### Description rules (`rules/add-description/`)
 
-### `schemas/` — Raw JSON schema files
+One XML file per schema (e.g., `actor.description-rules.xml`). Each file contains `<AddDescription>` elements that map a JSON pointer to Markdown content:
 
-The source-of-truth schema files. Five schemas correspond to Apify platform resources, plus a copy of JSON Schema Draft-07 used as a `$ref` target.
+```xml
+<AddDescription json-path="/properties/minMemoryMbytes" format="markdown">
+    An integer between `128` and `32768` specifying the minimum memory in megabytes required.
+</AddDescription>
+```
 
-| File | Notes |
-|---|---|
-| `actor.schema.json` | **Generated** from `src/actor.schema.ts` by `build-schemas` script. Do not edit directly. |
-| `dataset.schema.json` | Static file. Edit directly. |
-| `input.schema.json` | Static file. Edit directly. |
-| `key_value_store.schema.json` | Static file. Edit directly. |
-| `output.schema.json` | Static file. Edit directly. |
-| `json-schema-draft-07.json` | Static file. Standard JSON Schema Draft-07 meta-schema. |
+This produces three fields on the target property: `description` (plain text), `markdownDescription` (for VS Code), and `x-intellij-html-description` (for JetBrains).
 
-### `scripts/` — Build and processing scripts
+### Modification rules (`rules/modifications/`)
 
-| File | Runner | Purpose |
-|---|---|---|
-| `build-schemas.ts` | `ts-node` | Generates `schemas/actor.schema.json` from `src/actor.schema.ts` |
-| `describe-schemas.ts` | `tsx` | Applies description rules to raw schemas, writes `output/*.json` |
-| `build-ide-schemas.ts` | `tsx` | Applies modification rules and bundles `$ref`, writes `output/*.ide.json` |
+One XML file per schema. These define structural changes applied when producing IDE schemas. Three rule types are available:
 
-### `tools/` — Build-time utilities (not published)
+- **`RemoveValue`** — Delete a property (e.g., remove `$id` from all schemas)
+- **`ReplaceValue`** — Replace a value with a JSON literal or a JS expression that can reference the current `value`
+- **`AddDescription`** — Same as in description rules (can also be used here for IDE-only descriptions)
 
-Ported from the [actor-json-schemas](https://github.com/apify-projects/actor-json-schemas) repository. These are used only by the processing scripts and are excluded from the npm package.
+Example — rewrite `$ref` URLs to relative paths:
+```xml
+<ReplaceValue json-path="**/$ref" type="js">
+    value.replace(/^https:\/\/apify\.com\/schemas\/v1\/(.+)\.json/, '$1.ide.json')
+</ReplaceValue>
+```
 
-#### `tools/modificator/`
-
-The schema enchantment engine. Parses XML rule files and applies transformations (add descriptions, replace values, remove values) to JSON schemas.
+### Library source (`src/`)
 
 | File | Purpose |
 |---|---|
-| `types.ts` | Core type definitions (`JsonObject`, `Rule`, `ObjectPropertyInfo`, etc.) |
-| `utils.ts` | `enchantJsonSchema()` — applies rules to a schema; `getJsonValue()`, `parseJsonContent()` |
-| `description-file-utils.ts` | `parseRuleFile()` — parses XML into rule objects using cheerio |
-| `rules/add-description-rule.ts` | `AddDescription` rule — adds `description`, `markdownDescription`, `x-intellij-html-description` |
-| `rules/replace-value-rule.ts` | `ReplaceValue` rule — replaces values via JSON literal or JS expression (`vm`) |
-| `rules/remove-value-rule.ts` | `RemoveValue` rule — removes a value at a JSON pointer |
+| `index.ts` | Package entry point |
+| `schemas.ts` | Re-exports raw JSON schemas for programmatic use |
+| `validations.ts` | AJV-based validation functions |
+| `actor.schema.ts` | Code-first actor schema definition |
 
-#### `tools/bundler/`
+## Generated files (don't edit)
 
-The `$ref` bundling engine. Resolves external `$ref` references (file paths and URLs) and inlines them into a `definitions` block.
+- **`schemas/actor.schema.json`** — Generated from `src/actor.schema.ts`. Edit the TypeScript source instead.
+- **`output/*.json`** and **`output/*.ide.json`** — Generated by `npm run process-schemas`. Re-run the pipeline instead of editing by hand.
 
-| File | Purpose |
-|---|---|
-| `types.ts` | Type definitions (`JsonSchemaObject`, `JsonSchemaValue`) |
-| `utils.ts` | `bundleJsonSchema()` — loads a schema and inlines all `$ref`; `scopeJsonSchema()` — recursive resolver |
+## Build-time tools (`tools/`)
 
-### `rules/` — XML rule definitions
+Ported from the [actor-json-schemas](https://github.com/apify-projects/actor-json-schemas) repository. These implement the schema processing engine and are only used at build time (not included in the npm package). You shouldn't need to modify these unless the processing logic itself needs changing.
 
-XML files that declaratively define how schemas should be transformed. Each schema has two rule files: one for descriptions, one for IDE modifications.
+- **`tools/modificator/`** — Parses XML rule files (via cheerio) and applies transformations to JSON schemas. Core function: `enchantJsonSchema(schema, rules)`.
+- **`tools/bundler/`** — Resolves external `$ref` references (local files and URLs) and inlines them into a `definitions` block. Core function: `bundleJsonSchema(filePath)`.
 
-#### `rules/add-description/`
-
-Define `AddDescription` rules that enrich schema properties with human-readable descriptions in three formats: plain text (`description`), Markdown (`markdownDescription`), and HTML (`x-intellij-html-description`).
-
-#### `rules/modifications/`
-
-Define structural modifications for IDE schemas: removing `$id`, rewriting `$ref` to relative `.ide.json` paths, setting `additionalProperties: false`, replacing values for better DX (e.g., memory enums).
-
-### `output/` — Generated and committed schemas
-
-Generated by `npm run process-schemas`. These files are committed to the repository and are intended to replace the output previously hosted via the [actor-json-schemas](https://github.com/apify-projects/actor-json-schemas) GitHub Pages.
-
-| Pattern | Description |
-|---|---|
-| `*.json` | **Described schemas** — raw schemas enriched with description fields |
-| `*.ide.json` | **IDE schemas** — described schemas with IDE modifications applied and all `$ref` bundled inline |
-
-## What to edit vs. what not to edit
-
-### Safe to edit
-
-| What | When |
-|---|---|
-| `src/actor.schema.ts` | Changing the actor schema structure |
-| `schemas/dataset.schema.json` | Changing the dataset schema |
-| `schemas/input.schema.json` | Changing the input schema |
-| `schemas/key_value_store.schema.json` | Changing the key-value store schema |
-| `schemas/output.schema.json` | Changing the output schema |
-| `rules/add-description/*.xml` | Adding/changing property descriptions |
-| `rules/modifications/*.xml` | Changing IDE-specific transformations |
-| `src/validations.ts` | Changing validation logic |
-
-### Do not edit manually
-
-| What | Why |
-|---|---|
-| `schemas/actor.schema.json` | Generated from `src/actor.schema.ts`. Edit the `.ts` file instead. |
-| `output/*.json`, `output/*.ide.json` | Generated by `process-schemas`. Re-run the script instead. |
-| `tools/**` | Ported from actor-json-schemas. Only change if the processing logic itself needs fixing. |
-
-## npm scripts
-
-| Script | Description |
-|---|---|
-| `npm run build` | Full npm package build: clean, build-schemas, compile (tsup), copy |
-| `npm run build-schemas` | Generate `schemas/actor.schema.json` from TypeScript source |
-| `npm run describe-schemas` | Apply description rules: `schemas/*` &rarr; `output/*.json` |
-| `npm run build-ide-schemas` | Apply modification rules + bundle `$ref`: `output/*.json` &rarr; `output/*.ide.json` |
-| `npm run process-schemas` | Full pipeline: `build-schemas` &rarr; `describe-schemas` &rarr; `build-ide-schemas` |
-
-## Schema processing pipeline
+## Processing pipeline
 
 ```
-src/actor.schema.ts ──► schemas/actor.schema.json ─┐
+src/actor.schema.ts ──> schemas/actor.schema.json ─┐
                                                     │
 schemas/*.json  (raw source schemas) ───────────────┤
-                                                    ▼
+                                                    v
                                ┌─── describe-schemas.ts ───┐
                                │  + rules/add-description/ │
                                └────────────┬──────────────┘
-                                            ▼
+                                            v
                                      output/*.json  (described)
                                             │
                                ┌── build-ide-schemas.ts ───┐
                                │  + rules/modifications/   │
                                │  + bundler (inline $ref)  │
                                └────────────┬──────────────┘
-                                            ▼
+                                            v
                                    output/*.ide.json  (IDE-ready)
 ```
 
-## Workflow
+## npm scripts
 
-After changing any schema or rule file:
+| Script | What it does |
+|---|---|
+| `npm run build` | Full npm package build (clean, process-schemas, compile, copy) |
+| `npm run build-schemas` | Generate `schemas/actor.schema.json` from TypeScript source |
+| `npm run describe-schemas` | Apply description rules to raw schemas, write `output/*.json` |
+| `npm run build-ide-schemas` | Apply modification rules + bundle `$ref`, write `output/*.ide.json` |
+| `npm run process-schemas` | Run all three steps above in sequence |
+
+## Typical workflow
+
+After changing a schema, description rule, or modification rule:
 
 ```bash
 npm run process-schemas
 ```
 
-This regenerates all `output/` files. Commit the updated output alongside your source changes.
+This regenerates all files in `output/`. Commit the updated output alongside your source changes.
