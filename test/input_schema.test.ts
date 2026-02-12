@@ -561,6 +561,38 @@ describe('input_schema.json', () => {
                 );
             });
 
+            it('should report all valid editors when an invalid editor is used on a sub-schema array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'object',
+                            description: 'Description',
+                            editor: 'schemaBased',
+                            additionalProperties: false,
+                            properties: {
+                                subArray: {
+                                    type: 'array',
+                                    title: 'Sub array',
+                                    description: 'Sub array description',
+                                    editor: 'fileUpload',
+                                    items: {
+                                        type: 'string',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.subArray.editor must be equal to one of the allowed values: "json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "hidden")',
+                );
+            });
+
             it('should not accept both enum and enumSuggestedValues for array property', () => {
                 const schema = {
                     title: 'Test input schema',
