@@ -509,7 +509,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "schemaBased", "hidden")',
                 );
             });
 
@@ -532,7 +533,31 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "schemaBased", "hidden")',
+                );
+            });
+
+            it('should report all valid editors when an invalid editor is used on array property', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        strings: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'fileUpload',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    // eslint-disable-next-line max-len
+                    'Input schema is not valid (Field schema.properties.strings.editor must be equal to one of the allowed values: "json", "requestListSources", "pseudoUrls", "globs", "keyValue", "stringList", "fileupload", "select", "schemaBased", "hidden")',
                 );
             });
 

@@ -152,12 +152,43 @@ export function parseAjvError(
 }
 
 /**
- * Validates given object against schema and throws a human-readable error.
+ * Selects the most relevant error from an AJV errors array.
+ * Prefers top-level errors over sub-branch errors from oneOf/anyOf,
+ * which tend to show partial/misleading allowed values.
+ */
+function selectBestError(errors: ErrorObject[]): ErrorObject {
+    const branchPattern = /\/(oneOf|anyOf)\/\d+\//;
+    const nonBranchErrors = errors.filter(
+        (e) => !branchPattern.test(e.schemaPath) && e.keyword !== 'oneOf' && e.keyword !== 'anyOf',
+    );
+    return nonBranchErrors[0] ?? errors[0];
+}
+
+/**
+ * Validates a given object against the schema and throws a human-readable error.
  */
 const validateAgainstSchemaOrThrow = (validator: Ajv, obj: Record<string, unknown>, inputSchema: Schema, rootName: string) => {
     if (validator.validate(inputSchema, obj)) return;
 
-    const errorMessage = parseAjvError(validator.errors![0], rootName)?.message;
+    let bestError = selectBestError(validator.errors!);
+
+    /*
+    When the best AJV error comes from a oneOf/anyOf branch (showing only a subset of valid values),
+    and the schema has a broader top-level enum for the same property, and the input value is not in
+    that enum at all, the error is enhanced to show all valid values instead of just the branch subset.
+     */
+    const branchPattern = /\/(oneOf|anyOf)\/\d+\//;
+    if (bestError.keyword === 'enum' && branchPattern.test(bestError.schemaPath)) {
+        const propName = bestError.instancePath.replace(/^\//, '');
+        if (propName && !propName.includes('/')) {
+            const topLevelEnum = (inputSchema as Record<string, any>)?.properties?.[propName]?.enum;
+            if (Array.isArray(topLevelEnum) && !topLevelEnum.includes(obj[propName])) {
+                bestError = { ...bestError, params: { allowedValues: topLevelEnum } };
+            }
+        }
+    }
+
+    const errorMessage = parseAjvError(bestError, rootName)?.message;
     throw new Error(`Input schema is not valid (${errorMessage})`);
 };
 
