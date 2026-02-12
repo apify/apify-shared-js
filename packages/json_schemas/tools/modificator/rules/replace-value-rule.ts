@@ -21,6 +21,8 @@ function replaceByJsValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<Rep
     const valueHolder = getJsonValue(json, objectPropertyInfo.jsonPointer);
     valueHolder.value = vm.runInNewContext(rule.content, {
         value: valueHolder.value,
+    }, {
+        timeout: 2000,
     });
 }
 
