@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- REMOVE/REPLACE VALUES -->
+    <RemoveValue json-path="**/$id"/>
+    <!-- We need to use relative paths as later these will include json-schemas with descriptions -->
+    <ReplaceValue json-path="**/$ref" type="js">
+        value.replace(/^https:\/\/apify\.com\/schemas\/v1\/(.+)\.json/, '$1.ide.json')
+    </ReplaceValue>
+    <ReplaceValue json-path="/properties/inputSchema/oneOf" type="json">
+        [{ "type": "string" }, { "$ref": "input.ide.json" }]
+    </ReplaceValue>
+    <ReplaceValue json-path="/properties/input/oneOf" type="json">
+        [{ "type": "string" }, { "$ref": "input.ide.json" }]
+    </ReplaceValue>
+    <!-- Replace values due to better DX -->
+    <ReplaceValue json-path="/properties/minMemoryMbytes" type="json">
+        {
+            "type": "integer",
+            "enum": [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
+        }
+    </ReplaceValue>
+    <AddDescription json-path="/properties/minMemoryMbytes" format="markdown">
+        An integer between `128` and `32768` specifying the minimum memory in megabytes required.
+    </AddDescription>
+    <ReplaceValue json-path="/properties/maxMemoryMbytes" type="json">
+        {
+            "type": "integer",
+            "enum": [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
+        }
+    </ReplaceValue>
+    <!-- In the original schema there is no support for meta attribute which is part of default Actor templates -->
+    <ReplaceValue json-path="/properties" type="js">
+        ({
+            ...value,
+            "meta": {
+                "type": "object",
+                "additionalProperties": true
+            }
+        })
+    </ReplaceValue>
+    <!-- In the original schema these attributes have additionalProperties true, which is not great for code auto-complete -->
+    <ReplaceValue json-path="/" type="js">
+        ({ ...value, additionalProperties: false })
+    </ReplaceValue>
+</Enchantments>

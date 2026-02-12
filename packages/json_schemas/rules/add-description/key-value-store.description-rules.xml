@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- ADD DESCRIPTIONS -->
+    <AddDescription json-path="/properties/actorKeyValueStoreSchemaVersion" format="markdown">
+        The version of the key-value store schema. It's a required integer and must be exactly 1.
+    </AddDescription>
+    <AddDescription json-path="/properties/title" format="markdown">
+        The title of the key-value store schema. It's a required string.
+    </AddDescription>
+    <AddDescription json-path="/properties/description" format="markdown">
+        A description of the key-value store schema. It's an optional string.
+    </AddDescription>
+    <AddDescription json-path="/properties/type" format="markdown">
+        A constant value that must be "object", indicating the schema describes a JSON object.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections" format="markdown">
+        A required object where each property represents a collection of files in the key-value store. Each property
+        name is an arbitrary string that identifies the collection.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^" format="markdown">
+        A property within the `collections` object that defines the schema for a specific collection. The property name
+        can be any string.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/title" format="markdown">
+        The title of the collection. It's an optional string.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/description" format="markdown">
+        A description of the collection. It's an optional string.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/contentTypes" format="markdown">
+        An array of allowed content types for the files in the collection (e.g., "application/json", "image/jpeg"). The
+        array must contain at least one unique item. This attribute is required if `jsonSchema` is present.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/keyPrefix" format="markdown">
+        Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is
+        mutually exclusive with `key`.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/key" format="markdown">
+        Exact key for a single file in the collection. This is used when a collection contains only one specific file.
+        This attribute is mutually exclusive with `keyPrefix`.
+    </AddDescription>
+    <AddDescription json-path="/properties/collections/patternProperties/^/properties/jsonSchema" format="markdown">
+        A JSON schema object that defines the structure of the JSON content for files in the collection. This is only
+        applicable when `contentTypes` includes "application/json".
+    </AddDescription>
+</Enchantments>

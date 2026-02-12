@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- Add descriptions -->
+    <!-- Empty for now as we do not add description to the original draft-07 json-schema -->
+</Enchantments>
