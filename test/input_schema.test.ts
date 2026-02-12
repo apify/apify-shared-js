@@ -508,9 +508,12 @@ describe('input_schema.json', () => {
                         },
                     },
                 };
-                expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
-                );
+                // Error message now shows all valid array editors to help users see correct options
+                // including "fileupload" (lowercase) which helps users identify correct casing
+                const error = expect(() => validateInputSchema(validator, schema));
+                error.toThrow(/schema\.properties\.myField\.editor must be equal to one of the allowed values/);
+                error.toThrow(/fileupload/);
+                error.toThrow(/select/);
             });
 
             it('should not accept enumSuggestedValues without select editor for array property', () => {
@@ -531,9 +534,12 @@ describe('input_schema.json', () => {
                         },
                     },
                 };
-                expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: "select")',
-                );
+                // Error message now shows all valid array editors to help users see correct options
+                // including "fileupload" (lowercase) which helps users identify correct casing
+                const error = expect(() => validateInputSchema(validator, schema));
+                error.toThrow(/schema\.properties\.myField\.editor must be equal to one of the allowed values/);
+                error.toThrow(/fileupload/);
+                error.toThrow(/select/);
             });
 
             it('should not accept both enum and enumSuggestedValues for array property', () => {
@@ -558,6 +564,32 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.items must match exactly one schema in oneOf)',
                 );
+            });
+
+            it('should show all valid array editors when using wrong casing for editor value', () => {
+                // This test covers the case where a user uses wrong casing
+                // (e.g., "fileUpload" instead of "fileupload")
+                // The error message should show all valid editor options so the user can see
+                // the correct casing
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'fileUpload', // Wrong casing - should be 'fileupload'
+                        },
+                    },
+                };
+                // Error message shows all valid editors including "fileupload" (correct casing)
+                const error = expect(() => validateInputSchema(validator, schema));
+                error.toThrow(/schema\.properties\.myField\.editor must be equal to one of the allowed values/);
+                error.toThrow(/fileupload/); // Correct lowercase casing is shown
+                error.toThrow(/select/);
+                error.toThrow(/json/);
             });
         });
 

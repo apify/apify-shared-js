@@ -19,6 +19,9 @@ export { schema as inputSchema };
 
 const { definitions } = schema;
 
+// Valid editor values for array properties - used to provide better error messages
+const VALID_ARRAY_EDITORS = ['json', 'requestListSources', 'pseudoUrls', 'globs', 'keyValue', 'stringList', 'fileupload', 'select', 'schemaBased', 'hidden'];
+
 // Because the definitions contain not only the root properties definitions, but also sub-schema definitions
 // and utility definitions, we need to filter them out and validate only against the appropriate ones.
 // We do this by checking the prefix of the definition title (Utils: or Sub-schema:)
@@ -138,7 +141,23 @@ export function parseAjvError(
         message = m('inputSchema.validation.additionalProperty', { rootName, fieldKey });
     } else if (error.keyword === 'enum') {
         fieldKey = cleanPropertyName(error.instancePath);
-        const errorMessage = `${error.message}: "${error.params.allowedValues.join('", "')}"`;
+        let allowedValues = error.params.allowedValues as string[];
+
+        // When validating array editor values, the error might come from a oneOf branch
+        // that only shows a subset of valid editors (e.g., just "select"). In this case,
+        // we replace the limited set with the full list of valid array editors.
+        // The error schemaPath looks like: #/then/allOf/0/oneOf/0/properties/editor/enum
+        if (
+            (fieldKey.endsWith('.editor') || fieldKey === 'editor')
+            && allowedValues.length < VALID_ARRAY_EDITORS.length
+            && allowedValues.every((v) => VALID_ARRAY_EDITORS.includes(v))
+            && error.schemaPath.includes('oneOf')
+            && error.schemaPath.includes('/editor/enum')
+        ) {
+            allowedValues = VALID_ARRAY_EDITORS;
+        }
+
+        const errorMessage = `${error.message}: "${allowedValues.join('", "')}"`;
         message = m('inputSchema.validation.generic', { rootName, fieldKey, message: errorMessage });
     } else if (error.keyword === 'const') {
         fieldKey = cleanPropertyName(error.instancePath);
