@@ -1,0 +1,148 @@
+import type { JsonObject, JsonValue, ObjectPropertyInfo, Rule } from './types';
+
+export function isPlainJsonObject(input: unknown): boolean {
+    return typeof input === 'object'
+        && input !== null
+        && !Array.isArray(input)
+        && Object.getPrototypeOf(input) === Object.prototype;
+}
+
+function isIterable(input: unknown): boolean {
+    return isPlainJsonObject(input) || Array.isArray(input);
+}
+
+function* iterateJsonProperties(input: JsonObject, parentJsonPath = ''): Generator<ObjectPropertyInfo> {
+    if (Array.isArray(input)) {
+        for (let i = 0; i < input.length; i++) {
+            const jsonPointer = `${parentJsonPath}/${i}`;
+            for (const result of iterateJsonProperties(input[i], jsonPointer)) {
+                yield result;
+            }
+        }
+        return;
+    }
+
+    if (!isPlainJsonObject(input)) {
+        return;
+    }
+
+    if (parentJsonPath === '') {
+        yield ({
+            value: input,
+            jsonPointer: '/',
+        });
+    }
+
+    for (const key of Object.keys(input)) {
+        const jsonPointer = `${parentJsonPath}/${key}`;
+        const parentKey = `${parentJsonPath}`.split(/\//g).pop()!;
+
+        if (isIterable(input[key])) {
+            const objectValue = input[key] as JsonObject;
+            yield ({
+                key,
+                value: objectValue,
+                jsonPointer,
+                parent: parentJsonPath ? {
+                    key: parentKey,
+                    value: input,
+                    jsonPointer: parentJsonPath,
+                } : undefined,
+            });
+
+            for (const result of iterateJsonProperties(objectValue, jsonPointer)) {
+                yield result;
+            }
+        } else {
+            const objectValue = input[key] as JsonValue;
+            yield ({
+                key,
+                value: objectValue,
+                jsonPointer,
+                parent: {
+                    key: parentKey,
+                    value: input,
+                    jsonPointer: parentJsonPath ?? '/',
+                },
+            });
+        }
+    }
+}
+
+export function getJsonValue<T>(json: JsonObject, jsonPointer: string): { value: T } {
+    if (jsonPointer === '/') {
+        return {
+            get value(): T {
+                return json as T;
+            },
+            set value(newValue: T) {
+                for (const key of Object.keys(json)) {
+                    delete json[key];
+                }
+                Object.assign(json, newValue);
+            },
+        };
+    }
+
+    const parts = jsonPointer.split('/');
+    let current: any = json;
+    let parent: any = json;
+    const lastPart = parts.slice(-1)[0];
+    for (const part of parts) {
+        if (current[part]) {
+            parent = current;
+            current = current[part];
+        }
+    }
+
+    return {
+        get value(): T {
+            return current;
+        },
+        set value(value: T) {
+            parent[lastPart] = value;
+        },
+    };
+}
+
+export function parseJsonContent(jsonContent: string): JsonObject {
+    try {
+        return JSON.parse(jsonContent); // Check if the file contains parsable JSON.
+    } catch {
+        throw new Error(`Problem during parsing JSON file!`);
+    }
+}
+
+function matchesJsonPointer(ruleJsonPointer: string, attributteJsonPointer: string): boolean {
+    return ruleJsonPointer === attributteJsonPointer
+        // Basic support for using wildcard symbols
+        || (
+            ruleJsonPointer.startsWith('**')
+            && attributteJsonPointer.endsWith(ruleJsonPointer.replace(/^\*\*/, ''))
+        );
+}
+
+export async function enchantJsonSchema(
+    jsonSchema: JsonObject,
+    enchantmentRules: Rule[],
+): Promise<unknown> {
+    if (!isIterable(jsonSchema)) {
+        return jsonSchema;
+    }
+
+    jsonSchema = JSON.parse(JSON.stringify(jsonSchema)); // deep copy of validation schema
+
+    for (const jsonPropertyInfo of iterateJsonProperties(jsonSchema)) {
+        const { jsonPointer } = jsonPropertyInfo;
+
+        const relatedRules = enchantmentRules
+            .filter((enchantmentRule) => matchesJsonPointer(enchantmentRule.jsonPath, jsonPointer));
+
+        for (const relatedRule of relatedRules) {
+            // eslint-disable-next-line no-underscore-dangle
+            relatedRule.__apply(jsonPropertyInfo, jsonSchema);
+        }
+    }
+
+    return jsonSchema;
+}
