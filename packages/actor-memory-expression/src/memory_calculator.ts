@@ -10,7 +10,6 @@ import {
     minDependencies,
     multiplyDependencies,
     notDependencies,
-    // @ts-expect-error nullishDependencies is not declared in types. https://github.com/josdejong/mathjs/issues/3597
     nullishDependencies,
     orDependencies,
     subtractDependencies,
