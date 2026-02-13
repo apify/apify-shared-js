@@ -84,15 +84,25 @@ export function getJsonValue<T>(json: JsonObject, jsonPointer: string): { value:
         };
     }
 
-    const parts = jsonPointer.split('/');
+    // Decode JSON Pointer escape sequences (RFC 6901):
+    const decodePointerPart = (part: string): string => {
+        return part.replace(/~1/g, '/').replace(/~0/g, '~');
+    };
+
+    const parts = jsonPointer.replace(/^\//, '')
+        .split('/')
+        .map(decodePointerPart);
+
     let current: any = json;
     let parent: any = json;
-    const lastPart = parts.slice(-1)[0];
+
+    const lastPart = parts[parts.length - 1];
     for (const part of parts) {
-        if (current[part]) {
-            parent = current;
-            current = current[part];
+        if (!(part in current)) {
+            throw new Error(`JSON Pointer path not found: ${jsonPointer} (missing segment: "${part}")`);
         }
+        parent = current;
+        current = current[part];
     }
 
     return {
@@ -113,12 +123,12 @@ export function parseJsonContent(jsonContent: string): JsonObject {
     }
 }
 
-function matchesJsonPointer(ruleJsonPointer: string, attributteJsonPointer: string): boolean {
-    return ruleJsonPointer === attributteJsonPointer
+function matchesJsonPointer(ruleJsonPointer: string, attributeJsonPointer: string): boolean {
+    return ruleJsonPointer === attributeJsonPointer
         // Basic support for using wildcard symbols
         || (
             ruleJsonPointer.startsWith('**')
-            && attributteJsonPointer.endsWith(ruleJsonPointer.replace(/^\*\*/, ''))
+            && attributeJsonPointer.endsWith(ruleJsonPointer.replace(/^\*\*/, ''))
         );
 }
 
