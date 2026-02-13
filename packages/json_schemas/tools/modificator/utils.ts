@@ -1,5 +1,15 @@
 import type { JsonObject, JsonValue, ObjectPropertyInfo, Rule } from './types';
 
+/**
+ * Parses a JSON Pointer into its constituent parts, decoding escape sequences per RFC 6901.
+ */
+export function parseJsonPointer(jsonPointer: string): string[] {
+    return jsonPointer.replace(/^\//, '')
+        .split('/')
+        // Decode JSON Pointer escape sequences (RFC 6901):
+        .map((part) => part.replace(/~1/g, '/').replace(/~0/g, '~'));
+}
+
 export function isPlainJsonObject(input: unknown): boolean {
     return typeof input === 'object'
         && input !== null
@@ -84,14 +94,7 @@ export function getJsonValue<T>(json: JsonObject, jsonPointer: string): { value:
         };
     }
 
-    // Decode JSON Pointer escape sequences (RFC 6901):
-    const decodePointerPart = (part: string): string => {
-        return part.replace(/~1/g, '/').replace(/~0/g, '~');
-    };
-
-    const parts = jsonPointer.replace(/^\//, '')
-        .split('/')
-        .map(decodePointerPart);
+    const parts = parseJsonPointer(jsonPointer);
 
     let current: any = json;
     let parent: any = json;
