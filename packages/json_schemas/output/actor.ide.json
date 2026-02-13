@@ -97,8 +97,8 @@
                 }
             ],
             "description": "Path or direct definition of the Actor's input schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor&apos;s input schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor&apos;s input schema."
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's input schema."
         },
         "inputSchema": {
             "oneOf": [
@@ -110,8 +110,8 @@
                 }
             ],
             "description": "Path or direct definition of the Actor's input schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor&apos;s input schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor&apos;s input schema."
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's input schema."
         },
         "output": {
             "oneOf": [
@@ -123,8 +123,8 @@
                 }
             ],
             "description": "Path or direct definition of the Actor's output schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor&apos;s output schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor&apos;s output schema."
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's output schema."
         },
         "outputSchema": {
             "oneOf": [
@@ -136,8 +136,8 @@
                 }
             ],
             "description": "Path or direct definition of the Actor's output schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor&apos;s output schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor&apos;s output schema."
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's output schema."
         },
         "storages": {
             "type": "object",
@@ -217,8 +217,8 @@
                 }
             ],
             "description": "Path or direct definition of the OpenAPI v3 schema of the Actor's web server.",
-            "x-intellij-html-description": "<p>Path or direct definition of the OpenAPI v3 schema of the Actor&apos;s web server.</p>",
-            "markdownDescription": "Path or direct definition of the OpenAPI v3 schema of the Actor&apos;s web server."
+            "x-intellij-html-description": "<p>Path or direct definition of the OpenAPI v3 schema of the Actor's web server.</p>",
+            "markdownDescription": "Path or direct definition of the OpenAPI v3 schema of the Actor's web server."
         },
         "webServerMcpPath": {
             "type": "string",
@@ -826,8 +826,8 @@
                                 "hidden"
                             ],
                             "description": "UI editor used for input.",
-                            "x-intellij-html-description": "<p>UI editor used for input.</p>\n<p>Usage of this field is based on the selected editor:</p>\n<ul>\n<li><code>requestListSources</code> - value from this field can be used as input for the\n<a href=\"https://crawlee.dev/api/core/class/RequestList\">RequestList</a> class from Crawlee.</li>\n<li><code>pseudoUrls</code> - is intended to be used with a combination of the\n<a href=\"https://crawlee.dev/api/core/class/PseudoUrl\">PseudoUrl</a> class and the\n<a href=\"https://crawlee.dev/api/core/function/enqueueLinks\">enqueueLinks()</a> function from Crawlee.</li>\n</ul>\n<p>Editor type <code>requestListSources</code> supports input in formats defined by the\n<a href=\"https://crawlee.dev/api/core/interface/RequestListOptions#sources\">sources</a> property of\n<a href=\"https://crawlee.dev/api/core/interface/RequestListOptions\">RequestListOptions</a>.</p>\n<p>Editor type <code>globs</code> maps to the Crawlee&apos;s <a href=\"https://crawlee.dev/api/core#GlobInput\">GlobInput</a> used by the\n<a href=\"https://crawlee.dev/api/core#UrlPatternObject\">UrlPatterObject</a>.</p>\n<p>Editor type <code>select</code> allows the user to pick items from a select, providing multiple choices. Please check this\nexample of how to define the multiselect field:</p>\n<pre><code class=\"json language-json\">{\n&amp;quot;title&amp;quot;: &amp;quot;Multiselect field&amp;quot;,\n&amp;quot;description&amp;quot;: &amp;quot;My multiselect field&amp;quot;,\n&amp;quot;type&amp;quot;: &amp;quot;array&amp;quot;,\n&amp;quot;editor&amp;quot;: &amp;quot;select&amp;quot;,\n&amp;quot;items&amp;quot;: {\n&amp;quot;type&amp;quot;: &amp;quot;string&amp;quot;,\n&amp;quot;enum&amp;quot;: [&amp;quot;value1&amp;quot;, &amp;quot;value2&amp;quot;, &amp;quot;value3&amp;quot;],\n&amp;quot;enumTitles&amp;quot;: [&amp;quot;Label of value1&amp;quot;, &amp;quot;Label of value2&amp;quot;, &amp;quot;Label of value3&amp;quot;]\n}\n}\n</code></pre>",
-                            "markdownDescription": "UI editor used for input.\n\nUsage of this field is based on the selected editor:\n\n* `requestListSources` - value from this field can be used as input for the\n[RequestList](https://crawlee.dev/api/core/class/RequestList) class from Crawlee.\n* `pseudoUrls` - is intended to be used with a combination of the\n[PseudoUrl](https://crawlee.dev/api/core/class/PseudoUrl) class and the\n[enqueueLinks()](https://crawlee.dev/api/core/function/enqueueLinks) function from Crawlee.\n\nEditor type `requestListSources` supports input in formats defined by the\n[sources](https://crawlee.dev/api/core/interface/RequestListOptions#sources) property of\n[RequestListOptions](https://crawlee.dev/api/core/interface/RequestListOptions).\n\nEditor type `globs` maps to the Crawlee&apos;s [GlobInput](https://crawlee.dev/api/core#GlobInput) used by the\n[UrlPatterObject](https://crawlee.dev/api/core#UrlPatternObject).\n\nEditor type `select` allows the user to pick items from a select, providing multiple choices. Please check this\nexample of how to define the multiselect field:\n\n```json\n{\n&quot;title&quot;: &quot;Multiselect field&quot;,\n&quot;description&quot;: &quot;My multiselect field&quot;,\n&quot;type&quot;: &quot;array&quot;,\n&quot;editor&quot;: &quot;select&quot;,\n&quot;items&quot;: {\n&quot;type&quot;: &quot;string&quot;,\n&quot;enum&quot;: [&quot;value1&quot;, &quot;value2&quot;, &quot;value3&quot;],\n&quot;enumTitles&quot;: [&quot;Label of value1&quot;, &quot;Label of value2&quot;, &quot;Label of value3&quot;]\n}\n}\n```"
+                            "x-intellij-html-description": "<p>UI editor used for input.</p>\n<p>Usage of this field is based on the selected editor:</p>\n<ul>\n<li><code>requestListSources</code> - value from this field can be used as input for the\n<a href=\"https://crawlee.dev/api/core/class/RequestList\">RequestList</a> class from Crawlee.</li>\n<li><code>pseudoUrls</code> - is intended to be used with a combination of the\n<a href=\"https://crawlee.dev/api/core/class/PseudoUrl\">PseudoUrl</a> class and the\n<a href=\"https://crawlee.dev/api/core/function/enqueueLinks\">enqueueLinks()</a> function from Crawlee.</li>\n</ul>\n<p>Editor type <code>requestListSources</code> supports input in formats defined by the\n<a href=\"https://crawlee.dev/api/core/interface/RequestListOptions#sources\">sources</a> property of\n<a href=\"https://crawlee.dev/api/core/interface/RequestListOptions\">RequestListOptions</a>.</p>\n<p>Editor type <code>globs</code> maps to the Crawlee's <a href=\"https://crawlee.dev/api/core#GlobInput\">GlobInput</a> used by the\n<a href=\"https://crawlee.dev/api/core#UrlPatternObject\">UrlPatterObject</a>.</p>\n<p>Editor type <code>select</code> allows the user to pick items from a select, providing multiple choices. Please check this\nexample of how to define the multiselect field:</p>\n<pre><code class=\"json language-json\">{\n\"title\": \"Multiselect field\",\n\"description\": \"My multiselect field\",\n\"type\": \"array\",\n\"editor\": \"select\",\n\"items\": {\n\"type\": \"string\",\n\"enum\": [\"value1\", \"value2\", \"value3\"],\n\"enumTitles\": [\"Label of value1\", \"Label of value2\", \"Label of value3\"]\n}\n}\n</code></pre>",
+                            "markdownDescription": "UI editor used for input.\n\nUsage of this field is based on the selected editor:\n\n* `requestListSources` - value from this field can be used as input for the\n[RequestList](https://crawlee.dev/api/core/class/RequestList) class from Crawlee.\n* `pseudoUrls` - is intended to be used with a combination of the\n[PseudoUrl](https://crawlee.dev/api/core/class/PseudoUrl) class and the\n[enqueueLinks()](https://crawlee.dev/api/core/function/enqueueLinks) function from Crawlee.\n\nEditor type `requestListSources` supports input in formats defined by the\n[sources](https://crawlee.dev/api/core/interface/RequestListOptions#sources) property of\n[RequestListOptions](https://crawlee.dev/api/core/interface/RequestListOptions).\n\nEditor type `globs` maps to the Crawlee's [GlobInput](https://crawlee.dev/api/core#GlobInput) used by the\n[UrlPatterObject](https://crawlee.dev/api/core#UrlPatternObject).\n\nEditor type `select` allows the user to pick items from a select, providing multiple choices. Please check this\nexample of how to define the multiselect field:\n\n```json\n{\n\"title\": \"Multiselect field\",\n\"description\": \"My multiselect field\",\n\"type\": \"array\",\n\"editor\": \"select\",\n\"items\": {\n\"type\": \"string\",\n\"enum\": [\"value1\", \"value2\", \"value3\"],\n\"enumTitles\": [\"Label of value1\", \"Label of value2\", \"Label of value3\"]\n}\n}\n```"
                         },
                         "isSecret": {
                             "type": "boolean"
@@ -4781,8 +4781,8 @@
                     "minimum": 1,
                     "maximum": 1,
                     "description": "The version of the output schema. It's a required integer field with a minimum and maximum value of 1.",
-                    "x-intellij-html-description": "<p>The version of the output schema. It&apos;s a required integer field with a minimum and maximum value of 1.</p>",
-                    "markdownDescription": "The version of the output schema. It&apos;s a required integer field with a minimum and maximum value of 1."
+                    "x-intellij-html-description": "<p>The version of the output schema. It's a required integer field with a minimum and maximum value of 1.</p>",
+                    "markdownDescription": "The version of the output schema. It's a required integer field with a minimum and maximum value of 1."
                 },
                 "description": {
                     "type": "string",
@@ -4813,8 +4813,8 @@
                                 "type": {
                                     "const": "string",
                                     "description": "The data type of the output property's value. The schema constrains this to the string literal \"string\", which is a required field. The output value is always a URL, thus a string.",
-                                    "x-intellij-html-description": "<p>The data type of the output property&apos;s value. The schema constrains this to the string literal &quot;string&quot;, which\nis a required field. The output value is always a URL, thus a string.</p>",
-                                    "markdownDescription": "The data type of the output property&apos;s value. The schema constrains this to the string literal &quot;string&quot;, which\nis a required field. The output value is always a URL, thus a string."
+                                    "x-intellij-html-description": "<p>The data type of the output property's value. The schema constrains this to the string literal \"string\", which\nis a required field. The output value is always a URL, thus a string.</p>",
+                                    "markdownDescription": "The data type of the output property's value. The schema constrains this to the string literal \"string\", which\nis a required field. The output value is always a URL, thus a string."
                                 },
                                 "description": {
                                     "type": "string",
@@ -4836,8 +4836,8 @@
                         }
                     },
                     "description": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
-                    "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
-                    "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
+                    "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property's schema.</p>",
+                    "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property's schema."
                 }
             },
             "required": [
@@ -5089,26 +5089,26 @@
                     "minimum": 1,
                     "maximum": 1,
                     "description": "The version of the key-value store schema. It's a required integer and must be exactly 1.",
-                    "x-intellij-html-description": "<p>The version of the key-value store schema. It&apos;s a required integer and must be exactly 1.</p>",
-                    "markdownDescription": "The version of the key-value store schema. It&apos;s a required integer and must be exactly 1."
+                    "x-intellij-html-description": "<p>The version of the key-value store schema. It's a required integer and must be exactly 1.</p>",
+                    "markdownDescription": "The version of the key-value store schema. It's a required integer and must be exactly 1."
                 },
                 "title": {
                     "type": "string",
                     "description": "The title of the key-value store schema. It's a required string.",
-                    "x-intellij-html-description": "<p>The title of the key-value store schema. It&apos;s a required string.</p>",
-                    "markdownDescription": "The title of the key-value store schema. It&apos;s a required string."
+                    "x-intellij-html-description": "<p>The title of the key-value store schema. It's a required string.</p>",
+                    "markdownDescription": "The title of the key-value store schema. It's a required string."
                 },
                 "description": {
                     "type": "string",
                     "description": "A description of the key-value store schema. It's an optional string.",
-                    "x-intellij-html-description": "<p>A description of the key-value store schema. It&apos;s an optional string.</p>",
-                    "markdownDescription": "A description of the key-value store schema. It&apos;s an optional string."
+                    "x-intellij-html-description": "<p>A description of the key-value store schema. It's an optional string.</p>",
+                    "markdownDescription": "A description of the key-value store schema. It's an optional string."
                 },
                 "type": {
                     "const": "object",
                     "description": "A constant value that must be \"object\", indicating the schema describes a JSON object.",
-                    "x-intellij-html-description": "<p>A constant value that must be &quot;object&quot;, indicating the schema describes a JSON object.</p>",
-                    "markdownDescription": "A constant value that must be &quot;object&quot;, indicating the schema describes a JSON object."
+                    "x-intellij-html-description": "<p>A constant value that must be \"object\", indicating the schema describes a JSON object.</p>",
+                    "markdownDescription": "A constant value that must be \"object\", indicating the schema describes a JSON object."
                 },
                 "collections": {
                     "type": "object",
@@ -5119,14 +5119,14 @@
                                 "title": {
                                     "type": "string",
                                     "description": "The title of the collection. It's an optional string.",
-                                    "x-intellij-html-description": "<p>The title of the collection. It&apos;s an optional string.</p>",
-                                    "markdownDescription": "The title of the collection. It&apos;s an optional string."
+                                    "x-intellij-html-description": "<p>The title of the collection. It's an optional string.</p>",
+                                    "markdownDescription": "The title of the collection. It's an optional string."
                                 },
                                 "description": {
                                     "type": "string",
                                     "description": "A description of the collection. It's an optional string.",
-                                    "x-intellij-html-description": "<p>A description of the collection. It&apos;s an optional string.</p>",
-                                    "markdownDescription": "A description of the collection. It&apos;s an optional string."
+                                    "x-intellij-html-description": "<p>A description of the collection. It's an optional string.</p>",
+                                    "markdownDescription": "A description of the collection. It's an optional string."
                                 },
                                 "contentTypes": {
                                     "type": "array",
@@ -5136,14 +5136,14 @@
                                     "minItems": 1,
                                     "uniqueItems": true,
                                     "description": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The array must contain at least one unique item. This attribute is required if jsonSchema is present.",
-                                    "x-intellij-html-description": "<p>An array of allowed content types for the files in the collection (e.g., &quot;application/json&quot;, &quot;image/jpeg&quot;). The\narray must contain at least one unique item. This attribute is required if <code>jsonSchema</code> is present.</p>",
-                                    "markdownDescription": "An array of allowed content types for the files in the collection (e.g., &quot;application/json&quot;, &quot;image/jpeg&quot;). The\narray must contain at least one unique item. This attribute is required if `jsonSchema` is present."
+                                    "x-intellij-html-description": "<p>An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if <code>jsonSchema</code> is present.</p>",
+                                    "markdownDescription": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if `jsonSchema` is present."
                                 },
                                 "keyPrefix": {
                                     "type": "string",
                                     "description": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is mutually exclusive with key.",
-                                    "x-intellij-html-description": "<p>Prefix for all keys in this collection. It&apos;s used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
-                                    "markdownDescription": "Prefix for all keys in this collection. It&apos;s used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
+                                    "x-intellij-html-description": "<p>Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
+                                    "markdownDescription": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
                                 },
                                 "key": {
                                     "type": "string",
@@ -5154,8 +5154,8 @@
                                 "jsonSchema": {
                                     "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc",
                                     "description": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only applicable when contentTypes includes \"application/json\".",
-                                    "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes &quot;application/json&quot;.</p>",
-                                    "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes &quot;application/json&quot;."
+                                    "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes \"application/json\".</p>",
+                                    "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes \"application/json\"."
                                 }
                             },
                             "oneOf": [
@@ -5243,8 +5243,8 @@
                                 "title": {
                                     "type": "string",
                                     "description": "The title of the view, which is visible in the UI's Output tab and in the API.",
-                                    "x-intellij-html-description": "<p>The title of the view, which is visible in the UI&apos;s Output tab and in the API.</p>",
-                                    "markdownDescription": "The title of the view, which is visible in the UI&apos;s Output tab and in the API."
+                                    "x-intellij-html-description": "<p>The title of the view, which is visible in the UI's Output tab and in the API.</p>",
+                                    "markdownDescription": "The title of the view, which is visible in the UI's Output tab and in the API."
                                 },
                                 "description": {
                                     "type": "string",
@@ -5340,8 +5340,8 @@
                                                 "grid"
                                             ],
                                             "description": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\" or \"grid\".",
-                                            "x-intellij-html-description": "<p>A string that specifies the type of UI component to use for displaying the data. The only valid value is &quot;table&quot;\nor &quot;grid&quot;.</p>",
-                                            "markdownDescription": "A string that specifies the type of UI component to use for displaying the data. The only valid value is &quot;table&quot;\nor &quot;grid&quot;."
+                                            "x-intellij-html-description": "<p>A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\".</p>",
+                                            "markdownDescription": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\"."
                                         },
                                         "options": {
                                             "type": "object",

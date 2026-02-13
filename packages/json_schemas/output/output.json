@@ -11,8 +11,8 @@
             "minimum": 1,
             "maximum": 1,
             "description": "The version of the output schema. It's a required integer field with a minimum and maximum value of 1.",
-            "x-intellij-html-description": "<p>The version of the output schema. It&apos;s a required integer field with a minimum and maximum value of 1.</p>",
-            "markdownDescription": "The version of the output schema. It&apos;s a required integer field with a minimum and maximum value of 1."
+            "x-intellij-html-description": "<p>The version of the output schema. It's a required integer field with a minimum and maximum value of 1.</p>",
+            "markdownDescription": "The version of the output schema. It's a required integer field with a minimum and maximum value of 1."
         },
         "description": {
             "type": "string",
@@ -43,8 +43,8 @@
                         "type": {
                             "const": "string",
                             "description": "The data type of the output property's value. The schema constrains this to the string literal \"string\", which is a required field. The output value is always a URL, thus a string.",
-                            "x-intellij-html-description": "<p>The data type of the output property&apos;s value. The schema constrains this to the string literal &quot;string&quot;, which\nis a required field. The output value is always a URL, thus a string.</p>",
-                            "markdownDescription": "The data type of the output property&apos;s value. The schema constrains this to the string literal &quot;string&quot;, which\nis a required field. The output value is always a URL, thus a string."
+                            "x-intellij-html-description": "<p>The data type of the output property's value. The schema constrains this to the string literal \"string\", which\nis a required field. The output value is always a URL, thus a string.</p>",
+                            "markdownDescription": "The data type of the output property's value. The schema constrains this to the string literal \"string\", which\nis a required field. The output value is always a URL, thus a string."
                         },
                         "description": {
                             "type": "string",
@@ -66,8 +66,8 @@
                 }
             },
             "description": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values are objects that define each property's schema.",
-            "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema.</p>",
-            "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property&apos;s schema."
+            "x-intellij-html-description": "<p>Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property's schema.</p>",
+            "markdownDescription": "Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values\nare objects that define each property's schema."
         }
     },
     "required": [

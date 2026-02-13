@@ -10,26 +10,26 @@
             "minimum": 1,
             "maximum": 1,
             "description": "The version of the key-value store schema. It's a required integer and must be exactly 1.",
-            "x-intellij-html-description": "<p>The version of the key-value store schema. It&apos;s a required integer and must be exactly 1.</p>",
-            "markdownDescription": "The version of the key-value store schema. It&apos;s a required integer and must be exactly 1."
+            "x-intellij-html-description": "<p>The version of the key-value store schema. It's a required integer and must be exactly 1.</p>",
+            "markdownDescription": "The version of the key-value store schema. It's a required integer and must be exactly 1."
         },
         "title": {
             "type": "string",
             "description": "The title of the key-value store schema. It's a required string.",
-            "x-intellij-html-description": "<p>The title of the key-value store schema. It&apos;s a required string.</p>",
-            "markdownDescription": "The title of the key-value store schema. It&apos;s a required string."
+            "x-intellij-html-description": "<p>The title of the key-value store schema. It's a required string.</p>",
+            "markdownDescription": "The title of the key-value store schema. It's a required string."
         },
         "description": {
             "type": "string",
             "description": "A description of the key-value store schema. It's an optional string.",
-            "x-intellij-html-description": "<p>A description of the key-value store schema. It&apos;s an optional string.</p>",
-            "markdownDescription": "A description of the key-value store schema. It&apos;s an optional string."
+            "x-intellij-html-description": "<p>A description of the key-value store schema. It's an optional string.</p>",
+            "markdownDescription": "A description of the key-value store schema. It's an optional string."
         },
         "type": {
             "const": "object",
             "description": "A constant value that must be \"object\", indicating the schema describes a JSON object.",
-            "x-intellij-html-description": "<p>A constant value that must be &quot;object&quot;, indicating the schema describes a JSON object.</p>",
-            "markdownDescription": "A constant value that must be &quot;object&quot;, indicating the schema describes a JSON object."
+            "x-intellij-html-description": "<p>A constant value that must be \"object\", indicating the schema describes a JSON object.</p>",
+            "markdownDescription": "A constant value that must be \"object\", indicating the schema describes a JSON object."
         },
         "collections": {
             "type": "object",
@@ -40,14 +40,14 @@
                         "title": {
                             "type": "string",
                             "description": "The title of the collection. It's an optional string.",
-                            "x-intellij-html-description": "<p>The title of the collection. It&apos;s an optional string.</p>",
-                            "markdownDescription": "The title of the collection. It&apos;s an optional string."
+                            "x-intellij-html-description": "<p>The title of the collection. It's an optional string.</p>",
+                            "markdownDescription": "The title of the collection. It's an optional string."
                         },
                         "description": {
                             "type": "string",
                             "description": "A description of the collection. It's an optional string.",
-                            "x-intellij-html-description": "<p>A description of the collection. It&apos;s an optional string.</p>",
-                            "markdownDescription": "A description of the collection. It&apos;s an optional string."
+                            "x-intellij-html-description": "<p>A description of the collection. It's an optional string.</p>",
+                            "markdownDescription": "A description of the collection. It's an optional string."
                         },
                         "contentTypes": {
                             "type": "array",
@@ -57,14 +57,14 @@
                             "minItems": 1,
                             "uniqueItems": true,
                             "description": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The array must contain at least one unique item. This attribute is required if jsonSchema is present.",
-                            "x-intellij-html-description": "<p>An array of allowed content types for the files in the collection (e.g., &quot;application/json&quot;, &quot;image/jpeg&quot;). The\narray must contain at least one unique item. This attribute is required if <code>jsonSchema</code> is present.</p>",
-                            "markdownDescription": "An array of allowed content types for the files in the collection (e.g., &quot;application/json&quot;, &quot;image/jpeg&quot;). The\narray must contain at least one unique item. This attribute is required if `jsonSchema` is present."
+                            "x-intellij-html-description": "<p>An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if <code>jsonSchema</code> is present.</p>",
+                            "markdownDescription": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if `jsonSchema` is present."
                         },
                         "keyPrefix": {
                             "type": "string",
                             "description": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is mutually exclusive with key.",
-                            "x-intellij-html-description": "<p>Prefix for all keys in this collection. It&apos;s used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
-                            "markdownDescription": "Prefix for all keys in this collection. It&apos;s used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
+                            "x-intellij-html-description": "<p>Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
+                            "markdownDescription": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
                         },
                         "key": {
                             "type": "string",
@@ -75,8 +75,8 @@
                         "jsonSchema": {
                             "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc",
                             "description": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only applicable when contentTypes includes \"application/json\".",
-                            "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes &quot;application/json&quot;.</p>",
-                            "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes &quot;application/json&quot;."
+                            "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes \"application/json\".</p>",
+                            "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes \"application/json\"."
                         }
                     },
                     "oneOf": [

@@ -40,8 +40,8 @@
                         "title": {
                             "type": "string",
                             "description": "The title of the view, which is visible in the UI's Output tab and in the API.",
-                            "x-intellij-html-description": "<p>The title of the view, which is visible in the UI&apos;s Output tab and in the API.</p>",
-                            "markdownDescription": "The title of the view, which is visible in the UI&apos;s Output tab and in the API."
+                            "x-intellij-html-description": "<p>The title of the view, which is visible in the UI's Output tab and in the API.</p>",
+                            "markdownDescription": "The title of the view, which is visible in the UI's Output tab and in the API."
                         },
                         "description": {
                             "type": "string",
@@ -137,8 +137,8 @@
                                         "grid"
                                     ],
                                     "description": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\" or \"grid\".",
-                                    "x-intellij-html-description": "<p>A string that specifies the type of UI component to use for displaying the data. The only valid value is &quot;table&quot;\nor &quot;grid&quot;.</p>",
-                                    "markdownDescription": "A string that specifies the type of UI component to use for displaying the data. The only valid value is &quot;table&quot;\nor &quot;grid&quot;."
+                                    "x-intellij-html-description": "<p>A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\".</p>",
+                                    "markdownDescription": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\"."
                                 },
                                 "options": {
                                     "type": "object",
