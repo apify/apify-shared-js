@@ -8,7 +8,7 @@ See the changelogs of each package:
 
 package | version | changelog
 --------|---------|----------
-`@apify/actor-memory-expression` | 0.1.7 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
+`@apify/actor-memory-expression` | 0.1.8 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
 `@apify/consts` | 2.51.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.3 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
