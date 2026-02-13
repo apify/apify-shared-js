@@ -98,7 +98,7 @@ export function parseAddDescriptionRule($: CheerioAPI, ruleElement: Node): AddDe
             __apply: processAddDescriptionRule,
             jsonPath: $(ruleElement).attr('json-path')!,
             format,
-            contentInMarkdown: $(ruleElement).html()!,
+            contentInMarkdown: $(ruleElement).text(),
         } as const;
         return {
             ...rule,

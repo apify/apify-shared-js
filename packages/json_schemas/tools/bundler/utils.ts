@@ -100,9 +100,14 @@ export async function scopeJsonSchema(
     jsonSchema: JsonSchemaObject,
     prefix = '',
 ): Promise<JsonSchemaObject> {
-    for (const { value, jsonPointer, parent, key } of iterateJsonProperties(jsonSchema)) {
-        const REF_ATTRIBUTE = '$ref';
+    const REF_ATTRIBUTE = '$ref';
 
+    // Root-level $ref is not supported
+    if (REF_ATTRIBUTE in jsonSchema) {
+        throw new Error('Attribute $ref in root is not supported');
+    }
+
+    for (const { value, jsonPointer, parent, key } of iterateJsonProperties(jsonSchema)) {
         if (parent?.value && key === REF_ATTRIBUTE && value && typeof value === 'string'
         ) {
             const [refRelativeFilePath, anchorPath] = value.trim().split('#');
@@ -139,7 +144,8 @@ export async function scopeJsonSchema(
 
                 parent.value[REF_ATTRIBUTE] = `#/definitions/${defKey}`;
                 if (anchorPath) {
-                    parent.value[REF_ATTRIBUTE] += `/${anchorPath}`;
+                    // Avoiding double slash in a resulting pointer
+                    parent.value[REF_ATTRIBUTE] += `/${anchorPath.replace(/^\/+/, '')}`;
                 }
 
                 if (mainJsonSchema.definitions[defKey]) {
