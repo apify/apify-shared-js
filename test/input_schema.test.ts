@@ -1442,5 +1442,37 @@ describe('input_schema.json', () => {
                 );
             });
         });
+
+        describe('selectBestError prefers non-branch errors over oneOf branch errors', () => {
+            it('should report items structure error instead of misleading editor enum from oneOf branch', () => {
+                // When editor matches one oneOf branch but items structure is wrong,
+                // AJV produces:
+                //   errors[0]: BRANCH error from oneOf/0 about editor (misleading - says "must be select")
+                //   errors[1]: NON-BRANCH error about items missing 'properties' (via $ref, path has no oneOf)
+                //   errors[2-8]: more BRANCH editor errors from other oneOf branches
+                // selectBestError skips branch errors and returns the items error (errors[1])
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'keyValue',
+                            items: { type: 'string' }, // wrong: keyValue expects { type: 'object', properties: { key, value } }
+                        },
+                    },
+                };
+
+                // Without selectBestError, the error would be the misleading:
+                // "editor must be equal to one of the allowed values: "select""
+                // With selectBestError, it correctly reports the actual problem:
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.items.properties is required)',
+                );
+            });
+        });
     });
 });
