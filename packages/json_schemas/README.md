@@ -12,7 +12,7 @@ Each schema exists in three forms, each serving a different purpose:
 | **Described** | `output/*.json` | Raw + human-readable descriptions in three formats (plain text, Markdown, HTML). | Available for tooling that needs rich descriptions |
 | **IDE** | `output/*.ide.json` | Described + structural tweaks for autocompletion: `$id` removed, `$ref` bundled inline, `additionalProperties: false`, enum dropdowns for memory fields. | VS Code, JetBrains IDEs (via `$schema` in `actor.json`, `.actor/INPUT_SCHEMA.json`, etc.) |
 
-The raw schemas are published to npm as part of this package and served at `https://apify.com/schemas/v1/*.json`. The IDE schemas are served at `https://apify-projects.github.io/actor-json-schemas/` and are what developers actually interact with in their editors.
+The raw schemas are published to npm as part of this package and served at `https://apify.com/schemas/v1/*.json`. The IDE schemas are served at `https://apify.com/schemas/v1/*.ide.json` and are what developers actually interact with in their editors.
 
 ## Descriptions and rules
 

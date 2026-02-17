@@ -19,10 +19,9 @@
     <AddDescription json-path="/properties/views" format="markdown">
         An object containing descriptions of API and UI views for the dataset.
     </AddDescription>
-    <AddDescription json-path="/properties/views/^" format="markdown">
-        Represents a specific view definition within the `views` object. The `^` symbol in the schema's
-        `patternProperties` indicates that the key can be any string (e.g., "overview"). A view must have either a
-        `title` and `transformation` or a `title` and `display`.
+    <AddDescription json-path="/properties/views/patternProperties/^" format="markdown">
+        Represents a specific view definition within the `views` object. A view must have either a `title` and
+        `transformation` or a `title` and `display`.
     </AddDescription>
     <AddDescription json-path="/properties/views/patternProperties/^/properties/title" format="markdown">
         The title of the view, which is visible in the UI's Output tab and in the API.

@@ -175,6 +175,9 @@
                             ]
                         }
                     ],
+                    "description": "Represents a specific view definition within the views object. A view must have either a title and transformation or a title and display.",
+                    "x-intellij-html-description": "<p>Represents a specific view definition within the <code>views</code> object. A view must have either a <code>title</code> and\n<code>transformation</code> or a <code>title</code> and <code>display</code>.</p>",
+                    "markdownDescription": "Represents a specific view definition within the `views` object. A view must have either a `title` and\n`transformation` or a `title` and `display`.",
                     "additionalProperties": false
                 }
             },

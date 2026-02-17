@@ -174,8 +174,8 @@
         months, years. The input is passed to the Actor as plain text (e.g., "3 weeks"). To parse it, regex like this
         can be used: `^(\d+)\s*(day|week|month|year)s?$`.
         * **absoluteOrRelative** value enables both absolute and relative formats and user can switch between them. It's
-        up to Actor author to parse a determine actual used format - regexes above can be used to check whether the
-        returned string match one of them.
+        up to Actor author to parse and determine the actual format used - regexes above can be used to check whether the
+        returned string matches one of them.
 
         Defaults to **absolute**."
     </AddDescription>
