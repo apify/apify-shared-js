@@ -19,6 +19,7 @@ function replaceByJsonValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<R
 
 function replaceByJsValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<ReplaceValueRule, '__apply'>, json: JsonObject) {
     const valueHolder = getJsonValue(json, objectPropertyInfo.jsonPointer);
+    // This should be safe as these XML rules are always bundled with the code in the repository.
     valueHolder.value = vm.runInNewContext(rule.content, {
         value: valueHolder.value,
     }, {

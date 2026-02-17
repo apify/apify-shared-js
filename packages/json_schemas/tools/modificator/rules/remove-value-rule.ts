@@ -1,20 +1,13 @@
 import type { CheerioAPI, Node } from 'cheerio';
 
 import type { AbstractRule, JsonObject, ObjectPropertyInfo } from '../types';
-import { getJsonValue, parseJsonPointer } from '../utils';
+import { parseJsonPointer } from '../utils';
 
 export const RULE_NAME = 'RemoveValue' as const;
 
 export interface RemoveValueRule extends AbstractRule<typeof RULE_NAME> {}
 
 function removeValue(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) {
-    const s = getJsonValue(json, objectPropertyInfo.jsonPointer);
-
-    // Check if we're trying to remove from an array
-    if (Array.isArray(s.value)) {
-        throw new Error(`Cannot remove array elements: ${objectPropertyInfo.jsonPointer}`);
-    }
-
     // Navigate to parent and delete the property
     const { jsonPointer } = objectPropertyInfo;
     if (jsonPointer === '/') {
@@ -26,6 +19,11 @@ function removeValue(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) {
     let current: any = json;
     for (let i = 0; i < parts.length - 1; i++) {
         current = current[parts[i]];
+    }
+
+    // Check if parent is an array - deleting from arrays leaves holes
+    if (Array.isArray(current)) {
+        throw new Error(`Cannot remove array elements: ${objectPropertyInfo.jsonPointer}`);
     }
 
     const lastPart = parts.length - 1;

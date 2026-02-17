@@ -21,7 +21,7 @@ function isIterable(input: unknown): boolean {
     return isPlainJsonObject(input) || Array.isArray(input);
 }
 
-function* iterateJsonProperties(input: JsonObject, parentJsonPath = ''): Generator<ObjectPropertyInfo> {
+function* iterateJsonProperties(input: JsonValue, parentJsonPath = ''): Generator<ObjectPropertyInfo> {
     if (Array.isArray(input)) {
         for (let i = 0; i < input.length; i++) {
             const jsonPointer = `${parentJsonPath}/${i}`;
@@ -43,38 +43,40 @@ function* iterateJsonProperties(input: JsonObject, parentJsonPath = ''): Generat
         });
     }
 
-    for (const key of Object.keys(input)) {
-        const jsonPointer = `${parentJsonPath}/${key}`;
-        const parentKey = `${parentJsonPath}`.split(/\//g).pop()!;
+    if (isPlainJsonObject(input)) {
+        const inputObject = input as JsonObject;
+        for (const key of Object.keys(inputObject)) {
+            const jsonPointer = `${parentJsonPath}/${key}`;
+            const parentKey = `${parentJsonPath}`.split(/\//g).pop()!;
+            const value = inputObject[key];
 
-        if (isIterable(input[key])) {
-            const objectValue = input[key] as JsonObject;
-            yield ({
-                key,
-                value: objectValue,
-                jsonPointer,
-                parent: parentJsonPath ? {
-                    key: parentKey,
-                    value: input,
-                    jsonPointer: parentJsonPath,
-                } : undefined,
-            });
+            if (isIterable(value)) {
+                yield ({
+                    key,
+                    value,
+                    jsonPointer,
+                    parent: parentJsonPath ? {
+                        key: parentKey,
+                        value: inputObject,
+                        jsonPointer: parentJsonPath,
+                    } : undefined,
+                });
 
-            for (const result of iterateJsonProperties(objectValue, jsonPointer)) {
-                yield result;
+                for (const result of iterateJsonProperties(value, jsonPointer)) {
+                    yield result;
+                }
+            } else {
+                yield ({
+                    key,
+                    value,
+                    jsonPointer,
+                    parent: {
+                        key: parentKey,
+                        value: inputObject,
+                        jsonPointer: parentJsonPath === '' ? '/' : parentJsonPath,
+                    },
+                });
             }
-        } else {
-            const objectValue = input[key] as JsonValue;
-            yield ({
-                key,
-                value: objectValue,
-                jsonPointer,
-                parent: {
-                    key: parentKey,
-                    value: input,
-                    jsonPointer: parentJsonPath === '' ? '/' : parentJsonPath,
-                },
-            });
         }
     }
 }
