@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- ADD DESCRIPTIONS -->
+    <AddDescription json-path="/properties/actorOutputSchemaVersion" format="markdown">
+        The version of the output schema. It's a required integer field with a minimum and maximum value of 1.
+    </AddDescription>
+    <AddDescription json-path="/properties/description" format="markdown">
+        Description for the output schema. This text is displayed in the Output user interface.
+    </AddDescription>
+    <AddDescription json-path="/properties/title" format="markdown">
+        Title for the output schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties" format="markdown">
+        Definition of the output properties of the Actor. Its keys are the names of the output properties, and its values
+        are objects that define each property's schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties/patternProperties/^/properties/title" format="markdown">
+        Title for the specific output property.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties/patternProperties/^/properties/type" format="markdown">
+        The data type of the output property's value. The schema constrains this to the string literal "string", which
+        is a required field. The output value is always a URL, thus a string.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties/patternProperties/^/properties/description" format="markdown">
+        Description for the specific output property.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties/patternProperties/^/properties/template" format="markdown">
+        Definition of how the output value (a URL) is constructed. It can use text formatting with `{{variable}}`
+        placeholders.
+    </AddDescription>
+</Enchantments>

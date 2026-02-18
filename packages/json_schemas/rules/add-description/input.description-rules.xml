@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- ADD DESCRIPTIONS -->
+    <AddDescription json-path="/properties/$schema" format="markdown">
+        The provided documentation for Actor input schema specification does not directly describe the `$schema`
+        property. This property is typically found in JSON Schema definition files themselves (like the provided JSON
+        validation schema) and specifies the URI of the JSON Schema version being used.
+    </AddDescription>
+    <AddDescription json-path="/properties/title" format="markdown">
+        Any text describing your input schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/schemaVersion" format="markdown">
+        The version of the input schema specification against which your schema is written. Currently, only version `1`
+        is out.
+    </AddDescription>
+    <AddDescription json-path="/properties/description" format="markdown">
+        Help text for the input that will be displayed above the UI fields.
+    </AddDescription>
+    <AddDescription json-path="/properties/type" format="markdown">
+        This is fixed and must be set to string `object`.
+    </AddDescription>
+    <AddDescription json-path="/properties/required" format="markdown">
+        An array of field keys that are required.
+    </AddDescription>
+    <AddDescription json-path="/properties/additionalProperties" format="markdown">
+        Controls if properties not listed in `properties` are allowed. Defaults to `true`. Set to `false` to make
+        requests with extra properties fail.
+    </AddDescription>
+    <AddDescription json-path="/properties/properties" format="markdown">
+        This is an object mapping each field key to its specification.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/enum" format="markdown">
+        Using this field, you can limit values to the given array of strings. Input will be displayed as select box.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/enumTitles" format="markdown">
+        Titles for the `enum` keys described.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/if/properties/isSecret" format="markdown">
+        Specifies whether the input field will be stored encrypted. Only available with `textfield` and `textarea`
+        editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/if/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/items" format="markdown">
+        Specifies format of the items of the array, useful mainly for multiselect (see below)
+
+        To correctly define options for multiselect, you need to define the **items** property and then provide values
+        and (optionally) labels in **enum** and **enumTitles** properties.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/items/properties/enum" format="markdown">
+        Using this field, you can limit values to the given array of strings. Input will be displayed as select box.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/items/properties/enumTitles"
+                    format="markdown">
+        Titles for the `enum` keys described.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/resourcePermissions" format="markdown">
+        The provided documentation for Actor input schema specification does not contain a description for
+        `resourcePermissions` in the `resourceProperty` section. It is present in the JSON validation schema, indicating
+        permissions for the resource.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/resourcePermissions" format="markdown">
+        The provided documentation for Actor input schema specification does not contain a description for
+        `resourcePermissions` in the `resourceArrayProperty` section. It is present in the JSON validation schema,
+        indicating permissions for the resource array.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringEnumProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/properties/isSecret" format="markdown">
+        Specifies whether the input field will be stored encrypted. Only available with `textfield` and `textarea`
+        editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/pattern" format="markdown">
+        Regular expression that will be used to validate the input. If validation fails, the Actor will not run.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/minLength" format="markdown">
+        Minimum length of the string.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/maxLength" format="markdown">
+        Maximum length of the string.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/then/properties/dateType" format="markdown">
+        This property, which is only available with **datepicker** editor, specifies what date format should visual
+        editor accept (The JSON editor accepts any string without validation.)
+
+        * **absolute** value enables date input in `YYYY-MM-DD` format. To parse returned string regex like this can be
+        used: `^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$`.
+        * **relative** value enables relative date input in `{number} {unit}` format. Supported units are: days, weeks,
+        months, years. The input is passed to the Actor as plain text (e.g., "3 weeks"). To parse it, regex like this
+        can be used: `^(\d+)\s*(day|week|month|year)s?$`.
+        * **absoluteOrRelative** value enables both absolute and relative formats and user can switch between them. It's
+        up to Actor author to parse and determine the actual format used - regexes above can be used to check whether the
+        returned string matches one of them.
+
+        Defaults to **absolute**."
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/pattern" format="markdown">
+        Regular expression that will be used to validate the input. If validation fails, the Actor will not run.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/minLength" format="markdown">
+        Minimum length of the string.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/maxLength" format="markdown">
+        Maximum length of the string.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/isSecret" format="markdown">
+        Specifies whether the input field will be stored encrypted. Only available with `textfield` and `textarea`
+        editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/then/else/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/isSecret" format="markdown">
+        Specifies whether the input field will be stored encrypted. Only available with `textfield` and `textarea`
+        editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/stringProperty/else/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/if/properties/editor" format="markdown">
+        UI editor used for input.
+
+        Editor type `select` allows the user to pick items from a select, providing multiple choices. Please check this
+        example of how to define the multiselect field:
+
+        ```json
+        {
+        "title": "Multiselect field",
+        "description": "My multiselect field",
+        "type": "array",
+        "editor": "select",
+        "items": {
+        "type": "string",
+        "enum": ["value1", "value2", "value3"],
+        "enumTitles": ["Label of value1", "Label of value2", "Label of value3"]
+        }
+        }
+        ```
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/properties/editor" format="markdown">
+        UI editor used for input.
+
+        Usage of this field is based on the selected editor:
+
+        * `requestListSources` - value from this field can be used as input for the
+        [RequestList](https://crawlee.dev/api/core/class/RequestList) class from Crawlee.
+        * `pseudoUrls` - is intended to be used with a combination of the
+        [PseudoUrl](https://crawlee.dev/api/core/class/PseudoUrl) class and the
+        [enqueueLinks()](https://crawlee.dev/api/core/function/enqueueLinks) function from Crawlee.
+
+        Editor type `requestListSources` supports input in formats defined by the
+        [sources](https://crawlee.dev/api/core/interface/RequestListOptions#sources) property of
+        [RequestListOptions](https://crawlee.dev/api/core/interface/RequestListOptions).
+
+        Editor type `globs` maps to the Crawlee's [GlobInput](https://crawlee.dev/api/core#GlobInput) used by the
+        [UrlPatterObject](https://crawlee.dev/api/core#UrlPatternObject).
+
+        Editor type `select` allows the user to pick items from a select, providing multiple choices. Please check this
+        example of how to define the multiselect field:
+
+        ```json
+        {
+        "title": "Multiselect field",
+        "description": "My multiselect field",
+        "type": "array",
+        "editor": "select",
+        "items": {
+        "type": "string",
+        "enum": ["value1", "value2", "value3"],
+        "enumTitles": ["Label of value1", "Label of value2", "Label of value3"]
+        }
+        }
+        ```
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/editor" format="markdown">
+        UI editor used for input.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/minItems" format="markdown">
+        Minimum number of items the array can contain.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/maxItems" format="markdown">
+        Maximum number of items the array can contain.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/uniqueItems" format="markdown">
+        Specifies whether the array should contain only unique values.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/then/properties/items/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/editor" format="markdown">
+        UI editor used for input.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/minItems" format="markdown">
+        Minimum number of items the array can contain.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/maxItems" format="markdown">
+        Maximum number of items the array can contain.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/uniqueItems" format="markdown">
+        Specifies whether the array should contain only unique values.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/placeholderKey" format="markdown">
+        Placeholder displayed for key field when no value is specified. Works only with `keyValue` editor.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/placeholderValue" format="markdown">
+        Placeholder displayed in value field when no value is provided. Works only with `keyValue` and `stringList`
+        editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/patternKey" format="markdown">
+        Regular expression that will be used to validate the keys of items in the array. Works only with `keyValue`
+        editor.
+    </AddDescription>
+    <AddDescription json-path="/definitions/arrayProperty/else/properties/patternValue" format="markdown">
+        Regular expression that will be used to validate the values of items in the array. Works only with `keyValue`
+        and `stringList` editors.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/patternKey" format="markdown">
+        Regular expression that will be used to validate the keys of the object.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/patternValue" format="markdown">
+        Regular expression that will be used to validate the values of object.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/minProperties" format="markdown">
+        Minimum number of properties the object can have.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/maxProperties" format="markdown">
+        Maximum number of properties the object can have.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/editor" format="markdown">
+        UI editor used for input.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/objectProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/minimum" format="markdown">
+        Minimum allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/maximum" format="markdown">
+        Maximum allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/unit" format="markdown">
+        Unit displayed next to the field in UI, for example _second_, _MB_, etc.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/editor" format="markdown">
+        Visual editor used for input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/integerProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/type" format="markdown">
+        Allowed type for the input value. Cannot be mixed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/groupCaption" format="markdown">
+        If you want to group multiple checkboxes together, add this option to the first of the group.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/groupDescription" format="markdown">
+        Description displayed as help text displayed of group title.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/editor" format="markdown">
+        Visual editor used for the input field.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/booleanProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/type" format="markdown">
+        Specifies the type of input - string for single value or array for multiple values
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/editor" format="markdown">
+        Visual editor used for the input field. Defaults to `resourcePicker`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/resourceType" format="markdown">
+        Type of Apify Platform resource
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/type" format="markdown">
+        Specifies the type of input - string for single value or array for multiple values
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/editor" format="markdown">
+        Visual editor used for the input field. Defaults to `resourcePicker`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/nullable" format="markdown">
+        Specifies whether null is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/minItems" format="markdown">
+        Minimum number of items the array can contain. Only for `type: array`
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/maxItems" format="markdown">
+        Maximum number of items the array can contain. Only for `type: array`
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/uniqueItems" format="markdown">
+        Specifies whether the array should contain only unique values.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/resourceType" format="markdown">
+        Type of Apify Platform resource
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourceArrayProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/description" format="markdown">
+        Description of the field that will be displayed as help text in Actor input UI.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/editor" format="markdown">
+        Visual editor used for input.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="/definitions/anyProperty/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="**/properties/default" format="markdown">
+        Default value that will be used when no value is provided.
+    </AddDescription>
+    <AddDescription json-path="**/properties/nullable" format="markdown">
+        Specifies whether `null` is an allowed value.
+    </AddDescription>
+    <AddDescription json-path="**/properties/example" format="markdown">
+        Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
+    </AddDescription>
+    <AddDescription json-path="**/properties/prefill" format="markdown">
+        Value that will be prefilled in the Actor input interface.
+    </AddDescription>
+    <AddDescription json-path="**/properties/description" format="markdown">
+        Help text for the input that will be displayed above the UI fields.
+    </AddDescription>
+    <AddDescription json-path="**/properties/sectionCaption" format="markdown">
+        If this property is set, then all fields following this field (this field included) will be separated into a
+        collapsible section with the value set as its caption. The section ends at the last field or the next field
+        which has the `sectionCaption` property set.
+    </AddDescription>
+    <AddDescription json-path="**/properties/sectionDescription" format="markdown">
+        If the `sectionCaption` property is set, then you can use this property to provide additional description to the
+        section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="**/properties/title" format="markdown">
+        Title of the field in UI.
+    </AddDescription>
+</Enchantments>
