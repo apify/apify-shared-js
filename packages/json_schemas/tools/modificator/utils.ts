@@ -7,7 +7,8 @@ export function parseJsonPointer(jsonPointer: string): string[] {
     return jsonPointer.replace(/^\//, '')
         .split('/')
         // Decode JSON Pointer escape sequences (RFC 6901):
-        .map((part) => part.replace(/~1/g, '/').replace(/~0/g, '~'));
+        // Must decode ~0 first, then ~1 to handle sequences like ~01 correctly
+        .map((part) => part.replace(/~0/g, '~').replace(/~1/g, '/'));
 }
 
 export function isPlainJsonObject(input: unknown): boolean {

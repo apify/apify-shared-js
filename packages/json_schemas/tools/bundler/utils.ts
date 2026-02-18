@@ -51,29 +51,22 @@ function md5(input: string): string {
 }
 
 async function includeJsonByPath(absolutePath: string): Promise<JsonSchemaObject> {
-    try {
-        if (/^https?:\/\//.test(absolutePath)) {
-            const res = await fetch(absolutePath).catch(() => {
-                console.error(`Problem during fetching "${absolutePath}"!`);
-                return process.exit(1);
-            });
-            if (!res.ok) {
-                console.error(`Problem during fetching "${absolutePath}" HTTP ${res.status} ${res.statusText}!`);
-                return process.exit(1);
-            }
-            return await res.json().catch(() => {
-                console.error(`Problem during parsing JSON from "${absolutePath}"!`);
-                return process.exit(1);
-            });
+    if (/^https?:\/\//.test(absolutePath)) {
+        const res = await fetch(absolutePath);
+        if (!res.ok) {
+            throw new Error(`Failed to fetch "${absolutePath}": HTTP ${res.status} ${res.statusText}`);
         }
+        try {
+            return await res.json();
+        } catch {
+            throw new Error(`Invalid JSON in "${absolutePath}"`);
+        }
+    }
+
+    try {
         return JSON.parse(await fs.readFile(absolutePath, 'utf8'));
     } catch (error) {
-        if (error instanceof Error) {
-            console.error(`Problem during including "${absolutePath}"!`, error.message);
-        } else {
-            console.error(`Problem during including "${absolutePath}"!`);
-        }
-        return process.exit(1);
+        throw new Error(`Failed to read/parse "${absolutePath}": ${error instanceof Error ? error.message : 'unknown error'}`);
     }
 }
 

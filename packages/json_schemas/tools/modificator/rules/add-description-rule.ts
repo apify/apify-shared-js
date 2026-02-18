@@ -42,7 +42,7 @@ function formatVsCodeDescription(markdownContent: string): string | undefined {
     return markdownContent;
 }
 
-function formatInteliJDescription(markdownContent: string): string | undefined {
+function formatIntelliJDescription(markdownContent: string): string | undefined {
     return formatHtmlDescription(markdownContent);
 }
 
@@ -82,7 +82,7 @@ function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json:
         const reindentedContentInMarkdown = reindentMarkdown(rule.contentInMarkdown);
 
         propertyObject.value.description = formatSimpleDescription(reindentedContentInMarkdown);
-        propertyObject.value['x-intellij-html-description'] ??= formatInteliJDescription(reindentedContentInMarkdown);
+        propertyObject.value['x-intellij-html-description'] ??= formatIntelliJDescription(reindentedContentInMarkdown);
         propertyObject.value.markdownDescription ??= formatVsCodeDescription(reindentedContentInMarkdown);
     } else {
         // eslint-disable-next-line no-console
