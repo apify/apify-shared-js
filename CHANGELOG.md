@@ -8,13 +8,13 @@ See the changelogs of each package:
 
 package | version | changelog
 --------|---------|----------
-`@apify/actor-memory-expression` | 0.1.7 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
+`@apify/actor-memory-expression` | 0.1.8 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
 `@apify/consts` | 2.51.0 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.3 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
 `@apify/git` | 2.1.4 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.3 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 3.25.13 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_schema` | 3.25.15 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
 `@apify/input_secrets` | 1.2.25 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/json_schemas` | 0.13.0 | [CHANGELOG](./packages/json_schemas/CHANGELOG.md)
 `@apify/log` | 2.5.32 | [CHANGELOG](./packages/log/CHANGELOG.md)

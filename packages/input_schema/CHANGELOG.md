@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.25.15](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.14...@apify/input_schema@3.25.15) (2026-02-25)
+
+
+### Bug Fixes
+
+* **input_schema:** indentation problem in makeInputJsFieldsReadable ([#600](https://github.com/apify/apify-shared-js/issues/600)) ([ba83e1c](https://github.com/apify/apify-shared-js/commit/ba83e1cfd32f52fde756a80d26d9671d102a069e))
+
+
+
+
+
+## [3.25.14](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.13...@apify/input_schema@3.25.14) (2026-02-25)
+
+
+### Bug Fixes
+
+* **input_schema:** show all valid editors in error when invalid editor is used on array property ([#596](https://github.com/apify/apify-shared-js/issues/596)) ([93113a0](https://github.com/apify/apify-shared-js/commit/93113a0c4e5aeeaa1d10e27991f11ba68312792c))
+
+
+
+
+
 ## [3.25.13](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.12...@apify/input_schema@3.25.13) (2026-02-11)
 
 **Note:** Version bump only for package @apify/input_schema
