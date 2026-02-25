@@ -50,7 +50,7 @@
     },
     "devDependencies": {
         "@types/showdown": "^2.0.6",
-        "cheerio": "1.0.0-rc.10",
+        "cheerio": "1.2.0",
         "showdown": "^2.1.0",
         "tsx": "^4.6.2"
     },
