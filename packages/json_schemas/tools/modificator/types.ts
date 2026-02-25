@@ -19,9 +19,9 @@ export interface ObjectPropertyInfo<VALUE = JsonValue> {
     parent?: ObjectPropertyInfo<JsonObject>;
 }
 
-export interface AbstractRule<TYPE extends string> {
-    __type: TYPE;
-    __apply: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => void
+export interface AbstractRule<RULE_NAME extends string> {
+    ruleName: RULE_NAME;
+    applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => void
     jsonPath: string;
 }
 

@@ -155,8 +155,7 @@ export async function enchantJsonSchema(
             .filter((enchantmentRule) => matchesJsonPointer(enchantmentRule.jsonPath, jsonPointer));
 
         for (const relatedRule of relatedRules) {
-            // eslint-disable-next-line no-underscore-dangle
-            relatedRule.__apply(jsonPropertyInfo, jsonSchema);
+            relatedRule.applyRule(jsonPropertyInfo, jsonSchema);
         }
     }
 

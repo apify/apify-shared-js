@@ -32,8 +32,8 @@ function removeValue(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) {
 
 export function parseRemoveValueRule($: CheerioAPI, ruleElement: Node): RemoveValueRule | null {
     return {
-        __type: RULE_NAME,
+        ruleName: RULE_NAME,
         jsonPath: $(ruleElement).attr('json-path')!,
-        __apply: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => removeValue(objectPropertyInfo, json),
+        applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => removeValue(objectPropertyInfo, json),
     } satisfies RemoveValueRule;
 }

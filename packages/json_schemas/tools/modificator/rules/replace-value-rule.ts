@@ -12,12 +12,12 @@ export interface ReplaceValueRule extends AbstractRule<typeof RULE_NAME> {
     content: string;
 }
 
-function replaceByJsonValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<ReplaceValueRule, '__apply'>, json: JsonObject) {
+function replaceByJsonValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<ReplaceValueRule, 'applyRule'>, json: JsonObject) {
     const valueHolder = getJsonValue(json, objectPropertyInfo.jsonPointer);
     valueHolder.value = JSON.parse(rule.content);
 }
 
-function replaceByJsValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<ReplaceValueRule, '__apply'>, json: JsonObject) {
+function replaceByJsValue(objectPropertyInfo: ObjectPropertyInfo, rule: Omit<ReplaceValueRule, 'applyRule'>, json: JsonObject) {
     const valueHolder = getJsonValue(json, objectPropertyInfo.jsonPointer);
     // This should be safe as these XML rules are always bundled with the code in the repository.
     valueHolder.value = vm.runInNewContext(rule.content, {
@@ -32,25 +32,25 @@ export function parseReplaceValueRule($: CheerioAPI, ruleElement: Node): Replace
 
     if (type === 'json') {
         const rule = {
-            __type: RULE_NAME,
+            ruleName: RULE_NAME,
             jsonPath: $(ruleElement).attr('json-path')!,
             type,
             content: $(ruleElement).text()!,
         } as const;
         return {
             ...rule,
-            __apply: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => replaceByJsonValue(objectPropertyInfo, rule, json),
+            applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => replaceByJsonValue(objectPropertyInfo, rule, json),
         } satisfies ReplaceValueRule;
     } if (type === 'js') {
         const rule = {
-            __type: RULE_NAME,
+            ruleName: RULE_NAME,
             jsonPath: $(ruleElement).attr('json-path')!,
             type,
             content: $(ruleElement).text()!,
         } as const;
         return {
             ...rule,
-            __apply: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => replaceByJsValue(objectPropertyInfo, rule, json),
+            applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => replaceByJsValue(objectPropertyInfo, rule, json),
         } satisfies ReplaceValueRule;
     }
     // eslint-disable-next-line no-console

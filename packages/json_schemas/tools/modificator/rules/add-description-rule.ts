@@ -75,18 +75,28 @@ function formatSimpleDescription(markdownContent: string): string | undefined {
         .trim() || undefined;
 }
 
-function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject, rule: Omit<AddDescriptionRule, '__apply'>) {
-    const propertyObject = getJsonValue<Record<string, JsonValue>>(json, objectPropertyInfo.jsonPointer);
+function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject, rule: Omit<AddDescriptionRule, 'applyRule'>) {
+    const objectProperty = getJsonValue<Record<string, JsonValue>>(json, objectPropertyInfo.jsonPointer);
 
-    if (propertyObject.value && isPlainJsonObject(propertyObject.value)) {
+    if (objectProperty.value && isPlainJsonObject(objectProperty.value)) {
         const reindentedContentInMarkdown = reindentMarkdown(rule.contentInMarkdown);
 
-        propertyObject.value.description = formatSimpleDescription(reindentedContentInMarkdown);
-        propertyObject.value['x-intellij-html-description'] ??= formatIntelliJDescription(reindentedContentInMarkdown);
-        propertyObject.value.markdownDescription ??= formatVsCodeDescription(reindentedContentInMarkdown);
+        objectProperty.value.description = formatSimpleDescription(reindentedContentInMarkdown);
+        objectProperty.value['x-intellij-html-description'] ??= formatIntelliJDescription(reindentedContentInMarkdown);
+        objectProperty.value.markdownDescription ??= formatVsCodeDescription(reindentedContentInMarkdown);
     } else {
-        // eslint-disable-next-line no-console
-        console.warn(`Cannot add description to "${objectPropertyInfo.jsonPointer}" (not an object type)!`);
+        const parentJsonPointer = objectPropertyInfo.parent?.jsonPointer;
+        if (parentJsonPointer) {
+            // Check for an odd number of trailing "properties" attributes in a parent's jsonPointer path
+            // ex. objectPropertyInfo.jsonPointer = /properties/properties/description not being an object is not a problem,
+            // but objectPropertyInfo.jsonPointer = /properties/description not being an object deserves a warning
+            const hasOddNumberOfTrailingProperties = (parentJsonPointer.match(/(\/properties)(?=(\/properties)*$)/g)?.length ?? 0) % 2 === 1;
+
+            if (hasOddNumberOfTrailingProperties) {
+                // eslint-disable-next-line no-console
+                console.warn(`Cannot add description to "${objectPropertyInfo.jsonPointer}" (not an object type)!`);
+            }
+        }
     }
 }
 
@@ -94,15 +104,15 @@ export function parseAddDescriptionRule($: CheerioAPI, ruleElement: Node): AddDe
     const format = $(ruleElement).attr('format');
     if (format === 'markdown') {
         const rule = {
-            __type: RULE_NAME,
-            __apply: processAddDescriptionRule,
+            ruleName: RULE_NAME,
+            applyRule: processAddDescriptionRule,
             jsonPath: $(ruleElement).attr('json-path')!,
             format,
             contentInMarkdown: $(ruleElement).text(),
         } as const;
         return {
             ...rule,
-            __apply: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => processAddDescriptionRule(objectPropertyInfo, json, rule),
+            applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => processAddDescriptionRule(objectPropertyInfo, json, rule),
         };
     }
     // eslint-disable-next-line no-console
