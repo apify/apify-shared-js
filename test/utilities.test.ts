@@ -288,10 +288,24 @@ describe('timeoutPromise()', () => {
     },
     "rotateUserAgents": false,
     "someCode": \`const a = 5;
-        function sum (a, b) {
-            return a + b;
-        }
-        sum(a, 10);\`
+function sum (a, b) {
+    return a + b;
+}
+sum(a, 10);\`
+}`;
+
+            expect(given).toBe(expected);
+        });
+
+        it('should not add extra indentation inside template literals for multiline code', () => {
+            const json = JSON.stringify({
+                initScript: "console.log('start');\nconsole.log('end');",
+            });
+
+            const given = makeInputJsFieldsReadable(json, ['initScript'], 4);
+            const expected = `{
+    "initScript": \`console.log('start');
+console.log('end');\`
 }`;
 
             expect(given).toBe(expected);
