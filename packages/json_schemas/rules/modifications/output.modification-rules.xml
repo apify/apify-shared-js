@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- REMOVE/REPLACE VALUES -->
+    <RemoveValue json-path="**/$id"/>
+    <!-- We need to use relative paths as later these will include json-schemas with descriptions -->
+    <ReplaceValue json-path="**/$ref" type="js">
+        value.replace(/^https:\/\/apify\.com\/schemas\/v1\/(.+)\.json/, '$1.ide.json')
+    </ReplaceValue>
+    <!-- In the original schema these attributes have default additionalProperties true, which is not great for code
+    auto-completion -->
+    <ReplaceValue json-path="/" type="js">
+        ({ ...value, additionalProperties: false })
+    </ReplaceValue>
+</Enchantments>

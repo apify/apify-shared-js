@@ -1,0 +1,214 @@
+{
+    "$id": "https://apify.com/schemas/v1/actor.json",
+    "title": "JSON schema of Apify Actor actor.json file",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "actorSpecification": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1
+        },
+        "name": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string",
+            "pattern": "^([0-9]+)\\.([0-9]+)(\\.[0-9]+){0,1}$"
+        },
+        "buildTag": {
+            "type": "string",
+            "default": "latest"
+        },
+        "environmentVariables": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "type": "string"
+                }
+            }
+        },
+        "dockerfile": {
+            "type": "string",
+            "default": "../Dockerfile"
+        },
+        "dockerContextDir": {
+            "type": "string"
+        },
+        "readme": {
+            "type": "string",
+            "default": "../README.md"
+        },
+        "changelog": {
+            "type": "string"
+        },
+        "minMemoryMbytes": {
+            "type": "integer",
+            "minimum": 128,
+            "maximum": 32768,
+            "description": "An integer between 128 and 32768 specifying the minimum memory in megabytes required.",
+            "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the minimum memory in megabytes required.</p>",
+            "markdownDescription": "An integer between `128` and `32768` specifying the minimum memory in megabytes required."
+        },
+        "maxMemoryMbytes": {
+            "type": "integer",
+            "minimum": 128,
+            "maximum": 32768,
+            "description": "An integer between 128 and 32768 specifying the maximum memory in megabytes allowed.",
+            "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the maximum memory in megabytes allowed.</p>",
+            "markdownDescription": "An integer between `128` and `32768` specifying the maximum memory in megabytes allowed."
+        },
+        "input": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object"
+                }
+            ],
+            "description": "Path or direct definition of the Actor's input schema.",
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's input schema."
+        },
+        "inputSchema": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object"
+                }
+            ],
+            "description": "Path or direct definition of the Actor's input schema.",
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's input schema."
+        },
+        "output": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "https://apify.com/schemas/v1/output.json"
+                }
+            ],
+            "description": "Path or direct definition of the Actor's output schema.",
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's output schema."
+        },
+        "outputSchema": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "https://apify.com/schemas/v1/output.json"
+                }
+            ],
+            "description": "Path or direct definition of the Actor's output schema.",
+            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
+            "markdownDescription": "Path or direct definition of the Actor's output schema."
+        },
+        "storages": {
+            "type": "object",
+            "properties": {
+                "keyValueStore": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "https://apify.com/schemas/v1/key-value-store.json"
+                        }
+                    ],
+                    "description": "Path or direct definition of the key-value store schema.",
+                    "x-intellij-html-description": "<p>Path or direct definition of the key-value store schema.</p>",
+                    "markdownDescription": "Path or direct definition of the key-value store schema."
+                },
+                "dataset": {
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "https://apify.com/schemas/v1/dataset.json"
+                        }
+                    ],
+                    "description": "Path or direct definition of the dataset schema, defining the structure of dataset items.",
+                    "x-intellij-html-description": "<p>Path or direct definition of the dataset schema, defining the structure of dataset items.</p>",
+                    "markdownDescription": "Path or direct definition of the dataset schema, defining the structure of dataset items."
+                },
+                "datasets": {
+                    "type": "object",
+                    "minProperties": 1,
+                    "maxProperties": 10,
+                    "additionalProperties": {
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "$ref": "https://apify.com/schemas/v1/dataset.json"
+                            }
+                        ]
+                    },
+                    "propertyNames": {
+                        "pattern": "^[A-Za-z][A-Za-z0-9_]{0,100}$"
+                    },
+                    "required": [
+                        "default"
+                    ]
+                }
+            },
+            "not": {
+                "required": [
+                    "dataset",
+                    "datasets"
+                ]
+            },
+            "additionalProperties": false,
+            "description": "An object for defining schemas for different storage types.",
+            "x-intellij-html-description": "<p>An object for defining schemas for different storage types.</p>",
+            "markdownDescription": "An object for defining schemas for different storage types."
+        },
+        "usesStandbyMode": {
+            "type": "boolean",
+            "description": "A boolean to enable Standby mode for the Actor.",
+            "x-intellij-html-description": "<p>A boolean to enable Standby mode for the Actor.</p>",
+            "markdownDescription": "A boolean to enable Standby mode for the Actor."
+        },
+        "webServerSchema": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object"
+                }
+            ],
+            "description": "Path or direct definition of the OpenAPI v3 schema of the Actor's web server.",
+            "x-intellij-html-description": "<p>Path or direct definition of the OpenAPI v3 schema of the Actor's web server.</p>",
+            "markdownDescription": "Path or direct definition of the OpenAPI v3 schema of the Actor's web server."
+        },
+        "webServerMcpPath": {
+            "type": "string",
+            "description": "Path of the streamable HTTP MCP endpoint exposed by the standby Actor",
+            "x-intellij-html-description": "<p>Path of the streamable HTTP MCP endpoint exposed by the standby Actor</p>",
+            "markdownDescription": "Path of the streamable HTTP MCP endpoint exposed by the standby Actor"
+        }
+    },
+    "required": [
+        "actorSpecification",
+        "version",
+        "name"
+    ]
+}

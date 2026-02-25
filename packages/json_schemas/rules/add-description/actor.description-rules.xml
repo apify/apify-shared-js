@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <AddDescription json-path="/properties/minMemoryMbytes" format="markdown">
+        An integer between `128` and `32768` specifying the minimum memory in megabytes required.
+    </AddDescription>
+    <AddDescription json-path="/properties/maxMemoryMbytes" format="markdown">
+        An integer between `128` and `32768` specifying the maximum memory in megabytes allowed.
+    </AddDescription>
+    <AddDescription json-path="/properties/input" format="markdown">
+        Path or direct definition of the Actor's input schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/inputSchema" format="markdown">
+        Path or direct definition of the Actor's input schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/output" format="markdown">
+        Path or direct definition of the Actor's output schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/outputSchema" format="markdown">
+        Path or direct definition of the Actor's output schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/storages" format="markdown">
+        An object for defining schemas for different storage types.
+    </AddDescription>
+    <AddDescription json-path="/properties/storages/properties/keyValueStore" format="markdown">
+        Path or direct definition of the key-value store schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/storages/properties/dataset" format="markdown">
+        Path or direct definition of the dataset schema, defining the structure of dataset items.
+    </AddDescription>
+    <AddDescription json-path="/properties/storages/properties/requestQueue" format="markdown">
+        Path for direct the request queue.
+    </AddDescription>
+    <AddDescription json-path="/properties/usesStandbyMode" format="markdown">
+        A boolean to enable Standby mode for the Actor.
+    </AddDescription>
+    <AddDescription json-path="/properties/webServerSchema" format="markdown">
+        Path or direct definition of the OpenAPI v3 schema of the Actor's web server.
+    </AddDescription>
+    <AddDescription json-path="/properties/webServerMcpPath" format="markdown">
+        Path of the streamable HTTP MCP endpoint exposed by the standby Actor
+    </AddDescription>
+</Enchantments>

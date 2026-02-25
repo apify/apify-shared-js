@@ -1,0 +1,357 @@
+{
+    "title": "JSON schema of Apify Actor key-value store schema",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "actorKeyValueStoreSchemaVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1,
+            "description": "The version of the key-value store schema. It's a required integer and must be exactly 1.",
+            "x-intellij-html-description": "<p>The version of the key-value store schema. It's a required integer and must be exactly 1.</p>",
+            "markdownDescription": "The version of the key-value store schema. It's a required integer and must be exactly 1."
+        },
+        "title": {
+            "type": "string",
+            "description": "The title of the key-value store schema. It's a required string.",
+            "x-intellij-html-description": "<p>The title of the key-value store schema. It's a required string.</p>",
+            "markdownDescription": "The title of the key-value store schema. It's a required string."
+        },
+        "description": {
+            "type": "string",
+            "description": "A description of the key-value store schema. It's an optional string.",
+            "x-intellij-html-description": "<p>A description of the key-value store schema. It's an optional string.</p>",
+            "markdownDescription": "A description of the key-value store schema. It's an optional string."
+        },
+        "type": {
+            "const": "object",
+            "description": "A constant value that must be \"object\", indicating the schema describes a JSON object.",
+            "x-intellij-html-description": "<p>A constant value that must be \"object\", indicating the schema describes a JSON object.</p>",
+            "markdownDescription": "A constant value that must be \"object\", indicating the schema describes a JSON object."
+        },
+        "collections": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "The title of the collection. It's an optional string.",
+                            "x-intellij-html-description": "<p>The title of the collection. It's an optional string.</p>",
+                            "markdownDescription": "The title of the collection. It's an optional string."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "A description of the collection. It's an optional string.",
+                            "x-intellij-html-description": "<p>A description of the collection. It's an optional string.</p>",
+                            "markdownDescription": "A description of the collection. It's an optional string."
+                        },
+                        "contentTypes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "description": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The array must contain at least one unique item. This attribute is required if jsonSchema is present.",
+                            "x-intellij-html-description": "<p>An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if <code>jsonSchema</code> is present.</p>",
+                            "markdownDescription": "An array of allowed content types for the files in the collection (e.g., \"application/json\", \"image/jpeg\"). The\narray must contain at least one unique item. This attribute is required if `jsonSchema` is present."
+                        },
+                        "keyPrefix": {
+                            "type": "string",
+                            "description": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is mutually exclusive with key.",
+                            "x-intellij-html-description": "<p>Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
+                            "markdownDescription": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
+                        },
+                        "key": {
+                            "type": "string",
+                            "description": "Exact key for a single file in the collection. This is used when a collection contains only one specific file. This attribute is mutually exclusive with keyPrefix.",
+                            "x-intellij-html-description": "<p>Exact key for a single file in the collection. This is used when a collection contains only one specific file.\nThis attribute is mutually exclusive with <code>keyPrefix</code>.</p>",
+                            "markdownDescription": "Exact key for a single file in the collection. This is used when a collection contains only one specific file.\nThis attribute is mutually exclusive with `keyPrefix`."
+                        },
+                        "jsonSchema": {
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc",
+                            "description": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only applicable when contentTypes includes \"application/json\".",
+                            "x-intellij-html-description": "<p>A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when <code>contentTypes</code> includes \"application/json\".</p>",
+                            "markdownDescription": "A JSON schema object that defines the structure of the JSON content for files in the collection. This is only\napplicable when `contentTypes` includes \"application/json\"."
+                        }
+                    },
+                    "oneOf": [
+                        {
+                            "required": [
+                                "key"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "keyPrefix"
+                            ]
+                        }
+                    ],
+                    "dependencies": {
+                        "jsonSchema": {
+                            "properties": {
+                                "contentTypes": {
+                                    "const": [
+                                        "application/json"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "contentTypes"
+                            ]
+                        }
+                    },
+                    "description": "A property within the collections object that defines the schema for a specific collection. The property name can be any string.",
+                    "x-intellij-html-description": "<p>A property within the <code>collections</code> object that defines the schema for a specific collection. The property name\ncan be any string.</p>",
+                    "markdownDescription": "A property within the `collections` object that defines the schema for a specific collection. The property name\ncan be any string."
+                }
+            },
+            "description": "A required object where each property represents a collection of files in the key-value store. Each property name is an arbitrary string that identifies the collection.",
+            "x-intellij-html-description": "<p>A required object where each property represents a collection of files in the key-value store. Each property\nname is an arbitrary string that identifies the collection.</p>",
+            "markdownDescription": "A required object where each property represents a collection of files in the key-value store. Each property\nname is an arbitrary string that identifies the collection."
+        }
+    },
+    "required": [
+        "actorKeyValueStoreSchemaVersion",
+        "title",
+        "collections"
+    ],
+    "additionalProperties": false,
+    "definitions": {
+        "draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc": {
+            "title": "Core schema meta-schema",
+            "definitions": {
+                "schemaArray": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                    }
+                },
+                "nonNegativeInteger": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "nonNegativeIntegerDefault0": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
+                        },
+                        {
+                            "default": 0
+                        }
+                    ]
+                },
+                "simpleTypes": {
+                    "enum": [
+                        "array",
+                        "boolean",
+                        "integer",
+                        "null",
+                        "number",
+                        "object",
+                        "string"
+                    ]
+                },
+                "stringArray": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "default": []
+                }
+            },
+            "type": [
+                "object",
+                "boolean"
+            ],
+            "properties": {
+                "$ref": {
+                    "type": "string",
+                    "format": "uri-reference"
+                },
+                "$comment": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "default": true,
+                "readOnly": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "examples": {
+                    "type": "array",
+                    "items": true
+                },
+                "multipleOf": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                },
+                "maximum": {
+                    "type": "number"
+                },
+                "exclusiveMaximum": {
+                    "type": "number"
+                },
+                "minimum": {
+                    "type": "number"
+                },
+                "exclusiveMinimum": {
+                    "type": "number"
+                },
+                "maxLength": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
+                },
+                "minLength": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
+                },
+                "pattern": {
+                    "type": "string",
+                    "format": "regex"
+                },
+                "additionalItems": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "items": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                        },
+                        {
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
+                        }
+                    ],
+                    "default": true
+                },
+                "maxItems": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
+                },
+                "minItems": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
+                },
+                "uniqueItems": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "contains": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "maxProperties": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeInteger"
+                },
+                "minProperties": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/nonNegativeIntegerDefault0"
+                },
+                "required": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/stringArray"
+                },
+                "additionalProperties": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "definitions": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                    },
+                    "default": {}
+                },
+                "properties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                    },
+                    "default": {}
+                },
+                "patternProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                    },
+                    "propertyNames": {
+                        "format": "regex"
+                    },
+                    "default": {}
+                },
+                "dependencies": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                            },
+                            {
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/stringArray"
+                            }
+                        ]
+                    }
+                },
+                "propertyNames": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "const": true,
+                "enum": {
+                    "type": "array",
+                    "items": true,
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "type": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/simpleTypes"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/simpleTypes"
+                            },
+                            "minItems": 1,
+                            "uniqueItems": true
+                        }
+                    ]
+                },
+                "format": {
+                    "type": "string"
+                },
+                "contentMediaType": {
+                    "type": "string"
+                },
+                "contentEncoding": {
+                    "type": "string"
+                },
+                "if": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "then": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "else": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                },
+                "allOf": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
+                },
+                "anyOf": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
+                },
+                "oneOf": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc/definitions/schemaArray"
+                },
+                "not": {
+                    "$ref": "#/definitions/draft-07-schema-ide-json-06a51ece1794339a9c5634acaf201bcc"
+                }
+            },
+            "default": true
+        }
+    }
+}

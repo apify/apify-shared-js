@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enchantments xmlns="https://apify.com/json/modifications"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://apify.com/json/modifications ../modification-rules-schema.xsd">
+    <!-- ADD DESCRIPTIONS -->
+    <AddDescription json-path="/properties/actorSpecification" format="markdown">
+        Specifies the version of the dataset schema structure document. Only version 1 is currently supported.
+    </AddDescription>
+    <AddDescription json-path="/properties/title" format="markdown">
+        The title of the Actor dataset schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/description" format="markdown">
+        The description of the Actor dataset schema.
+    </AddDescription>
+    <AddDescription json-path="/properties/fields" format="markdown">
+        A JSON schema compatible object that defines the schema for a single dataset object. It uses JSON Schema Draft
+        2020-12 or other compatible formats.
+    </AddDescription>
+    <AddDescription json-path="/properties/views" format="markdown">
+        An object containing descriptions of API and UI views for the dataset.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^" format="markdown">
+        Represents a specific view definition within the `views` object. A view must have either a `title` and
+        `transformation` or a `title` and `display`.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/title" format="markdown">
+        The title of the view, which is visible in the UI's Output tab and in the API.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/description" format="markdown">
+        The description of the view, which is only available in the API response.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation" format="markdown">
+        The definition of data transformation applied when dataset data is loaded from the Dataset API.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/fields"
+                    format="markdown">
+        An array of strings that selects the fields to be presented in the output. The order of the fields determines
+        the order of the columns in the UI visualization.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/clean"
+                    format="markdown">
+        A boolean flag. When true, it removes fields from the output that are not specified in the `fields` array.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/omit"
+                    format="markdown">
+        An array of strings that specifies fields to be removed from the output. Nested field names can also be used.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/unwind"
+                    format="markdown">
+        An array of strings that specifies fields to deconstruct nested children into a parent object, effectively
+        flattening the structure.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/flatten"
+                    format="markdown">
+        An array of strings that specifies nested objects to transform into a flat structure.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/desc"
+                    format="markdown">
+        A boolean flag. If `true`, results are sorted in descending order based on the time they were written to the
+        dataset (newest first). By default, they are sorted in ascending order.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/skipHidden"
+                    format="markdown">
+        A boolean flag. If `true`, fields marked as hidden in the original schema are skipped.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/transformation/properties/skipEmpty"
+                    format="markdown">
+        A boolean flag. If `true`, empty fields are skipped.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/display" format="markdown">
+        The definition for the visual presentation of the data in the Output tab UI.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/display/properties/component"
+                    format="markdown">
+        A string that specifies the type of UI component to use for displaying the data. The only valid value is "table"
+        or "grid".
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/display/properties/options"
+                    format="markdown">
+        An object for passing additional options to the display component. The specific properties depend on the
+        `component` used.
+    </AddDescription>
+    <AddDescription json-path="/properties/views/patternProperties/^/properties/display/properties/properties"
+                    format="markdown">
+        An object where keys match the `transformation.fields` and values are `ViewDisplayProperty` objects. It is used
+        to customize the display of specific columns, such as their label or format.
+    </AddDescription>
+</Enchantments>

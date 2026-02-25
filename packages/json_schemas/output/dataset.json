@@ -1,0 +1,203 @@
+{
+    "$id": "https://apify.com/schemas/v1/dataset.json",
+    "title": "JSON schema of Apify Actor dataset schema",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "actorSpecification": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1,
+            "description": "Specifies the version of the dataset schema structure document. Only version 1 is currently supported.",
+            "x-intellij-html-description": "<p>Specifies the version of the dataset schema structure document. Only version 1 is currently supported.</p>",
+            "markdownDescription": "Specifies the version of the dataset schema structure document. Only version 1 is currently supported."
+        },
+        "title": {
+            "type": "string",
+            "description": "The title of the Actor dataset schema.",
+            "x-intellij-html-description": "<p>The title of the Actor dataset schema.</p>",
+            "markdownDescription": "The title of the Actor dataset schema."
+        },
+        "description": {
+            "type": "string",
+            "description": "The description of the Actor dataset schema.",
+            "x-intellij-html-description": "<p>The description of the Actor dataset schema.</p>",
+            "markdownDescription": "The description of the Actor dataset schema."
+        },
+        "fields": {
+            "$ref": "http://json-schema.org/draft-07/schema#",
+            "description": "A JSON schema compatible object that defines the schema for a single dataset object. It uses JSON Schema Draft 2020-12 or other compatible formats.",
+            "x-intellij-html-description": "<p>A JSON schema compatible object that defines the schema for a single dataset object. It uses JSON Schema Draft\n2020-12 or other compatible formats.</p>",
+            "markdownDescription": "A JSON schema compatible object that defines the schema for a single dataset object. It uses JSON Schema Draft\n2020-12 or other compatible formats."
+        },
+        "views": {
+            "type": "object",
+            "patternProperties": {
+                "^": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "The title of the view, which is visible in the UI's Output tab and in the API.",
+                            "x-intellij-html-description": "<p>The title of the view, which is visible in the UI's Output tab and in the API.</p>",
+                            "markdownDescription": "The title of the view, which is visible in the UI's Output tab and in the API."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "The description of the view, which is only available in the API response.",
+                            "x-intellij-html-description": "<p>The description of the view, which is only available in the API response.</p>",
+                            "markdownDescription": "The description of the view, which is only available in the API response."
+                        },
+                        "transformation": {
+                            "type": "object",
+                            "properties": {
+                                "fields": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "An array of strings that selects the fields to be presented in the output. The order of the fields determines the order of the columns in the UI visualization.",
+                                    "x-intellij-html-description": "<p>An array of strings that selects the fields to be presented in the output. The order of the fields determines\nthe order of the columns in the UI visualization.</p>",
+                                    "markdownDescription": "An array of strings that selects the fields to be presented in the output. The order of the fields determines\nthe order of the columns in the UI visualization."
+                                },
+                                "clean": {
+                                    "type": "boolean",
+                                    "default": false,
+                                    "description": "A boolean flag. When true, it removes fields from the output that are not specified in the fields array.",
+                                    "x-intellij-html-description": "<p>A boolean flag. When true, it removes fields from the output that are not specified in the <code>fields</code> array.</p>",
+                                    "markdownDescription": "A boolean flag. When true, it removes fields from the output that are not specified in the `fields` array."
+                                },
+                                "omit": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "An array of strings that specifies fields to be removed from the output. Nested field names can also be used.",
+                                    "x-intellij-html-description": "<p>An array of strings that specifies fields to be removed from the output. Nested field names can also be used.</p>",
+                                    "markdownDescription": "An array of strings that specifies fields to be removed from the output. Nested field names can also be used."
+                                },
+                                "unwind": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "An array of strings that specifies fields to deconstruct nested children into a parent object, effectively flattening the structure.",
+                                    "x-intellij-html-description": "<p>An array of strings that specifies fields to deconstruct nested children into a parent object, effectively\nflattening the structure.</p>",
+                                    "markdownDescription": "An array of strings that specifies fields to deconstruct nested children into a parent object, effectively\nflattening the structure."
+                                },
+                                "flatten": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "uniqueItems": true,
+                                    "description": "An array of strings that specifies nested objects to transform into a flat structure.",
+                                    "x-intellij-html-description": "<p>An array of strings that specifies nested objects to transform into a flat structure.</p>",
+                                    "markdownDescription": "An array of strings that specifies nested objects to transform into a flat structure."
+                                },
+                                "desc": {
+                                    "type": "boolean",
+                                    "description": "A boolean flag. If true, results are sorted in descending order based on the time they were written to the dataset (newest first). By default, they are sorted in ascending order.",
+                                    "x-intellij-html-description": "<p>A boolean flag. If <code>true</code>, results are sorted in descending order based on the time they were written to the\ndataset (newest first). By default, they are sorted in ascending order.</p>",
+                                    "markdownDescription": "A boolean flag. If `true`, results are sorted in descending order based on the time they were written to the\ndataset (newest first). By default, they are sorted in ascending order."
+                                },
+                                "skipHidden": {
+                                    "type": "boolean",
+                                    "description": "A boolean flag. If true, fields marked as hidden in the original schema are skipped.",
+                                    "x-intellij-html-description": "<p>A boolean flag. If <code>true</code>, fields marked as hidden in the original schema are skipped.</p>",
+                                    "markdownDescription": "A boolean flag. If `true`, fields marked as hidden in the original schema are skipped."
+                                },
+                                "skipEmpty": {
+                                    "type": "boolean",
+                                    "description": "A boolean flag. If true, empty fields are skipped.",
+                                    "x-intellij-html-description": "<p>A boolean flag. If <code>true</code>, empty fields are skipped.</p>",
+                                    "markdownDescription": "A boolean flag. If `true`, empty fields are skipped."
+                                }
+                            },
+                            "description": "The definition of data transformation applied when dataset data is loaded from the Dataset API.",
+                            "x-intellij-html-description": "<p>The definition of data transformation applied when dataset data is loaded from the Dataset API.</p>",
+                            "markdownDescription": "The definition of data transformation applied when dataset data is loaded from the Dataset API."
+                        },
+                        "display": {
+                            "type": "object",
+                            "properties": {
+                                "component": {
+                                    "type": "string",
+                                    "enum": [
+                                        "table",
+                                        "grid"
+                                    ],
+                                    "description": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\" or \"grid\".",
+                                    "x-intellij-html-description": "<p>A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\".</p>",
+                                    "markdownDescription": "A string that specifies the type of UI component to use for displaying the data. The only valid value is \"table\"\nor \"grid\"."
+                                },
+                                "options": {
+                                    "type": "object",
+                                    "description": "An object for passing additional options to the display component. The specific properties depend on the component used.",
+                                    "x-intellij-html-description": "<p>An object for passing additional options to the display component. The specific properties depend on the\n<code>component</code> used.</p>",
+                                    "markdownDescription": "An object for passing additional options to the display component. The specific properties depend on the\n`component` used."
+                                },
+                                "properties": {
+                                    "type": "object",
+                                    "description": "An object where keys match the transformation.fields and values are ViewDisplayProperty objects. It is used to customize the display of specific columns, such as their label or format.",
+                                    "x-intellij-html-description": "<p>An object where keys match the <code>transformation.fields</code> and values are <code>ViewDisplayProperty</code> objects. It is used\nto customize the display of specific columns, such as their label or format.</p>",
+                                    "markdownDescription": "An object where keys match the `transformation.fields` and values are `ViewDisplayProperty` objects. It is used\nto customize the display of specific columns, such as their label or format."
+                                }
+                            },
+                            "required": [
+                                "component"
+                            ],
+                            "description": "The definition for the visual presentation of the data in the Output tab UI.",
+                            "x-intellij-html-description": "<p>The definition for the visual presentation of the data in the Output tab UI.</p>",
+                            "markdownDescription": "The definition for the visual presentation of the data in the Output tab UI."
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "title",
+                                "transformation"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "title",
+                                "display"
+                            ]
+                        }
+                    ],
+                    "description": "Represents a specific view definition within the views object. A view must have either a title and transformation or a title and display.",
+                    "x-intellij-html-description": "<p>Represents a specific view definition within the <code>views</code> object. A view must have either a <code>title</code> and\n<code>transformation</code> or a <code>title</code> and <code>display</code>.</p>",
+                    "markdownDescription": "Represents a specific view definition within the `views` object. A view must have either a `title` and\n`transformation` or a `title` and `display`."
+                }
+            },
+            "description": "An object containing descriptions of API and UI views for the dataset.",
+            "x-intellij-html-description": "<p>An object containing descriptions of API and UI views for the dataset.</p>",
+            "markdownDescription": "An object containing descriptions of API and UI views for the dataset."
+        }
+    },
+    "anyOf": [
+        {
+            "required": [
+                "actorSpecification",
+                "views"
+            ]
+        },
+        {
+            "required": [
+                "actorSpecification",
+                "fields"
+            ]
+        }
+    ],
+    "additionalProperties": false
+}
