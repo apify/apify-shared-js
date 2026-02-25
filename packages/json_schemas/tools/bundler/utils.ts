@@ -51,18 +51,6 @@ function md5(input: string): string {
 }
 
 async function includeJsonByPath(absolutePath: string): Promise<JsonSchemaObject> {
-    if (/^https?:\/\//.test(absolutePath)) {
-        const res = await fetch(absolutePath);
-        if (!res.ok) {
-            throw new Error(`Failed to fetch "${absolutePath}": HTTP ${res.status} ${res.statusText}`);
-        }
-        try {
-            return await res.json();
-        } catch {
-            throw new Error(`Invalid JSON in "${absolutePath}"`);
-        }
-    }
-
     try {
         return JSON.parse(await fs.readFile(absolutePath, 'utf8'));
     } catch (error) {
