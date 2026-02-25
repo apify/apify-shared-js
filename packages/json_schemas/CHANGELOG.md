@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.13.0...@apify/json_schemas@0.14.0) (2026-02-25)
+
+
+### Features
+
+* **json_schemas:** Bundle json schemas ([#597](https://github.com/apify/apify-shared-js/issues/597)) ([d474475](https://github.com/apify/apify-shared-js/commit/d47447546e067425cbfb59ef8631fe9a72d195ea))
+
+
+
+
+
 # [0.13.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.12.3...@apify/json_schemas@0.13.0) (2026-02-11)
 
 
