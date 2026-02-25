@@ -331,7 +331,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
         // If it's not a function declaration or multiline JS code then we do nothing.
         if (!isSingleFunction && !isMultiline) return;
 
-        const spaces = (new Array(isSingleFunction ? jsonSpacing : jsonSpacing * 2)).fill(' ').join('');
+        const spaces = isSingleFunction ? ' '.repeat(jsonSpacing) : '';
         maybeFunction = maybeFunction
             .split('\n').join(`\n${spaces}`) // This prefixes each line with spaces.
             .trim(); // Trim whitespace on both sides
