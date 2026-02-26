@@ -1,6 +1,6 @@
 {
     "name": "@apify/json_schemas",
-    "version": "0.14.1",
+    "version": "0.14.2",
     "description": "Publicly available JSON schemas for Apify platform",
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
@@ -55,7 +55,7 @@
         "tsx": "^4.6.2"
     },
     "dependencies": {
-        "@apify/consts": "^2.51.0",
+        "@apify/consts": "^2.51.1",
         "ajv": "^8.17.1"
     }
 }

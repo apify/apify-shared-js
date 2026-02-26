@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.51.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.51.0...@apify/consts@2.51.1) (2026-02-26)
+
+
+### Bug Fixes
+
+* Support URL-encoded characters in LinkedIn profile regex ([#601](https://github.com/apify/apify-shared-js/issues/601)) ([2d39ebd](https://github.com/apify/apify-shared-js/commit/2d39ebdf0fbefa937400a0443599134da6ec5582))
+
+
+
+
+
 # [2.51.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.50.0...@apify/consts@2.51.0) (2026-02-09)
 
 
