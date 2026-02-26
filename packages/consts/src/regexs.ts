@@ -79,7 +79,7 @@ export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
  * For matching linkedin URLs for both profiles and companies.
  * Used for validating urls in user settings.
  */
-export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?([a-z]{2}\.)?linkedin\.com\/(in|company)\/([A-Za-z0-9_-]+)\/?$/;
+export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?([a-z]{2}\.)?linkedin\.com\/(in|company)\/((?:[A-Za-z0-9_-]|%[0-9A-Fa-f]{2})+)\/?$/;
 
 /**
  * @deprecated Discontinue usage of this regexps, in favor of HTTP_URL_REGEX

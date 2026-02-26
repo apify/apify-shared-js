@@ -301,6 +301,8 @@ const tests = {
             'https://www.cz.linkedin.com/in/username/',
             'https://cz.linkedin.com/company/apifytech',
             'http://cz.linkedin.com/company/apifytech',
+            'https://www.linkedin.com/in/martin-kri%C5%A1tof-b6b78177/',
+            'https://www.linkedin.com/in/jan%20novak',
         ],
         invalid: [
             'https://www.linkedin.com/in/',
