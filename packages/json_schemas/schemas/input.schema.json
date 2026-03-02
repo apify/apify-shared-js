@@ -373,6 +373,8 @@
                     "additionalProperties": {
                         "type": "boolean"
                     },
+                    "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
+                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
                     "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 },
                 "unevaluatedProperties": false,
@@ -429,6 +431,8 @@
                     "additionalProperties": {
                         "type": "boolean"
                     },
+                    "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
+                    "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
                     "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 }
             }
@@ -997,6 +1001,8 @@
                 "additionalProperties": {
                     "type": "boolean"
                 },
+                "propertyNames": { "$ref": "#/definitions/propertyNamesDefinition" },
+                "patternProperties": { "$ref": "#/definitions/patternPropertiesDefinition" },
                 "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
@@ -1644,6 +1650,32 @@
                 "patternValue": { "type": "string" }
             },
             "additionalProperties": false
+        },
+        "propertyNamesDefinition": {
+            "title": "Utils: Property names definition",
+            "type": "object",
+            "properties": {
+                "pattern": { "type": "string" }
+            },
+            "additionalProperties": false,
+            "required": ["pattern"]
+        },
+        "patternPropertiesDefinition": {
+            "title": "Utils: Pattern properties definition",
+            "type": "object",
+            "properties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "type": { "enum": ["string"] },
+                        "pattern": { "type": "string" }
+                    },
+                    "additionalProperties": false,
+                    "required": ["type", "pattern"]
+                }
+            },
+            "additionalProperties": false,
+            "required": [".*"]
         }
     }
 }
