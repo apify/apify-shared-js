@@ -88,6 +88,17 @@ export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[
     uniqueItems?: boolean;
 }
 
+export type McpConnectionFieldDefinition =
+    Omit<CommonFieldDefinition<string>, 'default' | 'prefill' | 'example' | 'nullable'>
+    & {
+        type: 'string';
+        editor: 'mcpConnection';
+        serverUrl: string;
+        namespace?: string;
+        requiredScopes?: readonly string[];
+        requiredTools?: readonly string[];
+    }
+
 type AllTypes = StringFieldDefinition['type']
     | BooleanFieldDefinition['type']
     | IntegerFieldDefinition['type']
@@ -109,6 +120,7 @@ export type FieldDefinition = StringFieldDefinition
     | MixedFieldDefinition
     | ResourceFieldDefinition
     | ResourceArrayFieldDefinition
+    | McpConnectionFieldDefinition
 
 /**
  * Type with checked base, but not properties
