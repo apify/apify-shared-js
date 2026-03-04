@@ -43,6 +43,7 @@
                         { "$ref": "#/definitions/booleanProperty" },
                         { "$ref": "#/definitions/resourceProperty" },
                         { "$ref": "#/definitions/resourceArrayProperty" },
+                        { "$ref": "#/definitions/mcpConnectionProperty" },
                         { "$ref": "#/definitions/anyProperty" }
                     ]
                 }
@@ -641,6 +642,41 @@
                     }
                 }
             ]
+        },
+        "mcpConnectionProperty": {
+            "title": "MCP connection property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "editor": { "enum": ["mcpConnection"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "serverUrl": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "namespace": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$"
+                },
+                "requiredScopes": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "requiredTools": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "sectionCaption": { "type": "string" },
+                "sectionDescription": { "type": "string" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
+            },
+            "required": ["type", "editor", "title", "description", "serverUrl"]
         },
         "anyProperty": {
             "title": "Any property",

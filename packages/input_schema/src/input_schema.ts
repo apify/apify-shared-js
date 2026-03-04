@@ -269,10 +269,24 @@ function validateFieldAgainstSchemaDefinition(
         validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
+    // If the editor is "mcpConnection" then it's an MCP connection type.
+    if (fieldSchema.editor === 'mcpConnection') {
+        const definition = matchingDefinitions
+            .filter((item) => item.properties.editor?.enum?.[0] === 'mcpConnection')
+            .pop();
+        if (!definition) throw new Error('Input schema validation failed to find "MCP connection property" definition');
+        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+        return;
+    }
     // Otherwise we use the other definition.
-    const definition = matchingDefinitions.filter((item) => !item.properties.enum && !item.properties.resourceType).pop();
-    if (!definition) throw new Error('Input schema validation failed to find other than "enum property" definition');
-
+    const definition = matchingDefinitions
+        .filter((item) => (
+            !item.properties.enum
+            && !item.properties.resourceType
+            && item.properties.editor?.enum?.[0] !== 'mcpConnection'
+        ))
+        .pop();
+    if (!definition) throw new Error('Input schema validation failed to find other than "enum", "resource" or "MCP connection" definition');
     validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
 }
 
