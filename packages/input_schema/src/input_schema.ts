@@ -6,6 +6,7 @@ import { inputSchema as schema } from '@apify/json_schemas';
 import { m } from './intl';
 import type {
     ArrayFieldDefinition,
+    CommonMcpConnectionFieldDefinition,
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
@@ -269,11 +270,9 @@ function validateFieldAgainstSchemaDefinition(
         validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
     }
-    // If the editor is "mcpConnection" then it's an MCP connection type.
-    if (fieldSchema.editor === 'mcpConnection') {
-        const definition = matchingDefinitions
-            .filter((item) => item.properties.editor?.enum?.[0] === 'mcpConnection')
-            .pop();
+    // If the definition contains "mcp" property then it's MCP connection type.
+    if ((fieldSchema as CommonMcpConnectionFieldDefinition<unknown>).mcp) {
+        const definition = matchingDefinitions.filter((item) => !!item.properties.mcp).pop();
         if (!definition) throw new Error('Input schema validation failed to find "MCP connection property" definition');
         validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
         return;
@@ -283,7 +282,7 @@ function validateFieldAgainstSchemaDefinition(
         .filter((item) => (
             !item.properties.enum
             && !item.properties.resourceType
-            && item.properties.editor?.enum?.[0] !== 'mcpConnection'
+            && !item.properties.mcp
         ))
         .pop();
     if (!definition) throw new Error('Input schema validation failed to find other than "enum", "resource" or "MCP connection" definition');

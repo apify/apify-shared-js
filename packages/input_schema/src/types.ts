@@ -88,16 +88,28 @@ export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[
     uniqueItems?: boolean;
 }
 
-export type McpConnectionFieldDefinition =
-    Omit<CommonFieldDefinition<string>, 'default' | 'prefill' | 'example' | 'nullable'>
+type McpPropertyDefinition = {
+    serverUrls?: readonly string[];
+    tools?: readonly string[];
+}
+
+export type CommonMcpConnectionFieldDefinition<T> =
+    Omit<CommonFieldDefinition<T>, 'default' | 'prefill' | 'example' | 'nullable'>
     & {
-        type: 'string';
-        editor: 'mcpConnection';
-        serverUrl: string;
-        namespace?: string;
-        requiredScopes?: readonly string[];
-        requiredTools?: readonly string[];
+        editor?: 'mcpConnection';
+        mcp: McpPropertyDefinition;
     }
+
+export type McpConnectionFieldDefinition = CommonMcpConnectionFieldDefinition<string> & {
+    type: 'string';
+}
+
+export type McpConnectionArrayFieldDefinition = CommonMcpConnectionFieldDefinition<string[]> & {
+    type: 'array';
+    maxItems?: number;
+    minItems?: number;
+    uniqueItems?: boolean;
+}
 
 type AllTypes = StringFieldDefinition['type']
     | BooleanFieldDefinition['type']
@@ -121,6 +133,7 @@ export type FieldDefinition = StringFieldDefinition
     | ResourceFieldDefinition
     | ResourceArrayFieldDefinition
     | McpConnectionFieldDefinition
+    | McpConnectionArrayFieldDefinition
 
 /**
  * Type with checked base, but not properties

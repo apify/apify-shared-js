@@ -87,6 +87,12 @@
                             "$ref": "#/definitions/resourceArrayProperty"
                         },
                         {
+                            "$ref": "#/definitions/mcpConnectionProperty"
+                        },
+                        {
+                            "$ref": "#/definitions/mcpConnectionArrayProperty"
+                        },
+                        {
                             "$ref": "#/definitions/anyProperty"
                         }
                     ]
@@ -1983,6 +1989,179 @@
                     }
                 }
             ]
+        },
+        "mcpConnectionProperty": {
+            "title": "MCP connection property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": {
+                    "enum": [
+                        "string"
+                    ],
+                    "description": "Specifies the type of input - string for single or array for multiple MCP connections.",
+                    "x-intellij-html-description": "<p>Specifies the type of input - string for single or array for multiple MCP connections.</p>",
+                    "markdownDescription": "Specifies the type of input - string for single or array for multiple MCP connections."
+                },
+                "editor": {
+                    "enum": [
+                        "mcpConnection"
+                    ],
+                    "description": "Visual editor used for the input field. Always mcpConnection — displays a connection picker filtered by mcp constraints.",
+                    "x-intellij-html-description": "<p>Visual editor used for the input field. Always <code>mcpConnection</code> — displays a connection picker filtered by <code>mcp</code> constraints.</p>",
+                    "markdownDescription": "Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Title of the field in UI.",
+                    "x-intellij-html-description": "<p>Title of the field in UI.</p>",
+                    "markdownDescription": "Title of the field in UI."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Help text for the input that will be displayed above the UI fields.",
+                    "x-intellij-html-description": "<p>Help text for the input that will be displayed above the UI fields.</p>",
+                    "markdownDescription": "Help text for the input that will be displayed above the UI fields."
+                },
+                "mcp": {
+                    "$ref": "#/definitions/mcpProperty",
+                    "description": "Declares which MCP server connections this field accepts. The UI shows only compatible connections.",
+                    "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. The UI shows only compatible connections.</p>",
+                    "markdownDescription": "Declares which MCP server connections this field accepts. The UI shows only compatible connections."
+                },
+                "sectionCaption": {
+                    "type": "string",
+                    "description": "If this property is set, then all fields following this field (this field included) will be separated into a collapsible section with the value set as its caption. The section ends at the last field or the next field which has the sectionCaption property set.",
+                    "x-intellij-html-description": "<p>If this property is set, then all fields following this field (this field included) will be separated into a\ncollapsible section with the value set as its caption. The section ends at the last field or the next field\nwhich has the <code>sectionCaption</code> property set.</p>",
+                    "markdownDescription": "If this property is set, then all fields following this field (this field included) will be separated into a\ncollapsible section with the value set as its caption. The section ends at the last field or the next field\nwhich has the `sectionCaption` property set."
+                },
+                "sectionDescription": {
+                    "type": "string",
+                    "description": "If the sectionCaption property is set, then you can use this property to provide additional description to the section. The description will be visible right under the caption when the section is open.",
+                    "x-intellij-html-description": "<p>If the <code>sectionCaption</code> property is set, then you can use this property to provide additional description to the\nsection. The description will be visible right under the caption when the section is open.</p>",
+                    "markdownDescription": "If the `sectionCaption` property is set, then you can use this property to provide additional description to the\nsection. The description will be visible right under the caption when the section is open."
+                },
+                "errorMessage": {
+                    "$ref": "#/definitions/errorMessage"
+                }
+            },
+            "required": [
+                "type",
+                "title",
+                "description",
+                "mcp"
+            ]
+        },
+        "mcpConnectionArrayProperty": {
+            "title": "MCP connection array property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": {
+                    "enum": [
+                        "array"
+                    ],
+                    "description": "Specifies the type of input - string for single or array for multiple MCP connections.",
+                    "x-intellij-html-description": "<p>Specifies the type of input - string for single or array for multiple MCP connections.</p>",
+                    "markdownDescription": "Specifies the type of input - string for single or array for multiple MCP connections."
+                },
+                "editor": {
+                    "enum": [
+                        "mcpConnection"
+                    ],
+                    "description": "Visual editor used for the input field. Always mcpConnection — displays a connection picker filtered by mcp constraints.",
+                    "x-intellij-html-description": "<p>Visual editor used for the input field. Always <code>mcpConnection</code> — displays a connection picker filtered by <code>mcp</code> constraints.</p>",
+                    "markdownDescription": "Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Title of the field in UI.",
+                    "x-intellij-html-description": "<p>Title of the field in UI.</p>",
+                    "markdownDescription": "Title of the field in UI."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Help text for the input that will be displayed above the UI fields.",
+                    "x-intellij-html-description": "<p>Help text for the input that will be displayed above the UI fields.</p>",
+                    "markdownDescription": "Help text for the input that will be displayed above the UI fields."
+                },
+                "mcp": {
+                    "$ref": "#/definitions/mcpProperty",
+                    "description": "Declares which MCP server connections this field accepts. The UI shows only compatible connections.",
+                    "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. The UI shows only compatible connections.</p>",
+                    "markdownDescription": "Declares which MCP server connections this field accepts. The UI shows only compatible connections."
+                },
+                "minItems": {
+                    "type": "integer",
+                    "description": "Minimum number of MCP connections required.",
+                    "x-intellij-html-description": "<p>Minimum number of MCP connections required.</p>",
+                    "markdownDescription": "Minimum number of MCP connections required."
+                },
+                "maxItems": {
+                    "type": "integer",
+                    "description": "Maximum number of MCP connections allowed.",
+                    "x-intellij-html-description": "<p>Maximum number of MCP connections allowed.</p>",
+                    "markdownDescription": "Maximum number of MCP connections allowed."
+                },
+                "uniqueItems": {
+                    "type": "boolean",
+                    "description": "Specifies whether the array should contain only unique connections.",
+                    "x-intellij-html-description": "<p>Specifies whether the array should contain only unique connections.</p>",
+                    "markdownDescription": "Specifies whether the array should contain only unique connections."
+                },
+                "sectionCaption": {
+                    "type": "string",
+                    "description": "If this property is set, then all fields following this field (this field included) will be separated into a collapsible section with the value set as its caption. The section ends at the last field or the next field which has the sectionCaption property set.",
+                    "x-intellij-html-description": "<p>If this property is set, then all fields following this field (this field included) will be separated into a\ncollapsible section with the value set as its caption. The section ends at the last field or the next field\nwhich has the <code>sectionCaption</code> property set.</p>",
+                    "markdownDescription": "If this property is set, then all fields following this field (this field included) will be separated into a\ncollapsible section with the value set as its caption. The section ends at the last field or the next field\nwhich has the `sectionCaption` property set."
+                },
+                "sectionDescription": {
+                    "type": "string",
+                    "description": "If the sectionCaption property is set, then you can use this property to provide additional description to the section. The description will be visible right under the caption when the section is open.",
+                    "x-intellij-html-description": "<p>If the <code>sectionCaption</code> property is set, then you can use this property to provide additional description to the\nsection. The description will be visible right under the caption when the section is open.</p>",
+                    "markdownDescription": "If the `sectionCaption` property is set, then you can use this property to provide additional description to the\nsection. The description will be visible right under the caption when the section is open."
+                },
+                "errorMessage": {
+                    "$ref": "#/definitions/errorMessage"
+                }
+            },
+            "required": [
+                "type",
+                "title",
+                "description",
+                "mcp"
+            ]
+        },
+        "mcpProperty": {
+            "title": "MCP property definition",
+            "type": "object",
+            "properties": {
+                "serverUrls": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "description": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", any connection is accepted.",
+                    "x-intellij-html-description": "<p>URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, any connection is accepted.</p>",
+                    "markdownDescription": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, any connection is accepted."
+                },
+                "tools": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "description": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", all tools are available.",
+                    "x-intellij-html-description": "<p>Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, all tools are available.</p>",
+                    "markdownDescription": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, all tools are available."
+                }
+            },
+            "additionalProperties": false
         },
         "anyProperty": {
             "title": "Any property",
