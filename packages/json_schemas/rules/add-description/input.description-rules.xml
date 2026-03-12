@@ -680,6 +680,33 @@
     <AddDescription json-path="/definitions/mcpConnectionArrayProperty/properties/uniqueItems" format="markdown">
         Specifies whether the array should contain only unique connections.
     </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionProperty/properties/type" format="markdown">
+        Specifies the type of input - string for single or array for multiple MCP connections.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionProperty/properties/editor" format="markdown">
+        Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionProperty/properties/mcp" format="markdown">
+        Declares which MCP server connections this field accepts. The UI shows only compatible connections.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/type" format="markdown">
+        Specifies the type of input - string for single or array for multiple MCP connections.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/editor" format="markdown">
+        Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/mcp" format="markdown">
+        Declares which MCP server connections this field accepts. The UI shows only compatible connections.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/minItems" format="markdown">
+        Minimum number of MCP connections required.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/maxItems" format="markdown">
+        Maximum number of MCP connections allowed.
+    </AddDescription>
+    <AddDescription json-path="/definitions/subSchemaMcpConnectionArrayProperty/properties/uniqueItems" format="markdown">
+        Specifies whether the array should contain only unique connections.
+    </AddDescription>
     <AddDescription json-path="/definitions/mcpProperty/properties/serverUrls" format="markdown">
         URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (`*`, `?`).
         If omitted or contains `"*"`, any connection is accepted.

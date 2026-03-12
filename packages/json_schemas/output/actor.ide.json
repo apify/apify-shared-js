@@ -3745,6 +3745,124 @@
                         }
                     }
                 },
+                "subSchemaMcpConnectionProperty": {
+                    "title": "Sub-schema: MCP connection property",
+                    "type": "object",
+                    "unevaluatedProperties": false,
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "string"
+                            ],
+                            "description": "Specifies the type of input - string for single or array for multiple MCP connections.",
+                            "x-intellij-html-description": "<p>Specifies the type of input - string for single or array for multiple MCP connections.</p>",
+                            "markdownDescription": "Specifies the type of input - string for single or array for multiple MCP connections."
+                        },
+                        "editor": {
+                            "enum": [
+                                "mcpConnection"
+                            ],
+                            "description": "Visual editor used for the input field. Always mcpConnection — displays a connection picker filtered by mcp constraints.",
+                            "x-intellij-html-description": "<p>Visual editor used for the input field. Always <code>mcpConnection</code> — displays a connection picker filtered by <code>mcp</code> constraints.</p>",
+                            "markdownDescription": "Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints."
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "Title of the field in UI.",
+                            "x-intellij-html-description": "<p>Title of the field in UI.</p>",
+                            "markdownDescription": "Title of the field in UI."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Help text for the input that will be displayed above the UI fields.",
+                            "x-intellij-html-description": "<p>Help text for the input that will be displayed above the UI fields.</p>",
+                            "markdownDescription": "Help text for the input that will be displayed above the UI fields."
+                        },
+                        "mcp": {
+                            "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty",
+                            "description": "Declares which MCP server connections this field accepts. The UI shows only compatible connections.",
+                            "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. The UI shows only compatible connections.</p>",
+                            "markdownDescription": "Declares which MCP server connections this field accepts. The UI shows only compatible connections."
+                        },
+                        "errorMessage": {
+                            "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/errorMessage"
+                        }
+                    },
+                    "required": [
+                        "type",
+                        "title",
+                        "description",
+                        "mcp"
+                    ]
+                },
+                "subSchemaMcpConnectionArrayProperty": {
+                    "title": "Sub-schema: MCP connection array property",
+                    "type": "object",
+                    "unevaluatedProperties": false,
+                    "properties": {
+                        "type": {
+                            "enum": [
+                                "array"
+                            ],
+                            "description": "Specifies the type of input - string for single or array for multiple MCP connections.",
+                            "x-intellij-html-description": "<p>Specifies the type of input - string for single or array for multiple MCP connections.</p>",
+                            "markdownDescription": "Specifies the type of input - string for single or array for multiple MCP connections."
+                        },
+                        "editor": {
+                            "enum": [
+                                "mcpConnection"
+                            ],
+                            "description": "Visual editor used for the input field. Always mcpConnection — displays a connection picker filtered by mcp constraints.",
+                            "x-intellij-html-description": "<p>Visual editor used for the input field. Always <code>mcpConnection</code> — displays a connection picker filtered by <code>mcp</code> constraints.</p>",
+                            "markdownDescription": "Visual editor used for the input field. Always `mcpConnection` — displays a connection picker filtered by `mcp` constraints."
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "Title of the field in UI.",
+                            "x-intellij-html-description": "<p>Title of the field in UI.</p>",
+                            "markdownDescription": "Title of the field in UI."
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Help text for the input that will be displayed above the UI fields.",
+                            "x-intellij-html-description": "<p>Help text for the input that will be displayed above the UI fields.</p>",
+                            "markdownDescription": "Help text for the input that will be displayed above the UI fields."
+                        },
+                        "mcp": {
+                            "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty",
+                            "description": "Declares which MCP server connections this field accepts. The UI shows only compatible connections.",
+                            "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. The UI shows only compatible connections.</p>",
+                            "markdownDescription": "Declares which MCP server connections this field accepts. The UI shows only compatible connections."
+                        },
+                        "minItems": {
+                            "type": "integer",
+                            "description": "Minimum number of MCP connections required.",
+                            "x-intellij-html-description": "<p>Minimum number of MCP connections required.</p>",
+                            "markdownDescription": "Minimum number of MCP connections required."
+                        },
+                        "maxItems": {
+                            "type": "integer",
+                            "description": "Maximum number of MCP connections allowed.",
+                            "x-intellij-html-description": "<p>Maximum number of MCP connections allowed.</p>",
+                            "markdownDescription": "Maximum number of MCP connections allowed."
+                        },
+                        "uniqueItems": {
+                            "type": "boolean",
+                            "description": "Specifies whether the array should contain only unique connections.",
+                            "x-intellij-html-description": "<p>Specifies whether the array should contain only unique connections.</p>",
+                            "markdownDescription": "Specifies whether the array should contain only unique connections."
+                        },
+                        "errorMessage": {
+                            "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/errorMessage"
+                        }
+                    },
+                    "required": [
+                        "type",
+                        "title",
+                        "description",
+                        "mcp"
+                    ]
+                },
                 "arrayItems": {
                     "title": "Utils: Array items definition",
                     "type": "object",
@@ -3811,6 +3929,12 @@
                                             },
                                             {
                                                 "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaResourceArrayProperty"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaMcpConnectionProperty"
+                                            },
+                                            {
+                                                "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaMcpConnectionArrayProperty"
                                             }
                                         ]
                                     }
@@ -4739,6 +4863,12 @@
                                 },
                                 {
                                     "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaResourceArrayProperty"
+                                },
+                                {
+                                    "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaMcpConnectionProperty"
+                                },
+                                {
+                                    "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/subSchemaMcpConnectionArrayProperty"
                                 }
                             ]
                         }

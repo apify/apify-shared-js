@@ -1148,6 +1148,37 @@
                 "properties": { "default": { "type": ["array", "null"] } }
             }
         },
+        "subSchemaMcpConnectionProperty": {
+            "title": "Sub-schema: MCP connection property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": { "enum": ["string"] },
+                "editor": { "enum": ["mcpConnection"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "mcp": { "$ref": "#/definitions/mcpProperty" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
+            },
+            "required": ["type", "title", "description", "mcp"]
+        },
+        "subSchemaMcpConnectionArrayProperty": {
+            "title": "Sub-schema: MCP connection array property",
+            "type": "object",
+            "unevaluatedProperties": false,
+            "properties": {
+                "type": { "enum": ["array"] },
+                "editor": { "enum": ["mcpConnection"] },
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "mcp": { "$ref": "#/definitions/mcpProperty" },
+                "minItems": { "type": "integer" },
+                "maxItems": { "type": "integer" },
+                "uniqueItems": { "type": "boolean" },
+                "errorMessage": { "$ref": "#/definitions/errorMessage" }
+            },
+            "required": ["type", "title", "description", "mcp"]
+        },
         "arrayItems": {
             "title": "Utils: Array items definition",
             "type": "object",
@@ -1177,7 +1208,9 @@
                                     { "$ref": "#/definitions/subSchemaNumberProperty" },
                                     { "$ref": "#/definitions/subSchemaBooleanProperty" },
                                     { "$ref": "#/definitions/subSchemaResourceProperty" },
-                                    { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
+                                    { "$ref": "#/definitions/subSchemaResourceArrayProperty" },
+                                    { "$ref": "#/definitions/subSchemaMcpConnectionProperty" },
+                                    { "$ref": "#/definitions/subSchemaMcpConnectionArrayProperty" }
                                 ]
                             }
                         },
@@ -1608,7 +1641,9 @@
                         { "$ref": "#/definitions/subSchemaNumberProperty" },
                         { "$ref": "#/definitions/subSchemaBooleanProperty" },
                         { "$ref": "#/definitions/subSchemaResourceProperty" },
-                        { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
+                        { "$ref": "#/definitions/subSchemaResourceArrayProperty" },
+                        { "$ref": "#/definitions/subSchemaMcpConnectionProperty" },
+                        { "$ref": "#/definitions/subSchemaMcpConnectionArrayProperty" }
                     ]
                 }
             },
