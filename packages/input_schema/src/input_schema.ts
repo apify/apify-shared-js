@@ -20,15 +20,15 @@ export { schema as inputSchema };
 
 const { definitions } = schema;
 
-// Because the definitions contain not only the root properties definitions, but also sub-schema definitions
-// and utility definitions, we need to filter them out and validate only against the appropriate ones.
-// We do this by checking the prefix of the definition title (Utils: or Sub-schema:)
+// Because the definitions contain not only the root properties definitions, but also sub-schema definitions,
+// utility definitions, and component definitions, we need to filter them out and validate only against the appropriate ones.
+// We do this by checking the prefix of the definition title (Utils:, Component:, or Sub-schema:)
 
 const [fieldDefinitions, subFieldDefinitions] = Object
     .values<any>(definitions)
     .reduce<[any[], any[]]>((acc, definition) => {
-        if (definition.title.startsWith('Utils:')) {
-            // skip utility definitions
+        if (definition.title.startsWith('Utils:') || definition.title.startsWith('Component:')) {
+            // skip utility and component definitions
             return acc;
         }
 

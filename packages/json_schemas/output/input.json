@@ -2133,7 +2133,7 @@
             ]
         },
         "mcpProperty": {
-            "title": "MCP property definition",
+            "title": "Component: MCP property definition",
             "type": "object",
             "properties": {
                 "serverUrls": {
