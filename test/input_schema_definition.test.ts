@@ -518,6 +518,116 @@ describe('input_schema.json', () => {
                     },
                 })).toBe(true);
             });
+
+            it('should accept mcpConnection resourceType', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnection',
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept mcpConnection with mcp property', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnection',
+                            mcp: {
+                                serverUrls: ['https://example.com/*'],
+                                tools: ['tool1'],
+                            },
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept mcpConnection array with mcp property', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'mcpConnection',
+                            mcp: {
+                                serverUrls: ['https://example.com/*'],
+                            },
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should reject mcp property on storage resourceType', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                            mcp: {
+                                serverUrls: ['https://example.com/*'],
+                            },
+                        },
+                    },
+                })).toBe(false);
+            });
+
+            it('should reject resourcePermissions on mcpConnection', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnection',
+                            resourcePermissions: ['READ'],
+                        },
+                    },
+                })).toBe(false);
+            });
+
+            it('should reject unknown properties in mcp object', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnection',
+                            mcp: {
+                                unknownProp: 'value',
+                            },
+                        },
+                    },
+                })).toBe(false);
+            });
         });
     });
 });

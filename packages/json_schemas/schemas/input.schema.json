@@ -43,8 +43,6 @@
                         { "$ref": "#/definitions/booleanProperty" },
                         { "$ref": "#/definitions/resourceProperty" },
                         { "$ref": "#/definitions/resourceArrayProperty" },
-                        { "$ref": "#/definitions/mcpConnectionProperty" },
-                        { "$ref": "#/definitions/mcpConnectionArrayProperty" },
                         { "$ref": "#/definitions/anyProperty" }
                     ]
                 }
@@ -533,19 +531,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "textfield", "hidden"] },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
-                "resourcePermissions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": ["READ", "WRITE"]
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "contains": {
-                        "const": "READ"
-                    }
-                },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue", "mcpConnection"] },
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
@@ -558,6 +544,26 @@
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
+                {
+                    "if": {
+                        "properties": { "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] } }
+                    },
+                    "then": {
+                        "properties": {
+                            "resourcePermissions": { "$ref": "#/definitions/resourcePermissionsProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "resourceType": { "const": "mcpConnection" } }
+                    },
+                    "then": {
+                        "properties": {
+                            "mcp": { "$ref": "#/definitions/mcpProperty" }
+                        }
+                    }
+                },
                 {
                     "if": {
                         "required": ["resourcePermissions"]
@@ -593,31 +599,39 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "hidden"] },
-                "resourcePermissions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": ["READ", "WRITE"]
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "contains": {
-                        "const": "READ"
-                    }
-                },
                 "prefill": { "type": "array" },
                 "example": { "type": "array" },
                 "nullable": { "type": "boolean" },
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue", "mcpConnection"] },
                 "sectionCaption": { "type": "string" },
                 "sectionDescription": { "type": "string" },
                 "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
             "allOf": [
+                {
+                    "if": {
+                        "properties": { "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] } }
+                    },
+                    "then": {
+                        "properties": {
+                            "resourcePermissions": { "$ref": "#/definitions/resourcePermissionsProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "resourceType": { "const": "mcpConnection" } }
+                    },
+                    "then": {
+                        "properties": {
+                            "mcp": { "$ref": "#/definitions/mcpProperty" }
+                        }
+                    }
+                },
                 {
                     "if": {
                         "required": ["resourcePermissions"]
@@ -644,40 +658,18 @@
                 }
             ]
         },
-        "mcpConnectionProperty": {
-            "title": "MCP connection property",
-            "type": "object",
-            "unevaluatedProperties": false,
-            "properties": {
-                "type": { "enum": ["string"] },
-                "editor": { "enum": ["mcpConnection"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "mcp": { "$ref": "#/definitions/mcpProperty" },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" },
-                "errorMessage": { "$ref": "#/definitions/errorMessage" }
+        "resourcePermissionsProperty": {
+            "title": "Component: Resource permissions definition",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": ["READ", "WRITE"]
             },
-            "required": ["type", "title", "description", "mcp"]
-        },
-        "mcpConnectionArrayProperty": {
-            "title": "MCP connection array property",
-            "type": "object",
-            "unevaluatedProperties": false,
-            "properties": {
-                "type": { "enum": ["array"] },
-                "editor": { "enum": ["mcpConnection"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "mcp": { "$ref": "#/definitions/mcpProperty" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-                "sectionCaption": { "type": "string" },
-                "sectionDescription": { "type": "string" },
-                "errorMessage": { "$ref": "#/definitions/errorMessage" }
-            },
-            "required": ["type", "title", "description", "mcp"]
+            "minItems": 1,
+            "uniqueItems": true,
+            "contains": {
+                "const": "READ"
+            }
         },
         "mcpProperty": {
             "title": "Component: MCP property definition",
@@ -1075,19 +1067,7 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "textfield", "hidden"] },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
-                "resourcePermissions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": ["READ", "WRITE"]
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "contains": {
-                        "const": "READ"
-                    }
-                },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue", "mcpConnection"] },
                 "prefill": { "type": "string" },
                 "example": { "type": "string" },
                 "nullable": { "type": "boolean" },
@@ -1097,15 +1077,39 @@
                 "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
-            "if": {
-                "properties": { "nullable": { "const": false } }
-            },
-            "then": {
-                "properties": { "default": { "type": "string" } }
-            },
-            "else": {
-                "properties": { "default": { "type": ["string", "null"] } }
-            }
+            "allOf": [
+                {
+                    "if": {
+                        "properties": { "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] } }
+                    },
+                    "then": {
+                        "properties": {
+                            "resourcePermissions": { "$ref": "#/definitions/resourcePermissionsProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "resourceType": { "const": "mcpConnection" } }
+                    },
+                    "then": {
+                        "properties": {
+                            "mcp": { "$ref": "#/definitions/mcpProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "nullable": { "const": false } }
+                    },
+                    "then": {
+                        "properties": { "default": { "type": "string" } }
+                    },
+                    "else": {
+                        "properties": { "default": { "type": ["string", "null"] } }
+                    }
+                }
+            ]
         },
         "subSchemaResourceArrayProperty": {
             "title": "Sub-schema: Resource array property",
@@ -1116,68 +1120,49 @@
                 "title": { "type": "string" },
                 "description": { "type": "string" },
                 "editor": { "enum": ["resourcePicker", "hidden"] },
-                "resourcePermissions": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": ["READ", "WRITE"]
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "contains": {
-                        "const": "READ"
-                    }
-                },
                 "prefill": { "type": "array" },
                 "example": { "type": "array" },
                 "nullable": { "type": "boolean" },
                 "minItems": { "type": "integer" },
                 "maxItems": { "type": "integer" },
                 "uniqueItems": { "type": "boolean" },
-                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] },
+                "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue", "mcpConnection"] },
                 "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description", "resourceType"],
-            "if": {
-                "properties": { "nullable": { "const": false } }
-            },
-            "then": {
-                "properties": { "default": { "type": "array" } }
-            },
-            "else": {
-                "properties": { "default": { "type": ["array", "null"] } }
-            }
-        },
-        "subSchemaMcpConnectionProperty": {
-            "title": "Sub-schema: MCP connection property",
-            "type": "object",
-            "unevaluatedProperties": false,
-            "properties": {
-                "type": { "enum": ["string"] },
-                "editor": { "enum": ["mcpConnection"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "mcp": { "$ref": "#/definitions/mcpProperty" },
-                "errorMessage": { "$ref": "#/definitions/errorMessage" }
-            },
-            "required": ["type", "title", "description", "mcp"]
-        },
-        "subSchemaMcpConnectionArrayProperty": {
-            "title": "Sub-schema: MCP connection array property",
-            "type": "object",
-            "unevaluatedProperties": false,
-            "properties": {
-                "type": { "enum": ["array"] },
-                "editor": { "enum": ["mcpConnection"] },
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "mcp": { "$ref": "#/definitions/mcpProperty" },
-                "minItems": { "type": "integer" },
-                "maxItems": { "type": "integer" },
-                "uniqueItems": { "type": "boolean" },
-                "errorMessage": { "$ref": "#/definitions/errorMessage" }
-            },
-            "required": ["type", "title", "description", "mcp"]
+            "allOf": [
+                {
+                    "if": {
+                        "properties": { "resourceType": { "enum": ["dataset", "keyValueStore", "requestQueue"] } }
+                    },
+                    "then": {
+                        "properties": {
+                            "resourcePermissions": { "$ref": "#/definitions/resourcePermissionsProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "resourceType": { "const": "mcpConnection" } }
+                    },
+                    "then": {
+                        "properties": {
+                            "mcp": { "$ref": "#/definitions/mcpProperty" }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "nullable": { "const": false } }
+                    },
+                    "then": {
+                        "properties": { "default": { "type": "array" } }
+                    },
+                    "else": {
+                        "properties": { "default": { "type": ["array", "null"] } }
+                    }
+                }
+            ]
         },
         "arrayItems": {
             "title": "Utils: Array items definition",
@@ -1208,9 +1193,7 @@
                                     { "$ref": "#/definitions/subSchemaNumberProperty" },
                                     { "$ref": "#/definitions/subSchemaBooleanProperty" },
                                     { "$ref": "#/definitions/subSchemaResourceProperty" },
-                                    { "$ref": "#/definitions/subSchemaResourceArrayProperty" },
-                                    { "$ref": "#/definitions/subSchemaMcpConnectionProperty" },
-                                    { "$ref": "#/definitions/subSchemaMcpConnectionArrayProperty" }
+                                    { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
                                 ]
                             }
                         },
@@ -1641,9 +1624,7 @@
                         { "$ref": "#/definitions/subSchemaNumberProperty" },
                         { "$ref": "#/definitions/subSchemaBooleanProperty" },
                         { "$ref": "#/definitions/subSchemaResourceProperty" },
-                        { "$ref": "#/definitions/subSchemaResourceArrayProperty" },
-                        { "$ref": "#/definitions/subSchemaMcpConnectionProperty" },
-                        { "$ref": "#/definitions/subSchemaMcpConnectionArrayProperty" }
+                        { "$ref": "#/definitions/subSchemaResourceArrayProperty" }
                     ]
                 }
             },

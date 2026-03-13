@@ -71,40 +71,35 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     items?: unknown;
 }
 
-export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
-    editor?: 'resourcePicker' | 'hidden';
-    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
-    resourcePermissions?: ('READ' | 'WRITE')[];
-}
-
-export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
-    type: 'string';
-}
-
-export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[]> & {
-    type: 'array';
-    maxItems?: number;
-    minItems?: number;
-    uniqueItems?: boolean;
-}
-
 type McpPropertyDefinition = {
     serverUrls?: readonly string[];
     tools?: readonly string[];
 }
 
-export type CommonMcpConnectionFieldDefinition<T> =
-    Omit<CommonFieldDefinition<T>, 'default' | 'prefill' | 'example' | 'nullable'>
-    & {
-        editor?: 'mcpConnection';
-        mcp: McpPropertyDefinition;
-    }
+export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
+    editor?: 'resourcePicker' | 'hidden';
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue' | 'mcpConnection';
+}
 
-export type McpConnectionFieldDefinition = CommonMcpConnectionFieldDefinition<string> & {
+type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
+    resourcePermissions?: ('READ' | 'WRITE')[];
+}
+
+type McpConnectionResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
+    resourceType: 'mcpConnection';
+    mcp?: McpPropertyDefinition;
+}
+
+type AnyResourceFieldDefinition<T> =
+    | StorageResourceFieldDefinition<T>
+    | McpConnectionResourceFieldDefinition<T>
+
+export type ResourceFieldDefinition = AnyResourceFieldDefinition<string> & {
     type: 'string';
 }
 
-export type McpConnectionArrayFieldDefinition = CommonMcpConnectionFieldDefinition<string[]> & {
+export type ResourceArrayFieldDefinition = AnyResourceFieldDefinition<string[]> & {
     type: 'array';
     maxItems?: number;
     minItems?: number;
@@ -132,8 +127,6 @@ export type FieldDefinition = StringFieldDefinition
     | MixedFieldDefinition
     | ResourceFieldDefinition
     | ResourceArrayFieldDefinition
-    | McpConnectionFieldDefinition
-    | McpConnectionArrayFieldDefinition
 
 /**
  * Type with checked base, but not properties
