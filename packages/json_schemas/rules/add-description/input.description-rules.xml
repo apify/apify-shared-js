@@ -57,16 +57,6 @@
                     format="markdown">
         Titles for the `enum` keys described.
     </AddDescription>
-    <AddDescription json-path="/definitions/resourceProperty/properties/resourcePermissions" format="markdown">
-        The provided documentation for Actor input schema specification does not contain a description for
-        `resourcePermissions` in the `resourceProperty` section. It is present in the JSON validation schema, indicating
-        permissions for the resource.
-    </AddDescription>
-    <AddDescription json-path="/definitions/resourceArrayProperty/properties/resourcePermissions" format="markdown">
-        The provided documentation for Actor input schema specification does not contain a description for
-        `resourcePermissions` in the `resourceArrayProperty` section. It is present in the JSON validation schema,
-        indicating permissions for the resource array.
-    </AddDescription>
     <AddDescription json-path="/definitions/anyProperty/properties/type" format="markdown">
         Allowed type for the input value. Cannot be mixed.
     </AddDescription>
@@ -622,6 +612,20 @@
     <AddDescription json-path="/definitions/resourceArrayProperty/properties/sectionDescription" format="markdown">
         If the `sectionCaption` property is set, then you can use this property to provide additional description to the
         section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourcePermissionsProperty" format="markdown">
+        Permissions required for the resource. Only applicable when `resourceType` is `dataset`, `keyValueStore`, or `requestQueue`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpProperty" format="markdown">
+        Declares which MCP server connections this field accepts. Only applicable when `resourceType` is `mcpConnection`. The UI shows only compatible connections.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpProperty/properties/serverUrls" format="markdown">
+        URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (`*`, `?`).
+        If omitted or contains `"*"`, any connection is accepted.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpProperty/properties/tools" format="markdown">
+        Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (`*`, `?`).
+        If omitted or contains `"*"`, all tools are available.
     </AddDescription>
     <AddDescription json-path="/definitions/anyProperty/properties/title" format="markdown">
         Title of the field in UI.

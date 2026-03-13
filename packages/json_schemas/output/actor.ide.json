@@ -1908,29 +1908,12 @@
                             "enum": [
                                 "dataset",
                                 "keyValueStore",
-                                "requestQueue"
+                                "requestQueue",
+                                "mcpConnection"
                             ],
                             "description": "Type of Apify Platform resource",
                             "x-intellij-html-description": "<p>Type of Apify Platform resource</p>",
                             "markdownDescription": "Type of Apify Platform resource"
-                        },
-                        "resourcePermissions": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "READ",
-                                    "WRITE"
-                                ]
-                            },
-                            "minItems": 1,
-                            "uniqueItems": true,
-                            "contains": {
-                                "const": "READ"
-                            },
-                            "description": "The provided documentation for Actor input schema specification does not contain a description for resourcePermissions in the resourceProperty section. It is present in the JSON validation schema, indicating permissions for the resource.",
-                            "x-intellij-html-description": "<p>The provided documentation for Actor input schema specification does not contain a description for\n<code>resourcePermissions</code> in the <code>resourceProperty</code> section. It is present in the JSON validation schema, indicating\npermissions for the resource.</p>",
-                            "markdownDescription": "The provided documentation for Actor input schema specification does not contain a description for\n`resourcePermissions` in the `resourceProperty` section. It is present in the JSON validation schema, indicating\npermissions for the resource."
                         },
                         "prefill": {
                             "type": "string",
@@ -1982,6 +1965,42 @@
                         "resourceType"
                     ],
                     "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "enum": [
+                                            "dataset",
+                                            "keyValueStore",
+                                            "requestQueue"
+                                        ]
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "resourcePermissions": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/resourcePermissionsProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "const": "mcpConnection"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "mcp": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty"
+                                    }
+                                }
+                            }
+                        },
                         {
                             "if": {
                                 "required": [
@@ -2076,24 +2095,6 @@
                             "x-intellij-html-description": "<p>Visual editor used for the input field. Defaults to <code>resourcePicker</code>.</p>",
                             "markdownDescription": "Visual editor used for the input field. Defaults to `resourcePicker`."
                         },
-                        "resourcePermissions": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "READ",
-                                    "WRITE"
-                                ]
-                            },
-                            "minItems": 1,
-                            "uniqueItems": true,
-                            "contains": {
-                                "const": "READ"
-                            },
-                            "description": "The provided documentation for Actor input schema specification does not contain a description for resourcePermissions in the resourceArrayProperty section. It is present in the JSON validation schema, indicating permissions for the resource array.",
-                            "x-intellij-html-description": "<p>The provided documentation for Actor input schema specification does not contain a description for\n<code>resourcePermissions</code> in the <code>resourceArrayProperty</code> section. It is present in the JSON validation schema,\nindicating permissions for the resource array.</p>",
-                            "markdownDescription": "The provided documentation for Actor input schema specification does not contain a description for\n`resourcePermissions` in the `resourceArrayProperty` section. It is present in the JSON validation schema,\nindicating permissions for the resource array."
-                        },
                         "prefill": {
                             "type": "array",
                             "description": "Value that will be prefilled in the Actor input interface.",
@@ -2134,7 +2135,8 @@
                             "enum": [
                                 "dataset",
                                 "keyValueStore",
-                                "requestQueue"
+                                "requestQueue",
+                                "mcpConnection"
                             ],
                             "description": "Type of Apify Platform resource",
                             "x-intellij-html-description": "<p>Type of Apify Platform resource</p>",
@@ -2163,6 +2165,42 @@
                         "resourceType"
                     ],
                     "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "enum": [
+                                            "dataset",
+                                            "keyValueStore",
+                                            "requestQueue"
+                                        ]
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "resourcePermissions": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/resourcePermissionsProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "const": "mcpConnection"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "mcp": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty"
+                                    }
+                                }
+                            }
+                        },
                         {
                             "if": {
                                 "required": [
@@ -2222,6 +2260,59 @@
                             }
                         }
                     ]
+                },
+                "resourcePermissionsProperty": {
+                    "title": "Component: Resource permissions definition",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "READ",
+                            "WRITE"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "contains": {
+                        "const": "READ"
+                    },
+                    "description": "Permissions required for the resource. Only applicable when resourceType is dataset, keyValueStore, or requestQueue.",
+                    "x-intellij-html-description": "<p>Permissions required for the resource. Only applicable when <code>resourceType</code> is <code>dataset</code>, <code>keyValueStore</code>, or <code>requestQueue</code>.</p>",
+                    "markdownDescription": "Permissions required for the resource. Only applicable when `resourceType` is `dataset`, `keyValueStore`, or `requestQueue`."
+                },
+                "mcpProperty": {
+                    "title": "Component: MCP property definition",
+                    "type": "object",
+                    "properties": {
+                        "serverUrls": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "description": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", any connection is accepted.",
+                            "x-intellij-html-description": "<p>URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, any connection is accepted.</p>",
+                            "markdownDescription": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, any connection is accepted."
+                        },
+                        "tools": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "minItems": 1,
+                            "uniqueItems": true,
+                            "description": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", all tools are available.",
+                            "x-intellij-html-description": "<p>Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, all tools are available.</p>",
+                            "markdownDescription": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, all tools are available."
+                        }
+                    },
+                    "additionalProperties": false,
+                    "description": "Declares which MCP server connections this field accepts. Only applicable when resourceType is mcpConnection. The UI shows only compatible connections.",
+                    "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. Only applicable when <code>resourceType</code> is <code>mcpConnection</code>. The UI shows only compatible connections.</p>",
+                    "markdownDescription": "Declares which MCP server connections this field accepts. Only applicable when `resourceType` is `mcpConnection`. The UI shows only compatible connections."
                 },
                 "anyProperty": {
                     "title": "Any property",
@@ -3356,23 +3447,9 @@
                             "enum": [
                                 "dataset",
                                 "keyValueStore",
-                                "requestQueue"
+                                "requestQueue",
+                                "mcpConnection"
                             ]
-                        },
-                        "resourcePermissions": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "READ",
-                                    "WRITE"
-                                ]
-                            },
-                            "minItems": 1,
-                            "uniqueItems": true,
-                            "contains": {
-                                "const": "READ"
-                            }
                         },
                         "prefill": {
                             "type": "string",
@@ -3411,39 +3488,79 @@
                         "description",
                         "resourceType"
                     ],
-                    "if": {
-                        "properties": {
-                            "nullable": {
-                                "const": false,
-                                "description": "Specifies whether null is an allowed value.",
-                                "x-intellij-html-description": "<p>Specifies whether <code>null</code> is an allowed value.</p>",
-                                "markdownDescription": "Specifies whether `null` is an allowed value."
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "enum": [
+                                            "dataset",
+                                            "keyValueStore",
+                                            "requestQueue"
+                                        ]
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "resourcePermissions": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/resourcePermissionsProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "const": "mcpConnection"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "mcp": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "nullable": {
+                                        "const": false,
+                                        "description": "Specifies whether null is an allowed value.",
+                                        "x-intellij-html-description": "<p>Specifies whether <code>null</code> is an allowed value.</p>",
+                                        "markdownDescription": "Specifies whether `null` is an allowed value."
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "default": {
+                                        "type": "string",
+                                        "description": "Default value that will be used when no value is provided.",
+                                        "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
+                                        "markdownDescription": "Default value that will be used when no value is provided."
+                                    }
+                                }
+                            },
+                            "else": {
+                                "properties": {
+                                    "default": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "description": "Default value that will be used when no value is provided.",
+                                        "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
+                                        "markdownDescription": "Default value that will be used when no value is provided."
+                                    }
+                                }
                             }
                         }
-                    },
-                    "then": {
-                        "properties": {
-                            "default": {
-                                "type": "string",
-                                "description": "Default value that will be used when no value is provided.",
-                                "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
-                                "markdownDescription": "Default value that will be used when no value is provided."
-                            }
-                        }
-                    },
-                    "else": {
-                        "properties": {
-                            "default": {
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "description": "Default value that will be used when no value is provided.",
-                                "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
-                                "markdownDescription": "Default value that will be used when no value is provided."
-                            }
-                        }
-                    }
+                    ]
                 },
                 "subSchemaResourceArrayProperty": {
                     "title": "Sub-schema: Resource array property",
@@ -3472,21 +3589,6 @@
                                 "resourcePicker",
                                 "hidden"
                             ]
-                        },
-                        "resourcePermissions": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "READ",
-                                    "WRITE"
-                                ]
-                            },
-                            "minItems": 1,
-                            "uniqueItems": true,
-                            "contains": {
-                                "const": "READ"
-                            }
                         },
                         "prefill": {
                             "type": "array",
@@ -3519,7 +3621,8 @@
                             "enum": [
                                 "dataset",
                                 "keyValueStore",
-                                "requestQueue"
+                                "requestQueue",
+                                "mcpConnection"
                             ]
                         },
                         "errorMessage": {
@@ -3532,39 +3635,79 @@
                         "description",
                         "resourceType"
                     ],
-                    "if": {
-                        "properties": {
-                            "nullable": {
-                                "const": false,
-                                "description": "Specifies whether null is an allowed value.",
-                                "x-intellij-html-description": "<p>Specifies whether <code>null</code> is an allowed value.</p>",
-                                "markdownDescription": "Specifies whether `null` is an allowed value."
+                    "allOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "enum": [
+                                            "dataset",
+                                            "keyValueStore",
+                                            "requestQueue"
+                                        ]
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "resourcePermissions": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/resourcePermissionsProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "resourceType": {
+                                        "const": "mcpConnection"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "mcp": {
+                                        "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/mcpProperty"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "nullable": {
+                                        "const": false,
+                                        "description": "Specifies whether null is an allowed value.",
+                                        "x-intellij-html-description": "<p>Specifies whether <code>null</code> is an allowed value.</p>",
+                                        "markdownDescription": "Specifies whether `null` is an allowed value."
+                                    }
+                                }
+                            },
+                            "then": {
+                                "properties": {
+                                    "default": {
+                                        "type": "array",
+                                        "description": "Default value that will be used when no value is provided.",
+                                        "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
+                                        "markdownDescription": "Default value that will be used when no value is provided."
+                                    }
+                                }
+                            },
+                            "else": {
+                                "properties": {
+                                    "default": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "description": "Default value that will be used when no value is provided.",
+                                        "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
+                                        "markdownDescription": "Default value that will be used when no value is provided."
+                                    }
+                                }
                             }
                         }
-                    },
-                    "then": {
-                        "properties": {
-                            "default": {
-                                "type": "array",
-                                "description": "Default value that will be used when no value is provided.",
-                                "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
-                                "markdownDescription": "Default value that will be used when no value is provided."
-                            }
-                        }
-                    },
-                    "else": {
-                        "properties": {
-                            "default": {
-                                "type": [
-                                    "array",
-                                    "null"
-                                ],
-                                "description": "Default value that will be used when no value is provided.",
-                                "x-intellij-html-description": "<p>Default value that will be used when no value is provided.</p>",
-                                "markdownDescription": "Default value that will be used when no value is provided."
-                            }
-                        }
-                    }
+                    ]
                 },
                 "arrayItems": {
                     "title": "Utils: Array items definition",
