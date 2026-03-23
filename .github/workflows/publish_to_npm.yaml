@@ -48,7 +48,7 @@ jobs:
                   GIT_AUTHOR_EMAIL: noreply@apify.com
                   GIT_COMMITTER_EMAIL: noreply@apify.com
             - name: Commit changes
-              uses: EndBug/add-and-commit@v9
+              uses: EndBug/add-and-commit@v10
               with:
                   author_name: Apify Release Bot
                   author_email: noreply@apify.com
