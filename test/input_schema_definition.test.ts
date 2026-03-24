@@ -519,7 +519,7 @@ describe('input_schema.json', () => {
                 })).toBe(true);
             });
 
-            it('should accept mcpConnection resourceType', () => {
+            it('should reject mcpConnector resourceType without mcpServers', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -529,13 +529,13 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
-                            resourceType: 'mcpConnection',
+                            resourceType: 'mcpConnector',
                         },
                     },
-                })).toBe(true);
+                })).toBe(false);
             });
 
-            it('should accept mcpConnection with mcp property', () => {
+            it('should accept mcpConnector with mcpServers', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -545,17 +545,19 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
-                            resourceType: 'mcpConnection',
-                            mcp: {
-                                serverUrls: ['https://example.com/*'],
-                                tools: ['tool1'],
-                            },
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: 'https://example.com/*',
+                                    tools: { required: ['tool1'] },
+                                },
+                            ],
                         },
                     },
                 })).toBe(true);
             });
 
-            it('should accept mcpConnection array with mcp property', () => {
+            it('should accept mcpConnector array with mcpServers', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -565,16 +567,16 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'array',
-                            resourceType: 'mcpConnection',
-                            mcp: {
-                                serverUrls: ['https://example.com/*'],
-                            },
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                { url: 'https://example.com/*' },
+                            ],
                         },
                     },
                 })).toBe(true);
             });
 
-            it('should reject mcp property on storage resourceType', () => {
+            it('should reject mcpServers on storage resourceType', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -585,15 +587,15 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'dataset',
-                            mcp: {
-                                serverUrls: ['https://example.com/*'],
-                            },
+                            mcpServers: [
+                                { url: 'https://example.com/*' },
+                            ],
                         },
                     },
                 })).toBe(false);
             });
 
-            it('should reject resourcePermissions on mcpConnection', () => {
+            it('should reject resourcePermissions on mcpConnector', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -603,14 +605,14 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
-                            resourceType: 'mcpConnection',
+                            resourceType: 'mcpConnector',
                             resourcePermissions: ['READ'],
                         },
                     },
                 })).toBe(false);
             });
 
-            it('should reject unknown properties in mcp object', () => {
+            it('should accept storage resourceType without resourcePermissions', () => {
                 expect(ajv.validate(inputSchema, {
                     title: 'Test input schema',
                     type: 'object',
@@ -620,10 +622,93 @@ describe('input_schema.json', () => {
                             title: 'Field title',
                             description: 'My test field',
                             type: 'string',
-                            resourceType: 'mcpConnection',
-                            mcp: {
-                                unknownProp: 'value',
-                            },
+                            resourceType: 'dataset',
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept storage resourceType with resourcePermissions', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                            resourcePermissions: ['READ'],
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should accept mcpServers with tools containing only hint booleans', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: {
+                                        readOnly: true,
+                                        idempotent: true,
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                })).toBe(true);
+            });
+
+            it('should reject unknown properties in tools object', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: { unknownHint: true },
+                                },
+                            ],
+                        },
+                    },
+                })).toBe(false);
+            });
+
+            it('should reject unknown properties in mcpServers entry', () => {
+                expect(ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    unknownProp: 'value',
+                                },
+                            ],
                         },
                     },
                 })).toBe(false);

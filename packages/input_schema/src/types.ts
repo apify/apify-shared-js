@@ -71,14 +71,9 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     items?: unknown;
 }
 
-type McpPropertyDefinition = {
-    serverUrls?: readonly string[];
-    tools?: readonly string[];
-}
-
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
-    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue' | 'mcpConnection';
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue' | 'mcpConnector';
 }
 
 type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
@@ -86,14 +81,27 @@ type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
-type McpConnectionResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
-    resourceType: 'mcpConnection';
-    mcp?: McpPropertyDefinition;
+type McpServerTools = {
+    required?: readonly string[];
+    readOnly?: boolean;
+    destructive?: boolean;
+    idempotent?: boolean;
+    openWorld?: boolean;
+}
+
+type McpServer = {
+    url: string;
+    tools?: McpServerTools;
+}
+
+type McpConnectorResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
+    resourceType: 'mcpConnector';
+    mcpServers: readonly McpServer[];
 }
 
 type AnyResourceFieldDefinition<T> =
     | StorageResourceFieldDefinition<T>
-    | McpConnectionResourceFieldDefinition<T>
+    | McpConnectorResourceFieldDefinition<T>
 
 export type ResourceFieldDefinition = AnyResourceFieldDefinition<string> & {
     type: 'string';

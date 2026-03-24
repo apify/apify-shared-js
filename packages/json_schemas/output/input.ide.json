@@ -1669,11 +1669,11 @@
                         "dataset",
                         "keyValueStore",
                         "requestQueue",
-                        "mcpConnection"
+                        "mcpConnector"
                     ],
-                    "description": "Type of Apify Platform resource",
-                    "x-intellij-html-description": "<p>Type of Apify Platform resource</p>",
-                    "markdownDescription": "Type of Apify Platform resource"
+                    "description": "Type of Apify resource this field references - a storage resource (dataset, keyValueStore, requestQueue) or an mcpConnector.",
+                    "x-intellij-html-description": "<p>Type of Apify resource this field references - a storage resource (<code>dataset</code>, <code>keyValueStore</code>, <code>requestQueue</code>) or an <code>mcpConnector</code>.</p>",
+                    "markdownDescription": "Type of Apify resource this field references - a storage resource (`dataset`, `keyValueStore`, `requestQueue`) or an `mcpConnector`."
                 },
                 "prefill": {
                     "type": "string",
@@ -1749,16 +1749,19 @@
                     "if": {
                         "properties": {
                             "resourceType": {
-                                "const": "mcpConnection"
+                                "const": "mcpConnector"
                             }
                         }
                     },
                     "then": {
                         "properties": {
-                            "mcp": {
-                                "$ref": "#/definitions/mcpProperty"
+                            "mcpServers": {
+                                "$ref": "#/definitions/mcpServersProperty"
                             }
-                        }
+                        },
+                        "required": [
+                            "mcpServers"
+                        ]
                     }
                 },
                 {
@@ -1896,11 +1899,11 @@
                         "dataset",
                         "keyValueStore",
                         "requestQueue",
-                        "mcpConnection"
+                        "mcpConnector"
                     ],
-                    "description": "Type of Apify Platform resource",
-                    "x-intellij-html-description": "<p>Type of Apify Platform resource</p>",
-                    "markdownDescription": "Type of Apify Platform resource"
+                    "description": "Type of Apify resource this field references - a storage resource (dataset, keyValueStore, requestQueue) or an mcpConnector.",
+                    "x-intellij-html-description": "<p>Type of Apify resource this field references - a storage resource (<code>dataset</code>, <code>keyValueStore</code>, <code>requestQueue</code>) or an <code>mcpConnector</code>.</p>",
+                    "markdownDescription": "Type of Apify resource this field references - a storage resource (`dataset`, `keyValueStore`, `requestQueue`) or an `mcpConnector`."
                 },
                 "sectionCaption": {
                     "type": "string",
@@ -1949,16 +1952,19 @@
                     "if": {
                         "properties": {
                             "resourceType": {
-                                "const": "mcpConnection"
+                                "const": "mcpConnector"
                             }
                         }
                     },
                     "then": {
                         "properties": {
-                            "mcp": {
-                                "$ref": "#/definitions/mcpProperty"
+                            "mcpServers": {
+                                "$ref": "#/definitions/mcpServersProperty"
                             }
-                        }
+                        },
+                        "required": [
+                            "mcpServers"
+                        ]
                     }
                 },
                 {
@@ -2040,39 +2046,62 @@
             "x-intellij-html-description": "<p>Permissions required for the resource. Only applicable when <code>resourceType</code> is <code>dataset</code>, <code>keyValueStore</code>, or <code>requestQueue</code>.</p>",
             "markdownDescription": "Permissions required for the resource. Only applicable when `resourceType` is `dataset`, `keyValueStore`, or `requestQueue`."
         },
-        "mcpProperty": {
-            "title": "Component: MCP property definition",
-            "type": "object",
-            "properties": {
-                "serverUrls": {
-                    "type": "array",
-                    "items": {
+        "mcpServersProperty": {
+            "title": "Component: MCP servers definition",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "url": {
                         "type": "string",
-                        "minLength": 1
+                        "minLength": 1,
+                        "description": "URL pattern that connector's targeted MCP server must match. Supports * and ? wildcards. Use \"*\" to accept any server.",
+                        "x-intellij-html-description": "<p>URL pattern that connector's targeted MCP server must match. Supports <code>*</code> and <code>?</code> wildcards. Use <code>\"*\"</code> to accept any server.</p>",
+                        "markdownDescription": "URL pattern that connector's targeted MCP server must match. Supports `*` and `?` wildcards. Use `\"*\"` to accept any server."
                     },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "description": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", any connection is accepted.",
-                    "x-intellij-html-description": "<p>URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, any connection is accepted.</p>",
-                    "markdownDescription": "URL patterns of the MCP servers the Actor is allowed to target, and that connections must be authorized for to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, any connection is accepted."
+                    "tools": {
+                        "type": "object",
+                        "properties": {
+                            "required": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            },
+                            "readOnly": {
+                                "type": "boolean"
+                            },
+                            "destructive": {
+                                "type": "boolean"
+                            },
+                            "idempotent": {
+                                "type": "boolean"
+                            },
+                            "openWorld": {
+                                "type": "boolean"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "description": "Defines which tools the Actor needs and gets access to. required lists tool name patterns (supports * and ? wildcards) - the connector must authorize at least one matching tool per pattern. Hint booleans further restrict which tools are considered. Only matching tools are exposed to the Actor.",
+                        "x-intellij-html-description": "<p>Defines which tools the Actor needs and gets access to. <code>required</code> lists tool name patterns (supports <code>*</code> and <code>?</code> wildcards) - the connector must authorize at least one matching tool per pattern. Hint booleans further restrict which tools are considered. Only matching tools are exposed to the Actor.</p>",
+                        "markdownDescription": "Defines which tools the Actor needs and gets access to. `required` lists tool name patterns (supports `*` and `?` wildcards) - the connector must authorize at least one matching tool per pattern. Hint booleans further restrict which tools are considered. Only matching tools are exposed to the Actor."
+                    }
                 },
-                "tools": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "minLength": 1
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true,
-                    "description": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (*, ?). If omitted or contains \"*\", all tools are available.",
-                    "x-intellij-html-description": "<p>Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (<code>*</code>, <code>?</code>).\nIf omitted or contains <code>\"*\"</code>, all tools are available.</p>",
-                    "markdownDescription": "Tool name patterns the Actor is allowed to use, and that connections must support to be accepted. Supports wildcards (`*`, `?`).\nIf omitted or contains `\"*\"`, all tools are available."
-                }
+                "required": [
+                    "url"
+                ],
+                "additionalProperties": false,
+                "description": "An acceptable MCP server profile. A connector matches if the URL of the server it targets matches url and it provides the tools described in tools.",
+                "x-intellij-html-description": "<p>An acceptable MCP server profile. A connector matches if the URL of the server it targets matches <code>url</code> and it provides the tools described in <code>tools</code>.</p>",
+                "markdownDescription": "An acceptable MCP server profile. A connector matches if the URL of the server it targets matches `url` and it provides the tools described in `tools`."
             },
-            "additionalProperties": false,
-            "description": "Declares which MCP server connections this field accepts. Only applicable when resourceType is mcpConnection. The UI shows only compatible connections.",
-            "x-intellij-html-description": "<p>Declares which MCP server connections this field accepts. Only applicable when <code>resourceType</code> is <code>mcpConnection</code>. The UI shows only compatible connections.</p>",
-            "markdownDescription": "Declares which MCP server connections this field accepts. Only applicable when `resourceType` is `mcpConnection`. The UI shows only compatible connections."
+            "minItems": 1,
+            "description": "Defines which MCP servers this Actor works with. Each entry describes an acceptable server - a connector can be selected for this input only if it matches at least one entry. Required when resourceType is mcpConnector.",
+            "x-intellij-html-description": "<p>Defines which MCP servers this Actor works with. Each entry describes an acceptable server - a connector can be selected for this input only if it matches at least one entry. Required when <code>resourceType</code> is <code>mcpConnector</code>.</p>",
+            "markdownDescription": "Defines which MCP servers this Actor works with. Each entry describes an acceptable server - a connector can be selected for this input only if it matches at least one entry. Required when `resourceType` is `mcpConnector`."
         },
         "anyProperty": {
             "title": "Any property",
@@ -3208,7 +3237,7 @@
                         "dataset",
                         "keyValueStore",
                         "requestQueue",
-                        "mcpConnection"
+                        "mcpConnector"
                     ]
                 },
                 "prefill": {
@@ -3273,16 +3302,19 @@
                     "if": {
                         "properties": {
                             "resourceType": {
-                                "const": "mcpConnection"
+                                "const": "mcpConnector"
                             }
                         }
                     },
                     "then": {
                         "properties": {
-                            "mcp": {
-                                "$ref": "#/definitions/mcpProperty"
+                            "mcpServers": {
+                                "$ref": "#/definitions/mcpServersProperty"
                             }
-                        }
+                        },
+                        "required": [
+                            "mcpServers"
+                        ]
                     }
                 },
                 {
@@ -3382,7 +3414,7 @@
                         "dataset",
                         "keyValueStore",
                         "requestQueue",
-                        "mcpConnection"
+                        "mcpConnector"
                     ]
                 },
                 "errorMessage": {
@@ -3420,16 +3452,19 @@
                     "if": {
                         "properties": {
                             "resourceType": {
-                                "const": "mcpConnection"
+                                "const": "mcpConnector"
                             }
                         }
                     },
                     "then": {
                         "properties": {
-                            "mcp": {
-                                "$ref": "#/definitions/mcpProperty"
+                            "mcpServers": {
+                                "$ref": "#/definitions/mcpServersProperty"
                             }
-                        }
+                        },
+                        "required": [
+                            "mcpServers"
+                        ]
                     }
                 },
                 {

@@ -1091,13 +1091,14 @@ describe('utilities.client', () => {
                 });
             });
 
-            it('should allow string value for mcpConnection resource', () => {
+            it('should allow string value for mcpConnector resource', () => {
                 const { inputSchema, validator } = buildInputSchema({
                     field: {
                         title: 'Field title',
                         description: 'My test field',
                         type: 'string',
-                        resourceType: 'mcpConnection',
+                        resourceType: 'mcpConnector',
+                        mcpServers: [{ url: '*' }],
                         nullable: true,
                     },
                 });
@@ -1106,7 +1107,7 @@ describe('utilities.client', () => {
                     { field: [] },
                     { field: {} },
                     // Valid
-                    { field: 'MCP_CONNECTION_ID' },
+                    { field: 'MCP_CONNECTOR_ID' },
                     { field: null },
                 ];
 
@@ -1122,23 +1123,24 @@ describe('utilities.client', () => {
                 });
             });
 
-            it('should allow array value for mcpConnection resource', () => {
+            it('should allow array value for mcpConnector resource', () => {
                 const { inputSchema, validator } = buildInputSchema({
                     field: {
                         title: 'Field title',
                         description: 'My test field',
                         type: 'array',
-                        resourceType: 'mcpConnection',
+                        resourceType: 'mcpConnector',
+                        mcpServers: [{ url: '*' }],
                         nullable: true,
                     },
                 });
                 const inputs = [
                     // 2 invalid inputs
-                    { field: 'MCP_CONNECTION_ID' },
+                    { field: 'MCP_CONNECTOR_ID' },
                     { field: {} },
                     // Valid
                     { field: [] },
-                    { field: ['MCP_CONNECTION_ID'] },
+                    { field: ['MCP_CONNECTOR_ID'] },
                     { field: ['MCP_1', 'MCP_2', 'MCP_3'] },
                     { field: null },
                 ];
