@@ -909,7 +909,7 @@ describe('input_schema.json', () => {
                                 {
                                     url: 'https://mcp.example.com/*',
                                     tools: {
-                                        required: ['list_*', 'read_*'],
+                                        required: ['list_channels', 'read_*'],
                                         readOnly: true,
                                         destructive: false,
                                     },
@@ -972,24 +972,6 @@ describe('input_schema.json', () => {
                             mcpServers: [
                                 { url: '*' },
                             ],
-                        },
-                    },
-                };
-                expect(() => validateInputSchema(validator, schema)).toThrow();
-            });
-
-            it('should not accept resourcePermissions on mcpConnector resourceType', () => {
-                const schema = {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            resourcePermissions: ['READ'],
                         },
                     },
                 };
@@ -1144,7 +1126,7 @@ describe('input_schema.json', () => {
                 expect(() => validateInputSchema(validator, schema)).not.toThrow();
             });
 
-            it('should not accept resourcePermissions on mcpConnector even with valid mcpServers', () => {
+            it('should not accept resourcePermissions on mcpConnector resourceType', () => {
                 const schema = {
                     title: 'Test input schema',
                     type: 'object',
