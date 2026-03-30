@@ -81,22 +81,22 @@ type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
-type McpServerTools = {
-    required?: readonly string[];
+export type McpServerTools = {
+    required?: string[];
     readOnly?: boolean;
     destructive?: boolean;
     idempotent?: boolean;
     openWorld?: boolean;
 }
 
-type McpServer = {
+export type McpServer = {
     url: string;
     tools?: McpServerTools;
 }
 
 type McpConnectorResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourceType: 'mcpConnector';
-    mcpServers: readonly McpServer[];
+    mcpServers: McpServer[];
 }
 
 type AnyResourceFieldDefinition<T> =

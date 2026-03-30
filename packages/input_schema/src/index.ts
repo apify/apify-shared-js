@@ -9,6 +9,10 @@ export {
     ArrayFieldDefinition,
     MixedFieldDefinition,
     FieldDefinition,
+
     InputSchema,
+
+    McpServer,
+    McpServerTools,
 } from './types';
 export * from './utilities';
