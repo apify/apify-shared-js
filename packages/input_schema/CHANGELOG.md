@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.26.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.18...@apify/input_schema@3.26.0) (2026-03-30)
+
+
+### Features
+
+* add MCP Connector resource type ([#602](https://github.com/apify/apify-shared-js/issues/602)) ([16628d6](https://github.com/apify/apify-shared-js/commit/16628d6b10cce28b4f2135b4a1709fdfe4322b17))
+
+
+
+
+
 ## [3.25.18](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.17...@apify/input_schema@3.25.18) (2026-02-26)
 
 **Note:** Version bump only for package @apify/input_schema

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.15.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.14.2...@apify/json_schemas@0.15.0) (2026-03-30)
+
+
+### Features
+
+* add MCP Connector resource type ([#602](https://github.com/apify/apify-shared-js/issues/602)) ([16628d6](https://github.com/apify/apify-shared-js/commit/16628d6b10cce28b4f2135b4a1709fdfe4322b17))
+
+
+
+
+
 ## [0.14.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.14.1...@apify/json_schemas@0.14.2) (2026-02-26)
 
 **Note:** Version bump only for package @apify/json_schemas
