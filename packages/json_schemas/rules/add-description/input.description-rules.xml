@@ -57,16 +57,6 @@
                     format="markdown">
         Titles for the `enum` keys described.
     </AddDescription>
-    <AddDescription json-path="/definitions/resourceProperty/properties/resourcePermissions" format="markdown">
-        The provided documentation for Actor input schema specification does not contain a description for
-        `resourcePermissions` in the `resourceProperty` section. It is present in the JSON validation schema, indicating
-        permissions for the resource.
-    </AddDescription>
-    <AddDescription json-path="/definitions/resourceArrayProperty/properties/resourcePermissions" format="markdown">
-        The provided documentation for Actor input schema specification does not contain a description for
-        `resourcePermissions` in the `resourceArrayProperty` section. It is present in the JSON validation schema,
-        indicating permissions for the resource array.
-    </AddDescription>
     <AddDescription json-path="/definitions/anyProperty/properties/type" format="markdown">
         Allowed type for the input value. Cannot be mixed.
     </AddDescription>
@@ -555,7 +545,7 @@
         Visual editor used for the input field. Defaults to `resourcePicker`.
     </AddDescription>
     <AddDescription json-path="/definitions/resourceProperty/properties/resourceType" format="markdown">
-        Type of Apify Platform resource
+        Type of Apify resource this field references - a storage resource (`dataset`, `keyValueStore`, `requestQueue`) or an `mcpConnector`.
     </AddDescription>
     <AddDescription json-path="/definitions/resourceProperty/properties/default" format="markdown">
         Default value that will be used when no value is provided.
@@ -612,7 +602,7 @@
         Specifies whether the array should contain only unique values.
     </AddDescription>
     <AddDescription json-path="/definitions/resourceArrayProperty/properties/resourceType" format="markdown">
-        Type of Apify Platform resource
+        Type of Apify resource this field references - a storage resource (`dataset`, `keyValueStore`, `requestQueue`) or an `mcpConnector`.
     </AddDescription>
     <AddDescription json-path="/definitions/resourceArrayProperty/properties/sectionCaption" format="markdown">
         If this property is set, then all fields following this field (this field included) will be separated into a
@@ -622,6 +612,21 @@
     <AddDescription json-path="/definitions/resourceArrayProperty/properties/sectionDescription" format="markdown">
         If the `sectionCaption` property is set, then you can use this property to provide additional description to the
         section. The description will be visible right under the caption when the section is open.
+    </AddDescription>
+    <AddDescription json-path="/definitions/resourcePermissionsProperty" format="markdown">
+        Permissions required for the resource. Only applicable when `resourceType` is `dataset`, `keyValueStore`, or `requestQueue`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpServersProperty" format="markdown">
+        Defines which MCP servers this Actor works with. Each entry describes an acceptable server - a connector can be selected for this input only if it matches at least one entry. Required when `resourceType` is `mcpConnector`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpServersProperty/items" format="markdown">
+        An acceptable MCP server profile. A connector matches if the URL of the server it targets matches `url` and it provides the tools described in `tools`.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpServersProperty/items/properties/url" format="markdown">
+        URL pattern that connector's targeted MCP server must match. Supports `*` and `?` wildcards. Use `"*"` to accept any server.
+    </AddDescription>
+    <AddDescription json-path="/definitions/mcpServersProperty/items/properties/tools" format="markdown">
+        Defines which tools the Actor needs and gets access to. `required` lists tool name patterns (supports `*` and `?` wildcards) - the connector must authorize at least one matching tool per pattern. Hint booleans further restrict which tools are considered. Only matching tools are exposed to the Actor.
     </AddDescription>
     <AddDescription json-path="/definitions/anyProperty/properties/title" format="markdown">
         Title of the field in UI.

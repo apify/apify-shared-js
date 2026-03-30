@@ -73,15 +73,41 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
 
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
+    resourceType: 'dataset' | 'keyValueStore' | 'requestQueue' | 'mcpConnector';
+}
+
+type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
     resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
-export type ResourceFieldDefinition = CommonResourceFieldDefinition<string> & {
+type McpServerTools = {
+    required?: readonly string[];
+    readOnly?: boolean;
+    destructive?: boolean;
+    idempotent?: boolean;
+    openWorld?: boolean;
+}
+
+type McpServer = {
+    url: string;
+    tools?: McpServerTools;
+}
+
+type McpConnectorResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
+    resourceType: 'mcpConnector';
+    mcpServers: readonly McpServer[];
+}
+
+type AnyResourceFieldDefinition<T> =
+    | StorageResourceFieldDefinition<T>
+    | McpConnectorResourceFieldDefinition<T>
+
+export type ResourceFieldDefinition = AnyResourceFieldDefinition<string> & {
     type: 'string';
 }
 
-export type ResourceArrayFieldDefinition = CommonResourceFieldDefinition<string[]> & {
+export type ResourceArrayFieldDefinition = AnyResourceFieldDefinition<string[]> & {
     type: 'array';
     maxItems?: number;
     minItems?: number;

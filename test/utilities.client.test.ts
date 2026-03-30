@@ -1090,6 +1090,72 @@ describe('utilities.client', () => {
                     expect(result[0].fieldKey).toEqual('field');
                 });
             });
+
+            it('should allow string value for mcpConnector resource', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'string',
+                        resourceType: 'mcpConnector',
+                        mcpServers: [{ url: '*' }],
+                        nullable: true,
+                    },
+                });
+                const inputs = [
+                    // 2 invalid inputs
+                    { field: [] },
+                    { field: {} },
+                    // Valid
+                    { field: 'MCP_CONNECTOR_ID' },
+                    { field: null },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 2 invalid inputs
+                expect(results.length).toEqual(2);
+                results.forEach((result) => {
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
+
+            it('should allow array value for mcpConnector resource', () => {
+                const { inputSchema, validator } = buildInputSchema({
+                    field: {
+                        title: 'Field title',
+                        description: 'My test field',
+                        type: 'array',
+                        resourceType: 'mcpConnector',
+                        mcpServers: [{ url: '*' }],
+                        nullable: true,
+                    },
+                });
+                const inputs = [
+                    // 2 invalid inputs
+                    { field: 'MCP_CONNECTOR_ID' },
+                    { field: {} },
+                    // Valid
+                    { field: [] },
+                    { field: ['MCP_CONNECTOR_ID'] },
+                    { field: ['MCP_1', 'MCP_2', 'MCP_3'] },
+                    { field: null },
+                ];
+
+                const results = inputs
+                    .map((input) => validateInputUsingValidator(validator, inputSchema, input))
+                    .filter((errors) => errors.length > 0);
+
+                // There should be 2 invalid inputs
+                expect(results.length).toEqual(2);
+                results.forEach((result) => {
+                    expect(result.length).toEqual(1);
+                    expect(result[0].fieldKey).toEqual('field');
+                });
+            });
         });
 
         describe('special cases for isSecret properties', () => {

@@ -671,7 +671,7 @@ describe('input_schema.json', () => {
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.resourceType must be equal to one of the allowed values: '
-                    + '"dataset", "keyValueStore", "requestQueue")',
+                    + '"dataset", "keyValueStore", "requestQueue", "mcpConnector")',
                 );
             });
 
@@ -891,6 +891,384 @@ describe('input_schema.json', () => {
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
                     'Input schema is not valid (Field schema.properties.myField.resourcePermissions must contain at least 1 valid item(s))',
+                );
+            });
+
+            it('should accept mcpConnector resourceType with mcpServers', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: 'https://mcp.example.com/*',
+                                    tools: {
+                                        required: ['list_channels', 'read_*'],
+                                        readOnly: true,
+                                        destructive: false,
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept mcpConnector resourceType without mcpServers', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.mcpServers is required)',
+                );
+            });
+
+            it('should accept mcpConnector array resourceType with mcpServers', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'array',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                { url: '*' },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept mcpServers on storage resourceType', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                            mcpServers: [
+                                { url: '*' },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.mcpServers is not allowed.)',
+                );
+            });
+
+            it('should accept mcpServers with url-only entries', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                { url: 'https://mcp.example.com/*' },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept mcpServers with tools containing only required patterns', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: { required: ['read_*'] },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept mcpServers with multiple entries', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: 'https://mcp.github.com/*',
+                                    tools: { required: ['list_repos'] },
+                                },
+                                {
+                                    url: 'https://mcp.gitlab.com/*',
+                                    tools: { required: ['list_projects'] },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept unknown properties in mcpServers entry', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    unknownProp: 'value',
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.mcpServers.0.unknownProp is not allowed.)',
+                );
+            });
+
+            it('should not accept mcpServers entry without url', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                { tools: { required: ['read_*'] } },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.mcpServers.0.url is required)',
+                );
+            });
+
+            it('should accept storage resourceType without resourcePermissions', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should accept storage resourceType with resourcePermissions', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'dataset',
+                            resourcePermissions: ['READ'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept resourcePermissions on mcpConnector resourceType', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [{ url: '*' }],
+                            resourcePermissions: ['READ'],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.resourcePermissions is not allowed.)',
+                );
+            });
+
+            it('should accept mcpServers with tools containing only hint booleans', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: {
+                                        readOnly: true,
+                                        destructive: false,
+                                        idempotent: true,
+                                        openWorld: false,
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).not.toThrow();
+            });
+
+            it('should not accept unknown properties in tools object', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: {
+                                        required: ['read_*'],
+                                        unknownHint: true,
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Property schema.properties.myField.mcpServers.0.tools.unknownHint is not allowed.)',
+                );
+            });
+
+            it('should not accept empty string as url in mcpServers entry', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [{ url: '' }],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow();
+            });
+
+            it('should not accept empty string in tools required patterns', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [
+                                {
+                                    url: '*',
+                                    tools: { required: [''] },
+                                },
+                            ],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow();
+            });
+
+            it('should not accept empty mcpServers array', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            description: 'My test field',
+                            type: 'string',
+                            resourceType: 'mcpConnector',
+                            mcpServers: [],
+                        },
+                    },
+                };
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    'Input schema is not valid (Field schema.properties.myField.mcpServers must NOT have fewer than 1 items)',
                 );
             });
         });
