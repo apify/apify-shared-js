@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.27.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.26.0...@apify/input_schema@3.27.0) (2026-03-31)
+
+
+### Features
+
+* export MCP Connector types ([#606](https://github.com/apify/apify-shared-js/issues/606)) ([1979f26](https://github.com/apify/apify-shared-js/commit/1979f26117085f98867bc6dfea5ef5f9c149af70))
+
+
+
+
+
 # [3.26.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.25.18...@apify/input_schema@3.26.0) (2026-03-30)
 
 
