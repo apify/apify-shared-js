@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.52.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.51.1...@apify/consts@2.52.0) (2026-03-31)
+
+
+### Features
+
+* introduce MCP_PROXY_URL env var ([#607](https://github.com/apify/apify-shared-js/issues/607)) ([418fc8c](https://github.com/apify/apify-shared-js/commit/418fc8c24a9d5314c75926d51be2d596af8cf628))
+
+
+
+
+
 ## [2.51.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.51.0...@apify/consts@2.51.1) (2026-02-26)
 
 
