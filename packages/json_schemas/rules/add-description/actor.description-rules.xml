@@ -12,13 +12,13 @@
         An integer between `128` and `32768` specifying the maximum memory in megabytes allowed.
     </AddDescription>
     <AddDescription json-path="/properties/input" format="markdown">
-        Path or direct definition of the Actor's input schema.
+        **Deprecated: Please use `inputSchema` instead.**
     </AddDescription>
     <AddDescription json-path="/properties/inputSchema" format="markdown">
         Path or direct definition of the Actor's input schema.
     </AddDescription>
     <AddDescription json-path="/properties/output" format="markdown">
-        Path or direct definition of the Actor's output schema.
+        **Deprecated: Please use `outputSchema` instead.**
     </AddDescription>
     <AddDescription json-path="/properties/outputSchema" format="markdown">
         Path or direct definition of the Actor's output schema.

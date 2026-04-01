@@ -90,9 +90,9 @@
                     "type": "object"
                 }
             ],
-            "description": "Path or direct definition of the Actor's input schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor's input schema."
+            "description": "Deprecated: Please use inputSchema instead.",
+            "x-intellij-html-description": "<p><strong>Deprecated: Please use <code>inputSchema</code> instead.</strong></p>",
+            "markdownDescription": "**Deprecated: Please use `inputSchema` instead.**"
         },
         "inputSchema": {
             "oneOf": [
@@ -116,9 +116,9 @@
                     "$ref": "https://apify.com/schemas/v1/output.json"
                 }
             ],
-            "description": "Path or direct definition of the Actor's output schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor's output schema."
+            "description": "Deprecated: Please use outputSchema instead.",
+            "x-intellij-html-description": "<p><strong>Deprecated: Please use <code>outputSchema</code> instead.</strong></p>",
+            "markdownDescription": "**Deprecated: Please use `outputSchema` instead.**"
         },
         "outputSchema": {
             "oneOf": [
