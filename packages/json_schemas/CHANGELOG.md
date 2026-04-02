@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.15.1...@apify/json_schemas@0.16.0) (2026-04-02)
+
+
+### Features
+
+* add defaultMemoryMbytes to schema ([#609](https://github.com/apify/apify-shared-js/issues/609)) ([29ee383](https://github.com/apify/apify-shared-js/commit/29ee383adcd3443327c3cadc9a416b7050e6f7b1))
+
+
+
+
+
 ## [0.15.1](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.15.0...@apify/json_schemas@0.15.1) (2026-03-31)
 
 **Note:** Version bump only for package @apify/json_schemas
