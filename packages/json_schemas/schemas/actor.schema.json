@@ -60,6 +60,16 @@
       "minimum": 128,
       "maximum": 32768
     },
+    "defaultMemoryMbytes": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
     "input": {
       "oneOf": [
         {

@@ -66,6 +66,19 @@
             "x-intellij-html-description": "<p>An integer between <code>128</code> and <code>32768</code> specifying the maximum memory in megabytes allowed.</p>",
             "markdownDescription": "An integer between `128` and `32768` specifying the maximum memory in megabytes allowed."
         },
+        "defaultMemoryMbytes": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "integer"
+                }
+            ],
+            "description": "Specifies the default amount of memory in megabytes to be used when the Actor is started. Can be an integer or a dynamic memory expression (https://docs.apify.com/platform/actors/development/actor-definition/dynamic-actor-memory).",
+            "x-intellij-html-description": "<p>Specifies the default amount of memory in megabytes to be used when the Actor is started. Can be an integer or a <a href=\"https://docs.apify.com/platform/actors/development/actor-definition/dynamic-actor-memory\">dynamic memory expression</a>.</p>",
+            "markdownDescription": "Specifies the default amount of memory in megabytes to be used when the Actor is started. Can be an integer or a [dynamic memory expression](https://docs.apify.com/platform/actors/development/actor-definition/dynamic-actor-memory)."
+        },
         "input": {
             "oneOf": [
                 {
