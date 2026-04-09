@@ -48,7 +48,7 @@
         ]
     },
     "devDependencies": {
-        "@apify/eslint-config": "^1.0.0",
+        "@apify/eslint-config": "^2.0.0",
         "@commitlint/config-conventional": "^20.0.0",
         "@types/clone-deep": "^4.0.4",
         "@types/git-url-parse": "^16.0.0",
