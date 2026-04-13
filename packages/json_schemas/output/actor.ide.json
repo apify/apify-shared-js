@@ -93,7 +93,20 @@
                     "type": "string"
                 },
                 {
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 128,
+                    "maximum": 32768,
+                    "enum": [
+                        128,
+                        256,
+                        512,
+                        1024,
+                        2048,
+                        4096,
+                        8192,
+                        16384,
+                        32768
+                    ]
                 }
             ],
             "description": "Specifies the default amount of memory in megabytes to be used when the Actor is started. Can be an integer or a dynamic memory expression (https://docs.apify.com/platform/actors/development/actor-definition/dynamic-actor-memory).",
