@@ -272,7 +272,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'destroy', 'dev', 'devel', 'developer', 'developers', 'diagram', 'diary', 'dict', 'dictionary',
     'die', 'dir', 'direct_messages', 'directory', 'dist', 'doc', 'docs', 'documentation', 'domain',
     'download', 'downloads', 'ecommerce', 'edit', 'editor', 'edu', 'education', 'email', 'employment',
-    'empty', 'end', 'enterprise', 'entries', 'entry', 'error', 'errors', 'eval', 'event', 'exit',
+    'empty', 'end', 'enterprise', 'entries', 'entry', 'error', 'errors', 'eval', 'event', 'events', 'exit',
     'explore', 'facebook', 'faq', 'favorite', 'favorites', 'feature', 'features', 'feed', 'feedback',
     'feeds', 'file', 'files', 'first', 'flash', 'fleet', 'fleets', 'flog', 'follow', 'followers',
     'following', 'forgot', 'form', 'forum', 'forums', 'founder', 'free', 'friend', 'friends', 'ftp',
