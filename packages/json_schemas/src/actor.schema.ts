@@ -68,7 +68,7 @@ export const actorSchema = {
         defaultMemoryMbytes: {
             oneOf: [
                 { type: 'string' },
-                { type: 'integer' },
+                { type: 'integer', minimum: ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES, maximum: ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES },
             ],
         },
         input: {

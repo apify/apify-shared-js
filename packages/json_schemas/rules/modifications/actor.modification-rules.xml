@@ -21,6 +21,9 @@
     <ReplaceValue json-path="/properties/maxMemoryMbytes" type="js">
         ({ ...value, type: "integer", enum: [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768] })
     </ReplaceValue>
+    <ReplaceValue json-path="/properties/defaultMemoryMbytes" type="js">
+        ({ ...value, oneOf: value.oneOf.map(v => v.type === "integer" ? { ...v, enum: [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768] } : v) })
+    </ReplaceValue>
     <!-- In the original schema there is no support for meta attribute which is part of default Actor templates -->
     <ReplaceValue json-path="/properties" type="js">
         ({
