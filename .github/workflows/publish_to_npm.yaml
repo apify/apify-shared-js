@@ -22,25 +22,23 @@ jobs:
                   ref: ${{ inputs.ref }}
                   token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
+            - uses: pnpm/action-setup@v4
             - name: Use Node.js 24
               uses: actions/setup-node@v6
               with:
                   node-version: 24
                   registry-url: 'https://registry.npmjs.org'
-                  cache: 'npm'
-                  cache-dependency-path: 'package-lock.json'
-            - name: Update NPM
-              run: npm install -g npm@latest
+                  cache: 'pnpm'
             - name: Install dependencies
-              run: npm ci --no-audit
+              run: pnpm install --frozen-lockfile
             - name: Build module
-              run: npm run build
+              run: pnpm build
             - name: Publish to NPM
               run: |
                   git checkout -- .
-                  npx lerna publish --contents dist --yes
-                  npm i --no-audit # reinstall to have updated lock file
-                  npx lerna ls --json | node scripts/sync-root-changelog.ts
+                  pnpm exec lerna publish --contents dist --yes
+                  pnpm install --no-frozen-lockfile # reinstall to have updated lock file
+                  pnpm exec lerna ls --json | node scripts/sync-root-changelog.ts
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   GIT_AUTHOR_NAME: Apify Release Bot

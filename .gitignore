@@ -12,6 +12,5 @@ pids
 .idea
 yarn.lock
 packages/*/package-lock.json
-.npmrc
 
 .vscode
