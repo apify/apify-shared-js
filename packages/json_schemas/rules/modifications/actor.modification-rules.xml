@@ -8,9 +8,19 @@
     <ReplaceValue json-path="**/$ref" type="js">
         value.replace(/^https:\/\/apify\.com\/schemas\/v1\/(.+)\.json/, '$1.ide.json')
     </ReplaceValue>
+    <!-- Replace $ref value due to the relative path to input.ide.json -->
     <ReplaceValue json-path="/properties/inputSchema/oneOf" type="json">
         [{ "type": "string" }, { "$ref": "input.ide.json" }]
     </ReplaceValue>
+    <!-- Sets input attribute deprecated -->
+    <ReplaceValue json-path="/properties/input" type="js">
+        ({ ...value, deprecated: true })
+    </ReplaceValue>
+    <!-- Sets output attribute deprecated -->
+    <ReplaceValue json-path="/properties/output" type="js">
+        ({ ...value, deprecated: true })
+    </ReplaceValue>
+    <!-- Replace $ref value due to the relative path to input.ide.json -->
     <ReplaceValue json-path="/properties/input/oneOf" type="json">
         [{ "type": "string" }, { "$ref": "input.ide.json" }]
     </ReplaceValue>
@@ -24,7 +34,7 @@
     <ReplaceValue json-path="/properties/defaultMemoryMbytes" type="js">
         ({ ...value, oneOf: value.oneOf.map(v => v.type === "integer" ? { ...v, enum: [128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768] } : v) })
     </ReplaceValue>
-    <!-- In the original schema there is no support for meta attribute which is part of default Actor templates -->
+    <!-- In the original schema there is no support for `meta` attribute which is part of default Actor templates -->
     <ReplaceValue json-path="/properties" type="js">
         ({
             ...value,
@@ -34,8 +44,45 @@
             }
         })
     </ReplaceValue>
-    <!-- In the original schema these attributes have additionalProperties true, which is not great for code auto-complete -->
+    <!--
+    The original actor.json schema had `additionalProperties: true`, which allowed developers to define
+    whatever they wanted into root level attributes without any validation, we considered it as a bad DX, therefore
+    we are setting `additionalProperties` to false for IDEs.
+     -->
     <ReplaceValue json-path="/" type="js">
-        ({ ...value, additionalProperties: false })
+        ({
+            ...value,
+            // The original actor.json schema had `additionalProperties: true`, which allowed developers to define
+            // whatever they wanted for the root attributes without any validation, we considered it as a bad DX,
+            // therefore, we are setting `additionalProperties` to false for IDEs.
+            "additionalProperties": false,
+            // Following rules disallow to define input+inputSchema and output+outputSchema at the same time.
+            "allOf": [
+                {
+                    "if": { "required": ["inputSchema"] },
+                        "then": {
+                            "properties": {
+                                "input": {
+                                "not": {},
+                                // This description doesn't show anywhere, but if not present the validation doesn't work in Webstorm.
+                                "description": "Cannot be used together with 'inputSchema'."
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": { "required": ["outputSchema"] },
+                    "then": {
+                        "properties": {
+                            "output": {
+                                "not": {},
+                                // This description doesn't show anywhere, but if not present the validation doesn't work in Webstorm.
+                                "description": "Cannot be used together with 'outputSchema'."
+                            }
+                        }
+                    }
+                }
+            ],
+        })
     </ReplaceValue>
 </Enchantments>
