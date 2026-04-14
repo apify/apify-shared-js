@@ -81,7 +81,7 @@ describe('parse_jsonl_stream', () => {
         parseJsonl.write(json);
     });
 
-    it('fails on invalid JSON', (done) => {
+    it('fails on invalid JSON', async () => {
         const parseJsonl = new ParseJsonlStream();
 
         parseJsonl.on('error', (err) => {
@@ -98,12 +98,10 @@ describe('parse_jsonl_stream', () => {
         // We need wait for next tick because of that. It would be great to rewrite the
         // stream to handle events properly, but given it's been like this since 2018,
         // I guess it would bring more trouble than benefit.
-        process.nextTick(() => {
-            done();
-        });
+        await new Promise<void>((resolve) => { process.nextTick(resolve); });
     });
 
-    it('fails on unfinished JSON', (done) => {
+    it('fails on unfinished JSON', async () => {
         const parseJsonl = new ParseJsonlStream();
 
         let failed = false;
@@ -115,9 +113,7 @@ describe('parse_jsonl_stream', () => {
         parseJsonl.write('{ "aaa" :');
         parseJsonl.end('"aaa');
 
-        process.nextTick(() => {
-            expect(failed).toBe(true);
-            done();
-        });
+        await new Promise<void>((resolve) => { process.nextTick(resolve); });
+        expect(failed).toBe(true);
     });
 });

@@ -173,30 +173,24 @@ describe('utilities', () => {
         expect(() => utils.checkParamPrototypeOrThrow(new Date(), 'param', [], 'Date')).toThrow();
     });
 
-    it('promisifyServerListen()', (done) => {
+    it('promisifyServerListen()', async () => {
         const server1 = http.createServer();
         const server2 = http.createServer();
 
-        void utils
-            .promisifyServerListen(server1)(8799)
-            .then(async () => {
-                expect(server1.listening).toBe(true);
-                expect(server2.listening).toBe(false);
+        await utils.promisifyServerListen(server1)(8799);
+        expect(server1.listening).toBe(true);
+        expect(server2.listening).toBe(false);
 
-                return utils.promisifyServerListen(server2)(8799);
-            })
-            .then(() => {
-                throw new Error('Second server should not be able to start listening at the same port!');
-            }, (err) => {
-                expect(err.code).toBe('EADDRINUSE');
-            })
-            .then(() => {
-                server1.close((err) => {
-                    expect(server1.listening).toBe(false);
-                    expect(server2.listening).toBe(false);
-                    done(err);
-                });
+        await expect(utils.promisifyServerListen(server2)(8799)).rejects.toMatchObject({ code: 'EADDRINUSE' });
+
+        await new Promise<void>((resolve, reject) => {
+            server1.close((err) => {
+                expect(server1.listening).toBe(false);
+                expect(server2.listening).toBe(false);
+                if (err) reject(err);
+                else resolve();
             });
+        });
     });
 });
 
@@ -356,7 +350,7 @@ console.log('end');\`
 
 describe('BetterSetInterval', () => {
     it('works with normal function', async () => {
-        const fn = jest.fn();
+        const fn = vi.fn();
 
         const interval = utils.betterSetInterval(fn, 200);
 
@@ -373,7 +367,7 @@ describe('BetterSetInterval', () => {
     });
 
     it('works with async function', async () => {
-        const fn = jest.fn();
+        const fn = vi.fn();
 
         const interval = utils.betterSetInterval(async () => {
             fn();
@@ -393,7 +387,7 @@ describe('BetterSetInterval', () => {
     });
 
     it('works with function that accepts a callback (legacy)', async () => {
-        const fn = jest.fn();
+        const fn = vi.fn();
 
         const interval = utils.betterSetInterval((cb: () => void) => {
             fn();

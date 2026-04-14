@@ -1847,6 +1847,16 @@ describe('utilities.client', () => {
 
     describe('#jsonStringifyExtended()', () => {
         it('should work', () => {
+            const arrFuncSimple = (a: number, b: number) => a + b;
+            const arrFunc = (x: number, y: number) => {
+                return x + y;
+            };
+            /* eslint-disable */
+            const myFunc = function (z: any) {
+                return 'z';
+            };
+            /* eslint-enable */
+
             const value = {
                 foo: 'bar',
                 date: new Date('2019-05-06T13:08:15.590Z'),
@@ -1855,18 +1865,12 @@ describe('utilities.client', () => {
                 arr: [
                     1,
                     'something',
-                    (a: number, b: number) => a + b,
+                    arrFuncSimple,
                 ],
                 obj: {
                     foo: 'bar',
-                    arrFunc: (x: number, y: number) => {
-                        return x + y;
-                    },
-                    /* eslint-disable */
-                    myFunc: function (z: any) {
-                        return 'z';
-                    },
-                    /* eslint-enable */
+                    arrFunc,
+                    myFunc,
                 },
             };
 
@@ -1878,12 +1882,12 @@ describe('utilities.client', () => {
   "arr": [
     1,
     "something",
-    "(a, b) => a + b"
+    ${JSON.stringify(arrFuncSimple.toString())}
   ],
   "obj": {
     "foo": "bar",
-    "arrFunc": "(x, y) => {\\n                        return x + y;\\n                    }",
-    "myFunc": "function (z) {\\n                        return 'z';\\n                    }"
+    "arrFunc": ${JSON.stringify(arrFunc.toString())},
+    "myFunc": ${JSON.stringify(myFunc.toString())}
   }
 }`;
 
@@ -1891,19 +1895,21 @@ describe('utilities.client', () => {
         });
 
         it('should extend original replacer', () => {
+            const func = (x: number, y: number) => {
+                return x + y;
+            };
+
             const value = {
                 foo: 'bar',
                 date: new Date('2019-05-06T13:08:15.590Z'),
                 num: 1,
-                func: (x: number, y: number) => {
-                    return x + y;
-                },
+                func,
             };
 
             const expected = `{
   "foo": "bar",
   "date": "2019-05-06T13:08:15.590Z",
-  "func": "(x, y) => {\\n                    return x + y;\\n                }"
+  "func": ${JSON.stringify(func.toString())}
 }`;
 
             // Replacer removes number properties.

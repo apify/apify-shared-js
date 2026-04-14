@@ -101,7 +101,7 @@ describe('exponential_backoff', () => {
     });
 
     it('should display correct message after 1/2 of retries', async () => {
-        const logWarningSpy = jest.spyOn(log, 'warning');
+        const logWarningSpy = vi.spyOn(log, 'warning');
 
         let error!: Error & { details?: Record<string, any> };
         try {

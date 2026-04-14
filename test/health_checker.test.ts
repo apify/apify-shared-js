@@ -4,18 +4,18 @@ describe('HealthChecker', () => {
     const mongoDbWriteTestCollection = 'some-collection';
 
     const redis = {
-        get: jest.fn(),
-        set: jest.fn(),
+        get: vi.fn(),
+        set: vi.fn(),
     };
 
     const mongoRead = {
-        listCollections: jest.fn(),
+        listCollections: vi.fn(),
     };
 
     const writeTestCollection = {
-        insertOne: jest.fn(),
-        findOne: jest.fn(),
-        deleteMany: jest.fn(),
+        insertOne: vi.fn(),
+        findOne: vi.fn(),
+        deleteMany: vi.fn(),
     };
 
     const mongoWrite = {
@@ -38,7 +38,7 @@ describe('HealthChecker', () => {
 
     // Reset all stubs after each test.
     afterEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should pass when all checks pass', async () => {

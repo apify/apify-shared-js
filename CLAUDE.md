@@ -11,10 +11,10 @@ Internal Apify monorepo of shared TypeScript utilities and constants published a
 ```bash
 npm install              # Install all dependencies
 npm run build            # Build all packages (lerna run build)
-npm test                 # Run all tests (jest --silent)
+npm test                 # Run all tests (vitest)
 npm run test-cov         # Run tests with coverage
-npx jest test/consts.test.ts              # Run a single test file
-npx jest test/consts.test.ts -t "pattern" # Run specific test by name
+npx vitest run test/consts.test.ts              # Run a single test file
+npx vitest run test/consts.test.ts -t "pattern" # Run specific test by name
 npm run lint             # Lint all source and test files
 npm run lint:fix         # Lint with auto-fix
 npm run clean            # Clean all dist/ folders
@@ -29,10 +29,10 @@ npm run clean            # Clean all dist/ folders
 
 ## Key Conventions
 
-- **Imports in tests:** Always use absolute package names (`@apify/consts`, not relative paths to package sources). Jest's `moduleNameMapper` resolves `@apify/*` to `packages/*/src`
+- **Imports in tests:** Always use absolute package names (`@apify/consts`, not relative paths to package sources). Vitest's `resolve.alias` resolves `@apify/*` to `packages/*/src`
 - **Cross-package imports in source:** Use absolute `@apify/*` paths. Within the same package, use relative imports. Never self-import a package by its own `@apify/*` name
 - **Dev dependencies** go in the root `package.json` only. Runtime dependencies go in each package's own `package.json`
-- **No build needed for tests** — ts-jest compiles TypeScript directly from source
+- **No build needed for tests** — Vitest compiles TypeScript directly from source via esbuild
 - **Conventional commits** required: `fix:` (patch), `feat:` (minor), `BREAKING CHANGE:` in footer (major). Enforced by commitlint + husky hooks. PR titles must also follow this format
 - **Adding a new package:** Copy an existing package directory, update `package.json` name/deps, keep the standard `build`/`clean`/`compile`/`copy` scripts
 - Package dependencies must be declared in `package.json` so Lerna builds in correct topological order

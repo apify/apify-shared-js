@@ -7,13 +7,13 @@ import { IS_APIFY_LOGGER_EXCEPTION, LEVELS, Log, Logger, LoggerText } from '@api
 const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 
 describe('log', () => {
-    let loggerSpy: jest.SpyInstance;
+    let loggerSpy: MockInstance;
 
     let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
     const originalConsoleMethods = {} as Record<typeof CONSOLE_METHODS[number], (...args: any[]) => void>;
 
     beforeEach(() => {
-        loggerSpy = jest.spyOn(Logger.prototype, 'log');
+        loggerSpy = vi.spyOn(Logger.prototype, 'log');
         loggedLines = {};
         CONSOLE_METHODS.forEach((method) => {
             originalConsoleMethods[method] = console[method];
@@ -24,7 +24,7 @@ describe('log', () => {
     });
 
     afterEach(() => {
-        jest.restoreAllMocks();
+        vi.restoreAllMocks();
         CONSOLE_METHODS.forEach((method) => {
             console[method] = originalConsoleMethods[method];
         });
