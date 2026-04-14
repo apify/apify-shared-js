@@ -22,15 +22,13 @@ jobs:
                   ref: ${{ inputs.ref }}
                   token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
-            - uses: pnpm/action-setup@v4
             - name: Use Node.js 24
               uses: actions/setup-node@v6
               with:
                   node-version: 24
                   registry-url: 'https://registry.npmjs.org'
-                  cache: 'pnpm'
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+            - name: Install pnpm and dependencies
+              uses: ./.github/actions/pnpm-install
             - name: Build module
               run: pnpm build
             - name: Publish to NPM
