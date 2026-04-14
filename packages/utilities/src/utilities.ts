@@ -234,6 +234,38 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com', 'design-kit', 'press-kit',
     'scrapers', 'professional-services', 'challenge', 'challange', '1m-challenge', '1m-usd-challenge',
 
+    // Apify platform resources
+    'key-value-store', 'request-queue', 'request-queues', 'builds', 'schedule',
+
+    // AI / LLM related
+    'llms', 'openai', 'anthropic', 'claude', 'copilot', 'mistral',
+    'prompt', 'prompts', 'embeddings', 'vectors',
+
+    // Organizations / workspaces / permissions
+    'orgs', 'workspaces', 'tenant', 'tenants', 'permission', 'permissions',
+
+    // Auth / security
+    'saml', 'scim', 'token', 'tokens', 'api-key', 'api-keys',
+
+    // Billing / commerce
+    'coupon', 'coupons', 'discount', 'discounts', 'promos',
+    'refund', 'refunds', 'credit', 'credits', 'billing-portal',
+
+    // Infrastructure / environments
+    'production', 'canary', 'restricted',
+
+    // Communication
+    'conversations', 'reactions', 'mentions',
+
+    // Legal / trust / web standards
+    'accessibility', 'impressum', 'trust', 'trust-center', 'security-center',
+
+    // Brand protection / impersonation prevention
+    'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
+
+    // Incidents / updates
+    'outage', 'incident', 'incidents', 'what-is-new',
+
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
     '(sitemap\\.[a-z]+)', '(apple-touch-icon.*)', 'security-whitepaper\\.pdf', 'security\\.txt',
