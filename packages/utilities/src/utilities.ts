@@ -258,7 +258,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'conversations', 'reactions', 'mentions',
 
     // Legal / trust / web standards
-    'accessibility', 'impressum', 'trust', 'trust-center', 'security-center',
+    'accessibility', 'imprint', 'impressum', 'trust', 'trust-center', 'security-center',
 
     // Brand protection / impersonation prevention
     'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
