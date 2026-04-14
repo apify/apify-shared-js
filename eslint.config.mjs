@@ -2,7 +2,7 @@ import tsEslint from 'typescript-eslint';
 
 import apify from '@apify/eslint-config/ts';
 
-// eslint-disable-next-line import/no-default-export
+// eslint-disable-next-line import-x/no-default-export
 export default [
     {
         ignores: ['**/dist', 'node_modules', 'coverage', 'website/{build,.docusaurus}', '**/*.d.ts'],
@@ -22,7 +22,7 @@ export default [
         },
         rules: {
             'no-void': 0,
-            'import/extensions': 0,
+            'import-x/extensions': 0,
             'no-empty-function': 0,
             'no-param-reassign': 0,
             'no-use-before-define': 0,
@@ -38,7 +38,7 @@ export default [
             'no-console': 0,
             'no-void': 0,
             'no-useless-constructor': 0,
-            'import/no-extraneous-dependencies': 0,
+            'import-x/no-extraneous-dependencies': 0,
             'no-empty-function': 0,
             '@typescript-eslint/no-empty-function': 0,
             '@typescript-eslint/ban-ts-comment': 0,

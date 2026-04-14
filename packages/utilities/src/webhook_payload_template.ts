@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 
 import { jsonStringifyExtended, JsonVariable } from './utilities.client';
 

@@ -10,5 +10,5 @@ export * from './logger_text';
 // Default export is an initialized instance of logger.
 const log = new Log();
 
-// eslint-disable-next-line import/no-default-export
+// eslint-disable-next-line import-x/no-default-export
 export default log;

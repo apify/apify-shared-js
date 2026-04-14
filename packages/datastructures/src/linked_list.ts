@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 
 /*!
  * This module defines the LinkedList class, which represents a doubly-linked list data structure.

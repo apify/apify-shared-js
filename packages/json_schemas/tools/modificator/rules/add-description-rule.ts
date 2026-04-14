@@ -1,7 +1,7 @@
 import type { CheerioAPI, Node } from 'cheerio';
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import * as cheerio from 'cheerio';
-// eslint-disable-next-line import/no-extraneous-dependencies
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import showdown from 'showdown';
 
 import type { AbstractRule, JsonObject, JsonValue, ObjectPropertyInfo } from '../types';
