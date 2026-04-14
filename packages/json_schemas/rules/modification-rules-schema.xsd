@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="https://apify.com/json/modifications"
+           xmlns="https://apify.com/json/modifications"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <!-- Root element -->
+    <xs:element name="Enchantments">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:choice>
+                    <xs:element ref="AddDescription"/>
+                    <xs:element ref="ReplaceValue"/>
+                    <xs:element ref="RemoveValue"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- AddDescription -->
+    <xs:simpleType name="AddDescriptionFormat">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="markdown"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="AddDescription">
+        <xs:complexType mixed="true">
+            <xs:attribute name="json-path" type="xs:string" use="required"/>
+            <xs:attribute name="format" type="AddDescriptionFormat" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ReplaceValue -->
+    <xs:simpleType name="ReplaceValueType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="json"/>
+            <xs:enumeration value="js"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="ReplaceValue">
+        <xs:complexType mixed="true">
+            <xs:attribute name="json-path" type="xs:string" use="required"/>
+            <xs:attribute name="type" type="ReplaceValueType" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- RemoveValue -->
+    <xs:element name="RemoveValue">
+        <xs:complexType>
+            <xs:attribute name="json-path" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

@@ -122,9 +122,10 @@
                     "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a"
                 }
             ],
-            "description": "Path or direct definition of the Actor's input schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor's input schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor's input schema."
+            "description": "Deprecated: Please use inputSchema instead.",
+            "x-intellij-html-description": "<p><strong>Deprecated: Please use <code>inputSchema</code> instead.</strong></p>",
+            "markdownDescription": "**Deprecated: Please use `inputSchema` instead.**",
+            "deprecated": true
         },
         "inputSchema": {
             "oneOf": [
@@ -148,9 +149,10 @@
                     "$ref": "#/definitions/output-ide-json-413958f869eb5571ee0afb984606c27b"
                 }
             ],
-            "description": "Path or direct definition of the Actor's output schema.",
-            "x-intellij-html-description": "<p>Path or direct definition of the Actor's output schema.</p>",
-            "markdownDescription": "Path or direct definition of the Actor's output schema."
+            "description": "Deprecated: Please use outputSchema instead.",
+            "x-intellij-html-description": "<p><strong>Deprecated: Please use <code>outputSchema</code> instead.</strong></p>",
+            "markdownDescription": "**Deprecated: Please use `outputSchema` instead.**",
+            "deprecated": true
         },
         "outputSchema": {
             "oneOf": [
@@ -263,6 +265,38 @@
         "name"
     ],
     "additionalProperties": false,
+    "allOf": [
+        {
+            "if": {
+                "required": [
+                    "inputSchema"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "input": {
+                        "not": {},
+                        "description": "Cannot be used together with 'inputSchema'."
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "required": [
+                    "outputSchema"
+                ]
+            },
+            "then": {
+                "properties": {
+                    "output": {
+                        "not": {},
+                        "description": "Cannot be used together with 'outputSchema'."
+                    }
+                }
+            }
+        }
+    ],
     "definitions": {
         "input-ide-json-2212166aa408babb6120b85f1282521a": {
             "title": "JSON schema of Apify Actor input",
