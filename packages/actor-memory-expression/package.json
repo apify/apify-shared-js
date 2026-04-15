@@ -50,6 +50,6 @@
     "dependencies": {
         "@apify/consts": "^2.52.1",
         "@apify/log": "^2.5.35",
-        "mathjs": "^15.1.0"
+        "mathjs": "^15.2.0"
     }
 }
