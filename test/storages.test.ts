@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import { createStorageContentSignature, createStorageContentSignatureAsync, cryptoRandomObjectId } from '@apify/utilities';
 
 describe('createStorageContentSignature()', () => {

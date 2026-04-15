@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE } from '@apify/consts';
 import { InvalidJsonError, InvalidVariableError, WebhookPayloadTemplate } from '@apify/utilities';
 

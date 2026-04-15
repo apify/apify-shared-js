@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { createHmacSignature, createHmacSignatureAsync, cryptoRandomObjectId } from '@apify/utilities';
 
 describe('createHmacSignature()', () => {

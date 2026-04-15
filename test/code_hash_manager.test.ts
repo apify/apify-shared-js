@@ -1,3 +1,5 @@
+import { expect,test } from 'vitest';
+
 import { CodeHashManager } from '@apify/utilities';
 
 const secret = 'abcd';

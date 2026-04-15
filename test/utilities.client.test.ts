@@ -3,6 +3,7 @@ import { createPublicKey } from 'node:crypto';
 import Ajv from 'ajv';
 import brokenClone from 'clone-deep';
 import _ from 'underscore';
+import { describe, expect, it } from 'vitest';
 
 import { validateInputUsingValidator } from '@apify/input_schema';
 import { encryptInputSecrets } from '@apify/input_secrets';

@@ -1,3 +1,5 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
 import { HealthChecker } from '@apify/utilities';
 
 describe('HealthChecker', () => {

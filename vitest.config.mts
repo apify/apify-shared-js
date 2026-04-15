@@ -9,7 +9,6 @@ export default defineConfig({
         ],
     },
     test: {
-        globals: true,
         testTimeout: 30e3,
         environment: 'node',
         include: ['test/**/*.test.ts'],

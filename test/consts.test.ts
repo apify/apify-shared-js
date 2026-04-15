@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import {
     ACTOR_ENV_VARS,
     APIFY_ENV_VARS,

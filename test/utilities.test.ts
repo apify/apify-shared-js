@@ -1,6 +1,7 @@
 import * as http from 'node:http';
 
 import _ from 'underscore';
+import { describe, expect, it, vi } from 'vitest';
 
 import { makeInputJsFieldsReadable } from '@apify/input_schema';
 import * as utils from '@apify/utilities';

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { ParseJsonlStream } from '@apify/utilities';
 
 const OBJS = [

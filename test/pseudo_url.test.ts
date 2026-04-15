@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import { describe, expect,test } from 'vitest';
+
 import { PseudoUrl, purlToRegExp } from '@apify/pseudo_url';
 
 describe('PseudoUrl', () => {

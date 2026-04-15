@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import log from '@apify/log';
 import { RetryableError, retryWithExpBackoff } from '@apify/utilities';
 

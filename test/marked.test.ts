@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { apifyMarked } from '@apify/markdown';
+import { describe, it, expect } from 'vitest';
 
 // This is here in order not to mess up indentation
 const MARKDOWN_UNDER_TEST = `

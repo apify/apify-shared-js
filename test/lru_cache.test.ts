@@ -1,4 +1,5 @@
 import _ from 'underscore';
+import { describe, expect, it } from 'vitest';
 
 import { LruCache } from '@apify/datastructures';
 
