@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getActorSchemaValidator } from '@apify/json_schemas';
 
 describe('actor.json', () => {

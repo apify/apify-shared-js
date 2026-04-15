@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getKeyValueStoreSchemaValidator } from '@apify/json_schemas';
 
 describe('key_value_store.json', () => {

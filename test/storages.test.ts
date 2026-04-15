@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import { createStorageContentSignature, createStorageContentSignatureAsync, cryptoRandomObjectId } from '@apify/utilities';
 
 describe('createStorageContentSignature()', () => {
@@ -70,7 +72,7 @@ describe('createStorageContentSignatureAsync()', () => {
             const secretKey = cryptoRandomObjectId();
             const resourceId = cryptoRandomObjectId();
 
-            jest.useFakeTimers().setSystemTime(Date.now());
+            vi.useFakeTimers().setSystemTime(Date.now());
 
             const syncSignature = createStorageContentSignature({
                 resourceId,
@@ -83,7 +85,7 @@ describe('createStorageContentSignatureAsync()', () => {
                 expiresInMillis: 5000,
             });
 
-            jest.useRealTimers();
+            vi.useRealTimers();
             expect(syncSignature).toBe(asyncSignature);
         }
     });

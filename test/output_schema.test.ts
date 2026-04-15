@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { getOutputSchemaValidator } from '@apify/json_schemas';
 
 describe('output.json', () => {

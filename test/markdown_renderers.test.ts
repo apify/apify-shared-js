@@ -1,4 +1,5 @@
 import { marked, Renderer } from 'marked';
+import { describe, expect, it, test } from 'vitest';
 
 import { customHeadingRenderer, customImageRenderer, customLinkRenderer, parseRepoName } from '@apify/markdown';
 

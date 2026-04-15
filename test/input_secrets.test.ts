@@ -1,5 +1,7 @@
 import { createPrivateKey, createPublicKey } from 'node:crypto';
 
+import { describe, expect, it } from 'vitest';
+
 import { decryptInputSecrets, encryptInputSecrets } from '@apify/input_secrets';
 
 const publicKey = createPublicKey({

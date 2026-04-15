@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import * as REGEXS from '@apify/consts';
 import { SPLIT_PATH_REGEX } from '@apify/consts';
 

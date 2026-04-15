@@ -1,3 +1,5 @@
+import { describe, expect, it, vi } from 'vitest';
+
 import log from '@apify/log';
 import { RetryableError, retryWithExpBackoff } from '@apify/utilities';
 
@@ -101,7 +103,7 @@ describe('exponential_backoff', () => {
     });
 
     it('should display correct message after 1/2 of retries', async () => {
-        const logWarningSpy = jest.spyOn(log, 'warning');
+        const logWarningSpy = vi.spyOn(log, 'warning');
 
         let error!: Error & { details?: Record<string, any> };
         try {

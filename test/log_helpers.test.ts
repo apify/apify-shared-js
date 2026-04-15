@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { APIFY_ENV_VARS } from '@apify/consts';
 import { getLevelFromEnv, IS_APIFY_LOGGER_EXCEPTION, LogLevel, sanitizeData } from '@apify/log';
 

@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { LinkedList } from '@apify/datastructures';
 
 // asserts that linked list is equivalent to an array

@@ -1,5 +1,7 @@
 import { setTimeout } from 'node:timers/promises';
 
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { addTimeoutToPromise, tryCancel } from '@apify/timeout';
 
 describe('timeout with abort controller', () => {
