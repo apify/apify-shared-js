@@ -231,7 +231,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'industries', 'web-scraping', 'custom-solutions', 'solution-provider', 'alternatives', 'platform',
     'freelancers', 'freelancer', 'partner', 'preview', 'templates', 'data-for-generative-ai',
     'discord', 'praguecrawl', 'prague-crawl', 'bob', 'ai-agents', 'reel', 'video-reel',
-    'mcp', 'model-context-protocol', 'modelcontextprotocol', 'apify.com', 'design-kit', 'press-kit',
+    'mcp', 'mcpc', 'model-context-protocol', 'modelcontextprotocol',
+    // 'apify.com' intentionally unescaped so "." matches any character, also blocking variants like "apify_com" or "apifyxcom"
+    'apify.com', 'design-kit', 'press-kit',
     'scrapers', 'professional-services', 'challenge', 'challange', '1m-challenge', '1m-usd-challenge',
 
     // Apify platform resources
@@ -261,7 +263,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'accessibility', 'imprint', 'impressum', 'trust', 'trust-center', 'security-center',
 
     // Brand protection / impersonation prevention
-    'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
+    'brand', 'branding', 'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
 
     // Incidents / updates
     'outage', 'incident', 'incidents', 'what-is-new',
