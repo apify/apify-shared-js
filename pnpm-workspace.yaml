@@ -9,3 +9,5 @@ minimumReleaseAgeExclude:
   - "apify"
   - "crawlee"
   - "got-scraping"
+
+nodeLinker: hoisted
