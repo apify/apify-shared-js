@@ -261,7 +261,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'accessibility', 'imprint', 'impressum', 'trust', 'trust-center', 'security-center',
 
     // Brand protection / impersonation prevention
-    'brand', 'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
+    'brand', 'branding', 'verified', 'apify-support', 'apify-team', 'support-team', 'abuse',
 
     // Incidents / updates
     'outage', 'incident', 'incidents', 'what-is-new',
