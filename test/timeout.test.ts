@@ -1,6 +1,6 @@
 import { setTimeout } from 'node:timers/promises';
 
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { addTimeoutToPromise, tryCancel } from '@apify/timeout';
 

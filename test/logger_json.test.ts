@@ -1,4 +1,4 @@
-import { afterEach,beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { LoggerJson, LogLevel, PREFIX_DELIMITER } from '@apify/log';
 

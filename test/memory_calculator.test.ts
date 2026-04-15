@@ -1,6 +1,6 @@
 import type { EvalFunction } from 'mathjs';
 import type { CompilationCache } from 'packages/actor-memory-expression/src/types';
-import { beforeEach,describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { calculateRunDynamicMemory, DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH } from '@apify/actor-memory-expression';
 import { LruCache } from '@apify/datastructures';
