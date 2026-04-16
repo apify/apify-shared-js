@@ -11,6 +11,7 @@ logs
 pids
 .idea
 yarn.lock
+.yarn
 packages/*/package-lock.json
 
 .vscode
