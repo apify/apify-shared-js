@@ -32,7 +32,8 @@
         "test-cov": "vitest --coverage",
         "release": "pnpm build && lerna version patch && lerna publish from-package --contents dist",
         "lint": "eslint packages/*/src test",
-        "lint:fix": "eslint packages/*/src test --fix"
+        "lint:fix": "eslint packages/*/src test --fix",
+        "preinstall": "npx only-allow pnpm"
     },
     "commitlint": {
         "extends": [
@@ -70,12 +71,5 @@
         "underscore": "^1.13.7",
         "vitest": "^4.1.4"
     },
-    "packageManager": "pnpm@10.24.0",
-    "devEngines": {
-        "packageManager": {
-            "name": "pnpm",
-            "version": "10.x",
-            "onFail": "error"
-        }
-    }
+    "packageManager": "pnpm@10.24.0"
 }
