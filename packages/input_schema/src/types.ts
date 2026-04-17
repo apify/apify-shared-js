@@ -81,7 +81,7 @@ type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourcePermissions?: ('READ' | 'WRITE')[];
 }
 
-export type McpServerTools = {
+type McpServerTools = {
     required?: string[];
     readOnly?: boolean;
     destructive?: boolean;
@@ -89,7 +89,7 @@ export type McpServerTools = {
     openWorld?: boolean;
 }
 
-export type McpServer = {
+type McpServer = {
     url: string;
     tools?: McpServerTools;
 }
@@ -105,6 +105,8 @@ type AnyResourceFieldDefinition<T> =
 
 export type ResourceFieldDefinition = AnyResourceFieldDefinition<string> & {
     type: 'string';
+    // Singular resource field also supports 'textfield' editor, unlike the array variant.
+    editor?: CommonResourceFieldDefinition<string>['editor'] | 'textfield';
 }
 
 export type ResourceArrayFieldDefinition = AnyResourceFieldDefinition<string[]> & {

@@ -7,12 +7,13 @@ export {
     NumberFieldDefinition,
     ObjectFieldDefinition,
     ArrayFieldDefinition,
+
+    ResourceFieldDefinition,
+    ResourceArrayFieldDefinition,
+
     MixedFieldDefinition,
     FieldDefinition,
 
     InputSchema,
-
-    McpServer,
-    McpServerTools,
 } from './types';
 export * from './utilities';
