@@ -7,6 +7,7 @@ export {
     NumberFieldDefinition,
     ObjectFieldDefinition,
     ArrayFieldDefinition,
+
     ResourceFieldDefinition,
     ResourceArrayFieldDefinition,
 
