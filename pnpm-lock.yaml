@@ -121,8 +121,8 @@ importers:
         specifier: ^2.52.1
         version: 2.52.1
       '@apify/input_secrets':
-        specifier: ^1.2.30
-        version: 1.2.30
+        specifier: ^1.2.32
+        version: 1.2.32
       '@apify/json_schemas':
         specifier: ^0.16.3
         version: 0.16.3
@@ -146,8 +146,8 @@ importers:
         specifier: ^2.5.35
         version: 2.5.35
       '@apify/utilities':
-        specifier: ^2.27.0
-        version: 2.27.0
+        specifier: ^2.29.0
+        version: 2.29.0
       ow:
         specifier: ^0.28.2
         version: 0.28.2
@@ -189,8 +189,8 @@ importers:
         specifier: ^2.52.1
         version: 2.52.1
       '@apify/utilities':
-        specifier: ^2.27.0
-        version: 2.27.0
+        specifier: ^2.29.0
+        version: 2.29.0
       marked:
         specifier: ^15.0.0
         version: 15.0.12
@@ -253,8 +253,8 @@ packages:
       typescript-eslint:
         optional: true
 
-  '@apify/input_secrets@1.2.30':
-    resolution: {integrity: sha512-8sAHjOtLrjFm3DLKxKvpNQwzWTse7YyUQqHqNxpfZ2HDvYc6cJDB3o+0s/AlJTQrB+FdX+eki/4V0c4gcjXkUw==}
+  '@apify/input_secrets@1.2.32':
+    resolution: {integrity: sha512-oDV/P0Oz5t2zJziqi557+uCXwPerBgX+Hh+m3CA6M6aTCqmDpxWiIYAItt+/L0a4LUEIx5WwT45/bogLa23zRA==}
 
   '@apify/json_schemas@0.16.3':
     resolution: {integrity: sha512-yLe7CSKGInMfs4gGlDJZcu9dledrX0hlXmgt6cMaaPU1QaPABPsSLZPvyxmPzzEoddvu1nrpjKlWbuwW0Z+1zw==}
@@ -262,8 +262,8 @@ packages:
   '@apify/log@2.5.35':
     resolution: {integrity: sha512-dJM9RkA9yD7kew5oU3qxLaoB4hFHB7FF47TI0STJVmz0cUa8cXWer4DpJkvUA52lrVNQGsOurCo3kGQWzfg/9w==}
 
-  '@apify/utilities@2.27.0':
-    resolution: {integrity: sha512-P3maAvUi5sUw4F4AKRyfczAQAl20YodEjSlFrjg6Bif8ThRAott7atEAfdy8FfyjI7Z0l+0MrbvtF4ZiGdJ8mw==}
+  '@apify/utilities@2.29.0':
+    resolution: {integrity: sha512-Yx+NoTWKD7gf/x4DhNkqiWcHLM2SuNd9kosudMboLLNHAN5dbzgMqLhH5s2WSERizjWRKsHMP7eINMClPOXTPQ==}
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -4716,10 +4716,10 @@ snapshots:
       - '@typescript-eslint/utils'
       - supports-color
 
-  '@apify/input_secrets@1.2.30':
+  '@apify/input_secrets@1.2.32':
     dependencies:
       '@apify/log': 2.5.35
-      '@apify/utilities': 2.27.0
+      '@apify/utilities': 2.29.0
       ow: 0.28.2
 
   '@apify/json_schemas@0.16.3':
@@ -4732,7 +4732,7 @@ snapshots:
       '@apify/consts': 2.52.1
       ansi-colors: 4.1.3
 
-  '@apify/utilities@2.27.0':
+  '@apify/utilities@2.29.0':
     dependencies:
       '@apify/consts': 2.52.1
       '@apify/log': 2.5.35

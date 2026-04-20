@@ -49,3 +49,4 @@ jobs:
                   author_name: Apify Release Bot
                   author_email: noreply@apify.com
                   message: 'chore: update root lock file and changelog [skip ci]'
+                  pull: '--rebase --autostash'
