@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.28.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.27.7...@apify/input_schema@3.28.0) (2026-04-20)
+
+
+### Features
+
+* revisit input schema types export and fix missing editor option ([#620](https://github.com/apify/apify-shared-js/issues/620)) ([0add9e4](https://github.com/apify/apify-shared-js/commit/0add9e4c14ff397a56e9e907b31f97257900f27a))
+
+
+
+
+
 ## [3.27.7](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.27.6...@apify/input_schema@3.27.7) (2026-04-15)
 
 **Note:** Version bump only for package @apify/input_schema
