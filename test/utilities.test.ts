@@ -74,6 +74,10 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('index')).toBe(true);
             expect(utils.isForbiddenUsername('google6d0b9d7407741f6a.html')).toBe(true);
             expect(utils.isForbiddenUsername('BingSiteAuth.XML')).toBe(true);
+            expect(utils.isForbiddenUsername('llms.txt')).toBe(true);
+            expect(utils.isForbiddenUsername('llms-full.txt')).toBe(true);
+            expect(utils.isForbiddenUsername('AGENTS.md')).toBe(true);
+            expect(utils.isForbiddenUsername('agents.MD')).toBe(true);
 
             // All hidden files
             expect(utils.isForbiddenUsername('.hidden')).toBe(true);
@@ -82,6 +86,7 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('..')).toBe(true);
             expect(utils.isForbiddenUsername('...')).toBe(true);
             expect(utils.isForbiddenUsername('.htaccess')).toBe(true);
+            expect(utils.isForbiddenUsername('.well-known')).toBe(true);
 
             // Strings not starting with letter or number
             expect(utils.isForbiddenUsername('_karlyolo')).toBe(true);
