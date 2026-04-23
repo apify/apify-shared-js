@@ -86,6 +86,7 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('..')).toBe(true);
             expect(utils.isForbiddenUsername('...')).toBe(true);
             expect(utils.isForbiddenUsername('.htaccess')).toBe(true);
+            expect(utils.isForbiddenUsername('.well-known')).toBe(true);
 
             // Strings not starting with letter or number
             expect(utils.isForbiddenUsername('_karlyolo')).toBe(true);
