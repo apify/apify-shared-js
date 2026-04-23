@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.28.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.27.0...@apify/utilities@2.28.0) (2026-04-23)
+
+
+### Features
+
+* Add forbidden usernames for AI agent and LLM-related files ([#621](https://github.com/apify/apify-shared-js/issues/621)) ([7354dec](https://github.com/apify/apify-shared-js/commit/7354dec83682056d25ac5401b36234d9500d2cd7))
+
+
+
+
+
 # [2.27.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.26.1...@apify/utilities@2.27.0) (2026-04-15)
 
 
