@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.28.0...@apify/utilities@2.29.0) (2026-04-24)
+
+
+### Features
+
+* add CLAUDE.md to forbidden usernames ([#622](https://github.com/apify/apify-shared-js/issues/622)) ([6d63793](https://github.com/apify/apify-shared-js/commit/6d637936406a6f365fe2b6b683bb7633e92d9a43)), closes [#621](https://github.com/apify/apify-shared-js/issues/621)
+
+
+
+
+
 # [2.28.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.27.0...@apify/utilities@2.28.0) (2026-04-23)
 
 
