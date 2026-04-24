@@ -271,7 +271,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Special files
     'index', 'index\\.html', '(favicon\\.[a-z]+)', 'BingSiteAuth.xml', '(google.+\\.html)', 'robots\\.txt',
     '(sitemap\\.[a-z]+)', '(apple-touch-icon.*)', 'security-whitepaper\\.pdf', 'security\\.txt', 'llms\\.txt',
-    'llms-full\\.txt', 'AGENTS\\.md',
+    'llms-full\\.txt', 'AGENTS\\.md', 'CLAUDE\\.md',
 
     // All hidden files
     '(\\..*)',
