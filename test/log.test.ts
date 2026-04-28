@@ -176,35 +176,32 @@ describe('log', () => {
         expect(loggerSpy).toBeCalledWith(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar', hotel: 'restaurant' }, undefined, { prefix: null, suffix: null });
     });
 
-    // Only Node16+ supports cause
-    if (!process.version.startsWith('v14')) {
-        it('should log cause for errors', () => {
-            const log = new Log({ logger: new LoggerText() });
-            const causeError = new Error('hello world!');
-            const actualError = new Error('some error', { cause: causeError });
+    it('should log cause for errors', () => {
+        const log = new Log({ logger: new LoggerText() });
+        const causeError = new Error('hello world!');
+        const actualError = new Error('some error', { cause: causeError });
 
-            log.exception(actualError, 'Some error message');
+        log.exception(actualError, 'Some error message');
 
-            expect(loggerSpy).toHaveBeenCalled();
+        expect(loggerSpy).toHaveBeenCalled();
 
-            const line = loggedLines.error;
-            const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
+        const line = loggedLines.error;
+        const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
 
-            expect(line).toMatch(new RegExp(pattern));
-        });
+        expect(line).toMatch(new RegExp(pattern));
+    });
 
-        it('should support printing cause even if it is not an error', () => {
-            const log = new Log({ logger: new LoggerText() });
-            const actualError = new Error('some error', { cause: 'hello world!' });
+    it('should support printing cause even if it is not an error', () => {
+        const log = new Log({ logger: new LoggerText() });
+        const actualError = new Error('some error', { cause: 'hello world!' });
 
-            log.exception(actualError, 'Some error message');
+        log.exception(actualError, 'Some error message');
 
-            expect(loggerSpy).toHaveBeenCalled();
+        expect(loggerSpy).toHaveBeenCalled();
 
-            const line = loggedLines.error;
-            const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
+        const line = loggedLines.error;
+        const pattern = `^ERROR Some error message\\s+some error([\\s\\S]*)CAUSE: hello world!`;
 
-            expect(line).toMatch(new RegExp(pattern));
-        });
-    }
+        expect(line).toMatch(new RegExp(pattern));
+    });
 });

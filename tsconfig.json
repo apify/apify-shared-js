@@ -1,9 +1,10 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "paths": {
-      "@apify/*": ["packages/*/src"]
+      "@apify/*": ["./packages/*/src"]
     }
   }
 }

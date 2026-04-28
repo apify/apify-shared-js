@@ -1,4 +1,3 @@
-// eslint-disable-next-line import-x/no-extraneous-dependencies
 import { load as cheerioLoad } from 'cheerio';
 
 import * as addDescriptionRule from './rules/add-description-rule';

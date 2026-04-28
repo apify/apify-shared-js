@@ -1,5 +1,5 @@
-import { copyFileSync, readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 function copy(filename: string, from: string, to: string): void {
     copyFileSync(resolve(from, filename), resolve(to, filename));

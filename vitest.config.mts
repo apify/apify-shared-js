@@ -1,5 +1,4 @@
-/* eslint-disable import-x/no-extraneous-dependencies, import-x/no-default-export */
-import path from 'path';
+import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
