@@ -30,10 +30,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" />
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('does not convert absolute paths', () => {
@@ -47,10 +49,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img src='ftp://apify.com/path/to/img.jpg' />
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(testMarkdown);
     });
 
     it('does not convert <img> tags with mismatched quotes', () => {
@@ -60,10 +64,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img src="path/to/img.jpg' />
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(testMarkdown);
     });
 
     it('does not convert Base64 encoded images', () => {
@@ -73,10 +79,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=' />
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(testMarkdown);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(testMarkdown);
     });
 
     it('works correctly for Github repo with explicit branch name', () => {
@@ -91,11 +99,13 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](https://raw.githubusercontent.com/apify/test-repo/main/relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-            gitBranchName: 'main',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+                gitBranchName: 'main',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Bitbucket repo with explicit branch name', () => {
@@ -109,11 +119,13 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img1](http://www.apify-awesome-test-image.com)
             ![img2](https://bytebucket.org/apify/test-repo/raw/main/relative-path-to-img.jpg)
         `;
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@bitbucket.org:apify/test-repo.git',
-            gitBranchName: 'main',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@bitbucket.org:apify/test-repo.git',
+                gitBranchName: 'main',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Gitlab repo with explicit branch name', () => {
@@ -128,11 +140,13 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](https://gitlab.com/apify/test-repo/-/raw/main/relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@gitlab.com:apify/test-repo.git',
-            gitBranchName: 'main',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@gitlab.com:apify/test-repo.git',
+                gitBranchName: 'main',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo with branch name in hash', () => {
@@ -147,10 +161,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](https://raw.githubusercontent.com/apify/test-repo/my-awesome-branch/relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo with branch name in hash #2', () => {
@@ -165,10 +181,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](https://raw.githubusercontent.com/apify/test-repo/my-awesome-branch/relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch:folder',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git#my-awesome-branch:folder',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo without explicit branch name', () => {
@@ -183,10 +201,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for Github repo without explicit branch name and <img src=... /> tags', () => {
@@ -217,10 +237,12 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             <img alt="Some alt text" src="https://raw.githubusercontent.com/apify/test-repo/master/relative-path-to-img.jpg" width="500"/>
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@github.com:apify/test-repo.git',
-        })).toEqual(expectedResult);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@github.com:apify/test-repo.git',
+            }),
+        ).toEqual(expectedResult);
     });
 
     it('works correctly for unknown repo', () => {
@@ -230,9 +252,11 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             ![img2](./relative-path-to-img.jpg)
         `;
 
-        expect(convertRelativeImagePathsToAbsoluteInReadme({
-            readme: testMarkdown,
-            gitRepoUrl: 'git@some-unknown-git-site.com:apify/test-repo.git',
-        })).toEqual(testMarkdown);
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'git@some-unknown-git-site.com:apify/test-repo.git',
+            }),
+        ).toEqual(testMarkdown);
     });
 });

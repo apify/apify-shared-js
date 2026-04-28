@@ -7,11 +7,20 @@ type CommonFieldDefinition<T> = {
     nullable?: boolean;
     sectionCaption?: string;
     sectionDescription?: string;
-}
+};
 
 export type StringFieldDefinition = CommonFieldDefinition<string> & {
-    type: 'string'
-    editor: 'textfield' | 'textarea' | 'javascript' | 'python' | 'select' | 'datepicker' | 'hidden' | 'json' | 'fileupload';
+    type: 'string';
+    editor:
+        | 'textfield'
+        | 'textarea'
+        | 'javascript'
+        | 'python'
+        | 'select'
+        | 'datepicker'
+        | 'hidden'
+        | 'json'
+        | 'fileupload';
     pattern?: string;
     minLength?: number;
     maxLength?: number;
@@ -21,33 +30,33 @@ export type StringFieldDefinition = CommonFieldDefinition<string> & {
     isSecret?: boolean;
     // Used for 'datepicker' editor, absolute is considered as default value
     dateType?: 'absolute' | 'relative' | 'absoluteOrRelative';
-}
+};
 
 export type BooleanFieldDefinition = CommonFieldDefinition<boolean> & {
-    type: 'boolean'
+    type: 'boolean';
     editor?: 'checkbox' | 'hidden';
     groupCaption?: string;
     groupDescription?: string;
-}
+};
 
 export type IntegerFieldDefinition = CommonFieldDefinition<number> & {
-    type: 'integer'
+    type: 'integer';
     editor?: 'number' | 'hidden';
     maximum?: number;
     minimum?: number;
     unit?: string;
-}
+};
 
 export type NumberFieldDefinition = CommonFieldDefinition<number> & {
-    type: 'number'
+    type: 'number';
     editor?: 'number' | 'hidden';
     maximum?: number;
     minimum?: number;
     unit?: string;
-}
+};
 
 export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
-    type: 'object'
+    type: 'object';
     editor: 'json' | 'proxy' | 'schemaBased' | 'hidden';
     patternKey?: string;
     patternValue?: string;
@@ -56,11 +65,20 @@ export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     properties?: Record<string, unknown>;
     required?: string[];
     additionalProperties?: boolean;
-}
+};
 
 export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
-    type: 'array'
-    editor: 'json' | 'requestListSources' | 'pseudoUrls' | 'globs' | 'keyValue' | 'stringList' | 'select' | 'schemaBased' | 'hidden';
+    type: 'array';
+    editor:
+        | 'json'
+        | 'requestListSources'
+        | 'pseudoUrls'
+        | 'globs'
+        | 'keyValue'
+        | 'stringList'
+        | 'select'
+        | 'schemaBased'
+        | 'hidden';
     placeholderKey?: string;
     placeholderValue?: string;
     patternKey?: string;
@@ -69,17 +87,17 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
     minItems?: number;
     uniqueItems?: boolean;
     items?: unknown;
-}
+};
 
 export type CommonResourceFieldDefinition<T> = CommonFieldDefinition<T> & {
     editor?: 'resourcePicker' | 'hidden';
     resourceType: 'dataset' | 'keyValueStore' | 'requestQueue' | 'mcpConnector';
-}
+};
 
 type StorageResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourceType: 'dataset' | 'keyValueStore' | 'requestQueue';
     resourcePermissions?: ('READ' | 'WRITE')[];
-}
+};
 
 type McpServerTools = {
     required?: string[];
@@ -87,48 +105,48 @@ type McpServerTools = {
     destructive?: boolean;
     idempotent?: boolean;
     openWorld?: boolean;
-}
+};
 
 type McpServer = {
     url: string;
     tools?: McpServerTools;
-}
+};
 
 type McpConnectorResourceFieldDefinition<T> = CommonResourceFieldDefinition<T> & {
     resourceType: 'mcpConnector';
     mcpServers: McpServer[];
-}
+};
 
-type AnyResourceFieldDefinition<T> =
-    | StorageResourceFieldDefinition<T>
-    | McpConnectorResourceFieldDefinition<T>
+type AnyResourceFieldDefinition<T> = StorageResourceFieldDefinition<T> | McpConnectorResourceFieldDefinition<T>;
 
 export type ResourceFieldDefinition = AnyResourceFieldDefinition<string> & {
     type: 'string';
     // Singular resource field also supports 'textfield' editor, unlike the array variant.
     editor?: CommonResourceFieldDefinition<string>['editor'] | 'textfield';
-}
+};
 
 export type ResourceArrayFieldDefinition = AnyResourceFieldDefinition<string[]> & {
     type: 'array';
     maxItems?: number;
     minItems?: number;
     uniqueItems?: boolean;
-}
+};
 
-type AllTypes = StringFieldDefinition['type']
+type AllTypes =
+    | StringFieldDefinition['type']
     | BooleanFieldDefinition['type']
     | IntegerFieldDefinition['type']
     | NumberFieldDefinition['type']
     | ObjectFieldDefinition['type']
-    | ArrayFieldDefinition['type']
+    | ArrayFieldDefinition['type'];
 
 export type MixedFieldDefinition = CommonFieldDefinition<never> & {
     type: readonly AllTypes[];
-    editor: 'json'
-}
+    editor: 'json';
+};
 
-export type FieldDefinition = StringFieldDefinition
+export type FieldDefinition =
+    | StringFieldDefinition
     | BooleanFieldDefinition
     | IntegerFieldDefinition
     | NumberFieldDefinition
@@ -136,14 +154,14 @@ export type FieldDefinition = StringFieldDefinition
     | ArrayFieldDefinition
     | MixedFieldDefinition
     | ResourceFieldDefinition
-    | ResourceArrayFieldDefinition
+    | ResourceArrayFieldDefinition;
 
 /**
  * Type with checked base, but not properties
  */
 export type InputSchemaBaseChecked = Omit<InputSchema, 'properties'> & {
     properties: Record<string, Record<string, unknown>>;
-}
+};
 
 /**
  * Type with checked base & properties
@@ -157,4 +175,4 @@ export type InputSchema = {
     required?: readonly string[];
 
     $schema?: unknown;
-}
+};

@@ -1,4 +1,11 @@
-import { LogFormat, LogLevel, PREFERRED_FIELDS, PREFIX_DELIMITER, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import {
+    LogFormat,
+    LogLevel,
+    PREFERRED_FIELDS,
+    PREFIX_DELIMITER,
+    TRUNCATION_FLAG_KEY,
+    TRUNCATION_SUFFIX,
+} from './log_consts';
 import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers';
 import type { Logger } from './logger';
 import { LoggerJson } from './logger_json';
@@ -43,7 +50,7 @@ export interface LoggerOptions {
      */
     logger?: Logger;
     /** Additional data to be added to each log line. */
-    data?: Record<string, unknown>,
+    data?: Record<string, unknown>;
 }
 
 type AdditionalData = Record<string, any> | null;
@@ -157,15 +164,23 @@ export class Log {
 
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
-        if (typeof this.options.gradualLimitFactor !== 'number') throw new Error('Options "gradualLimitFactor" must be a number!');
-        if (typeof this.options.maxStringLength !== 'number') throw new Error('Options "maxStringLength" must be a number!');
-        if (typeof this.options.maxArrayLength !== 'number') throw new Error('Options "maxArrayLength" must be a number!');
+        if (typeof this.options.gradualLimitFactor !== 'number')
+            throw new Error('Options "gradualLimitFactor" must be a number!');
+        if (typeof this.options.maxStringLength !== 'number')
+            throw new Error('Options "maxStringLength" must be a number!');
+        if (typeof this.options.maxArrayLength !== 'number')
+            throw new Error('Options "maxArrayLength" must be a number!');
         if (typeof this.options.maxFields !== 'number') throw new Error('Options "maxFields" must be a number!');
-        if (!Array.isArray(this.options.preferredFields)) throw new Error('Options "preferredFields" must be an array!');
-        if (this.options.prefix && typeof this.options.prefix !== 'string') throw new Error('Options "prefix" must be a string!');
-        if (this.options.suffix && typeof this.options.suffix !== 'string') throw new Error('Options "suffix" must be a string!');
-        if (typeof this.options.truncationSuffix !== 'string') throw new Error('Options "truncationSuffix" must be a string!');
-        if (typeof this.options.truncationFlagKey !== 'string') throw new Error('Options "truncationFlagKey" must be a string!');
+        if (!Array.isArray(this.options.preferredFields))
+            throw new Error('Options "preferredFields" must be an array!');
+        if (this.options.prefix && typeof this.options.prefix !== 'string')
+            throw new Error('Options "prefix" must be a string!');
+        if (this.options.suffix && typeof this.options.suffix !== 'string')
+            throw new Error('Options "suffix" must be a string!');
+        if (typeof this.options.truncationSuffix !== 'string')
+            throw new Error('Options "truncationSuffix" must be a string!');
+        if (typeof this.options.truncationFlagKey !== 'string')
+            throw new Error('Options "truncationFlagKey" must be a string!');
         if (typeof this.options.logger !== 'object') throw new Error('Options "logger" must be an object!');
         if (typeof this.options.data !== 'object') throw new Error('Options "data" must be an object!');
 
@@ -175,19 +190,16 @@ export class Log {
     }
 
     private _sanitizeData(obj: any) {
-        return sanitizeData(
-            obj,
-            {
-                maxDepth: this.options.maxDepth,
-                gradualLimitFactor: this.options.gradualLimitFactor,
-                maxStringLength: this.options.maxStringLength,
-                maxArrayLength: this.options.maxArrayLength,
-                maxFields: this.options.maxFields,
-                preferredFieldsMap: this.preferredFieldsMap,
-                truncationSuffix: this.options.truncationSuffix,
-                truncationFlagKey: this.options.truncationFlagKey,
-            },
-        );
+        return sanitizeData(obj, {
+            maxDepth: this.options.maxDepth,
+            gradualLimitFactor: this.options.gradualLimitFactor,
+            maxStringLength: this.options.maxStringLength,
+            maxArrayLength: this.options.maxArrayLength,
+            maxFields: this.options.maxFields,
+            preferredFieldsMap: this.preferredFieldsMap,
+            truncationSuffix: this.options.truncationSuffix,
+            truncationFlagKey: this.options.truncationFlagKey,
+        });
     }
 
     /**
@@ -250,14 +262,10 @@ export class Log {
         let { prefix } = this.options;
 
         if (options.prefix) {
-            prefix = prefix
-                ? `${prefix}${PREFIX_DELIMITER}${options.prefix}`
-                : options.prefix;
+            prefix = prefix ? `${prefix}${PREFIX_DELIMITER}${options.prefix}` : options.prefix;
         }
 
-        const data = options.data
-            ? { ...this.options.data, ...options.data }
-            : this.options.data;
+        const data = options.data ? { ...this.options.data, ...options.data } : this.options.data;
 
         const newOptions = {
             ...this.options,

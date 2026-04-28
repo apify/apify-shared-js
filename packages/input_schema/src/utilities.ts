@@ -23,7 +23,11 @@ function validateProxyField(
     fieldKey: Record<string, unknown>,
     value: Record<string, any>,
     isRequired = false,
-    options: { hasAutoProxyGroups?: boolean; availableProxyGroups?: string[]; disabledProxyGroups?: Record<string, unknown> } | null = null,
+    options: {
+        hasAutoProxyGroups?: boolean;
+        availableProxyGroups?: string[];
+        disabledProxyGroups?: Record<string, unknown>;
+    } | null = null,
 ) {
     const fieldErrors: any[] = [];
     if (isRequired) {
@@ -80,7 +84,7 @@ function validateProxyField(
         return fieldErrors;
     }
 
-    const selectedProxyGroups = (apifyProxyGroups || []);
+    const selectedProxyGroups = apifyProxyGroups || [];
 
     // Auto mode, check that user has access to alteast one proxy group usable in this mode
     if (!selectedProxyGroups.length && !options.hasAutoProxyGroups) {
@@ -90,15 +94,19 @@ function validateProxyField(
 
     // Check if proxy groups selected by user are available to him
     const availableProxyGroupsById = {} as Record<string, boolean>;
-    (options.availableProxyGroups || []).forEach((group) => { availableProxyGroupsById[group] = true; });
+    (options.availableProxyGroups || []).forEach((group) => {
+        availableProxyGroupsById[group] = true;
+    });
     const unavailableProxyGroups = selectedProxyGroups.filter((group: string) => !availableProxyGroupsById[group]);
 
     if (unavailableProxyGroups.length) {
-        fieldErrors.push(m('inputSchema.validation.proxyGroupsNotAvailable', {
-            rootName: 'input',
-            fieldKey,
-            groups: unavailableProxyGroups.join(', '),
-        }));
+        fieldErrors.push(
+            m('inputSchema.validation.proxyGroupsNotAvailable', {
+                rootName: 'input',
+                fieldKey,
+                groups: unavailableProxyGroups.join(', '),
+            }),
+        );
     }
 
     // Check if any of the proxy groups are blocked and if yes then output the associated message
@@ -131,11 +139,11 @@ export function validateInputUsingValidator(
     const { properties } = inputSchema;
     const required = inputSchema.required || [];
 
-    let errors: { fieldKey: string, message: string }[] = [];
+    let errors: { fieldKey: string; message: string }[] = [];
     // Process AJV validation errors
     if (!isValid) {
-        errors = validator.errors!
-            .filter((error) => {
+        errors = validator
+            .errors!.filter((error) => {
                 // We are storing encrypted objects/arrays as strings, so AJV will throw type the error here.
                 // So we need to skip these errors.
                 if (error.keyword === 'type' && error.instancePath) {
@@ -146,10 +154,10 @@ export function validateInputUsingValidator(
                     // Check if the property is a secret and if the value is an encrypted value.
                     // We do additional validation of the field schema in the later part of this function
                     if (
-                        propSchema?.isSecret
-                        && typeof value === 'string'
-                        && (propSchema.type === 'object' || propSchema.type === 'array')
-                        && isEncryptedValueForFieldType(value, propSchema.type)
+                        propSchema?.isSecret &&
+                        typeof value === 'string' &&
+                        (propSchema.type === 'object' || propSchema.type === 'array') &&
+                        isEncryptedValueForFieldType(value, propSchema.type)
                     ) {
                         return false;
                     }
@@ -166,7 +174,12 @@ export function validateInputUsingValidator(
         const fieldErrors = [];
         // Check that proxy is required, if yes, valides that it's correctly setup
         if (type === 'object' && editor === 'proxy') {
-            const proxyValidationErrors = validateProxyField(property as any, value as Record<string, any>, required.includes(property), options.proxy);
+            const proxyValidationErrors = validateProxyField(
+                property as any,
+                value as Record<string, any>,
+                required.includes(property),
+                options.proxy,
+            );
             proxyValidationErrors.forEach((error) => {
                 fieldErrors.push(error);
             });
@@ -182,11 +195,13 @@ export function validateInputUsingValidator(
                     else if (item.requestsFromUrl && !URL_REGEX.test(item.requestsFromUrl)) invalidIndexes.push(index);
                 });
                 if (invalidIndexes.length) {
-                    fieldErrors.push(m('inputSchema.validation.requestListSourcesInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidIndexes: invalidIndexes.join(','),
-                    }));
+                    fieldErrors.push(
+                        m('inputSchema.validation.requestListSourcesInvalid', {
+                            rootName: 'input',
+                            fieldKey: property,
+                            invalidIndexes: invalidIndexes.join(','),
+                        }),
+                    );
                 }
             }
             // If patternKey is provided, then validate keys of objects in array
@@ -198,12 +213,15 @@ export function validateInputUsingValidator(
                 });
                 if (invalidIndexes.length) {
                     const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternKey`);
-                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayKeysInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidIndexes: invalidIndexes.join(','),
-                        pattern: patternKey,
-                    }));
+                    fieldErrors.push(
+                        customError ??
+                            m('inputSchema.validation.arrayKeysInvalid', {
+                                rootName: 'input',
+                                fieldKey: property,
+                                invalidIndexes: invalidIndexes.join(','),
+                                pattern: patternKey,
+                            }),
+                    );
                 }
             }
             // If patternValue is provided and editor is keyValue, then validate values of objecs in array
@@ -215,14 +233,17 @@ export function validateInputUsingValidator(
                 });
                 if (invalidIndexes.length) {
                     const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
-                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayValuesInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidIndexes: invalidIndexes.join(','),
-                        pattern: patternValue,
-                    }));
+                    fieldErrors.push(
+                        customError ??
+                            m('inputSchema.validation.arrayValuesInvalid', {
+                                rootName: 'input',
+                                fieldKey: property,
+                                invalidIndexes: invalidIndexes.join(','),
+                                pattern: patternValue,
+                            }),
+                    );
                 }
-            // If patternValue is provided and editor is stringList, then validate each item in array
+                // If patternValue is provided and editor is stringList, then validate each item in array
             } else if (patternValue && editor === 'stringList') {
                 const check = new RegExp(patternValue);
                 const invalidIndexes: any[] = [];
@@ -231,12 +252,15 @@ export function validateInputUsingValidator(
                 });
                 if (invalidIndexes.length) {
                     const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
-                    fieldErrors.push(customError ?? m('inputSchema.validation.arrayValuesInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidIndexes: invalidIndexes.join(','),
-                        pattern: patternValue,
-                    }));
+                    fieldErrors.push(
+                        customError ??
+                            m('inputSchema.validation.arrayValuesInvalid', {
+                                rootName: 'input',
+                                fieldKey: property,
+                                invalidIndexes: invalidIndexes.join(','),
+                                pattern: patternValue,
+                            }),
+                    );
                 }
             }
         }
@@ -250,12 +274,15 @@ export function validateInputUsingValidator(
                 });
                 if (invalidKeys.length) {
                     const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternKey`);
-                    fieldErrors.push(customError ?? m('inputSchema.validation.objectKeysInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidKeys: invalidKeys.join(','),
-                        pattern: patternKey,
-                    }));
+                    fieldErrors.push(
+                        customError ??
+                            m('inputSchema.validation.objectKeysInvalid', {
+                                rootName: 'input',
+                                fieldKey: property,
+                                invalidKeys: invalidKeys.join(','),
+                                pattern: patternKey,
+                            }),
+                    );
                 }
             }
             if (patternValue) {
@@ -267,12 +294,15 @@ export function validateInputUsingValidator(
                 });
                 if (invalidKeys.length) {
                     const customError = getCustomErrorMessage(inputSchema, `properties/${property}/patternValue`);
-                    fieldErrors.push(customError ?? m('inputSchema.validation.objectValuesInvalid', {
-                        rootName: 'input',
-                        fieldKey: property,
-                        invalidKeys: invalidKeys.join(','),
-                        pattern: patternValue,
-                    }));
+                    fieldErrors.push(
+                        customError ??
+                            m('inputSchema.validation.objectValuesInvalid', {
+                                rootName: 'input',
+                                fieldKey: property,
+                                invalidKeys: invalidKeys.join(','),
+                                pattern: patternValue,
+                            }),
+                    );
                 }
             }
         }
@@ -281,7 +311,10 @@ export function validateInputUsingValidator(
         if (isSecret && value && typeof value === 'string') {
             // If the value is a valid encrypted string for the field type,
             // we check if the field schema is likely to be still valid (is unchanged from the time of encryption).
-            if (isEncryptedValueForFieldType(value, type) && !isEncryptedValueForFieldSchema(value, properties[property])) {
+            if (
+                isEncryptedValueForFieldType(value, type) &&
+                !isEncryptedValueForFieldSchema(value, properties[property])
+            ) {
                 // If not, we add an error message to the field errors and user needs to update the value in the input editor.
                 fieldErrors.push(m('inputSchema.validation.secretFieldSchemaChanged', { fieldKey: property }));
             }
@@ -304,7 +337,12 @@ export function validateInputUsingValidator(
  * Then stringifies the code with given number of jsonSpacing spaces and finally prefixes whole
  * stringified JSON except the first line with globalSpacing spaces.
  */
-export function makeInputJsFieldsReadable(json: string, jsFields: string[], jsonSpacing = 4, globalSpacing = 0): string {
+export function makeInputJsFieldsReadable(
+    json: string,
+    jsFields: string[],
+    jsonSpacing = 4,
+    globalSpacing = 0,
+): string {
     const parsedJson = JSON.parse(json);
     const replacements: Record<string, any> = {};
 
@@ -321,19 +359,20 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
         }
 
         const isMultiline = maybeFunction.includes('\n');
-        const isSingleFunction = ast
-            && ast.body.length === 1
-            && (
-                ast.body[0].type === 'FunctionDeclaration'
-                || (ast.body[0].type === 'ExpressionStatement' && ast.body[0].expression.type === 'ArrowFunctionExpression')
-            );
+        const isSingleFunction =
+            ast &&
+            ast.body.length === 1 &&
+            (ast.body[0].type === 'FunctionDeclaration' ||
+                (ast.body[0].type === 'ExpressionStatement' &&
+                    ast.body[0].expression.type === 'ArrowFunctionExpression'));
 
         // If it's not a function declaration or multiline JS code then we do nothing.
         if (!isSingleFunction && !isMultiline) return;
 
         const spaces = isSingleFunction ? ' '.repeat(jsonSpacing) : '';
         maybeFunction = maybeFunction
-            .split('\n').join(`\n${spaces}`) // This prefixes each line with spaces.
+            .split('\n')
+            .join(`\n${spaces}`) // This prefixes each line with spaces.
             .trim(); // Trim whitespace on both sides
 
         const replacementValue = isSingleFunction
@@ -350,7 +389,7 @@ export function makeInputJsFieldsReadable(json: string, jsFields: string[], json
         niceJson = niceJson.replace(`"${replacementToken}"`, replacementValue);
     });
 
-    const globalSpaces = (new Array(globalSpacing)).fill(' ').join('');
+    const globalSpaces = new Array(globalSpacing).fill(' ').join('');
     niceJson = niceJson.split('\n').join(`\n${globalSpaces}`);
 
     return niceJson;

@@ -23,9 +23,8 @@ const { definitions } = schema;
 // utility definitions, and component definitions, we need to filter them out and validate only against the appropriate ones.
 // We do this by checking the prefix of the definition title (Utils:, Component:, or Sub-schema:)
 
-const [fieldDefinitions, subFieldDefinitions] = Object
-    .values<any>(definitions)
-    .reduce<[any[], any[]]>((acc, definition) => {
+const [fieldDefinitions, subFieldDefinitions] = Object.values<any>(definitions).reduce<[any[], any[]]>(
+    (acc, definition) => {
         if (definition.title.startsWith('Utils:') || definition.title.startsWith('Component:')) {
             // skip utility and component definitions
             return acc;
@@ -38,7 +37,9 @@ const [fieldDefinitions, subFieldDefinitions] = Object
         }
 
         return acc;
-    }, [[], []]);
+    },
+    [[], []],
+);
 
 /**
  * Retrieves a custom error message defined in the schema for a particular schema path.
@@ -49,10 +50,7 @@ const [fieldDefinitions, subFieldDefinitions] = Object
 export function getCustomErrorMessage(rootSchema: Record<string, any>, schemaPath: string): string | null {
     if (!schemaPath) return null;
 
-    const pathParts = schemaPath
-        .replace(/^#\//, '')
-        .split('/')
-        .filter(Boolean);
+    const pathParts = schemaPath.replace(/^#\//, '').split('/').filter(Boolean);
 
     // The last part is the keyword
     const keyword = pathParts.pop();
@@ -94,7 +92,7 @@ export function getCustomErrorMessage(rootSchema: Record<string, any>, schemaPat
 export function parseAjvError(
     error: ErrorObject,
     rootName: string,
-    properties: Record<string, { nullable?: boolean, editor?: string }> = {},
+    properties: Record<string, { nullable?: boolean; editor?: string }> = {},
     input: Record<string, unknown> = {},
 ): { fieldKey: string; message: string } | null {
     // There are 3 possible errors comming from validation:
@@ -167,7 +165,12 @@ function selectBestError(errors: ErrorObject[]): ErrorObject {
 /**
  * Validates a given object against the schema and throws a human-readable error.
  */
-const validateAgainstSchemaOrThrow = (validator: Ajv, obj: Record<string, unknown>, inputSchema: Schema, rootName: string) => {
+const validateAgainstSchemaOrThrow = (
+    validator: Ajv,
+    obj: Record<string, unknown>,
+    inputSchema: Schema,
+    rootName: string,
+) => {
     if (validator.validate(inputSchema, obj)) return;
 
     let bestError = selectBestError(validator.errors!);
@@ -222,14 +225,13 @@ function validateFieldAgainstSchemaDefinition(
 ): asserts fieldSchema is FieldDefinition {
     const relevantDefinitions = isSubField ? subFieldDefinitions : fieldDefinitions;
 
-    const matchingDefinitions = Object
-        .values<any>(relevantDefinitions) // cast as any, as the code in first branch seems to be invalid
+    const matchingDefinitions = Object.values<any>(relevantDefinitions) // cast as any, as the code in first branch seems to be invalid
         .filter((definition) => {
             return definition.properties.type.enum
-                // This is a normal case where fieldSchema.type can be only one possible value matching definition.properties.type.enum.0
-                ? definition.properties.type.enum[0] === fieldSchema.type
-                // This is a type "Any" where fieldSchema.type is an array of possible values
-                : Array.isArray(fieldSchema.type);
+                ? // This is a normal case where fieldSchema.type can be only one possible value matching definition.properties.type.enum.0
+                  definition.properties.type.enum[0] === fieldSchema.type
+                : // This is a type "Any" where fieldSchema.type is an array of possible values
+                  Array.isArray(fieldSchema.type);
         });
 
     // There is not matching definition.
@@ -250,7 +252,12 @@ function validateFieldAgainstSchemaDefinition(
 
     // If there is only one matching then we are done and simply compare it.
     if (matchingDefinitions.length === 1) {
-        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(matchingDefinitions[0]), `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(
+            validator,
+            fieldSchema,
+            enhanceDefinition(matchingDefinitions[0]),
+            `schema.properties.${fieldKey}`,
+        );
         return;
     }
 
@@ -259,20 +266,38 @@ function validateFieldAgainstSchemaDefinition(
     if ((fieldSchema as StringFieldDefinition).enum) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.enum).pop();
         if (!definition) throw new Error('Input schema validation failed to find "enum property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(
+            validator,
+            fieldSchema,
+            enhanceDefinition(definition),
+            `schema.properties.${fieldKey}`,
+        );
         return;
     }
     // If the definition contains "resourceType" property then it's resource type.
     if ((fieldSchema as CommonResourceFieldDefinition<unknown>).resourceType) {
         const definition = matchingDefinitions.filter((item) => !!item.properties.resourceType).pop();
         if (!definition) throw new Error('Input schema validation failed to find "resource property" definition');
-        validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+        validateAgainstSchemaOrThrow(
+            validator,
+            fieldSchema,
+            enhanceDefinition(definition),
+            `schema.properties.${fieldKey}`,
+        );
         return;
     }
     // Otherwise we use the other definition.
-    const definition = matchingDefinitions.filter((item) => !item.properties.enum && !item.properties.resourceType).pop();
-    if (!definition) throw new Error('Input schema validation failed to find other than "enum" or "resource" definition');
-    validateAgainstSchemaOrThrow(validator, fieldSchema, enhanceDefinition(definition), `schema.properties.${fieldKey}`);
+    const definition = matchingDefinitions
+        .filter((item) => !item.properties.enum && !item.properties.resourceType)
+        .pop();
+    if (!definition)
+        throw new Error('Input schema validation failed to find other than "enum" or "resource" definition');
+    validateAgainstSchemaOrThrow(
+        validator,
+        fieldSchema,
+        enhanceDefinition(definition),
+        `schema.properties.${fieldKey}`,
+    );
 }
 
 /**
@@ -282,7 +307,12 @@ function validateFieldAgainstSchemaDefinition(
  * @param fieldKey Key of the field in the input schema.
  * @param isSubField If true, the field is a sub-field of another field, so we need to skip some definitions.
  */
-function validateField(validator: Ajv, fieldSchema: Record<string, unknown>, fieldKey: string, isSubField = false): asserts fieldSchema is FieldDefinition {
+function validateField(
+    validator: Ajv,
+    fieldSchema: Record<string, unknown>,
+    fieldKey: string,
+    isSubField = false,
+): asserts fieldSchema is FieldDefinition {
     // Validate against schema definition first.
     validateFieldAgainstSchemaDefinition(validator, fieldSchema, fieldKey, isSubField);
 
@@ -315,7 +345,11 @@ function validateSubFields(validator: Ajv, fieldSchema: InputSchemaBaseChecked, 
     });
 }
 
-function validateArrayField(validator: Ajv, fieldSchema: { items?: { type: 'string', properties: Record<string, any> }}, fieldKey: string) {
+function validateArrayField(
+    validator: Ajv,
+    fieldSchema: { items?: { type: 'string'; properties: Record<string, any> } },
+    fieldKey: string,
+) {
     const arraySchema = (fieldSchema as any).items;
     if (!arraySchema) return;
 
@@ -376,7 +410,10 @@ export function validateExistenceOfRequiredFields(inputSchema: InputSchema) {
  *  is using features from JSON Schema 2019 draft, so the AJV instance must support it.
  * @param inputSchema Input schema to validate.
  */
-export function validateInputSchema(validator: Ajv, inputSchema: Record<string, unknown>): asserts inputSchema is InputSchema {
+export function validateInputSchema(
+    validator: Ajv,
+    inputSchema: Record<string, unknown>,
+): asserts inputSchema is InputSchema {
     ensureAjvSupportsDraft2019(validator);
 
     // First validate just basic structure without fields.

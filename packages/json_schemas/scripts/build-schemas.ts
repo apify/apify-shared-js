@@ -5,9 +5,7 @@ import { writeFileSync } from 'node:fs';
 
 import { actorSchema } from '../src/actor.schema';
 
-const schemasToBuild = [
-    { schema: actorSchema, filename: 'schemas/actor.schema.json' },
-];
+const schemasToBuild = [{ schema: actorSchema, filename: 'schemas/actor.schema.json' }];
 
 for (const { schema, filename } of schemasToBuild) {
     writeFileSync(filename, `${JSON.stringify(schema, null, 2)}\n`);

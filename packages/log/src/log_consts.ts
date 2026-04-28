@@ -50,29 +50,13 @@ export const PREFERRED_ID_FIELDS = [
 ] as const;
 
 /** Standard JS Error fields */
-export const PREFERRED_ERROR_FIELDS = [
-    'name',
-    'message',
-    'stack',
-    'cause',
-] as const;
+export const PREFERRED_ERROR_FIELDS = ['name', 'message', 'stack', 'cause'] as const;
 
 /** Standard HTTP / network-related fields */
-export const PREFERRED_HTTP_FIELDS = [
-    'url',
-    'method',
-    'code',
-    'status',
-    'statusCode',
-    'statusText',
-] as const;
+export const PREFERRED_HTTP_FIELDS = ['url', 'method', 'code', 'status', 'statusCode', 'statusText'] as const;
 
 /** API error fields used in Apify system */
-export const PREFERRED_API_ERROR_FIELDS = [
-    'errorCode',
-    'errorMessage',
-    'errorResponse',
-] as const;
+export const PREFERRED_API_ERROR_FIELDS = ['errorCode', 'errorMessage', 'errorResponse'] as const;
 
 /** Potentially large or nested data fields */
 export const PREFERRED_DATA_FIELDS = [

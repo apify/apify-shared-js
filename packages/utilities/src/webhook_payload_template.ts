@@ -1,4 +1,3 @@
-
 import { jsonStringifyExtended, JsonVariable } from './utilities.client';
 
 class WebhookPayloadTemplateError extends Error {
@@ -69,11 +68,13 @@ interface ParsePosition {
 export class WebhookPayloadTemplate {
     private payload: string;
 
-    readonly replacedVariables: { variableName: string, replacement: string }[] = [];
+    readonly replacedVariables: { variableName: string; replacement: string }[] = [];
 
-    constructor(private readonly template: string,
-                private readonly allowedVariables: Set<string> | null = null,
-                private readonly context: Record<string, any> = {}) {
+    constructor(
+        private readonly template: string,
+        private readonly allowedVariables: Set<string> | null = null,
+        private readonly context: Record<string, any> = {},
+    ) {
         this.payload = template;
     }
 
@@ -206,7 +207,7 @@ export class WebhookPayloadTemplate {
     private _findPositionOfNextVariable(startIndex = 0): ParsePosition | null {
         const openBraceIndex = this.payload.indexOf('{{', startIndex);
         const closeBraceIndex = this.payload.indexOf('}}', openBraceIndex) + 1;
-        const someVariableMaybeExists = (openBraceIndex > -1) && (closeBraceIndex > -1);
+        const someVariableMaybeExists = openBraceIndex > -1 && closeBraceIndex > -1;
         if (!someVariableMaybeExists) return null;
         const isInsideString = this._isVariableInsideString(openBraceIndex);
         return { isInsideString, openBraceIndex, closeBraceIndex };
@@ -235,7 +236,8 @@ export class WebhookPayloadTemplate {
         this._validateVariableName(variableName);
         const replacement = this._getVariableReplacement(variableName)!;
         this.replacedVariables.push({ variableName, replacement });
-        this.payload = this.payload.substring(0, openBraceIndex) + replacement + this.payload.substring(closeBraceIndex + 1);
+        this.payload =
+            this.payload.substring(0, openBraceIndex) + replacement + this.payload.substring(closeBraceIndex + 1);
     }
 
     private _validateVariableName(variableName: string): void {

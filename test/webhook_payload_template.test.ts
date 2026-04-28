@@ -79,11 +79,15 @@ describe('WebhookPayloadTemplate', () => {
             userId: ['some-user-id'],
             eventType: null,
             createdAt: null,
-            eventData: [{ tmpl: {
-                status: 200,
-                body: 'hello-world',
-                messages: [1, 2, 3],
-            } }],
+            eventData: [
+                {
+                    tmpl: {
+                        status: 200,
+                        body: 'hello-world',
+                        messages: [1, 2, 3],
+                    },
+                },
+            ],
             resource: null,
         });
     });
@@ -100,7 +104,11 @@ describe('WebhookPayloadTemplate', () => {
                 someResource: 2,
             },
         };
-        const payload = WebhookPayloadTemplate.parse(WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE, WEBHOOK_ALLOWED_PAYLOAD_VARIABLES, context);
+        const payload = WebhookPayloadTemplate.parse(
+            WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE,
+            WEBHOOK_ALLOWED_PAYLOAD_VARIABLES,
+            context,
+        );
         expect(payload).toEqual(context);
     });
 
@@ -125,7 +133,8 @@ describe('WebhookPayloadTemplate', () => {
             },
             arrayField: [1, 2, 3],
         };
-        const payload = WebhookPayloadTemplate.parse(`
+        const payload = WebhookPayloadTemplate.parse(
+            `
         {
             "justVariable": "{{foo}}",
             "someOtherContent": "bar{{foo}}",
@@ -137,7 +146,11 @@ describe('WebhookPayloadTemplate', () => {
             "resourceWrapped": "{{resource}}",
             "resourceDirect": {{resource}},
             "resourceInString": "This is my object {{resource}}"
-        }`, null, context, { interpolateStrings: true });
+        }`,
+            null,
+            context,
+            { interpolateStrings: true },
+        );
         expect(payload.justVariable).toBe('hello');
         expect(payload.someOtherContent).toBe('barhello');
         expect(payload.twoVariables).toBe('barhellobazhellobarworld');
@@ -211,10 +224,7 @@ describe('WebhookPayloadTemplate', () => {
                         second: 'o',
                     },
                 },
-                array: [
-                    false,
-                    [true],
-                ],
+                array: [false, [true]],
             };
             const payload = WebhookPayloadTemplate.parse(template, null, context);
             expect(payload).toEqual({

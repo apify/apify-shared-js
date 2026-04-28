@@ -41,11 +41,14 @@ const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
 interface Match {
-    groups: { header: string, lang: string, code: string };
+    groups: { header: string; lang: string; code: string };
 }
 
-const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string, code: string }> => {
-    const matchesIterator = matchAll(markdown, /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/sg);
+const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string; code: string }> => {
+    const matchesIterator = matchAll(
+        markdown,
+        /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs,
+    );
     const matches: Match[] = [];
     let nextMatch = matchesIterator.nextRaw();
     while (nextMatch) {
@@ -53,7 +56,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
         nextMatch = matchesIterator.nextRaw();
     }
 
-    const tabs: Record<string, { language: string, code: string }> = {};
+    const tabs: Record<string, { language: string; code: string }> = {};
 
     for (const match of matches) {
         const { header, lang, code } = match.groups!;
@@ -65,7 +68,7 @@ const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { la
 
 interface MarkedResponse {
     html: string;
-    codeTabsObjectPerIndex: Record<number, Record<string, { language: string, code: string }>>;
+    codeTabsObjectPerIndex: Record<number, Record<string, { language: string; code: string }>>;
 }
 
 /**

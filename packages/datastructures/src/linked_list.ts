@@ -1,4 +1,3 @@
-
 /*!
  * This module defines the LinkedList class, which represents a doubly-linked list data structure.
  *
@@ -12,7 +11,7 @@
  * The function attempts to do so using data1's function 'equal(data)' if there is one,
  * otherwise it uses '==' operator.
  */
-const dataEqual = <T> (data1: T, data2: T): boolean => {
+const dataEqual = <T>(data1: T, data2: T): boolean => {
     if (data1 === null) return data2 === null;
     if ((data1 as any).equals) return (data1 as any).equals(data2);
 
@@ -40,8 +39,8 @@ export class LinkedList<T = any> {
     length = 0;
 
     /**
-      * Appends a new node with specific data to the end of the linked list.
-      */
+     * Appends a new node with specific data to the end of the linked list.
+     */
     add(data: T, toFirstPosition?: boolean): LinkedListNode<T> {
         const node = new LinkedListNode(data);
         this.addNode(node, toFirstPosition);
@@ -67,7 +66,8 @@ export class LinkedList<T = any> {
             node.next = this.head;
             this.head!.prev = node;
             this.head = node;
-        } else { // last position
+        } else {
+            // last position
             node.prev = this.tail;
             this.tail!.next = node;
             this.tail = node;

@@ -68,7 +68,11 @@ export const actorSchema = {
         defaultMemoryMbytes: {
             oneOf: [
                 { type: 'string' },
-                { type: 'integer', minimum: ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES, maximum: ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES },
+                {
+                    type: 'integer',
+                    minimum: ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES,
+                    maximum: ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES,
+                },
             ],
         },
         input: {
@@ -139,10 +143,7 @@ export const actorSchema = {
                     minProperties: 1,
                     maxProperties: 10,
                     additionalProperties: {
-                        oneOf: [
-                            { type: 'string' },
-                            { $ref: 'https://apify.com/schemas/v1/dataset.json' },
-                        ],
+                        oneOf: [{ type: 'string' }, { $ref: 'https://apify.com/schemas/v1/dataset.json' }],
                     },
                     propertyNames: {
                         pattern: '^[A-Za-z][A-Za-z0-9_]{0,100}$',
@@ -171,9 +172,5 @@ export const actorSchema = {
             type: 'string',
         },
     },
-    required: [
-        'actorSpecification',
-        'version',
-        'name',
-    ],
+    required: ['actorSpecification', 'version', 'name'],
 };

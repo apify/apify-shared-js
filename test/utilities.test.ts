@@ -151,9 +151,7 @@ describe('utilities', () => {
             });
         });
 
-        return utils
-            .sequentializePromises(promises)
-            .then((data) => expect(data).toEqual(range));
+        return utils.sequentializePromises(promises).then((data) => expect(data).toEqual(range));
     });
 
     it('delayPromise()', async () => {

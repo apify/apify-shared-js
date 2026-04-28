@@ -6,14 +6,16 @@ import path from 'node:path';
 import type { JsonSchemaObject, JsonSchemaValue } from './types';
 
 function isPlainJsonObject(input: unknown): boolean {
-    return typeof input === 'object'
-        && input !== null
-        && !Array.isArray(input)
-        && Object.getPrototypeOf(input) === Object.prototype;
+    return (
+        typeof input === 'object' &&
+        input !== null &&
+        !Array.isArray(input) &&
+        Object.getPrototypeOf(input) === Object.prototype
+    );
 }
 
-interface ObjectPropertyInfo<T =JsonSchemaValue> {
-    key: string,
+interface ObjectPropertyInfo<T = JsonSchemaValue> {
+    key: string;
     value: T;
     jsonPointer: string;
     parent?: ObjectPropertyInfo<JsonSchemaObject>;
@@ -27,16 +29,18 @@ function* iterateJsonProperties(input: JsonSchemaObject, parentJsonPath = ''): G
 
             for (const val of [value].flatMap((v) => v)) {
                 const objectValue = val as JsonSchemaObject;
-                yield ({
+                yield {
                     key,
                     value: objectValue,
                     jsonPointer,
-                    parent: parentJsonPath ? {
-                        key: parentKey,
-                        value: input,
-                        jsonPointer: parentJsonPath,
-                    } : undefined,
-                });
+                    parent: parentJsonPath
+                        ? {
+                              key: parentKey,
+                              value: input,
+                              jsonPointer: parentJsonPath,
+                          }
+                        : undefined,
+                };
 
                 for (const result of iterateJsonProperties(objectValue, jsonPointer)) {
                     yield result;
@@ -54,14 +58,13 @@ async function includeJsonByPath(absolutePath: string): Promise<JsonSchemaObject
     try {
         return JSON.parse(await fs.readFile(absolutePath, 'utf8'));
     } catch (error) {
-        throw new Error(`Failed to read/parse "${absolutePath}": ${error instanceof Error ? error.message : 'unknown error'}`);
+        throw new Error(
+            `Failed to read/parse "${absolutePath}": ${error instanceof Error ? error.message : 'unknown error'}`,
+        );
     }
 }
 
-export async function bundleJsonSchema(
-    filePath: string,
-    jsonSchema?: JsonSchemaObject,
-): Promise<JsonSchemaObject> {
+export async function bundleJsonSchema(filePath: string, jsonSchema?: JsonSchemaObject): Promise<JsonSchemaObject> {
     jsonSchema ??= await includeJsonByPath(filePath);
 
     if (!jsonSchema) {
@@ -89,8 +92,7 @@ export async function scopeJsonSchema(
     }
 
     for (const { value, jsonPointer, parent, key } of iterateJsonProperties(jsonSchema)) {
-        if (parent?.value && key === REF_ATTRIBUTE && value && typeof value === 'string'
-        ) {
+        if (parent?.value && key === REF_ATTRIBUTE && value && typeof value === 'string') {
             const [refRelativeFilePath, anchorPath] = value.trim().split('#');
 
             if (!refRelativeFilePath && value.startsWith('#')) {
@@ -139,7 +141,7 @@ export async function scopeJsonSchema(
                     externalSchemaAbsolutePath,
                     mainJsonSchema,
                     externalSchema,
-                    `/definitions/${defKey}${(anchorPath || '')}`,
+                    `/definitions/${defKey}${anchorPath || ''}`,
                 );
             } else {
                 console.error('Invalid reference: ', jsonPointer, value);

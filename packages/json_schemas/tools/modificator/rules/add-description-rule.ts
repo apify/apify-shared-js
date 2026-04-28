@@ -68,12 +68,19 @@ function formatSimpleDescription(markdownContent: string): string | undefined {
         }
     });
 
-    return descriptionElement.text()
-        .replace(/\s*\n\s*/g, ' ') // no new lines in plain Descriptions
-        .trim() || undefined;
+    return (
+        descriptionElement
+            .text()
+            .replace(/\s*\n\s*/g, ' ') // no new lines in plain Descriptions
+            .trim() || undefined
+    );
 }
 
-function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject, rule: Omit<AddDescriptionRule, 'applyRule'>) {
+function processAddDescriptionRule(
+    objectPropertyInfo: ObjectPropertyInfo,
+    json: JsonObject,
+    rule: Omit<AddDescriptionRule, 'applyRule'>,
+) {
     const objectProperty = getJsonValue<Record<string, JsonValue>>(json, objectPropertyInfo.jsonPointer);
 
     if (objectProperty.value && isPlainJsonObject(objectProperty.value)) {
@@ -88,7 +95,8 @@ function processAddDescriptionRule(objectPropertyInfo: ObjectPropertyInfo, json:
             // Check for an odd number of trailing "properties" attributes in a parent's jsonPointer path
             // ex. objectPropertyInfo.jsonPointer = /properties/properties/description not being an object is not a problem,
             // but objectPropertyInfo.jsonPointer = /properties/description not being an object deserves a warning
-            const hasOddNumberOfTrailingProperties = (parentJsonPointer.match(/(\/properties)(?=(\/properties)*$)/g)?.length ?? 0) % 2 === 1;
+            const hasOddNumberOfTrailingProperties =
+                (parentJsonPointer.match(/(\/properties)(?=(\/properties)*$)/g)?.length ?? 0) % 2 === 1;
 
             if (hasOddNumberOfTrailingProperties) {
                 // eslint-disable-next-line no-console
@@ -110,7 +118,8 @@ export function parseAddDescriptionRule($: CheerioAPI, ruleElement: Node): AddDe
         } as const;
         return {
             ...rule,
-            applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => processAddDescriptionRule(objectPropertyInfo, json, rule),
+            applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) =>
+                processAddDescriptionRule(objectPropertyInfo, json, rule),
         };
     }
     // eslint-disable-next-line no-console

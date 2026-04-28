@@ -7,7 +7,7 @@ const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 const DATE_REGEX = '\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\d';
 
 describe('loggerText', () => {
-    let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
+    let loggedLines: { [key in (typeof CONSOLE_METHODS)[number]]?: string };
     const originalConsoleMethods: Record<string, any> = {};
 
     beforeEach(() => {
@@ -45,7 +45,14 @@ describe('loggerText', () => {
         level = LogLevel.ERROR;
         message = 'Some error happened';
         const err = new Error('some-error');
-        const errObj = { name: err.name, message: err.message, stack: err.stack, ...(err as any), cause: undefined, [IS_APIFY_LOGGER_EXCEPTION]: true };
+        const errObj = {
+            name: err.name,
+            message: err.message,
+            stack: err.stack,
+            ...(err as any),
+            cause: undefined,
+            [IS_APIFY_LOGGER_EXCEPTION]: true,
+        };
         logger.log(level, message, data, errObj);
 
         line = loggedLines.error;
@@ -92,9 +99,6 @@ describe('loggerText', () => {
         logger.log(LogLevel.INFO, 'Some info message');
         logger.log(LogLevel.ERROR, 'Some error message');
 
-        expect(emitted).toEqual([
-            'INFO  Some info message',
-            'ERROR Some error message',
-        ]);
+        expect(emitted).toEqual(['INFO  Some info message', 'ERROR Some error message']);
     });
 });

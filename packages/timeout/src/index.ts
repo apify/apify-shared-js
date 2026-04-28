@@ -14,15 +14,13 @@ export const storage = new AsyncLocalStorage<AbortContext>();
 /**
  * Custom error class that will be used for timeout error.
  */
-export class TimeoutError extends Error {
-}
+export class TimeoutError extends Error {}
 
 /**
  * Custom error class to handle `tryCancel()` checks.
  * This should not be exposed to user land, as it will be caught in.
  */
-class InternalTimeoutError extends TimeoutError {
-}
+class InternalTimeoutError extends TimeoutError {}
 
 /**
  * Checks whether we are inside timeout handler created by this package, and cancels current
@@ -62,7 +60,11 @@ export function tryCancel(): void {
  * );
  * ```
  */
-export async function addTimeoutToPromise<T>(handler: () => Promise<T>, timeoutMillis: number, errorMessage: string | Error): Promise<T> {
+export async function addTimeoutToPromise<T>(
+    handler: () => Promise<T>,
+    timeoutMillis: number,
+    errorMessage: string | Error,
+): Promise<T> {
     // respect existing context to support nesting
     const context = storage.getStore() ?? {
         cancelTask: new AbortController(),

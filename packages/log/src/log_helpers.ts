@@ -1,12 +1,6 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
 
-import {
-    IS_APIFY_LOGGER_EXCEPTION,
-    LogFormat,
-    LogLevel,
-    TRUNCATION_FLAG_KEY,
-    TRUNCATION_SUFFIX,
-} from './log_consts';
+import { IS_APIFY_LOGGER_EXCEPTION, LogFormat, LogLevel, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -90,9 +84,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
 
     // handle common cases quickly
     if (typeof data === 'string') {
-        return data.length > maxStringLength
-            ? truncate(data, maxStringLength, truncationSuffix)
-            : data;
+        return data.length > maxStringLength ? truncate(data, maxStringLength, truncationSuffix) : data;
     }
 
     if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof data) || data == null || data instanceof Date) {
@@ -106,9 +98,8 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
-    const nextCall = (dat: unknown) => sanitizeData(
-        dat,
-        {
+    const nextCall = (dat: unknown) =>
+        sanitizeData(dat, {
             ...options,
             maxDepth: maxDepth - 1,
             maxStringLength: Math.max(
@@ -117,8 +108,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
             ),
             maxArrayLength: Math.floor(maxArrayLength * gradualLimitFactor),
             maxFields: Math.floor(maxFields * gradualLimitFactor),
-        },
-    );
+        });
 
     if (Array.isArray(data)) {
         if (maxDepth <= 0) return '[array]';
@@ -149,9 +139,9 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
 
         // Sanitize only up to maxFields fields (keeping preferred ones first)
         const sanitized: Record<PropertyKey, unknown> = {};
-        allKeys
-            .slice(0, maxFields)
-            .forEach((key) => { sanitized[key] = nextCall(data[key as keyof typeof data]); });
+        allKeys.slice(0, maxFields).forEach((key) => {
+            sanitized[key] = nextCall(data[key as keyof typeof data]);
+        });
 
         if (allKeys.length > maxFields) {
             sanitized[truncationFlagKey] = true;

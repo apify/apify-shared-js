@@ -16,14 +16,21 @@ export function isNullOrUndefined(obj: unknown): boolean {
 }
 
 export function isBuffer(obj: any): boolean {
-    return obj != null && obj.constructor != null && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj);
+    return (
+        obj != null &&
+        obj.constructor != null &&
+        typeof obj.constructor.isBuffer === 'function' &&
+        obj.constructor.isBuffer(obj)
+    );
 }
 
 /**
  * Converts Date object to ISO string.
  */
 export function dateToString(date: Date, middleT: boolean): string {
-    if (!(date instanceof Date)) { return ''; }
+    if (!(date instanceof Date)) {
+        return '';
+    }
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // January is 0, February is 1, and so on.
     const day = date.getDate();
@@ -35,7 +42,7 @@ export function dateToString(date: Date, middleT: boolean): string {
     const pad = (num: number) => (num < 10 ? `0${num}` : num);
     const datePart = `${year}-${pad(month)}-${pad(day)}`;
     // eslint-disable-next-line no-nested-ternary
-    const millisPart = millis < 10 ? `00${millis}` : (millis < 100 ? `0${millis}` : millis);
+    const millisPart = millis < 10 ? `00${millis}` : millis < 100 ? `0${millis}` : millis;
     const timePart = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${millisPart}`;
 
     return `${datePart}${middleT ? 'T' : ' '}${timePart}`;
@@ -89,8 +96,22 @@ export function parseUrl(str: string): Uri {
     if (typeof str !== 'string') return {};
     const o = {
         strictMode: false,
-        key: ['source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port',
-            'relative', 'path', 'directory', 'file', 'query', 'fragment'],
+        key: [
+            'source',
+            'protocol',
+            'authority',
+            'userInfo',
+            'user',
+            'password',
+            'host',
+            'port',
+            'relative',
+            'path',
+            'directory',
+            'file',
+            'query',
+            'fragment',
+        ],
         q: {
             name: 'queryKey',
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g,
@@ -167,12 +188,13 @@ export function markedSetNofollowLinks(href: string, title: string, text: string
     } catch {
         // Probably invalid url, go on
     }
-    const isApifyLink = (urlParsed! && /(\.|^)apify\.com$/i.test(urlParsed.hostname));
+    const isApifyLink = urlParsed! && /(\.|^)apify\.com$/i.test(urlParsed.hostname);
     const isSameHostname = !referrerHostname || (urlParsed! && urlParsed.hostname === referrerHostname);
 
     if (isApifyLink && isSameHostname) {
         return `<a href="${href}">${title || text}</a>`;
-    } if (isApifyLink) {
+    }
+    if (isApifyLink) {
         return `<a rel="noopener noreferrer" target="_blank" href="${href}">${title || text}</a>`;
     }
 
@@ -212,7 +234,9 @@ const ESCAPE_TO_STRING = '\uFF54\uFF4F\uFF33\uFF54\uFF52\uFF49\uFF4E\uFF47'; // 
 const ESCAPE_BSON_TYPE = '\uFF3F\uFF42\uFF53\uFF4F\uFF4E\uFF54\uFF59\uFF50\uFF45'; // "_bsontype"
 const ESCAPE_NULL = ''; // "\0" (null chars are removed completely, they won't be recovered)
 
-const REGEXP_IS_ESCAPED = new RegExp(`(${ESCAPE_DOT}|^${ESCAPE_DOLLAR}|^${ESCAPE_TO_BSON}$|^${ESCAPE_BSON_TYPE}|^${ESCAPE_TO_STRING}$)`);
+const REGEXP_IS_ESCAPED = new RegExp(
+    `(${ESCAPE_DOT}|^${ESCAPE_DOLLAR}|^${ESCAPE_TO_BSON}$|^${ESCAPE_BSON_TYPE}|^${ESCAPE_TO_STRING}$)`,
+);
 
 const REGEXP_DOT = new RegExp(ESCAPE_DOT, 'g');
 const REGEXP_DOLLAR = new RegExp(`^${ESCAPE_DOLLAR}`);
@@ -281,15 +305,20 @@ export function unescapePropertyName(name: string) {
  * @returns {*}
  * @private
  */
-export function traverseObject(obj: Record<string, any>, clone: boolean, transformFunc: (key: string, value: unknown) => [string, unknown]) {
+export function traverseObject(
+    obj: Record<string, any>,
+    clone: boolean,
+    transformFunc: (key: string, value: unknown) => [string, unknown],
+) {
     // Primitive types don't need to be cloned or further traversed.
     // Buffer needs to be skipped otherwise this will iterate over the whole buffer which kills the event loop.
     if (
-        obj === null
-        || typeof obj !== 'object'
-        || Object.prototype.toString.call(obj) === '[object Date]'
-        || isBuffer(obj)
-    ) return obj;
+        obj === null ||
+        typeof obj !== 'object' ||
+        Object.prototype.toString.call(obj) === '[object Date]' ||
+        isBuffer(obj)
+    )
+        return obj;
 
     let result;
 
@@ -306,7 +335,8 @@ export function traverseObject(obj: Record<string, any>, clone: boolean, transfo
 
     // obj is an object, all keys need to be checked
     result = clone ? {} : obj;
-    for (const key in obj) { // eslint-disable-line no-restricted-syntax, guard-for-in
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const key in obj) {
         const val = traverseObject(obj[key], clone, transformFunc);
         const [transformedKey, transformedVal] = transformFunc(key, val);
         if (key === transformedKey) {
@@ -372,7 +402,7 @@ export function isBadForMongo(obj: Record<string, any>): boolean {
 }
 
 export class JsonVariable {
-    constructor(readonly name: string) { }
+    constructor(readonly name: string) {}
 
     getToken() {
         return `{{${this.name}}}`;
@@ -386,8 +416,13 @@ export class JsonVariable {
  * In addition to that supports instances of JsonVariable('my.token') that are replaced
  * with a {{my.token}}.
  */
-export function jsonStringifyExtended(value: Record<string, any>, replacer?: ((k: string, val: unknown) => unknown) | null, space = 0): string {
-    if (replacer && !(replacer instanceof Function)) throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
+export function jsonStringifyExtended(
+    value: Record<string, any>,
+    replacer?: ((k: string, val: unknown) => unknown) | null,
+    space = 0,
+): string {
+    if (replacer && !(replacer instanceof Function))
+        throw new Error('Parameter "replacer" of jsonStringifyExtended() must be a function!');
 
     const replacements: Record<string, string> = {};
 

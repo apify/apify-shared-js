@@ -4,10 +4,4 @@ import inputSchema from '../schemas/input.schema.json';
 import keyValueStoreSchema from '../schemas/key_value_store.schema.json';
 import outputSchema from '../schemas/output.schema.json';
 
-export {
-    actorSchema,
-    datasetSchema,
-    inputSchema,
-    keyValueStoreSchema,
-    outputSchema,
-};
+export { actorSchema, datasetSchema, inputSchema, keyValueStoreSchema, outputSchema };

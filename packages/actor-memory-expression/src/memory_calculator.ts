@@ -70,14 +70,23 @@ const math = create({
 const { compile } = math;
 
 // Disable potentially dangerous functions
-math.import({
-    // We disable evaluate to prevent users from calling it inside their expressions.
-    // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
-    evaluate() { throw new Error('Function evaluate is disabled.'); },
-    compile() { throw new Error('Function compile is disabled.'); },
-    // We need to disable it, because compileDependencies imports parseDependencies.
-    parse() { throw new Error('Function parse is disabled.'); },
-}, { override: true });
+math.import(
+    {
+        // We disable evaluate to prevent users from calling it inside their expressions.
+        // For example: defaultMemoryMbytes = "evaluate('2 + 2')"
+        evaluate() {
+            throw new Error('Function evaluate is disabled.');
+        },
+        compile() {
+            throw new Error('Function compile is disabled.');
+        },
+        // We need to disable it, because compileDependencies imports parseDependencies.
+        parse() {
+            throw new Error('Function parse is disabled.');
+        },
+    },
+    { override: true },
+);
 
 /**
  * Safely retrieves a nested property from an object using a dot-notation string path.
@@ -89,9 +98,9 @@ math.import({
  * @param path A dot-separated string representing the nested path (e.g., "input.payload.size").
  * @param defaultVal The value to return if the path is not found or the value is `null` or `undefined`.
  * @returns The retrieved value, or `defaultVal` if the path is unreachable.
-*/
+ */
 const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
-    return (path.split('.').reduce((current, key) => current?.[key], obj)) ?? defaultVal;
+    return path.split('.').reduce((current, key) => current?.[key], obj) ?? defaultVal;
 };
 
 /**
@@ -99,7 +108,7 @@ const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
  * The result is clamped to the allowed range (ACTOR_LIMITS.MIN_RUN_MEMORY_MBYTES - ACTOR_LIMITS.MAX_RUN_MEMORY_MBYTES).
  * @param num The number to round.
  * @returns The closest power of 2 within min/max range.
-*/
+ */
 const roundToClosestPowerOf2 = (num: number): number => {
     if (typeof num !== 'number' || Number.isNaN(num) || !Number.isFinite(num)) {
         throw new Error(`Calculated memory value is not a valid number: ${num}.`);
@@ -139,44 +148,46 @@ const roundToClosestPowerOf2 = (num: number): number => {
 const processTemplateVariables = (defaultMemoryMbytes: string): string => {
     const variableRegex = /{{\s*([a-zA-Z0-9_.]+)\s*}}/g;
 
-    const processedExpression = defaultMemoryMbytes.replace(
-        variableRegex,
-        (_, variableName: string) => {
-            // 1. Check if the variable is accessing input (e.g. {{input.someValue}})
-            // We do not validate the specific property name because `input` is dynamic.
-            if (variableName.startsWith('input.')) {
-                return variableName;
-            }
+    const processedExpression = defaultMemoryMbytes.replace(variableRegex, (_, variableName: string) => {
+        // 1. Check if the variable is accessing input (e.g. {{input.someValue}})
+        // We do not validate the specific property name because `input` is dynamic.
+        if (variableName.startsWith('input.')) {
+            return variableName;
+        }
 
-            // 2. Check if the variable is accessing runOptions (e.g. {{runOptions.memoryMbytes}}) and validate the keys.
-            if (variableName.startsWith('runOptions.')) {
-                const key = variableName.slice('runOptions.'.length);
-                if (!ALLOWED_RUN_OPTION_KEYS.has(key as keyof ActorRunOptions)) {
-                    throw new Error(
-                        `Invalid variable '{{${variableName}}}' in expression. Only the following runOptions are allowed: ${Array.from(ALLOWED_RUN_OPTION_KEYS).map((k) => `runOptions.${k}`).join(', ')}.`,
-                    );
-                }
-                return variableName;
+        // 2. Check if the variable is accessing runOptions (e.g. {{runOptions.memoryMbytes}}) and validate the keys.
+        if (variableName.startsWith('runOptions.')) {
+            const key = variableName.slice('runOptions.'.length);
+            if (!ALLOWED_RUN_OPTION_KEYS.has(key as keyof ActorRunOptions)) {
+                throw new Error(
+                    `Invalid variable '{{${variableName}}}' in expression. Only the following runOptions are allowed: ${Array.from(
+                        ALLOWED_RUN_OPTION_KEYS,
+                    )
+                        .map((k) => `runOptions.${k}`)
+                        .join(', ')}.`,
+                );
             }
+            return variableName;
+        }
 
-            // 3. Throw error for unrecognized variables (e.g. {{someVariable}})
-            throw new Error(
-                `Invalid variable '{{${variableName}}}' in expression.`,
-            );
-        },
-    );
+        // 3. Throw error for unrecognized variables (e.g. {{someVariable}})
+        throw new Error(`Invalid variable '{{${variableName}}}' in expression.`);
+    });
 
     return processedExpression;
 };
 
 /*
-* Retrieves a compiled expression from the cache or compiles it if not present.
-*
-* @param expression The expression string to compile.
-* @param cache An optional cache to store/retrieve compiled expressions.
-* @returns The compiled CompilationResult.
-*/
-const getCompiledExpression = async (expression: string, cache: CompilationCache | undefined): Promise<CompilationResult> => {
+ * Retrieves a compiled expression from the cache or compiles it if not present.
+ *
+ * @param expression The expression string to compile.
+ * @param cache An optional cache to store/retrieve compiled expressions.
+ * @returns The compiled CompilationResult.
+ */
+const getCompiledExpression = async (
+    expression: string,
+    cache: CompilationCache | undefined,
+): Promise<CompilationResult> => {
     if (!cache) {
         return compile(expression);
     }
@@ -199,14 +210,16 @@ const getCompiledExpression = async (expression: string, cache: CompilationCache
  * @param context The `MemoryEvaluationContext` (containing `input` and `runOptions`) available to the expression.
  * @param options.cache Optional synchronous cache. Since compiled functions cannot be saved to a database/Redis, they are kept in local memory.
  * @returns The calculated memory value rounded to the closest power of 2 and clamped within allowed limits.
-*/
+ */
 export const calculateRunDynamicMemory = async (
     defaultMemoryMbytes: string,
     context: MemoryEvaluationContext,
     options: { cache: CompilationCache } | undefined = undefined,
 ) => {
     if (defaultMemoryMbytes.length > DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH) {
-        throw new Error(`The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`);
+        throw new Error(
+            `The defaultMemoryMbytes expression is too long. Max length is ${DEFAULT_MEMORY_MBYTES_EXPRESSION_MAX_LENGTH} characters.`,
+        );
     }
 
     // Replaces all occurrences of {{variable}} with variable

@@ -34,7 +34,9 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual('<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" target="_blank" rel="nofollow noreferrer noopener">link to bar</a>');
+        expect(renderedLink).toEqual(
+            '<a href="https://github.com/apify/actor-test-url/tree/main/src/foo/bar" target="_blank" rel="nofollow noreferrer noopener">link to bar</a>',
+        );
     });
 
     it('replaces relative URLs in images from GitHub repos with absolute URLs pointing to raw files', () => {
@@ -43,7 +45,9 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://gitlab.com/${repoFullName}`;
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual(`<img src="https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg" alt="link to image" loading="lazy" />`);
+        expect(renderedLink).toEqual(
+            `<img src="https://gitlab.com/apify/actor-test-url/-/raw/main/src/foo/bar.jpeg" alt="link to image" loading="lazy" />`,
+        );
     });
 
     it('does not replace absolute URLs', () => {
@@ -52,7 +56,9 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `https://github.com/${repoFullName}`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual('<a href="https://github.com/apify/actor-test-url/do-not-change" target="_blank" rel="nofollow noreferrer noopener">absolute-link</a>');
+        expect(renderedLink).toEqual(
+            '<a href="https://github.com/apify/actor-test-url/do-not-change" target="_blank" rel="nofollow noreferrer noopener">absolute-link</a>',
+        );
     });
 
     it('customLinkRenderer works with SSH URLs', () => {
@@ -61,7 +67,9 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `git@gitlab.com:${repoFullName}.git`;
         const renderedLink = customLinkRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual('<a href="https://gitlab.com/apify/actor-test-url" target="_blank" rel="nofollow noreferrer noopener">SSH link</a>');
+        expect(renderedLink).toEqual(
+            '<a href="https://gitlab.com/apify/actor-test-url" target="_blank" rel="nofollow noreferrer noopener">SSH link</a>',
+        );
     });
 
     it('customImageRenderer works with SSH URLs', () => {
@@ -70,7 +78,9 @@ describe('apifyMarked custom renderers work', () => {
         const repoUrl = `git@gitlab.com:${repoFullName}.git`;
         const renderedLink = customImageRenderer(href, text, repoUrl, branchName);
 
-        expect(renderedLink).toEqual('<img src="https://gitlab.com/apify/actor-test-url/badges/master/pipeline.svg" alt="SSH link" loading="lazy" />');
+        expect(renderedLink).toEqual(
+            '<img src="https://gitlab.com/apify/actor-test-url/badges/master/pipeline.svg" alt="SSH link" loading="lazy" />',
+        );
     });
 
     describe('repo name parser works', () => {

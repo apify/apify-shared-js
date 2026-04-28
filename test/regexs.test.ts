@@ -73,33 +73,12 @@ const tests = {
     },
 
     APIFY_PROXY_VALUE_REGEX: {
-        valid: [
-            '123_jkn_090',
-            '123_090',
-            'klkn_kkk',
-            'd',
-            '7',
-            '0.345245346',
-            'fff~ggg',
-        ],
-        invalid: [
-            '',
-            'jjj-',
-            's-s',
-            'k#k',
-            '$',
-        ],
+        valid: ['123_jkn_090', '123_090', 'klkn_kkk', 'd', '7', '0.345245346', 'fff~ggg'],
+        invalid: ['', 'jjj-', 's-s', 'k#k', '$'],
     },
 
     KEY_VALUE_STORE_KEY_REGEX: {
-        valid: [
-            'hello123',
-            '123hello',
-            'this_is_1-key',
-            'with(parens)',
-            ")(x_._-''",
-            '!!!',
-        ],
+        valid: ['hello123', '123hello', 'this_is_1-key', 'with(parens)', ")(x_._-''", '!!!'],
         invalid: [
             '#',
             '"hello"',
@@ -368,12 +347,6 @@ describe('regexps', () => {
 
 describe('SPLIT_PATH_REGEX', () => {
     it('works', () => {
-        expect(
-            '/aaa/bbb/ccc'.match(SPLIT_PATH_REGEX),
-        ).toEqual([
-            'aaa',
-            'bbb',
-            'ccc',
-        ]);
+        expect('/aaa/bbb/ccc'.match(SPLIT_PATH_REGEX)).toEqual(['aaa', 'bbb', 'ccc']);
     });
 });

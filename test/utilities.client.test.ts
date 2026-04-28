@@ -92,8 +92,7 @@ const BAD_REVERSIBLE_OBJECTS = [
         $: null,
     },
     {
-        toBSON() {
-        },
+        toBSON() {},
     },
     {
         toBSON: 'some text',
@@ -150,7 +149,7 @@ const BAD_IRREVERSIBLE_OBJECTS = [
 const BAD_OBJECTS = _.union(BAD_REVERSIBLE_OBJECTS, BAD_IRREVERSIBLE_OBJECTS);
 
 // this effectively tests _escapePropertyName() and _unescapePropertyName()
-const KNOWN_ESCAPES: { irreversible?: boolean, src: any, trg: any }[] = [
+const KNOWN_ESCAPES: { irreversible?: boolean; src: any; trg: any }[] = [
     {
         src: { $test: 1 },
         trg: { '\uFF04test': 1 },
@@ -255,8 +254,8 @@ const testEscape = function (escapeFunc: any, src: any, trg: any) {
 
     // ensure srcClone didn't change
     if (
-        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone))
-        || (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
+        (srcClone && isObject(srcClone) && !isDateOrBuffer(srcClone)) ||
+        (trgClone && isObject(trgClone) && !isDateOrBuffer(trgClone))
     ) {
         expect(srcClone).not.toBe(trgClone);
     }
@@ -496,10 +495,12 @@ describe('utilities.client', () => {
             expect(normalizeUrl('a   https://example.com   b')).toEqual(null);
             expect(normalizeUrl('https://example.com?q=foo bar')).toEqual('https://example.com?q=foo+bar');
             expect(normalizeUrl('https://example.com?q=foo+bar')).toEqual('https://example.com?q=foo+bar');
-            expect(normalizeUrl('https://google.com/maps/search/restaurant prague/@39.1029725,39.5483593,4z'))
-                .toEqual('https://google.com/maps/search/restaurant%20prague/@39.1029725,39.5483593,4z');
-            expect(normalizeUrl('https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z'))
-                .toEqual('https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z');
+            expect(normalizeUrl('https://google.com/maps/search/restaurant prague/@39.1029725,39.5483593,4z')).toEqual(
+                'https://google.com/maps/search/restaurant%20prague/@39.1029725,39.5483593,4z',
+            );
+            expect(normalizeUrl('https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z')).toEqual(
+                'https://google.com/maps/search/restaurantprague/@39.1029725,39.5483593,4z',
+            );
         });
 
         it('should lowercase hostname and protocols', () => {
@@ -523,7 +524,9 @@ describe('utilities.client', () => {
 
         it('should remove common tracking parameters', () => {
             expect(normalizeUrl('http://example.com/?utm_source=xyz')).toEqual('http://example.com');
-            expect(normalizeUrl('http://example.com/?utm_campaign=xyz&param=val')).toEqual('http://example.com?param=val');
+            expect(normalizeUrl('http://example.com/?utm_campaign=xyz&param=val')).toEqual(
+                'http://example.com?param=val',
+            );
             expect(normalizeUrl('http://example.com/?utm_campaign=xyz&utm_source=neco')).toEqual('http://example.com');
         });
 
@@ -537,8 +540,12 @@ describe('utilities.client', () => {
             expect(normalizeUrl('http://example.com#', false)).toEqual('http://example.com');
             expect(normalizeUrl('http://example.com#fragment', true)).toEqual('http://example.com#fragment');
             expect(normalizeUrl('http://example.com#', true)).toEqual('http://example.com');
-            expect(normalizeUrl('https://www.example.com#keyB=val1&keyA=val2', true)).toEqual('https://www.example.com#keyB=val1&keyA=val2');
-            expect(normalizeUrl('https://www.example.com#keyB=val1&keyA=val2', false)).toEqual('https://www.example.com');
+            expect(normalizeUrl('https://www.example.com#keyB=val1&keyA=val2', true)).toEqual(
+                'https://www.example.com#keyB=val1&keyA=val2',
+            );
+            expect(normalizeUrl('https://www.example.com#keyB=val1&keyA=val2', false)).toEqual(
+                'https://www.example.com',
+            );
         });
 
         it('should not touch invalid or empty params', () => {
@@ -546,19 +553,30 @@ describe('utilities.client', () => {
         });
 
         it('should work with @ inside query', () => {
-            expect(normalizeUrl('https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?foo=bar&aaa=bbb'))
-                .toEqual('https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?aaa=bbb&foo=bar');
+            expect(
+                normalizeUrl(
+                    'https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?foo=bar&aaa=bbb',
+                ),
+            ).toEqual(
+                'https://www.google.com/maps/search/restaurant/@39.102972537998426,39.54835927707177,4z?aaa=bbb&foo=bar',
+            );
         });
 
         it('should normalize real-world URLs', () => {
-            expect(normalizeUrl('https://www.czc.cz/dell-xps-15-9550-touch-stribrna_3/183874/produkt'
-                + '?utm_source=heureka.cz'
-                + '&utm_medium=cpc'
-                + '&utm_campaign=Notebooky'
-                + '&utm_term=Dell_XPS_15_9550_Touch_stribrna')).toEqual('https://www.czc.cz/dell-xps-15-9550-touch-stribrna_3/183874/produkt');
+            expect(
+                normalizeUrl(
+                    'https://www.czc.cz/dell-xps-15-9550-touch-stribrna_3/183874/produkt' +
+                        '?utm_source=heureka.cz' +
+                        '&utm_medium=cpc' +
+                        '&utm_campaign=Notebooky' +
+                        '&utm_term=Dell_XPS_15_9550_Touch_stribrna',
+                ),
+            ).toEqual('https://www.czc.cz/dell-xps-15-9550-touch-stribrna_3/183874/produkt');
 
             const expected = 'http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580';
-            expect(normalizeUrl('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580/')).toEqual(expected);
+            expect(normalizeUrl('http://notebooky.heureka.cz/f:2111:25235;2278:9720,9539;p:579,580/')).toEqual(
+                expected,
+            );
         });
 
         // this is no longer a valid URL and results in `null`, if we want to support it,
@@ -717,12 +735,28 @@ describe('utilities.client', () => {
                 { field: [] }, // Fails minItems check
                 { field: [{ key: '$', value: '' }] }, // Fails patternKey check
                 { field: [{ key: '', value: '$' }] }, // Fails patternValue check
-                { field: [{ key: 'aA0', value: 'aA0' }, { key: 'aA1', value: 'aA1' }, { key: 'aA2', value: 'aA2' }] }, // Fails maxItems check
-                { field: [{ key: 'aA0', value: 'aB0' }, { value: 'aB0', key: 'aA0' }] }, // Fails uniqueItems check
+                {
+                    field: [
+                        { key: 'aA0', value: 'aA0' },
+                        { key: 'aA1', value: 'aA1' },
+                        { key: 'aA2', value: 'aA2' },
+                    ],
+                }, // Fails maxItems check
+                {
+                    field: [
+                        { key: 'aA0', value: 'aB0' },
+                        { value: 'aB0', key: 'aA0' },
+                    ],
+                }, // Fails uniqueItems check
                 // Valid
                 { field: null },
                 { field: [{ key: 'aA0', value: 'aA0' }] },
-                { field: [{ key: 'aA0', value: 'aA0' }, { key: 'aA1', value: 'aA1' }] },
+                {
+                    field: [
+                        { key: 'aA0', value: 'aA0' },
+                        { key: 'aA1', value: 'aA1' },
+                    ],
+                },
             ];
             const results = inputs
                 .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1162,7 +1196,10 @@ describe('utilities.client', () => {
         describe('special cases for isSecret properties', () => {
             const publicKey = createPublicKey({
                 // eslint-disable-next-line max-len
-                key: Buffer.from('LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0dis3NlNXbklhOFFKWC94RUQxRQpYdnBBQmE3ajBnQnVYenJNUU5adjhtTW1RU0t2VUF0TmpOL2xacUZpQ0haZUQxU2VDcGV1MnFHTm5XbGRxNkhUCnh5cXJpTVZEbFNKaFBNT09QSENISVNVdFI4Tk5lR1Y1MU0wYkxJcENabHcyTU9GUjdqdENWejVqZFRpZ1NvYTIKQWxrRUlRZWQ4UVlDKzk1aGJoOHk5bGcwQ0JxdEdWN1FvMFZQR2xKQ0hGaWNuaWxLVFFZay9MZzkwWVFnUElPbwozbUppeFl5bWFGNmlMZTVXNzg1M0VHWUVFVWdlWmNaZFNjaGVBMEdBMGpRSFVTdnYvMEZjay9adkZNZURJOTVsCmJVQ0JoQjFDbFg4OG4wZUhzUmdWZE5vK0NLMDI4T2IvZTZTK1JLK09VaHlFRVdPTi90alVMdGhJdTJkQWtGcmkKOFFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==', 'base64'),
+                key: Buffer.from(
+                    'LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF0dis3NlNXbklhOFFKWC94RUQxRQpYdnBBQmE3ajBnQnVYenJNUU5adjhtTW1RU0t2VUF0TmpOL2xacUZpQ0haZUQxU2VDcGV1MnFHTm5XbGRxNkhUCnh5cXJpTVZEbFNKaFBNT09QSENISVNVdFI4Tk5lR1Y1MU0wYkxJcENabHcyTU9GUjdqdENWejVqZFRpZ1NvYTIKQWxrRUlRZWQ4UVlDKzk1aGJoOHk5bGcwQ0JxdEdWN1FvMFZQR2xKQ0hGaWNuaWxLVFFZay9MZzkwWVFnUElPbwozbUppeFl5bWFGNmlMZTVXNzg1M0VHWUVFVWdlWmNaZFNjaGVBMEdBMGpRSFVTdnYvMEZjay9adkZNZURJOTVsCmJVQ0JoQjFDbFg4OG4wZUhzUmdWZE5vK0NLMDI4T2IvZTZTK1JLK09VaHlFRVdPTi90alVMdGhJdTJkQWtGcmkKOFFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==',
+                    'base64',
+                ),
             });
 
             it('should allow encrypted/raw input for secret string', () => {
@@ -1178,16 +1215,9 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: 'value' };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const validInputs = [
-                    rawInput,
-                    encryptedInput,
-                    { field: null },
-                ];
+                const validInputs = [rawInput, encryptedInput, { field: null }];
 
-                const invalidInputs = [
-                    { field: {} },
-                    { field: [] },
-                ];
+                const invalidInputs = [{ field: {} }, { field: [] }];
 
                 let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1219,15 +1249,8 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: { key1: 'value1', key2: 'value2' } };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const validInputs = [
-                    rawInput,
-                    encryptedInput,
-                    { field: null },
-                ];
-                const invalidInputs = [
-                    { field: 'DATASET_ID' },
-                    { field: [] },
-                ];
+                const validInputs = [rawInput, encryptedInput, { field: null }];
+                const invalidInputs = [{ field: 'DATASET_ID' }, { field: [] }];
 
                 let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1259,15 +1282,8 @@ describe('utilities.client', () => {
                 });
                 const rawInput = { field: ['value1', 'value2'] };
                 const encryptedInput = encryptInputSecrets({ input: rawInput, inputSchema, publicKey });
-                const validInputs = [
-                    rawInput,
-                    encryptedInput,
-                    { field: null },
-                ];
-                const invalidInputs = [
-                    { field: 'DATASET_ID' },
-                    { field: {} },
-                ];
+                const validInputs = [rawInput, encryptedInput, { field: null }];
+                const invalidInputs = [{ field: 'DATASET_ID' }, { field: {} }];
 
                 let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1316,7 +1332,9 @@ describe('utilities.client', () => {
                 });
 
                 expect(validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, rawInput)).toEqual([]);
-                expect(validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, encryptedInput)).toEqual([]);
+                expect(
+                    validateInputUsingValidator(modifiedTitleValidator, modifiedTitleSchema, encryptedInput),
+                ).toEqual([]);
 
                 const { inputSchema: modifiedSchema, validator: modifiedValidator } = buildInputSchema({
                     field: {
@@ -1335,7 +1353,9 @@ describe('utilities.client', () => {
                 const errors = validateInputUsingValidator(modifiedValidator, modifiedSchema, encryptedInput);
                 expect(errors).not.toEqual([]);
                 // eslint-disable-next-line max-len
-                expect(errors[0].message).toEqual('The field schema.properties.field is a secret field, but its schema has changed. Please update the value in the input editor.');
+                expect(errors[0].message).toEqual(
+                    'The field schema.properties.field is a secret field, but its schema has changed. Please update the value in the input editor.',
+                );
             });
         });
 
@@ -1365,10 +1385,7 @@ describe('utilities.client', () => {
                         required: ['key1'],
                     },
                 });
-                const validInputs = [
-                    { field: { key1: 'value' } },
-                    { field: { key1: 'value', key2: 'value' } },
-                ];
+                const validInputs = [{ field: { key1: 'value' } }, { field: { key1: 'value', key2: 'value' } }];
                 const invalidInputs = [
                     { field: [] },
                     { field: {} },
@@ -1425,11 +1442,7 @@ describe('utilities.client', () => {
                     { field: [{ key1: 'value' }, { key1: 'value' }] },
                     { field: [{ key1: 'value', key2: 'value' }, { key1: 'value' }] },
                 ];
-                const invalidInputs = [
-                    { field: {} },
-                    { field: [{ key2: 'value' }] },
-                    { field: [{ key3: 'value' }] },
-                ];
+                const invalidInputs = [{ field: {} }, { field: [{ key2: 'value' }] }, { field: [{ key3: 'value' }] }];
 
                 let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1464,10 +1477,7 @@ describe('utilities.client', () => {
                     },
                 });
 
-                const validInputs = [
-                    { field: ['12', '345', '6789'] },
-                    { field: [] },
-                ];
+                const validInputs = [{ field: ['12', '345', '6789'] }, { field: [] }];
 
                 const invalidInputs = [
                     { field: ['1', '23'] }, // '1' is too short
@@ -1509,9 +1519,7 @@ describe('utilities.client', () => {
                         required: ['key.with.dot'],
                     },
                 });
-                const validInputs = [
-                    { field: { 'key.with.dot': 'value' } },
-                ];
+                const validInputs = [{ field: { 'key.with.dot': 'value' } }];
                 const invalidInputs = [
                     { field: [] },
                     { field: {} },
@@ -1538,20 +1546,23 @@ describe('utilities.client', () => {
 
         describe('special cases for number and integer fields', () => {
             it('should allow float number only for number field', () => {
-                const { inputSchema, validator } = buildInputSchema({
-                    numberField: {
-                        title: 'Field 1',
-                        description: 'My test field 1',
-                        type: 'number',
-                        editor: 'number',
+                const { inputSchema, validator } = buildInputSchema(
+                    {
+                        numberField: {
+                            title: 'Field 1',
+                            description: 'My test field 1',
+                            type: 'number',
+                            editor: 'number',
+                        },
+                        intField: {
+                            title: 'Field 2',
+                            description: 'My test field 2',
+                            type: 'integer',
+                            editor: 'number',
+                        },
                     },
-                    intField: {
-                        title: 'Field 2',
-                        description: 'My test field 2',
-                        type: 'integer',
-                        editor: 'number',
-                    },
-                }, { required: [] });
+                    { required: [] },
+                );
 
                 const validInputs = [
                     { numberField: 1 },
@@ -1600,24 +1611,27 @@ describe('utilities.client', () => {
             });
 
             it('should respect minimum, maximum for number and integer fields', () => {
-                const { inputSchema, validator } = buildInputSchema({
-                    numberField: {
-                        title: 'Field 1',
-                        description: 'My test field 1',
-                        type: 'number',
-                        editor: 'number',
-                        minimum: 1.5,
-                        maximum: 5.5,
+                const { inputSchema, validator } = buildInputSchema(
+                    {
+                        numberField: {
+                            title: 'Field 1',
+                            description: 'My test field 1',
+                            type: 'number',
+                            editor: 'number',
+                            minimum: 1.5,
+                            maximum: 5.5,
+                        },
+                        intField: {
+                            title: 'Field 2',
+                            description: 'My test field 2',
+                            type: 'integer',
+                            editor: 'number',
+                            exclusiveMinimum: 1,
+                            exclusiveMaximum: 5,
+                        },
                     },
-                    intField: {
-                        title: 'Field 2',
-                        description: 'My test field 2',
-                        type: 'integer',
-                        editor: 'number',
-                        exclusiveMinimum: 1,
-                        exclusiveMaximum: 5,
-                    },
-                }, { required: [] });
+                    { required: [] },
+                );
 
                 const validInputs = [
                     { numberField: 1.5 },
@@ -1628,12 +1642,7 @@ describe('utilities.client', () => {
                     { intField: 4 },
                 ];
 
-                const invalidInputs = [
-                    { numberField: 1.4 },
-                    { numberField: 5.6 },
-                    { intField: 1 },
-                    { intField: 5 },
-                ];
+                const invalidInputs = [{ numberField: 1.4 }, { numberField: 5.6 }, { intField: 1 }, { intField: 5 }];
 
                 let errorResults = validInputs
                     .map((input) => validateInputUsingValidator(validator, inputSchema, input))
@@ -1817,15 +1826,23 @@ describe('utilities.client', () => {
 
                 errors = validateInputUsingValidator(validator, inputSchema, { objectField: {} });
                 expect(errors?.[0].message).toBe('objectField must have at least 1 property');
-                errors = validateInputUsingValidator(validator, inputSchema, { objectField: { a: 1, b: 2, c: 3, d: 4 } });
+                errors = validateInputUsingValidator(validator, inputSchema, {
+                    objectField: { a: 1, b: 2, c: 3, d: 4 },
+                });
                 expect(errors?.[0].message).toBe('objectField must have at most 3 properties');
 
-                errors = validateInputUsingValidator(validator, inputSchema, { 'subSchema.Field': { nestedField: 'ab' } });
+                errors = validateInputUsingValidator(validator, inputSchema, {
+                    'subSchema.Field': { nestedField: 'ab' },
+                });
                 expect(errors?.[0].message).toBe('nestedField must be at least 3 characters long');
 
-                errors = validateInputUsingValidator(validator, inputSchema, { keyValue: [{ key: 'invalidKey', value: 'VALUE' }] });
+                errors = validateInputUsingValidator(validator, inputSchema, {
+                    keyValue: [{ key: 'invalidKey', value: 'VALUE' }],
+                });
                 expect(errors?.[0].message).toBe('All keys in keyValue must match the pattern ^key_[0-9]+$');
-                errors = validateInputUsingValidator(validator, inputSchema, { keyValue: [{ key: 'key_1', value: 'invalidValue' }] });
+                errors = validateInputUsingValidator(validator, inputSchema, {
+                    keyValue: [{ key: 'key_1', value: 'invalidValue' }],
+                });
                 expect(errors?.[0].message).toBe('All values in keyValue must match the pattern ^[A-Z]+$');
 
                 errors = validateInputUsingValidator(validator, inputSchema, { stringList: ['invalidItem'] });
@@ -1863,11 +1880,7 @@ describe('utilities.client', () => {
                 date: new Date('2019-05-06T13:08:15.590Z'),
                 num: 1,
                 boolean: true,
-                arr: [
-                    1,
-                    'something',
-                    arrFuncSimple,
-                ],
+                arr: [1, 'something', arrFuncSimple],
                 obj: {
                     foo: 'bar',
                     arrFunc,
@@ -1961,7 +1974,10 @@ describe('utilities.client', () => {
             expect(splitFullName('   John Newman     ')).toEqual(['John', 'Newman']);
             expect(splitFullName('   John \t\n\r Newman     ')).toEqual(['John', '\t\n\r Newman']);
             expect(splitFullName('John Paul New\nman')).toEqual(['John', 'Paul New\nman']);
-            expect(splitFullName('John Paul Newman  Karl   Ludvig   III')).toEqual(['John', 'Paul Newman Karl Ludvig III']);
+            expect(splitFullName('John Paul Newman  Karl   Ludvig   III')).toEqual([
+                'John',
+                'Paul Newman Karl Ludvig III',
+            ]);
             expect(splitFullName('New-man')).toEqual([null, 'New-man']);
             expect(splitFullName('  New  man  ')).toEqual(['New', 'man']);
             expect(splitFullName('More    Spaces Between')).toEqual(['More', 'Spaces Between']);
@@ -1970,18 +1986,30 @@ describe('utilities.client', () => {
 
     describe('#markedSetNofollowLinks', () => {
         it('should return a link without rel or target attributes for Apify links on the same hostname', () => {
-            const result = markedSetNofollowLinks('https://console.apify.com', 'Apify console', 'Apify Link', 'console.apify.com');
+            const result = markedSetNofollowLinks(
+                'https://console.apify.com',
+                'Apify console',
+                'Apify Link',
+                'console.apify.com',
+            );
             expect(result).toBe('<a href="https://console.apify.com">Apify console</a>');
         });
 
         it('should return a link with rel="noopener noreferrer" and target="_blank" for Apify links on a different hostname', () => {
-            const result = markedSetNofollowLinks('https://www.apify.com', 'Apify', 'Apify Link', 'different-hostname.com');
+            const result = markedSetNofollowLinks(
+                'https://www.apify.com',
+                'Apify',
+                'Apify Link',
+                'different-hostname.com',
+            );
             expect(result).toBe('<a rel="noopener noreferrer" target="_blank" href="https://www.apify.com">Apify</a>');
         });
 
         it('should return a link with rel="noopener noreferrer nofollow" and target="_blank" for non-Apify links', () => {
             const result = markedSetNofollowLinks('https://www.example.com', 'Example', 'Example Link');
-            expect(result).toBe('<a rel="noopener noreferrer nofollow" target="_blank" href="https://www.example.com">Example</a>');
+            expect(result).toBe(
+                '<a rel="noopener noreferrer nofollow" target="_blank" href="https://www.example.com">Example</a>',
+            );
         });
 
         it('should return a link with rel="noopener noreferrer nofollow" and target="_blank" for invalid URLs', () => {
@@ -2006,7 +2034,9 @@ describe('utilities.client', () => {
 
         it('should apply rel="noopener noreferrer nofollow" for links with an undefined hostname and non-Apify URLs', () => {
             const result = markedSetNofollowLinks('https://example.com', 'Example', 'Example Link', undefined);
-            expect(result).toBe('<a rel="noopener noreferrer nofollow" target="_blank" href="https://example.com">Example</a>');
+            expect(result).toBe(
+                '<a rel="noopener noreferrer nofollow" target="_blank" href="https://example.com">Example</a>',
+            );
         });
     });
 });

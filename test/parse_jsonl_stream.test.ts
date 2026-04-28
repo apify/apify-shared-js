@@ -2,16 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { ParseJsonlStream } from '@apify/utilities';
 
-const OBJS = [
-    { a: 123 },
-    { bb: 234 },
-    { ccc: 345 },
-    { dddd: 456 },
-    5555,
-    'string',
-    true,
-    false,
-];
+const OBJS = [{ a: 123 }, { bb: 234 }, { ccc: 345 }, { dddd: 456 }, 5555, 'string', true, false];
 
 describe('parse_jsonl_stream', () => {
     it('works on various objects', () => {
@@ -46,11 +37,20 @@ describe('parse_jsonl_stream', () => {
         let count = 0;
         parseJsonl.on('object', (obj) => {
             switch (count++) {
-                case 0: expect({ aaa: 123 }).toEqual(obj); break;
-                case 1: expect(true).toEqual(obj); break;
-                case 2: expect(555666).toEqual(obj); break;
-                case 3: expect('string').toEqual(obj); break;
-                default: throw new Error();
+                case 0:
+                    expect({ aaa: 123 }).toEqual(obj);
+                    break;
+                case 1:
+                    expect(true).toEqual(obj);
+                    break;
+                case 2:
+                    expect(555666).toEqual(obj);
+                    break;
+                case 3:
+                    expect('string').toEqual(obj);
+                    break;
+                default:
+                    throw new Error();
             }
         });
 
@@ -100,7 +100,9 @@ describe('parse_jsonl_stream', () => {
         // We need wait for next tick because of that. It would be great to rewrite the
         // stream to handle events properly, but given it's been like this since 2018,
         // I guess it would bring more trouble than benefit.
-        await new Promise<void>((resolve) => { process.nextTick(resolve); });
+        await new Promise<void>((resolve) => {
+            process.nextTick(resolve);
+        });
     });
 
     it('fails on unfinished JSON', async () => {
@@ -115,7 +117,9 @@ describe('parse_jsonl_stream', () => {
         parseJsonl.write('{ "aaa" :');
         parseJsonl.end('"aaa');
 
-        await new Promise<void>((resolve) => { process.nextTick(resolve); });
+        await new Promise<void>((resolve) => {
+            process.nextTick(resolve);
+        });
         expect(failed).toBe(true);
     });
 });

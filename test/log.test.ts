@@ -10,8 +10,8 @@ const CONSOLE_METHODS = ['log', 'warn', 'error', 'debug'] as const;
 describe('log', () => {
     let loggerSpy: MockInstance;
 
-    let loggedLines: { [key in typeof CONSOLE_METHODS[number]]?: string; };
-    const originalConsoleMethods = {} as Record<typeof CONSOLE_METHODS[number], (...args: any[]) => void>;
+    let loggedLines: { [key in (typeof CONSOLE_METHODS)[number]]?: string };
+    const originalConsoleMethods = {} as Record<(typeof CONSOLE_METHODS)[number], (...args: any[]) => void>;
 
     beforeEach(() => {
         loggerSpy = vi.spyOn(Logger.prototype, 'log');
@@ -80,44 +80,74 @@ describe('log', () => {
     it('should support internal() method', () => {
         const log = new Log();
         log.internal(LEVELS.ERROR, 'Something to be informed about happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Something to be informed about happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(
+            LEVELS.ERROR,
+            'Something to be informed about happened',
+            { foo: 'bar' },
+            undefined,
+            { prefix: null, suffix: null },
+        );
     });
 
     it('should support error() method', () => {
         const log = new Log();
         log.error('Error happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, undefined, {
+            prefix: null,
+            suffix: null,
+        });
     });
 
     it('should support exception() method', () => {
         const log = new Log();
         const err = new Error('some-error');
         log.exception(err, 'Error happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.ERROR, 'Error happened', { foo: 'bar' }, {
-            [IS_APIFY_LOGGER_EXCEPTION]: true,
-            message: 'some-error',
-            name: 'Error',
-            stack: expect.any(String),
-            cause: undefined,
-        }, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(
+            LEVELS.ERROR,
+            'Error happened',
+            { foo: 'bar' },
+            {
+                [IS_APIFY_LOGGER_EXCEPTION]: true,
+                message: 'some-error',
+                name: 'Error',
+                stack: expect.any(String),
+                cause: undefined,
+            },
+            { prefix: null, suffix: null },
+        );
     });
 
     it('should support softFail() method', () => {
         const log = new Log();
         log.softFail('Soft fail happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.SOFT_FAIL, 'Soft fail happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.SOFT_FAIL, 'Soft fail happened', { foo: 'bar' }, undefined, {
+            prefix: null,
+            suffix: null,
+        });
     });
 
     it('should support warning() method', () => {
         const log = new Log();
         log.warning('Something to be warn about happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Something to be warn about happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(
+            LEVELS.WARNING,
+            'Something to be warn about happened',
+            { foo: 'bar' },
+            undefined,
+            { prefix: null, suffix: null },
+        );
     });
 
     it('should support info() method', () => {
         const log = new Log();
         log.info('Something to be informed about happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(
+            LEVELS.INFO,
+            'Something to be informed about happened',
+            { foo: 'bar' },
+            undefined,
+            { prefix: null, suffix: null },
+        );
     });
 
     it('should support debug() method', () => {
@@ -125,7 +155,10 @@ describe('log', () => {
 
         const log = new Log();
         log.debug('Something to be debugged happened', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.DEBUG, 'Something to be debugged happened', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.DEBUG, 'Something to be debugged happened', { foo: 'bar' }, undefined, {
+            prefix: null,
+            suffix: null,
+        });
 
         delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
@@ -135,7 +168,10 @@ describe('log', () => {
 
         const log = new Log();
         log.perf('Some perf info', { foo: 'bar' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.PERF, 'Some perf info', { foo: 'bar' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.PERF, 'Some perf info', { foo: 'bar' }, undefined, {
+            prefix: null,
+            suffix: null,
+        });
 
         delete process.env[APIFY_ENV_VARS.LOG_LEVEL];
     });
@@ -153,9 +189,18 @@ describe('log', () => {
         log.deprecated('Message 2');
         log.deprecated('Message 3');
 
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 1', undefined, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 2', undefined, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 3', undefined, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 1', undefined, undefined, {
+            prefix: null,
+            suffix: null,
+        });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 2', undefined, undefined, {
+            prefix: null,
+            suffix: null,
+        });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'Message 3', undefined, undefined, {
+            prefix: null,
+            suffix: null,
+        });
     });
 
     it('should not pass empty objects in data', () => {
@@ -165,15 +210,30 @@ describe('log', () => {
         log.warning('empty data object', {});
         log.warning('non-empty data object', { foo: 123 });
 
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'no data', undefined, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'empty data object', undefined, undefined, { prefix: null, suffix: null });
-        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'non-empty data object', { foo: 123 }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'no data', undefined, undefined, {
+            prefix: null,
+            suffix: null,
+        });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'empty data object', undefined, undefined, {
+            prefix: null,
+            suffix: null,
+        });
+        expect(loggerSpy).toBeCalledWith(LEVELS.WARNING, 'non-empty data object', { foo: 123 }, undefined, {
+            prefix: null,
+            suffix: null,
+        });
     });
 
     it('should support data', () => {
         const log = new Log({ data: { foo: 'bar' } });
         log.info('Something to be informed about happened', { hotel: 'restaurant' });
-        expect(loggerSpy).toBeCalledWith(LEVELS.INFO, 'Something to be informed about happened', { foo: 'bar', hotel: 'restaurant' }, undefined, { prefix: null, suffix: null });
+        expect(loggerSpy).toBeCalledWith(
+            LEVELS.INFO,
+            'Something to be informed about happened',
+            { foo: 'bar', hotel: 'restaurant' },
+            undefined,
+            { prefix: null, suffix: null },
+        );
     });
 
     it('should log cause for errors', () => {

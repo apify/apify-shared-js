@@ -47,7 +47,11 @@ const parseApifyGitUrl = (gitRepoUrl: string): ParseGitUrl => {
  * also works if the user opted to use custom branch for deploying their actor to Apify.
  * @return {string} updated readme
  */
-export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl, gitBranchName }: ConvertOptions): string => {
+export const convertRelativeImagePathsToAbsoluteInReadme = ({
+    readme,
+    gitRepoUrl,
+    gitBranchName,
+}: ConvertOptions): string => {
     const parsedRepoUrl = parseApifyGitUrl(gitRepoUrl);
 
     // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
@@ -77,8 +81,10 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
     // (?:\.?\/) matches the starting ./ or / in a relative or root-relative URL, which can be ignored when converting to absolute link
     // (.*?) matches the actual relative URL
     // (".*?\/>) or ('.*?\/>) matches the end of the image code
-    const relativeImageHtmlRegexWithDoubleQuotes = /(<img.*?src=")(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)(".*?\/>)/g;
-    const relativeImageHtmlRegexWithSingleQuotes = /(<img.*?src=')(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)('.*?\/>)/g;
+    const relativeImageHtmlRegexWithDoubleQuotes =
+        /(<img.*?src=")(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)(".*?\/>)/g;
+    const relativeImageHtmlRegexWithSingleQuotes =
+        /(<img.*?src=')(?!(?:(?:https?|ftp):\/\/|data:))(?:\.?\/)?(.*?)('.*?\/>)/g;
 
     let urlPrefix = null;
     if (parsedRepoUrl.resource === 'github.com') {
@@ -92,8 +98,8 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({ readme, gitRepoUrl
 
     return urlPrefix
         ? readme
-            .replace(relativeImageMarkdownRegex, `$1(${urlPrefix}/$2)`)
-            .replace(relativeImageHtmlRegexWithDoubleQuotes, `$1${urlPrefix}/$2$3`)
-            .replace(relativeImageHtmlRegexWithSingleQuotes, `$1${urlPrefix}/$2$3`)
+              .replace(relativeImageMarkdownRegex, `$1(${urlPrefix}/$2)`)
+              .replace(relativeImageHtmlRegexWithDoubleQuotes, `$1${urlPrefix}/$2$3`)
+              .replace(relativeImageHtmlRegexWithSingleQuotes, `$1${urlPrefix}/$2$3`)
         : readme;
 };

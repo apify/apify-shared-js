@@ -12,12 +12,12 @@ type DecryptOptions = {
     privateKey: KeyObject;
     encryptedPassword: string;
     encryptedValue: string;
-}
+};
 
 type EncryptOptions = {
     publicKey: KeyObject;
     value: string;
-}
+};
 
 /**
  * It encrypts the given value using AES cipher and the password for encryption using the public key.
@@ -58,11 +58,7 @@ export function publicEncrypt({ publicKey, value }: EncryptOptions) {
  * @param encryptedValue {string} Content in Base64 encrypted using AES cipher
  * @returns {string}
  */
-export function privateDecrypt({
-    privateKey,
-    encryptedPassword,
-    encryptedValue,
-}: DecryptOptions): string {
+export function privateDecrypt({ privateKey, encryptedPassword, encryptedValue }: DecryptOptions): string {
     const encryptedValueBuffer = Buffer.from(encryptedValue, 'base64');
     const encryptedPasswordBuffer = Buffer.from(encryptedPassword, 'base64');
 

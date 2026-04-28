@@ -19,7 +19,9 @@ const LEVEL_TO_COLOR = {
     [LogLevel.PERF]: 'magenta',
 } as const;
 
-const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map((level) => SHORTEN_LEVELS[level as keyof typeof SHORTEN_LEVELS] || level);
+const SHORTENED_LOG_LEVELS = LEVEL_TO_STRING.map(
+    (level) => SHORTEN_LEVELS[level as keyof typeof SHORTEN_LEVELS] || level,
+);
 const MAX_LEVEL_LENGTH_SPACES = Math.max(...SHORTENED_LOG_LEVELS.map((l) => l.length));
 
 const getLevelIndent = (level: string) => {
@@ -44,7 +46,7 @@ export class LoggerText extends Logger {
 
         let maybeDate = '';
         if (!this.options.skipTime) {
-            maybeDate = `${(new Date()).toISOString().replace('Z', '').replace('T', ' ')} `;
+            maybeDate = `${new Date().toISOString().replace('Z', '').replace('T', ' ')} `;
         }
 
         const errStack = exception ? this._parseException(exception) : '';

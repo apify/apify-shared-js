@@ -13,13 +13,21 @@ describe('PseudoUrl', () => {
 
     test('should throw on invalid input', () => {
         // @ts-expect-error
-        expect(() => new PseudoUrl()).toThrow("Invalid PseudoUrl format, 'string' or 'RegExp' required, got `undefined` of type 'undefined' instead");
+        expect(() => new PseudoUrl()).toThrow(
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `undefined` of type 'undefined' instead",
+        );
         // @ts-expect-error
-        expect(() => new PseudoUrl(123)).toThrow("Invalid PseudoUrl format, 'string' or 'RegExp' required, got `123` of type 'number' instead");
+        expect(() => new PseudoUrl(123)).toThrow(
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `123` of type 'number' instead",
+        );
         // @ts-expect-error
-        expect(() => new PseudoUrl(['foo'])).toThrow("Invalid PseudoUrl format, 'string' or 'RegExp' required, got `[ 'foo' ]` of type 'array' instead");
+        expect(() => new PseudoUrl(['foo'])).toThrow(
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `[ 'foo' ]` of type 'array' instead",
+        );
         // @ts-expect-error
-        expect(() => new PseudoUrl({ foo: 'bar' })).toThrow("Invalid PseudoUrl format, 'string' or 'RegExp' required, got `{ foo: 'bar' }` of type 'object' instead");
+        expect(() => new PseudoUrl({ foo: 'bar' })).toThrow(
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `{ foo: 'bar' }` of type 'object' instead",
+        );
     });
 
     test('should accept RegExp on input', () => {

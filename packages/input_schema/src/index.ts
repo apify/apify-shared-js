@@ -7,13 +7,10 @@ export {
     NumberFieldDefinition,
     ObjectFieldDefinition,
     ArrayFieldDefinition,
-
     ResourceFieldDefinition,
     ResourceArrayFieldDefinition,
-
     MixedFieldDefinition,
     FieldDefinition,
-
     InputSchema,
 } from './types';
 export * from './utilities';
