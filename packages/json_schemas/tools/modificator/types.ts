@@ -4,9 +4,7 @@ import type { ReplaceValueRule } from './rules/replace-value-rule';
 
 type Primitive = string | number | boolean | null | undefined;
 
-interface Arr extends Array<JsonValue> {}
-
-export type JsonValue = Primitive | JsonObject | Arr;
+export type JsonValue = Primitive | JsonObject | JsonValue[];
 
 export interface JsonObject {
     [member: string]: JsonValue;

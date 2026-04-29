@@ -236,12 +236,14 @@ export function escapePropertyName(name: string) {
     // it generates issues due to a bug in mongo bson-ext package https://jira.mongodb.org/browse/NODE-3375.
 
     // pre-test to improve performance
+    // eslint-disable-next-line no-control-regex -- intentionally matching the null character escaped by MongoDB BSON
     if (/(\.|^\$|^toBSON$|^_bsontype$|^toString$|\0)/.test(name)) {
         name = name.replace(/\./g, ESCAPE_DOT);
         name = name.replace(/^\$/, ESCAPE_DOLLAR);
         name = name.replace(/^toBSON$/, ESCAPE_TO_BSON);
         name = name.replace(/^toString$/, ESCAPE_TO_STRING);
         name = name.replace(/^_bsontype$/, ESCAPE_BSON_TYPE);
+        // eslint-disable-next-line no-control-regex -- intentionally matching the null character escaped by MongoDB BSON
         name = name.replace(/\0/g, ESCAPE_NULL);
     }
 

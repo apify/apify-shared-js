@@ -31,8 +31,8 @@
         "test": "vitest",
         "test-cov": "vitest --coverage",
         "release": "pnpm build && lerna version patch && lerna publish from-package --contents dist",
-        "lint": "eslint packages/*/src test",
-        "lint:fix": "eslint packages/*/src test --fix",
+        "lint": "oxlint --type-aware",
+        "lint:fix": "oxlint --type-aware --fix",
         "preinstall": "npx only-allow pnpm"
     },
     "commitlint": {
@@ -42,11 +42,11 @@
     },
     "lint-staged": {
         "*.ts": [
-            "eslint packages/*/src/**/*.ts --fix"
+            "oxlint --type-aware --fix --no-error-on-unmatched-pattern"
         ]
     },
     "devDependencies": {
-        "@apify/eslint-config": "^2.0.3",
+        "@apify/oxlint-config": "^0.2.5",
         "@commitlint/config-conventional": "^20.0.0",
         "@types/clone-deep": "^4.0.4",
         "@types/git-url-parse": "^16.0.0",
@@ -56,18 +56,17 @@
         "ajv": "^8.17.1",
         "clone-deep": "^4.0.1",
         "commitlint": "^20.0.0",
-        "eslint": "^9.24.0",
-        "globals": "^17.0.0",
         "husky": "^9.1.4",
         "lerna": "^9.0.6",
         "lint-staged": "^16.0.0",
         "nock": "^14.0.0",
+        "oxlint": "1.62.0",
+        "oxlint-tsgolint": "0.22.0",
         "rimraf": "^6.0.1",
         "strip-ansi": "^6.0.0",
         "ts-node": "^10.9.2",
         "tsup": "^8.3.0",
         "typescript": "^5.8.3",
-        "typescript-eslint": "^8.29.0",
         "underscore": "^1.13.7",
         "vitest": "^4.1.4"
     },

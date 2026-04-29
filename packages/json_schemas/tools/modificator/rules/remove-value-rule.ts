@@ -5,7 +5,7 @@ import { parseJsonPointer } from '../utils';
 
 export const RULE_NAME = 'RemoveValue' as const;
 
-export interface RemoveValueRule extends AbstractRule<typeof RULE_NAME> {}
+export type RemoveValueRule = AbstractRule<typeof RULE_NAME>;
 
 function removeValue(objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) {
     // Navigate to parent and delete the property

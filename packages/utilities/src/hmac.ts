@@ -42,7 +42,7 @@ let subtleCrypto = globalThis.crypto?.subtle;
 async function ensureSubtleCryptoExists() {
     if (!subtleCrypto) {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-require-imports -- Backward compatibility for Node.js versions < 19
+            // eslint-disable-next-line typescript/no-require-imports -- Backward compatibility for Node.js versions < 19
             subtleCrypto = require('node:crypto')?.webcrypto?.subtle;
             if (subtleCrypto) return;
         } catch {

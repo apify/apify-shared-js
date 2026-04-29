@@ -1945,7 +1945,7 @@ describe('utilities.client', () => {
     });
 
     describe('#splitFullName()', () => {
-        it('it works', () => {
+        it('works', () => {
             // invalid args
             expect(splitFullName('')).toEqual([null, null]);
             // @ts-expect-error
