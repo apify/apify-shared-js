@@ -48,8 +48,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.52.1",
-        "@apify/log": "^2.5.35",
+        "@apify/consts": "workspace:^",
+        "@apify/log": "workspace:^",
         "mathjs": "^15.2.0"
     }
 }

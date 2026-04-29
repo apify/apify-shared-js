@@ -48,7 +48,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.52.1",
+        "@apify/consts": "workspace:^",
         "ansi-colors": "^4.1.1"
     }
 }

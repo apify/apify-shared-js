@@ -44,8 +44,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/log": "^2.5.35",
-        "@apify/utilities": "^2.29.0",
+        "@apify/log": "workspace:^",
+        "@apify/utilities": "workspace:^",
         "ow": "^0.28.2"
     }
 }

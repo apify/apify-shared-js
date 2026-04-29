@@ -44,6 +44,6 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/log": "^2.5.35"
+        "@apify/log": "workspace:^"
     }
 }
