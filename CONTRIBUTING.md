@@ -4,20 +4,20 @@ When contributing to this repository, please first discuss the change you wish t
 
 ## Submitting a pull request
 
-- Fork the project and install NPM dependencies. **NPM 7 is needed to have support for workspaces.**
+- Fork the project and install dependencies with [pnpm](https://pnpm.io/) (we use pnpm workspaces).
 
     ```sh
-    npm install
+    pnpm install
     ```
 
 - Run tests before you start working, to be sure they all pass, and your setup is working correctly:
 
      ```sh
-     npm test
+     pnpm test
      ```
 
 - Be sure to **include appropriate test cases**.
-- Follow defined coding standard, use `npm run lint` command to check it.
+- Follow defined coding standard, use `pnpm lint` command to check it.
 - Commit your changes using a descriptive commit message that follows defined
   [commit message conventions](#commit-message-guidelines). Adherence to these conventions is necessary because release notes are automatically generated from these messages.
 - Push the code to your forked repository and create a pull request on GitHub.
@@ -52,7 +52,7 @@ empty line to separate subject and body).
 
 ## Adding new package
 
-This repository is managed via `lerna` and NPM workspaces. When adding new package, be sure to include all
+This repository is managed via `lerna` and pnpm workspaces. When adding new package, be sure to include all
 the appropriate config files (`package.json`, `tsconfig.json` and `tsconfig.build.json`). It should be mostly
 ok to just copy&paste one of the existing packages, wipe its contents and change the package name. Be sure
 to clean up the dependencies as well. Keep all the scripts defined in the `package.json`, especially the `build` one.

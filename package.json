@@ -15,9 +15,6 @@
         "Marek Trunkát <marek@apify.com>"
     ],
     "license": "Apache-2.0",
-    "workspaces": [
-        "packages/*"
-    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/apify/apify-shared-js"
@@ -33,9 +30,10 @@
         "build": "lerna run build",
         "test": "vitest",
         "test-cov": "vitest --coverage",
-        "release": "npm run build && lerna version patch && lerna publish from-package --contents dist",
+        "release": "pnpm build && lerna version patch && lerna publish from-package --contents dist",
         "lint": "eslint packages/*/src test",
-        "lint:fix": "eslint packages/*/src test --fix"
+        "lint:fix": "eslint packages/*/src test --fix",
+        "preinstall": "npx only-allow pnpm"
     },
     "commitlint": {
         "extends": [
@@ -64,6 +62,7 @@
         "lerna": "^9.0.6",
         "lint-staged": "^16.0.0",
         "nock": "^14.0.0",
+        "rimraf": "^6.0.1",
         "strip-ansi": "^6.0.0",
         "ts-node": "^10.9.2",
         "tsup": "^8.3.0",
@@ -72,5 +71,5 @@
         "underscore": "^1.13.7",
         "vitest": "^4.1.4"
     },
-    "packageManager": "npm@10.9.2"
+    "packageManager": "pnpm@10.24.0"
 }

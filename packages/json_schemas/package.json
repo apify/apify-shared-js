@@ -36,14 +36,14 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run process-schemas && npm run compile && npm run copy",
+        "build": "pnpm clean && pnpm process-schemas && pnpm compile && pnpm copy",
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "build-schemas": "tsx scripts/build-schemas.ts",
         "copy": "tsx ../../scripts/copy.ts",
         "describe-schemas": "tsx scripts/describe-schemas.ts",
         "build-ide-schemas": "tsx scripts/build-ide-schemas.ts",
-        "process-schemas": "npm run build-schemas && npm run describe-schemas && npm run build-ide-schemas"
+        "process-schemas": "pnpm build-schemas && pnpm describe-schemas && pnpm build-ide-schemas"
     },
     "publishConfig": {
         "access": "public"

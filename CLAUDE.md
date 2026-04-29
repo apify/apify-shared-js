@@ -4,20 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Internal Apify monorepo of shared TypeScript utilities and constants published as `@apify/*` packages on npm. Managed with Lerna (independent versioning) and npm workspaces.
+Internal Apify monorepo of shared TypeScript utilities and constants published as `@apify/*` packages on npm. Managed with Lerna (independent versioning) and pnpm workspaces.
 
 ## Commands
 
 ```bash
-npm install              # Install all dependencies
-npm run build            # Build all packages (lerna run build)
-npm test                 # Run all tests (vitest)
-npm run test-cov         # Run tests with coverage
-npx vitest run test/consts.test.ts              # Run a single test file
-npx vitest run test/consts.test.ts -t "pattern" # Run specific test by name
-npm run lint             # Lint all source and test files
-npm run lint:fix         # Lint with auto-fix
-npm run clean            # Clean all dist/ folders
+pnpm install              # Install all dependencies
+pnpm build                # Build all packages (lerna run build)
+pnpm test                 # Run all tests (vitest)
+pnpm test-cov             # Run tests with coverage
+pnpm exec vitest run test/consts.test.ts              # Run a single test file
+pnpm exec vitest run test/consts.test.ts -t "pattern" # Run specific test by name
+pnpm lint                 # Lint all source and test files
+pnpm lint:fix             # Lint with auto-fix
+pnpm clean                # Clean all dist/ folders
 ```
 
 ## Architecture

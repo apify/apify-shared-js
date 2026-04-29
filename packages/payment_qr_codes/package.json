@@ -38,7 +38,7 @@
     },
     "homepage": "https://apify.com",
     "scripts": {
-        "build": "npm run clean && npm run compile && npm run copy",
+        "build": "pnpm clean && pnpm compile && pnpm copy",
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "copy": "ts-node -T ../../scripts/copy.ts"

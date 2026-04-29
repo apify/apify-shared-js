@@ -15,6 +15,7 @@
         }
     },
     "useNx": false,
+    "npmClient": "pnpm",
     "ignoreChanges": [
         "**/test/**",
         "**/*.md"

@@ -27,20 +27,16 @@ jobs:
               with:
                   node-version: 24
                   registry-url: 'https://registry.npmjs.org'
-                  cache: 'npm'
-                  cache-dependency-path: 'package-lock.json'
-            - name: Update NPM
-              run: npm install -g npm@latest
-            - name: Install dependencies
-              run: npm ci --no-audit
+            - name: Install pnpm and dependencies
+              uses: apify/workflows/pnpm-install@main
             - name: Build module
-              run: npm run build
+              run: pnpm build
             - name: Publish to NPM
               run: |
                   git checkout -- .
-                  npx lerna publish --contents dist --yes
-                  npm i --no-audit # reinstall to have updated lock file
-                  npx lerna ls --json | node scripts/sync-root-changelog.ts
+                  pnpm exec lerna publish --contents dist --yes
+                  pnpm install --no-frozen-lockfile # reinstall to have updated lock file
+                  pnpm exec lerna ls --json | node scripts/sync-root-changelog.ts
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   GIT_AUTHOR_NAME: Apify Release Bot
@@ -53,3 +49,4 @@ jobs:
                   author_name: Apify Release Bot
                   author_email: noreply@apify.com
                   message: 'chore: update root lock file and changelog [skip ci]'
+                  pull: '--rebase --autostash'
