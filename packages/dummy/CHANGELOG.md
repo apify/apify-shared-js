@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/apify/apify-shared-js/compare/@apify/dummy-package-for-testing@2.2.0...@apify/dummy-package-for-testing@2.2.1) (2026-04-29)
+
+**Note:** Version bump only for package @apify/dummy-package-for-testing
+
+
+
+
+
 # 2.2.0 (2024-02-05)
 
 
