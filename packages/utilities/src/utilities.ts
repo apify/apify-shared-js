@@ -413,18 +413,18 @@ interface Server {
 export function promisifyServerListen<T extends Server>(server: T) {
     return async (port: number) => {
         return new Promise<void>((resolve, reject) => {
-            const onError = (err: Error) => {
-                removeListeners();
-                reject(err);
-            };
-            const onListening = () => {
-                removeListeners();
-                resolve();
-            };
-            const removeListeners = () => {
+            function removeListeners() {
                 server.removeListener('error', onError);
                 server.removeListener('listening', onListening);
-            };
+            }
+            function onError(err: Error) {
+                removeListeners();
+                reject(err);
+            }
+            function onListening() {
+                removeListeners();
+                resolve();
+            }
 
             server.on('error', onError);
             server.on('listening', onListening);

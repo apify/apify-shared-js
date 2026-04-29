@@ -4,13 +4,7 @@ export default defineConfig({
     ignorePatterns: ['**/node_modules', '**/dist', 'coverage'],
     rules: {
         'typescript/no-explicit-any': 'off',
-        'typescript/no-empty-object-type': 'off',
-        'typescript/no-unsafe-declaration-merging': 'off',
-        'import/extensions': 'off',
-        'no-empty-function': 'off',
         'no-param-reassign': 'off',
-        'no-use-before-define': 'off',
-        'no-void': 'off',
     },
     overrides: [
         {
