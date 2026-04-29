@@ -48,9 +48,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.52.1",
-        "@apify/input_secrets": "^1.2.32",
-        "@apify/json_schemas": "^0.16.3",
+        "@apify/consts": "workspace:^",
+        "@apify/input_secrets": "workspace:^",
+        "@apify/json_schemas": "workspace:^",
         "acorn-loose": "^8.4.0",
         "countries-list": "^3.0.0"
     },

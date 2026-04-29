@@ -55,7 +55,7 @@
         "tsx": "^4.6.2"
     },
     "dependencies": {
-        "@apify/consts": "^2.52.1",
+        "@apify/consts": "workspace:^",
         "ajv": "^8.17.1"
     }
 }

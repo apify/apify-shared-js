@@ -48,8 +48,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@apify/consts": "^2.52.1",
-        "@apify/log": "^2.5.35"
+        "@apify/consts": "workspace:^",
+        "@apify/log": "workspace:^"
     },
     "devDependencies": {
         "@types/create-hmac": "^1.1.0"
