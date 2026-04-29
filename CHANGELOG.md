@@ -11,7 +11,6 @@ package | version | changelog
 `@apify/actor-memory-expression` | 0.1.12 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
 `@apify/consts` | 2.52.1 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.4 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
-`@apify/dummy-package-for-testing` | 2.2.0 | [CHANGELOG](./packages/dummy/CHANGELOG.md)
 `@apify/git` | 2.1.4 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 2.0.3 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
 `@apify/input_schema` | 3.28.2 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)

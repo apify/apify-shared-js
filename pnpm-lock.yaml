@@ -97,8 +97,6 @@ importers:
 
   packages/datastructures: {}
 
-  packages/dummy: {}
-
   packages/git:
     dependencies:
       git-url-parse:
