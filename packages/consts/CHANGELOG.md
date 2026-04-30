@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.53.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.52.2...@apify/consts@2.53.0) (2026-04-30)
+
+
+### Features
+
+* **consts:** add `CI` to `META_ORIGINS` ([#627](https://github.com/apify/apify-shared-js/issues/627)) ([2497c39](https://github.com/apify/apify-shared-js/commit/2497c39f21cc889245ff5b8718298ac12d22f773))
+
+
+
+
+
 ## [2.52.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.52.1...@apify/consts@2.52.2) (2026-04-29)
 
 **Note:** Version bump only for package @apify/consts
