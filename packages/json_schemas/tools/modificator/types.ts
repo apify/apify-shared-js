@@ -11,7 +11,7 @@ export interface JsonObject {
 }
 
 export interface ObjectPropertyInfo<VALUE = JsonValue> {
-    key?: string,
+    key?: string;
     value: VALUE;
     jsonPointer: string;
     parent?: ObjectPropertyInfo<JsonObject>;
@@ -19,7 +19,7 @@ export interface ObjectPropertyInfo<VALUE = JsonValue> {
 
 export interface AbstractRule<RULE_NAME extends string> {
     ruleName: RULE_NAME;
-    applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => void
+    applyRule: (objectPropertyInfo: ObjectPropertyInfo, json: JsonObject) => void;
     jsonPath: string;
 }
 

@@ -61,7 +61,7 @@ export function getStackFrames(err: Error, stack: string) {
     try {
         ({ cause } = err);
     } catch {
-    // If 'cause' is a getter that throws, ignore it.
+        // If 'cause' is a getter that throws, ignore it.
     }
 
     // Remove stack frames identical to frames in cause.

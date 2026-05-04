@@ -379,13 +379,9 @@ export const INTEGER_ENV_VARS = [
     APIFY_ENV_VARS.SYSTEM_INFO_INTERVAL_MILLIS,
 ] as const;
 
-export const COMMA_SEPARATED_LIST_ENV_VARS = [
-    ACTOR_ENV_VARS.BUILD_TAGS,
-] as const;
+export const COMMA_SEPARATED_LIST_ENV_VARS = [ACTOR_ENV_VARS.BUILD_TAGS] as const;
 
-export const JSON_ENCODED_ENV_VARS = [
-    ACTOR_ENV_VARS.STORAGES_JSON,
-] as const;
+export const JSON_ENCODED_ENV_VARS = [ACTOR_ENV_VARS.STORAGES_JSON] as const;
 
 /**
  * Dictionary of names of build-time variables passed to the Actor's Docker build process.
@@ -578,16 +574,10 @@ export const WEBHOOK_DEFAULT_PAYLOAD_TEMPLATE = `{
     "eventData": {{eventData}},
     "resource": {{resource}}
 }`;
-export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set([
-    'userId',
-    'createdAt',
-    'eventType',
-    'eventData',
-    'resource',
-]);
+export const WEBHOOK_ALLOWED_PAYLOAD_VARIABLES = new Set(['userId', 'createdAt', 'eventType', 'eventData', 'resource']);
 
 // Max allowed size of files in multi-file editor
-export const MAX_MULTIFILE_BYTES = 3 * (1024 ** 2); // 3MB
+export const MAX_MULTIFILE_BYTES = 3 * 1024 ** 2; // 3MB
 
 // Formats for multi-file editor files
 export const SOURCE_FILE_FORMATS = {
@@ -667,7 +657,7 @@ export const STORAGE_GENERAL_ACCESS = {
     ANYONE_WITH_NAME_CAN_READ: 'ANYONE_WITH_NAME_CAN_READ',
 } as const;
 
-export type STORAGE_GENERAL_ACCESS = ValueOf<typeof STORAGE_GENERAL_ACCESS>
+export type STORAGE_GENERAL_ACCESS = ValueOf<typeof STORAGE_GENERAL_ACCESS>;
 
 /**
  * Run setting determining how others can access the run.
@@ -685,7 +675,7 @@ export const RUN_GENERAL_ACCESS = {
     ANYONE_WITH_ID_CAN_READ: 'ANYONE_WITH_ID_CAN_READ',
 } as const;
 
-export type RUN_GENERAL_ACCESS = ValueOf<typeof RUN_GENERAL_ACCESS>
+export type RUN_GENERAL_ACCESS = ValueOf<typeof RUN_GENERAL_ACCESS>;
 
 /**
  * Determines permissions that the Actor requires to run.

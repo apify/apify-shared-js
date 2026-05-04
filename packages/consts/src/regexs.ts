@@ -1,6 +1,6 @@
 // Parts for building an email regex (email will be constructed as `name@domain`)
 // name parts can be alnum + some special characters
-const namePartSubRegexStr = '[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+';
+const namePartSubRegexStr = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+";
 // name is 1+ name parts joined by periods (no leading or dangling period, no consecutive periods)
 const nameSubRegexStr = `${namePartSubRegexStr}(?:\\.${namePartSubRegexStr})*`;
 // domain parts can be alnum and dash characters (no leading and dangling dashes, max 63 chars long)
@@ -79,7 +79,8 @@ export const GITHUB_REGEX = new RegExp(`^${GITHUB_REGEX_STR}$`, 'i');
  * For matching linkedin URLs for both profiles and companies.
  * Used for validating urls in user settings.
  */
-export const LINKEDIN_PROFILE_REGEX = /^(https?:\/\/)?(www\.)?([a-z]{2}\.)?linkedin\.com\/(in|company)\/((?:[A-Za-z0-9_-]|%[0-9A-Fa-f]{2})+)\/?$/;
+export const LINKEDIN_PROFILE_REGEX =
+    /^(https?:\/\/)?(www\.)?([a-z]{2}\.)?linkedin\.com\/(in|company)\/((?:[A-Za-z0-9_-]|%[0-9A-Fa-f]{2})+)\/?$/;
 
 /**
  * @deprecated Discontinue usage of this regexps, in favor of HTTP_URL_REGEX
@@ -89,51 +90,55 @@ export const URL_REGEX = /^https?:\/\//i;
 // Inspired by https://gist.github.com/dperini/729294, but doesn't match FTP URLs
 export const HTTP_URL_REGEX = new RegExp(
     '^' +
-    // protocol identifier (optional)
-    // short syntax // still required
-    // NOTE: We removed "|ftp"
-    '(?:(?:(?:https?):)?\\/\\/)' +
-    // user:pass BasicAuth (optional)
-    '(?:\\S+(?::\\S*)?@)?' +
-    '(?:' +
-    // IP address exclusion
-    // private & local networks
-    '(?!(?:10|127)(?:\\.\\d{1,3}){3})' +
-    '(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})' +
-    '(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})' +
-    // IP address dotted notation octets
-    // excludes loopback network 0.0.0.0
-    // excludes reserved space >= 224.0.0.0
-    // excludes network & broadcast addresses
-    // (first & last IP address of each class)
-    '(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])' +
-    '(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}' +
-    '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))' +
-    '|' +
-    // host & domain names, may end with dot
-    // can be replaced by a shortest alternative
-    // (?![-_])(?:[-\\w\\u00a1-\\uffff]{0,63}[^-_]\\.)+
-    '(?:' +
-    '(?:' +
-    '[a-z0-9\\u00a1-\\uffff]' +
-    '[a-z0-9\\u00a1-\\uffff_-]{0,62}' +
-    ')?' +
-    '[a-z0-9\\u00a1-\\uffff]\\.' +
-    ')+' +
-    // TLD identifier name, may end with dot
-    // NOTE: "|xn--[a-z0-9]+" is our addition to support IDNs like "http://xn--80aaxitdbjk.xn--p1ai",
-    // they can be used in a browser, so we consider them valid
-    '(?:[a-z\\u00a1-\\uffff]{2,}\\.?|xn--[a-z0-9]+)' +
-    ')' +
-    // port number (optional)
-    '(?::\\d{2,5})?' +
-    // resource path (optional)
-    '(?:[/?#]\\S*)?' +
-    '$', 'i',
+        // protocol identifier (optional)
+        // short syntax // still required
+        // NOTE: We removed "|ftp"
+        '(?:(?:(?:https?):)?\\/\\/)' +
+        // user:pass BasicAuth (optional)
+        '(?:\\S+(?::\\S*)?@)?' +
+        '(?:' +
+        // IP address exclusion
+        // private & local networks
+        '(?!(?:10|127)(?:\\.\\d{1,3}){3})' +
+        '(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})' +
+        '(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})' +
+        // IP address dotted notation octets
+        // excludes loopback network 0.0.0.0
+        // excludes reserved space >= 224.0.0.0
+        // excludes network & broadcast addresses
+        // (first & last IP address of each class)
+        '(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])' +
+        '(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}' +
+        '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))' +
+        '|' +
+        // host & domain names, may end with dot
+        // can be replaced by a shortest alternative
+        // (?![-_])(?:[-\\w\\u00a1-\\uffff]{0,63}[^-_]\\.)+
+        '(?:' +
+        '(?:' +
+        '[a-z0-9\\u00a1-\\uffff]' +
+        '[a-z0-9\\u00a1-\\uffff_-]{0,62}' +
+        ')?' +
+        '[a-z0-9\\u00a1-\\uffff]\\.' +
+        ')+' +
+        // TLD identifier name, may end with dot
+        // NOTE: "|xn--[a-z0-9]+" is our addition to support IDNs like "http://xn--80aaxitdbjk.xn--p1ai",
+        // they can be used in a browser, so we consider them valid
+        '(?:[a-z\\u00a1-\\uffff]{2,}\\.?|xn--[a-z0-9]+)' +
+        ')' +
+        // port number (optional)
+        '(?::\\d{2,5})?' +
+        // resource path (optional)
+        '(?:[/?#]\\S*)?' +
+        '$',
+    'i',
 );
 
 // E.g. https://gist.github.com/jancurn/2dbe83fea77c439b1119fb3f118513e7
-export const GITHUB_GIST_URL_REGEX = new RegExp(`^https:\\/\\/gist\\.github\\.com\\/${GITHUB_REGEX_STR}\\/[0-9a-f]{32}$`, 'i');
+export const GITHUB_GIST_URL_REGEX = new RegExp(
+    `^https:\\/\\/gist\\.github\\.com\\/${GITHUB_REGEX_STR}\\/[0-9a-f]{32}$`,
+    'i',
+);
 
 /**
  * Split's path /aaa/bbb/ccc into an array ['aaa', 'bbb', 'ccc].

@@ -3,19 +3,21 @@ import { defineConfig, type Options } from 'tsup';
 import { readFileSync, readdirSync } from 'node:fs';
 
 const packages = readdirSync(resolveDir(__dirname, '../packages'));
-const excludes = packages.map<string>((name) => {
-    if (name.startsWith('.')) {
-        return null;
-    }
+const excludes = packages
+    .map<string>((name) => {
+        if (name.startsWith('.')) {
+            return null;
+        }
 
-    try {
-        const json = JSON.parse(readFileSync(resolveDir(__dirname, '../packages', name, 'package.json'), 'utf-8'));
+        try {
+            const json = JSON.parse(readFileSync(resolveDir(__dirname, '../packages', name, 'package.json'), 'utf-8'));
 
-        return json.name;
-    } catch {
-        return null;
-    }
-}).filter(Boolean);
+            return json.name;
+        } catch {
+            return null;
+        }
+    })
+    .filter(Boolean);
 
 const baseOptions: Options = {
     clean: true,
@@ -62,24 +64,23 @@ export function createTsupConfig(options: EnhancedTsupOptions) {
         }),
         ...(options.iifeOptions?.enabled
             ? [
-                defineConfig({
-                    ...baseOptions,
-                    dts: false,
-                    entry: ['src/index.ts'],
-                    outDir: 'dist/iife',
-                    format: 'iife',
-                    ...options.iifeOptions,
-                    esbuildOptions(esbuildOptions, context) {
-                        if (options.iifeOptions?.esbuildOptions) {
-                            options.iifeOptions.esbuildOptions(esbuildOptions, context);
-                        }
+                  defineConfig({
+                      ...baseOptions,
+                      dts: false,
+                      entry: ['src/index.ts'],
+                      outDir: 'dist/iife',
+                      format: 'iife',
+                      ...options.iifeOptions,
+                      esbuildOptions(esbuildOptions, context) {
+                          if (options.iifeOptions?.esbuildOptions) {
+                              options.iifeOptions.esbuildOptions(esbuildOptions, context);
+                          }
 
-                        esbuildOptions.target = options.iifeOptions?.target ?? baseOptions.target;
-                    },
-                }),
-            ]
-            : []
-        ),
+                          esbuildOptions.target = options.iifeOptions?.target ?? baseOptions.target;
+                      },
+                  }),
+              ]
+            : []),
     ];
 }
 

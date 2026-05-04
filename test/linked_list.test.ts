@@ -74,21 +74,37 @@ describe('linked_list', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { list.addNode(null); }).toThrow();
+            expect(() => {
+                list.addNode(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode(undefined); }).toThrow();
+            expect(() => {
+                list.addNode(undefined);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode('blabla'); }).toThrow();
+            expect(() => {
+                list.addNode('blabla');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode(123); }).toThrow();
+            expect(() => {
+                list.addNode(123);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode(true); }).toThrow();
+            expect(() => {
+                list.addNode(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode(false); }).toThrow();
+            expect(() => {
+                list.addNode(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode({ prev: {} }); }).toThrow();
+            expect(() => {
+                list.addNode({ prev: {} });
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.addNode({ next: {} }); }).toThrow();
+            expect(() => {
+                list.addNode({ next: {} });
+            }).toThrow();
         });
     });
 
@@ -96,7 +112,11 @@ describe('linked_list', () => {
         it('just works', () => {
             const list = new LinkedList();
             const obj = {};
-            const objWithEquals = { equals(other: any) { return !!other && other.xxx; } };
+            const objWithEquals = {
+                equals(other: any) {
+                    return !!other && other.xxx;
+                },
+            };
             list.add(123);
             list.add('test');
             list.add(0.123);
@@ -137,7 +157,9 @@ describe('linked_list', () => {
             // remove selected items
             [33, 0, 99, 45, 15].forEach((val) => {
                 list.removeNode(list.find(val)!);
-                array = array.filter((i) => { return i !== val; });
+                array = array.filter((i) => {
+                    return i !== val;
+                });
                 assertSame(list, array);
             });
 
@@ -152,15 +174,25 @@ describe('linked_list', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { list.removeNode(null); }).toThrow();
+            expect(() => {
+                list.removeNode(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.removeNode(undefined); }).toThrow();
+            expect(() => {
+                list.removeNode(undefined);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.removeNode(true); }).toThrow();
+            expect(() => {
+                list.removeNode(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.removeNode(false); }).toThrow();
+            expect(() => {
+                list.removeNode(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { list.removeNode(''); }).toThrow();
+            expect(() => {
+                list.removeNode('');
+            }).toThrow();
         });
     });
 });

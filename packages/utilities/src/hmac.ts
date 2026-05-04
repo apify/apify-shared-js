@@ -29,10 +29,7 @@ function encodeBase62(num: bigint) {
  * is available in both Node.js and browsers without the need for polyfills.
  */
 export function createHmacSignature(secretKey: string, message: string): string {
-    const signature = crypto.createHmac('sha256', secretKey)
-        .update(message)
-        .digest('hex')
-        .substring(0, 30);
+    const signature = crypto.createHmac('sha256', secretKey).update(message).digest('hex').substring(0, 30);
 
     return encodeBase62(BigInt(`0x${signature}`));
 }
@@ -83,11 +80,7 @@ export async function createHmacSignatureAsync(secretKey: string, message: strin
         ['sign'],
     );
 
-    const signatureBuffer = await subtleCrypto.sign(
-        'HMAC',
-        key,
-        encoder.encode(message),
-    );
+    const signatureBuffer = await subtleCrypto.sign('HMAC', key, encoder.encode(message));
 
     const signatureArray = new Uint8Array(signatureBuffer);
     const signatureHex = Array.from(signatureArray)

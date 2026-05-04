@@ -9,7 +9,7 @@ import { inputSchema } from '@apify/input_schema';
  *
  * @returns {() => void} Function that will turn this behavior off.
  */
-const setThrowErrorOnConsoleWarn = (): () => void => {
+const setThrowErrorOnConsoleWarn = (): (() => void) => {
     const consoleWarn = console.warn;
     console.warn = () => {
         throw new Error('Console.warn has been called!');
@@ -26,68 +26,80 @@ describe('input_schema.json', () => {
     describe('type any', () => {
         it('should allow to compile only a valid type any', () => {
             // Valid one.
-            if (!ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
+            if (
+                !ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: ['object', 'array', 'string', 'integer', 'number', 'boolean'],
+                            nullable: false,
+                            description: 'Some description ...',
+                            editor: 'json',
+                        },
                     },
-                },
-            })) throw new Error(ajv.errorsText());
+                })
+            )
+                throw new Error(ajv.errorsText());
 
             // Nonexisting type.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['array', 'nonexisting'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
+            if (
+                ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: ['array', 'nonexisting'],
+                            nullable: false,
+                            description: 'Some description ...',
+                            editor: 'json',
+                        },
                     },
-                },
-            })) throw new Error('Input field definition with onexisting type should have failed!');
+                })
+            )
+                throw new Error('Input field definition with onexisting type should have failed!');
 
             // Missing type.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: [],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
+            if (
+                ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: [],
+                            nullable: false,
+                            description: 'Some description ...',
+                            editor: 'json',
+                        },
                     },
-                },
-            })) throw new Error('Input field definition that misses type should have failed!');
+                })
+            )
+                throw new Error('Input field definition that misses type should have failed!');
 
             // Duplicate types.
-            if (ajv.validate(inputSchema, {
-                title: 'Test input schema',
-                type: 'object',
-                schemaVersion: 1,
-                properties: {
-                    myField: {
-                        title: 'Field title',
-                        type: ['string', 'integer', 'integer'],
-                        nullable: false,
-                        description: 'Some description ...',
-                        editor: 'json',
+            if (
+                ajv.validate(inputSchema, {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        myField: {
+                            title: 'Field title',
+                            type: ['string', 'integer', 'integer'],
+                            nullable: false,
+                            description: 'Some description ...',
+                            editor: 'json',
+                        },
                     },
-                },
-            })) throw new Error('Input field definition that duplicate types should have failed!');
+                })
+            )
+                throw new Error('Input field definition that duplicate types should have failed!');
         });
 
         it('should allow all the needed types', () => {
@@ -294,54 +306,54 @@ describe('input_schema.json', () => {
                 ].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(true);
                 });
-                [
-                    { type: 'boolean' },
-                    { type: 'integer' },
-                    { type: 'number' },
-                ].forEach((fields) => {
+                [{ type: 'boolean' }, { type: 'integer' }, { type: 'number' }].forEach((fields) => {
                     expect(isSchemaValid(fields, true)).toBe(false);
                 });
             });
 
             it('should work without isSecret with all editors and properties', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            editor: 'textarea',
-                            isSecret: false,
-                            minLength: 2,
-                            maxLength: 100,
-                            default: 'blablablablabla',
-                            prefill: 'blablablablablablablablablablabla',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                editor: 'textarea',
+                                isSecret: false,
+                                minLength: 2,
+                                maxLength: 100,
+                                default: 'blablablablabla',
+                                prefill: 'blablablablablablablablablablabla',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
 
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            editor: 'textarea',
-                            isSecret: false,
-                            minLength: 2,
-                            maxLength: 100,
-                            default: 'blablablablabla',
-                            prefill: 'blablablablablablablablablablabla',
-                            bla: 'bla', // Validation failed because additional property
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                editor: 'textarea',
+                                isSecret: false,
+                                minLength: 2,
+                                maxLength: 100,
+                                default: 'blablablablabla',
+                                prefill: 'blablablablablablablablablablabla',
+                                bla: 'bla', // Validation failed because additional property
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
         });
 
@@ -382,62 +394,68 @@ describe('input_schema.json', () => {
             });
 
             it('should work without isSecret with all editors and properties', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'object',
-                            editor: 'json',
-                            isSecret: false,
-                            minProperties: 2,
-                            maxProperties: 100,
-                            default: { key: 'value' },
-                            prefill: { key: 'value', key2: 'value2' },
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'object',
+                                editor: 'json',
+                                isSecret: false,
+                                minProperties: 2,
+                                maxProperties: 100,
+                                default: { key: 'value' },
+                                prefill: { key: 'value', key2: 'value2' },
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
 
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'object',
-                            editor: 'json',
-                            isSecret: false,
-                            minProperties: 2,
-                            maxProperties: 100,
-                            default: { key: 'value' },
-                            prefill: { key: 'value', key2: 'value2' },
-                            bla: 'bla', // Validation failed because additional property
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'object',
+                                editor: 'json',
+                                isSecret: false,
+                                minProperties: 2,
+                                maxProperties: 100,
+                                default: { key: 'value' },
+                                prefill: { key: 'value', key2: 'value2' },
+                                bla: 'bla', // Validation failed because additional property
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
         });
 
         describe('special cases for datepicker editor type', () => {
             it('should accept dateType field omitted', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            editor: 'datepicker',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                editor: 'datepicker',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             const isSchemaValid = (dateType: string) => {
@@ -472,247 +490,269 @@ describe('input_schema.json', () => {
 
         describe('special cases for resourceProperty', () => {
             it('should accept resourceType with editor', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'dataset',
-                            editor: 'resourcePicker',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'dataset',
+                                editor: 'resourcePicker',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should accept resourceType without editor', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'dataset',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'dataset',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should accept array resourceType', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'array',
-                            resourceType: 'dataset',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'array',
+                                resourceType: 'dataset',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should reject mcpConnector resourceType without mcpServers', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
 
             it('should accept mcpConnector with mcpServers', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            mcpServers: [
-                                {
-                                    url: 'https://example.com/*',
-                                    tools: { required: ['tool1'] },
-                                },
-                            ],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                                mcpServers: [
+                                    {
+                                        url: 'https://example.com/*',
+                                        tools: { required: ['tool1'] },
+                                    },
+                                ],
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should accept mcpConnector array with mcpServers', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'array',
-                            resourceType: 'mcpConnector',
-                            mcpServers: [
-                                { url: 'https://example.com/*' },
-                            ],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'array',
+                                resourceType: 'mcpConnector',
+                                mcpServers: [{ url: 'https://example.com/*' }],
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should reject mcpServers on storage resourceType', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'dataset',
-                            mcpServers: [
-                                { url: 'https://example.com/*' },
-                            ],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'dataset',
+                                mcpServers: [{ url: 'https://example.com/*' }],
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
 
             it('should reject resourcePermissions on mcpConnector', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            resourcePermissions: ['READ'],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                                resourcePermissions: ['READ'],
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
 
             it('should accept storage resourceType without resourcePermissions', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'dataset',
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'dataset',
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should accept storage resourceType with resourcePermissions', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'dataset',
-                            resourcePermissions: ['READ'],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'dataset',
+                                resourcePermissions: ['READ'],
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should accept mcpServers with tools containing only hint booleans', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            mcpServers: [
-                                {
-                                    url: '*',
-                                    tools: {
-                                        readOnly: true,
-                                        idempotent: true,
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                                mcpServers: [
+                                    {
+                                        url: '*',
+                                        tools: {
+                                            readOnly: true,
+                                            idempotent: true,
+                                        },
                                     },
-                                },
-                            ],
+                                ],
+                            },
                         },
-                    },
-                })).toBe(true);
+                    }),
+                ).toBe(true);
             });
 
             it('should reject unknown properties in tools object', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            mcpServers: [
-                                {
-                                    url: '*',
-                                    tools: { unknownHint: true },
-                                },
-                            ],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                                mcpServers: [
+                                    {
+                                        url: '*',
+                                        tools: { unknownHint: true },
+                                    },
+                                ],
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
 
             it('should reject unknown properties in mcpServers entry', () => {
-                expect(ajv.validate(inputSchema, {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        myField: {
-                            title: 'Field title',
-                            description: 'My test field',
-                            type: 'string',
-                            resourceType: 'mcpConnector',
-                            mcpServers: [
-                                {
-                                    url: '*',
-                                    unknownProp: 'value',
-                                },
-                            ],
+                expect(
+                    ajv.validate(inputSchema, {
+                        title: 'Test input schema',
+                        type: 'object',
+                        schemaVersion: 1,
+                        properties: {
+                            myField: {
+                                title: 'Field title',
+                                description: 'My test field',
+                                type: 'string',
+                                resourceType: 'mcpConnector',
+                                mcpServers: [
+                                    {
+                                        url: '*',
+                                        unknownProp: 'value',
+                                    },
+                                ],
+                            },
                         },
-                    },
-                })).toBe(false);
+                    }),
+                ).toBe(false);
             });
         });
     });

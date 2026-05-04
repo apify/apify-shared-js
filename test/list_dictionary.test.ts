@@ -28,17 +28,29 @@ describe('list_dictionary', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { ld.add(null, 'val'); }).toThrow();
+            expect(() => {
+                ld.add(null, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.add(123, 'val'); }).toThrow();
+            expect(() => {
+                ld.add(123, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.add(true, 'val'); }).toThrow();
+            expect(() => {
+                ld.add(true, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.add(false, 'val'); }).toThrow();
+            expect(() => {
+                ld.add(false, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.add({}, 'val'); }).toThrow();
+            expect(() => {
+                ld.add({}, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.add(null, null); }).toThrow();
+            expect(() => {
+                ld.add(null, null);
+            }).toThrow();
 
             // add various new elements
             expect(ld.add('', 'empty')).toBe(true);
@@ -99,15 +111,25 @@ describe('list_dictionary', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { ld.get(null); }).toThrow();
+            expect(() => {
+                ld.get(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.get(123); }).toThrow();
+            expect(() => {
+                ld.get(123);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.get(true); }).toThrow();
+            expect(() => {
+                ld.get(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.get(false); }).toThrow();
+            expect(() => {
+                ld.get(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.get({}); }).toThrow();
+            expect(() => {
+                ld.get({});
+            }).toThrow();
 
             expect(ld.add('', 'empty')).toBe(true);
             array.push({ key: '', value: 'empty' });
@@ -147,15 +169,25 @@ describe('list_dictionary', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { ld.remove(null); }).toThrow();
+            expect(() => {
+                ld.remove(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.remove(123); }).toThrow();
+            expect(() => {
+                ld.remove(123);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.remove(true); }).toThrow();
+            expect(() => {
+                ld.remove(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.remove(false); }).toThrow();
+            expect(() => {
+                ld.remove(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { ld.remove({}); }).toThrow();
+            expect(() => {
+                ld.remove({});
+            }).toThrow();
 
             expect(ld.add('', 'empty')).toBe(true);
             array.push({ key: '', value: 'empty' });
@@ -174,11 +206,15 @@ describe('list_dictionary', () => {
 
             // try remove all items
             expect(ld.remove('')).toBe('empty');
-            array = array.filter((elem) => { return elem.key !== ''; });
+            array = array.filter((elem) => {
+                return elem.key !== '';
+            });
             assertSame(ld, array);
 
             expect(ld.remove('null')).toBe(null);
-            array = array.filter((elem) => { return elem.key !== 'null'; });
+            array = array.filter((elem) => {
+                return elem.key !== 'null';
+            });
             assertSame(ld, array);
 
             // try remove non-existent items
@@ -190,7 +226,9 @@ describe('list_dictionary', () => {
             const indexes = _.shuffle(_.range(50));
             indexes.forEach((i) => {
                 expect(ld.remove(`key${i}`)).toBe(`val${i}`);
-                array = array.filter((elem) => { return elem.key !== `key${i}`; });
+                array = array.filter((elem) => {
+                    return elem.key !== `key${i}`;
+                });
                 assertSame(ld, array);
             });
 

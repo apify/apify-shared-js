@@ -80,9 +80,13 @@ describe('HealthChecker', () => {
         mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
 
         // Throws an error
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
+        writeTestCollection.findOne.mockImplementationOnce(() => {
+            throw new Error('some problem');
+        });
 
-        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some problem"');
+        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow(
+            'Health check test "MONGODB_WRITE" failed with an error: some problem"',
+        );
 
         expect(redis.set).toBeCalledTimes(1);
         expect(redis.get).toBeCalledTimes(1);
@@ -93,11 +97,15 @@ describe('HealthChecker', () => {
     });
 
     it('should fail when some of the checks timeouts', async () => {
-        redis.get.mockReturnValueOnce(new Promise((resolve) => {
-            setTimeout(resolve, 200);
-        })); // Timeouts.
+        redis.get.mockReturnValueOnce(
+            new Promise((resolve) => {
+                setTimeout(resolve, 200);
+            }),
+        ); // Timeouts.
 
-        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "REDIS" failed with an error: Check has timed-out');
+        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow(
+            'Health check test "REDIS" failed with an error: Check has timed-out',
+        );
 
         expect(redis.set).toBeCalledTimes(1);
     });
@@ -120,9 +128,13 @@ describe('HealthChecker', () => {
         mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
 
         // Throws an error
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some problem'); });
+        writeTestCollection.findOne.mockImplementationOnce(() => {
+            throw new Error('some problem');
+        });
 
-        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some problem"');
+        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow(
+            'Health check test "MONGODB_WRITE" failed with an error: some problem"',
+        );
 
         expect(redis.set).toBeCalledTimes(1);
         expect(redis.get).toBeCalledTimes(1);
@@ -135,9 +147,13 @@ describe('HealthChecker', () => {
     it('should fail when mongo cannot read', async () => {
         redis.get.mockReturnValueOnce('OK');
         mongoRead.listCollections.mockReturnValueOnce({ toArray: async () => Promise.resolve([]) });
-        writeTestCollection.findOne.mockImplementationOnce(() => { throw new Error('some-problem'); });
+        writeTestCollection.findOne.mockImplementationOnce(() => {
+            throw new Error('some-problem');
+        });
 
-        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow('Health check test "MONGODB_WRITE" failed with an error: some-problem"');
+        await expect(healthChecker.ensureIsHealthy()).rejects.toThrow(
+            'Health check test "MONGODB_WRITE" failed with an error: some-problem"',
+        );
 
         expect(redis.set).toBeCalledTimes(1);
         expect(redis.get).toBeCalledTimes(1);
@@ -151,7 +167,9 @@ describe('HealthChecker', () => {
         // @ts-expect-error
         expect(() => new HealthChecker({ checks: null })).toThrow('Parameter "check" must be an array');
         // @ts-expect-error
-        expect(() => new HealthChecker({ checks: [{ type: 'xxx', client: {} }] })).toThrow('Check type "xxx" is invalid');
+        expect(() => new HealthChecker({ checks: [{ type: 'xxx', client: {} }] })).toThrow(
+            'Check type "xxx" is invalid',
+        );
         // @ts-expect-error
         expect(() => new HealthChecker({ checks: [{ type: HealthChecker.CHECK_TYPES.REDIS, client: 123 }] })).toThrow(
             'Check client must be an object got "number" instead',

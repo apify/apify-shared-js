@@ -6,13 +6,17 @@ export class RetryableError extends Error {
     readonly error: Error;
 
     constructor(error: Error, ...args: unknown[]) {
-        super(...args as [string]);
+        super(...(args as [string]));
         this.error = error;
     }
 }
 
 export async function retryWithExpBackoff<T>(
-    params: { func?: (...args: unknown[]) => T | Promise<T>, expBackoffMillis?: number, expBackoffMaxRepeats?: number } = {},
+    params: {
+        func?: (...args: unknown[]) => T | Promise<T>;
+        expBackoffMillis?: number;
+        expBackoffMaxRepeats?: number;
+    } = {},
 ): Promise<T> {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
 
@@ -45,7 +49,7 @@ export async function retryWithExpBackoff<T>(
             throw error.error;
         }
 
-        const waitMillis = expBackoffMillis * (2 ** i);
+        const waitMillis = expBackoffMillis * 2 ** i;
         const rand = (from: number, to: number) => from + Math.floor(Math.random() * (to - from + 1));
         const randomizedWaitMillis = rand(waitMillis, waitMillis * 2);
 

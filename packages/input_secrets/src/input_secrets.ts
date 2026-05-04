@@ -25,23 +25,30 @@ const ENCRYPTED_STRING_VALUE_PREFIX = 'ENCRYPTED_VALUE';
 const ENCRYPTED_JSON_VALUE_PREFIX = 'ENCRYPTED_JSON';
 
 // All encrypted values must match this regular expression.
-const ENCRYPTED_VALUE_REGEXP = new RegExp(`^(${ENCRYPTED_STRING_VALUE_PREFIX}|${ENCRYPTED_JSON_VALUE_PREFIX}):(?:(${BASE64_REGEXP.source}):)?(${BASE64_REGEXP.source}):(${BASE64_REGEXP.source})$`);
+const ENCRYPTED_VALUE_REGEXP = new RegExp(
+    `^(${ENCRYPTED_STRING_VALUE_PREFIX}|${ENCRYPTED_JSON_VALUE_PREFIX}):(?:(${BASE64_REGEXP.source}):)?(${BASE64_REGEXP.source}):(${BASE64_REGEXP.source})$`,
+);
 
 /**
  * Get keys of secret fields from input schema
  */
 export function getInputSchemaSecretFieldKeys(inputSchema: any): string[] {
-    return Object.keys(inputSchema.properties)
-        .filter((key) => !!inputSchema.properties[key].isSecret);
+    return Object.keys(inputSchema.properties).filter((key) => !!inputSchema.properties[key].isSecret);
 }
 
 /**
  * Encrypts input secret value
  * Depending on the type of value, it returns either a string (for strings) or an object (for objects) with the `secret` key.
  */
-export function encryptInputSecretValue<T extends string | object>(
-    { value, publicKey, schema }: { value: T, publicKey: KeyObject, schema?: Record<string, any> },
-): string {
+export function encryptInputSecretValue<T extends string | object>({
+    value,
+    publicKey,
+    schema,
+}: {
+    value: T;
+    publicKey: KeyObject;
+    schema?: Record<string, any>;
+}): string {
     ow(value, ow.any(ow.string, ow.object));
     ow(publicKey, ow.object.instanceOf(KeyObject));
     ow(schema, ow.optional.object);
@@ -117,9 +124,15 @@ export function isEncryptedValueForFieldSchema(value: string, fieldSchema: Recor
 /**
  * Encrypts actor input secrets
  */
-export function encryptInputSecrets<T extends Record<string, any>>(
-    { input, inputSchema, publicKey }: { input: T, inputSchema: object, publicKey: KeyObject },
-): T {
+export function encryptInputSecrets<T extends Record<string, any>>({
+    input,
+    inputSchema,
+    publicKey,
+}: {
+    input: T;
+    inputSchema: object;
+    publicKey: KeyObject;
+}): T {
     ow(input, ow.object);
     ow(inputSchema, ow.object);
     ow(publicKey, ow.object.instanceOf(KeyObject));
@@ -134,10 +147,16 @@ export function encryptInputSecrets<T extends Record<string, any>>(
         // sending them using API. Or input was takes from task, run console or scheduler, where input is stored encrypted.
         if (value && !(ow.isValid(value, ow.string) && ENCRYPTED_VALUE_REGEXP.test(value))) {
             try {
-                encryptedInput[key] = encryptInputSecretValue({ value: input[key], publicKey, schema: (inputSchema as any).properties[key] });
+                encryptedInput[key] = encryptInputSecretValue({
+                    value: input[key],
+                    publicKey,
+                    schema: (inputSchema as any).properties[key],
+                });
             } catch (err) {
-                throw new Error(`The input field "${key}" could not be encrypted. Try updating the field's value in the input editor. `
-                    + `Encryption error: ${err}`);
+                throw new Error(
+                    `The input field "${key}" could not be encrypted. Try updating the field's value in the input editor. ` +
+                        `Encryption error: ${err}`,
+                );
             }
         }
     }
@@ -151,9 +170,7 @@ export function encryptInputSecrets<T extends Record<string, any>>(
  * @param {KeyObject} privateKey
  * @returns Object
  */
-export function decryptInputSecrets<T>(
-    { input, privateKey }: { input: T, privateKey: KeyObject },
-): T {
+export function decryptInputSecrets<T>({ input, privateKey }: { input: T; privateKey: KeyObject }): T {
     ow(input, ow.object);
     ow(privateKey, ow.object.instanceOf(KeyObject));
 
@@ -173,8 +190,10 @@ export function decryptInputSecrets<T>(
                     decryptedInput[key] = JSON.parse(decryptedValue);
                 }
             } catch (err) {
-                throw new Error(`The input field "${key}" could not be decrypted. Try updating the field's value in the input editor. `
-                + `Decryption error: ${err}`);
+                throw new Error(
+                    `The input field "${key}" could not be decrypted. Try updating the field's value in the input editor. ` +
+                        `Decryption error: ${err}`,
+                );
             }
         }
     }

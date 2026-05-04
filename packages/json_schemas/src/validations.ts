@@ -3,13 +3,7 @@ import Ajv from 'ajv/dist/2019.js';
 
 // TODO: it might be better to import this from ajv package
 import draft7MetaSchema from '../schemas/json-schema-draft-07.json';
-import {
-    actorSchema,
-    datasetSchema,
-    inputSchema,
-    keyValueStoreSchema,
-    outputSchema,
-} from './schemas';
+import { actorSchema, datasetSchema, inputSchema, keyValueStoreSchema, outputSchema } from './schemas';
 
 const ajv = new Ajv({
     schemas: [

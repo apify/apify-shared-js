@@ -74,7 +74,14 @@ describe('sanitizeData()', () => {
                 b: '[object]',
             },
             arr: [1, 2, '[object]'],
-            err: { name: err.name, message: err.message, stack: err.stack, ...err as any, cause: undefined, [IS_APIFY_LOGGER_EXCEPTION]: true },
+            err: {
+                name: err.name,
+                message: err.message,
+                stack: err.stack,
+                ...(err as any),
+                cause: undefined,
+                [IS_APIFY_LOGGER_EXCEPTION]: true,
+            },
         };
 
         expect(sanitizeData(object, { maxDepth: 2 })).toEqual(limited);

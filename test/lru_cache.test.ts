@@ -41,17 +41,29 @@ describe('lru_cache', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { lru.add(null, 'val'); }).toThrow();
+            expect(() => {
+                lru.add(null, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.add(123, 'val'); }).toThrow();
+            expect(() => {
+                lru.add(123, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.add(true, 'val'); }).toThrow();
+            expect(() => {
+                lru.add(true, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.add(false, 'val'); }).toThrow();
+            expect(() => {
+                lru.add(false, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.add({}, 'val'); }).toThrow();
+            expect(() => {
+                lru.add({}, 'val');
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.add(null, null); }).toThrow();
+            expect(() => {
+                lru.add(null, null);
+            }).toThrow();
 
             // add various new elements
             expect(lru.add('', 'empty')).toBe(true);
@@ -117,15 +129,25 @@ describe('lru_cache', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { lru.get(null); }).toThrow();
+            expect(() => {
+                lru.get(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.get(123); }).toThrow();
+            expect(() => {
+                lru.get(123);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.get(true); }).toThrow();
+            expect(() => {
+                lru.get(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.get(false); }).toThrow();
+            expect(() => {
+                lru.get(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.get({}); }).toThrow();
+            expect(() => {
+                lru.get({});
+            }).toThrow();
 
             expect(lru.add('', 'empty')).toBe(true);
             array.push({ key: '', value: 'empty' });
@@ -179,15 +201,25 @@ describe('lru_cache', () => {
 
             // check invalid params
             // @ts-expect-error
-            expect(() => { lru.remove(null); }).toThrow();
+            expect(() => {
+                lru.remove(null);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.remove(123); }).toThrow();
+            expect(() => {
+                lru.remove(123);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.remove(true); }).toThrow();
+            expect(() => {
+                lru.remove(true);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.remove(false); }).toThrow();
+            expect(() => {
+                lru.remove(false);
+            }).toThrow();
             // @ts-expect-error
-            expect(() => { lru.remove({}); }).toThrow();
+            expect(() => {
+                lru.remove({});
+            }).toThrow();
 
             expect(lru.add('', 'empty')).toBe(true);
             array.push({ key: '', value: 'empty' });

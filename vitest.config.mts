@@ -3,9 +3,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     resolve: {
-        alias: [
-            { find: /^@apify\/(.*)$/, replacement: path.resolve(__dirname, 'packages/$1/src') },
-        ],
+        alias: [{ find: /^@apify\/(.*)$/, replacement: path.resolve(__dirname, 'packages/$1/src') }],
     },
     test: {
         testTimeout: 30e3,

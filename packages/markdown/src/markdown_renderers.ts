@@ -5,7 +5,10 @@ import { isUrlRelative } from '@apify/utilities';
 
 export function formatHeadingId(headingId: string) {
     // Replace non-word characters with dashes
-    headingId = headingId.toLowerCase().trim().replace(/[^\w]+/g, '-');
+    headingId = headingId
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w]+/g, '-');
     // Replace multiple following dashes with one dash
     headingId = headingId.replace(/[-]+/g, '-');
     // Remove dashes at the beginning and end
@@ -46,7 +49,7 @@ export function extractHeadingIdAndText(text: string, raw: string): { headingTex
  *   ### [](#custom-id) Heading text
  *     becomes
  *   <h3 id="custom-id"><a href="#custom-id"></a>Heading text</h3>
-*/
+ */
 export function customHeadingRenderer({ depth, text, raw }: Tokens.Heading): string {
     const { headingId, headingText } = extractHeadingIdAndText(text, raw);
     return `\n${' '.repeat(12)}<h${depth} id="${headingId}"><a href="#${headingId}"></a>${headingText}</h${depth}>`;
@@ -123,7 +126,7 @@ export function generateGitRepoUrlPrefix(gitRepoUrl: string, gitBranchName: stri
  * 1) handle anchors, Apify links, and contact links (these don't point to a git repo and shouldn't have rel=nofollow).
  * 2) handle relative links for the Git repo and convert them to absolute
  * 3) handle absolute links
-*/
+ */
 export function customLinkRenderer(href: string, text: string, gitRepoUrl: string, gitBranchName: string): string {
     // Handle anchor links, local Apify links, and mailto
     // Return Apify domain links without rel="nofollow" for SEO
@@ -148,7 +151,7 @@ export function customLinkRenderer(href: string, text: string, gitRepoUrl: strin
  * Replaces relative links in images with absolute ones that point to the actor's git repo.
  * Mainly for use in actor READMES
  * Parses the actor's repo URL to extract the repo name and owner name.
-*/
+ */
 export function customImageRenderer(href: string, text: string, gitRepoUrl: string, gitBranchName: string): string {
     // Only target relative URLs, which are used to refer to the git repo, and not anchors or absolute URLs
     const urlIsRelative = isUrlRelative(href);

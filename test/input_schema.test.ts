@@ -111,7 +111,7 @@ describe('input_schema.json', () => {
             );
         });
 
-        it('should throw error on field that doesn\'t match any of types', () => {
+        it("should throw error on field that doesn't match any of types", () => {
             const schema = {
                 title: 'Test input schema',
                 type: 'object',
@@ -127,8 +127,8 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField is not matching any input schema type definition.'
-                + ' Please make sure that it\'s type is valid.',
+                'Input schema is not valid (Field schema.properties.myField is not matching any input schema type definition.' +
+                    " Please make sure that it's type is valid.",
             );
         });
 
@@ -169,8 +169,8 @@ describe('input_schema.json', () => {
             };
 
             expect(() => validateInputSchema(validator, schema)).toThrow(
-                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: '
-                + '"javascript", "python", "textfield", "textarea", "select", "fileupload", "hidden")',
+                'Input schema is not valid (Field schema.properties.myField.editor must be equal to one of the allowed values: ' +
+                    '"javascript", "python", "textfield", "textarea", "select", "fileupload", "hidden")',
             );
         });
 
@@ -671,8 +671,8 @@ describe('input_schema.json', () => {
                     },
                 };
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (Field schema.properties.myField.resourceType must be equal to one of the allowed values: '
-                    + '"dataset", "keyValueStore", "requestQueue", "mcpConnector")',
+                    'Input schema is not valid (Field schema.properties.myField.resourceType must be equal to one of the allowed values: ' +
+                        '"dataset", "keyValueStore", "requestQueue", "mcpConnector")',
                 );
             });
 
@@ -952,9 +952,7 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'array',
                             resourceType: 'mcpConnector',
-                            mcpServers: [
-                                { url: '*' },
-                            ],
+                            mcpServers: [{ url: '*' }],
                         },
                     },
                 };
@@ -972,9 +970,7 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'dataset',
-                            mcpServers: [
-                                { url: '*' },
-                            ],
+                            mcpServers: [{ url: '*' }],
                         },
                     },
                 };
@@ -994,9 +990,7 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'mcpConnector',
-                            mcpServers: [
-                                { url: 'https://mcp.example.com/*' },
-                            ],
+                            mcpServers: [{ url: 'https://mcp.example.com/*' }],
                         },
                     },
                 };
@@ -1089,9 +1083,7 @@ describe('input_schema.json', () => {
                             description: 'My test field',
                             type: 'string',
                             resourceType: 'mcpConnector',
-                            mcpServers: [
-                                { tools: { required: ['read_*'] } },
-                            ],
+                            mcpServers: [{ tools: { required: ['read_*'] } }],
                         },
                     },
                 };

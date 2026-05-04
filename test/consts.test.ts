@@ -56,10 +56,7 @@ describe('consts', () => {
     describe('APIFY_ID_REGEX', () => {
         it('matches testing apify IDs', () => {
             const testingStrings = {
-                valid: [
-                    'S64xo2hmHBFHbqZQq',
-                    'Z7rgePnfc04QHshc2',
-                ],
+                valid: ['S64xo2hmHBFHbqZQq', 'Z7rgePnfc04QHshc2'],
                 invalid: [
                     // Invalid length
                     'Z7rgePnfc04QHshc',

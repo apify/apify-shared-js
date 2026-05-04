@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { createStorageContentSignature, createStorageContentSignatureAsync, cryptoRandomObjectId } from '@apify/utilities';
+import {
+    createStorageContentSignature,
+    createStorageContentSignatureAsync,
+    cryptoRandomObjectId,
+} from '@apify/utilities';
 
 describe('createStorageContentSignature()', () => {
     it('should set expiresAt to 0 for a non-expiring signature', () => {

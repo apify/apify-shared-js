@@ -91,7 +91,8 @@ export class HealthChecker {
 
     _validateCheck(check: CheckType): void {
         if (!(check.type in CHECK_TYPES)) throw new Error(`Check type "${check.type}" is invalid`);
-        if (typeof check.client !== 'object') throw new Error(`Check client must be an object got "${typeof check.client}" instead`);
+        if (typeof check.client !== 'object')
+            throw new Error(`Check client must be an object got "${typeof check.client}" instead`);
     }
 
     async _performCheck(check: CheckType): Promise<void> {

@@ -8,14 +8,7 @@ import { enchantJsonSchema, parseJsonContent } from '../tools/modificator/utils'
 
 const PACKAGE_DIR = path.resolve(__dirname, '..');
 
-const SCHEMA_NAMES = [
-    'actor',
-    'dataset',
-    'input',
-    'key-value-store',
-    'output',
-    'draft-07-schema',
-];
+const SCHEMA_NAMES = ['actor', 'dataset', 'input', 'key-value-store', 'output', 'draft-07-schema'];
 
 async function main() {
     const outputDir = path.join(PACKAGE_DIR, 'output');

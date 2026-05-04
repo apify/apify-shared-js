@@ -4,18 +4,23 @@ import type { JsonObject, JsonValue, ObjectPropertyInfo, Rule } from './types';
  * Parses a JSON Pointer into its constituent parts, decoding escape sequences per RFC 6901.
  */
 export function parseJsonPointer(jsonPointer: string): string[] {
-    return jsonPointer.replace(/^\//, '')
-        .split('/')
-        // Decode JSON Pointer escape sequences (RFC 6901):
-        // Must decode ~0 first, then ~1 to handle sequences like ~01 correctly
-        .map((part) => part.replace(/~0/g, '~').replace(/~1/g, '/'));
+    return (
+        jsonPointer
+            .replace(/^\//, '')
+            .split('/')
+            // Decode JSON Pointer escape sequences (RFC 6901):
+            // Must decode ~0 first, then ~1 to handle sequences like ~01 correctly
+            .map((part) => part.replace(/~0/g, '~').replace(/~1/g, '/'))
+    );
 }
 
 export function isPlainJsonObject(input: unknown): boolean {
-    return typeof input === 'object'
-        && input !== null
-        && !Array.isArray(input)
-        && Object.getPrototypeOf(input) === Object.prototype;
+    return (
+        typeof input === 'object' &&
+        input !== null &&
+        !Array.isArray(input) &&
+        Object.getPrototypeOf(input) === Object.prototype
+    );
 }
 
 function isIterable(input: unknown): boolean {
@@ -38,10 +43,10 @@ function* iterateJsonProperties(input: JsonValue, parentJsonPath = ''): Generato
     }
 
     if (parentJsonPath === '') {
-        yield ({
+        yield {
             value: input,
             jsonPointer: '/',
-        });
+        };
     }
 
     if (isPlainJsonObject(input)) {
@@ -52,22 +57,24 @@ function* iterateJsonProperties(input: JsonValue, parentJsonPath = ''): Generato
             const value = inputObject[key];
 
             if (isIterable(value)) {
-                yield ({
+                yield {
                     key,
                     value,
                     jsonPointer,
-                    parent: parentJsonPath ? {
-                        key: parentKey,
-                        value: inputObject,
-                        jsonPointer: parentJsonPath,
-                    } : undefined,
-                });
+                    parent: parentJsonPath
+                        ? {
+                              key: parentKey,
+                              value: inputObject,
+                              jsonPointer: parentJsonPath,
+                          }
+                        : undefined,
+                };
 
                 for (const result of iterateJsonProperties(value, jsonPointer)) {
                     yield result;
                 }
             } else {
-                yield ({
+                yield {
                     key,
                     value,
                     jsonPointer,
@@ -76,7 +83,7 @@ function* iterateJsonProperties(input: JsonValue, parentJsonPath = ''): Generato
                         value: inputObject,
                         jsonPointer: parentJsonPath === '' ? '/' : parentJsonPath,
                     },
-                });
+                };
             }
         }
     }
@@ -130,18 +137,14 @@ export function parseJsonContent(jsonContent: string): JsonObject {
 }
 
 function matchesJsonPointer(ruleJsonPointer: string, attributeJsonPointer: string): boolean {
-    return ruleJsonPointer === attributeJsonPointer
+    return (
+        ruleJsonPointer === attributeJsonPointer ||
         // Basic support for using wildcard symbols
-        || (
-            ruleJsonPointer.startsWith('**')
-            && attributeJsonPointer.endsWith(ruleJsonPointer.replace(/^\*\*/, ''))
-        );
+        (ruleJsonPointer.startsWith('**') && attributeJsonPointer.endsWith(ruleJsonPointer.replace(/^\*\*/, '')))
+    );
 }
 
-export async function enchantJsonSchema(
-    jsonSchema: JsonObject,
-    enchantmentRules: Rule[],
-): Promise<unknown> {
+export async function enchantJsonSchema(jsonSchema: JsonObject, enchantmentRules: Rule[]): Promise<unknown> {
     if (!isIterable(jsonSchema)) {
         return jsonSchema;
     }
@@ -151,8 +154,9 @@ export async function enchantJsonSchema(
     for (const jsonPropertyInfo of iterateJsonProperties(jsonSchema)) {
         const { jsonPointer } = jsonPropertyInfo;
 
-        const relatedRules = enchantmentRules
-            .filter((enchantmentRule) => matchesJsonPointer(enchantmentRule.jsonPath, jsonPointer));
+        const relatedRules = enchantmentRules.filter((enchantmentRule) =>
+            matchesJsonPointer(enchantmentRule.jsonPath, jsonPointer),
+        );
 
         for (const relatedRule of relatedRules) {
             relatedRule.applyRule(jsonPropertyInfo, jsonSchema);

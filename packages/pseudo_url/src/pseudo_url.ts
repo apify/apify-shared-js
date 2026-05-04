@@ -68,7 +68,9 @@ export class PseudoUrl {
             log.debug('PURL parsed', { purl, regex: this.regex });
         } else {
             const type = Array.isArray(purl) ? 'array' : typeof purl;
-            throw new Error(`Invalid PseudoUrl format, 'string' or 'RegExp' required, got \`${inspect(purl)}\` of type '${type}' instead`);
+            throw new Error(
+                `Invalid PseudoUrl format, 'string' or 'RegExp' required, got \`${inspect(purl)}\` of type '${type}' instead`,
+            );
         }
     }
 
@@ -76,7 +78,7 @@ export class PseudoUrl {
      * Determines whether a URL matches this pseudo-URL pattern.
      */
     matches(url: string): boolean {
-        return typeof url as unknown === 'string' && url.match(this.regex) !== null;
+        return (typeof url as unknown) === 'string' && url.match(this.regex) !== null;
     }
 }
 

@@ -8,17 +8,17 @@ export type ActorRunOptions = {
     maxItems?: number;
     maxTotalChargeUsd?: number;
     restartOnError?: boolean;
-}
+};
 
 export type MemoryEvaluationContext = {
     runOptions: ActorRunOptions;
     input: Record<string, unknown>;
-}
+};
 
 export type CompilationCache = {
     get: (expression: string) => Promise<EvalFunction | null>;
     set: (expression: string, compilationResult: EvalFunction) => Promise<void>;
     size: () => Promise<number>;
-}
+};
 
 export type CompilationResult = EvalFunction;
