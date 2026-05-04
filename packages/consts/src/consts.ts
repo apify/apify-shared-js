@@ -74,6 +74,7 @@ export const META_ORIGINS = {
     ACTOR: 'ACTOR', // Job started by another actor run
     CLI: 'CLI', // Job started by apify CLI
     STANDBY: 'STANDBY', // Job started by Actor Standby
+    CI: 'CI', // Job started from a CI/CD pipeline (e.g. GitHub Actions)
 } as const;
 
 /**
