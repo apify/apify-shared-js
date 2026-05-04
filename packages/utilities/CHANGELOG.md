@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.29.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.29.3...@apify/utilities@2.29.4) (2026-05-04)
+
+**Note:** Version bump only for package @apify/utilities
+
+
+
+
+
 ## [2.29.3](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.29.2...@apify/utilities@2.29.3) (2026-04-30)
 
 **Note:** Version bump only for package @apify/utilities
