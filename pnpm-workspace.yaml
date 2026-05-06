@@ -1,6 +1,9 @@
 packages:
   - packages/*
 
+overrides:
+  axios@>=1.0.0 <2.0.0: ^1.15.2
+
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - "@apify/*"
