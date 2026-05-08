@@ -412,9 +412,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'mcpc',
     'model-context-protocol',
     'modelcontextprotocol',
-    // Note: usernames containing 'apify' (e.g. 'apify.com', 'apify-team', 'apifyhq')
-    // are already rejected by USERNAME.RESTRICTED_REGEX in @apify/consts, so they
-    // are not listed here.
     'design-kit',
     'press-kit',
     'scrapers',
