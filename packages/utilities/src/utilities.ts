@@ -412,6 +412,8 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'mcpc',
     'model-context-protocol',
     'modelcontextprotocol',
+    // 'apify.com' intentionally unescaped so "." matches any character, also blocking variants like "apify_com" or "apifyxcom"
+    'apify.com',
     'design-kit',
     'press-kit',
     'scrapers',
