@@ -412,8 +412,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'mcpc',
     'model-context-protocol',
     'modelcontextprotocol',
-    // 'apify.com' intentionally unescaped so "." matches any character, also blocking variants like "apify_com" or "apifyxcom"
-    'apify.com',
+    // Note: usernames containing 'apify' (e.g. 'apify.com', 'apify-team', 'apifyhq')
+    // are already rejected by USERNAME.RESTRICTED_REGEX in @apify/consts, so they
+    // are not listed here.
     'design-kit',
     'press-kit',
     'scrapers',
@@ -447,8 +448,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'compute-unit',
     'compute-units',
 
-    // AI / LLM related (note: `ai` is also redundantly blocked by USERNAME.MIN_LENGTH=3)
-    'ai',
+    // AI / LLM related
     'agent',
     'agents',
     'agentic',
@@ -486,6 +486,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'kyapay',
 
     // Trust / verification / anti-impersonation handles
+    // (entries containing 'apify' are already blocked by USERNAME.RESTRICTED_REGEX)
     'official',
     'verified',
     'certified',
@@ -493,16 +494,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'partner-official',
     'gold-partner',
     'premium-partner',
-    'apify-official',
-    'apify-news',
-    'apify-blog',
-    'apify-events',
-    'apify-hq',
-    'apify-inc',
-    'apifyhq',
-    'apifyinc',
-    'apify-staff',
-    'apify-help',
     'staff',
     'moderator',
 
@@ -589,7 +580,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'bitcoin-giveaway',
     'free-credits',
     'free-money',
-    'apify-giveaway',
 
     // Apify marketing / campaign slugs
     'launch',
@@ -651,9 +641,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Brand protection / impersonation prevention
     'brand',
     'branding',
-    'verified',
-    'apify-support',
-    'apify-team',
     'support-team',
     'abuse',
 

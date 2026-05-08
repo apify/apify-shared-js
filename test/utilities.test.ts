@@ -94,7 +94,6 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('agentic-commerce')).toBe(true);
 
             // AI / agent generic terms
-            expect(utils.isForbiddenUsername('ai')).toBe(true);
             expect(utils.isForbiddenUsername('agent')).toBe(true);
             expect(utils.isForbiddenUsername('agents')).toBe(true);
             expect(utils.isForbiddenUsername('agentic')).toBe(true);
@@ -161,11 +160,6 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karel')).toBe(false);
             expect(utils.isForbiddenUsername('karel1234')).toBe(false);
             expect(utils.isForbiddenUsername('karel.novak')).toBe(false);
-
-            // apify.com pattern (unescaped "." matches any character)
-            expect(utils.isForbiddenUsername('apify.com')).toBe(true);
-            expect(utils.isForbiddenUsername('apify_com')).toBe(true);
-            expect(utils.isForbiddenUsername('apifyxcom')).toBe(true);
         });
     });
 
