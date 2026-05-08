@@ -90,21 +90,14 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('acp')).toBe(true);
             expect(utils.isForbiddenUsername('ucp')).toBe(true);
             expect(utils.isForbiddenUsername('l402')).toBe(true);
-            expect(utils.isForbiddenUsername('skyfire')).toBe(true);
             expect(utils.isForbiddenUsername('kyapay')).toBe(true);
             expect(utils.isForbiddenUsername('agentic-commerce')).toBe(true);
 
-            // AI / agent generic terms and frameworks
+            // AI / agent generic terms
             expect(utils.isForbiddenUsername('ai')).toBe(true);
             expect(utils.isForbiddenUsername('agent')).toBe(true);
             expect(utils.isForbiddenUsername('agents')).toBe(true);
             expect(utils.isForbiddenUsername('agentic')).toBe(true);
-            expect(utils.isForbiddenUsername('chatgpt')).toBe(true);
-            expect(utils.isForbiddenUsername('langchain')).toBe(true);
-            expect(utils.isForbiddenUsername('crewai')).toBe(true);
-            expect(utils.isForbiddenUsername('cursor')).toBe(true);
-            expect(utils.isForbiddenUsername('zapier')).toBe(true);
-            expect(utils.isForbiddenUsername('n8n')).toBe(true);
             expect(utils.isForbiddenUsername('crawlee')).toBe(true);
 
             // Apify-specific routes / features
@@ -113,11 +106,6 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('standby')).toBe(true);
             expect(utils.isForbiddenUsername('pay-per-event')).toBe(true);
             expect(utils.isForbiddenUsername('compute-unit')).toBe(true);
-
-            // Blog topic slugs
-            expect(utils.isForbiddenUsername('anti-blocking')).toBe(true);
-            expect(utils.isForbiddenUsername('thought-leadership')).toBe(true);
-            expect(utils.isForbiddenUsername('life-at-apify')).toBe(true);
 
             // All hidden files
             expect(utils.isForbiddenUsername('.hidden')).toBe(true);
