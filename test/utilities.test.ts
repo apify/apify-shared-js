@@ -81,6 +81,31 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('CLAUDE.md')).toBe(true);
             expect(utils.isForbiddenUsername('claude.MD')).toBe(true);
 
+            // Agentic protocols and payment standards
+            expect(utils.isForbiddenUsername('x402')).toBe(true);
+            expect(utils.isForbiddenUsername('X402')).toBe(true);
+            expect(utils.isForbiddenUsername('mpp')).toBe(true);
+            expect(utils.isForbiddenUsername('a2a')).toBe(true);
+            expect(utils.isForbiddenUsername('ap2')).toBe(true);
+            expect(utils.isForbiddenUsername('acp')).toBe(true);
+            expect(utils.isForbiddenUsername('ucp')).toBe(true);
+            expect(utils.isForbiddenUsername('l402')).toBe(true);
+            expect(utils.isForbiddenUsername('kyapay')).toBe(true);
+            expect(utils.isForbiddenUsername('agentic-commerce')).toBe(true);
+
+            // AI / agent generic terms
+            expect(utils.isForbiddenUsername('agent')).toBe(true);
+            expect(utils.isForbiddenUsername('agents')).toBe(true);
+            expect(utils.isForbiddenUsername('agentic')).toBe(true);
+            expect(utils.isForbiddenUsername('crawlee')).toBe(true);
+
+            // Apify-specific routes / features
+            expect(utils.isForbiddenUsername('contact-sales')).toBe(true);
+            expect(utils.isForbiddenUsername('creator-plan')).toBe(true);
+            expect(utils.isForbiddenUsername('standby')).toBe(true);
+            expect(utils.isForbiddenUsername('pay-per-event')).toBe(true);
+            expect(utils.isForbiddenUsername('compute-unit')).toBe(true);
+
             // All hidden files
             expect(utils.isForbiddenUsername('.hidden')).toBe(true);
             expect(utils.isForbiddenUsername('.a')).toBe(true);
