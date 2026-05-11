@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.29.4...@apify/utilities@2.30.0) (2026-05-11)
+
+
+### Features
+
+* **utilities:** block reserved usernames for agentic protocols and AI integrations ([#632](https://github.com/apify/apify-shared-js/issues/632)) ([968257b](https://github.com/apify/apify-shared-js/commit/968257b5f098d6a83b6ce8555a25b3902db2f478))
+
+
+
+
+
 ## [2.29.4](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.29.3...@apify/utilities@2.29.4) (2026-05-04)
 
 **Note:** Version bump only for package @apify/utilities
