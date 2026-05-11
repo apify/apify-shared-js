@@ -498,7 +498,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 
     // Apify subdomain / service names (current and future)
     'console',
-    'sdk',
     'cli',
     'studio',
     'gateway',
