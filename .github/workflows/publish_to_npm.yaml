@@ -43,10 +43,20 @@ jobs:
                   GIT_COMMITTER_NAME: Apify Release Bot
                   GIT_AUTHOR_EMAIL: noreply@apify.com
                   GIT_COMMITTER_EMAIL: noreply@apify.com
+            - name: Stage changes
+              id: stage
+              run: |
+                  git pull --rebase --autostash
+                  git add -A
+                  if git diff --cached --quiet; then
+                    echo "has-changes=false" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "has-changes=true" >> "$GITHUB_OUTPUT"
+                  fi
+
             - name: Commit changes
-              uses: EndBug/add-and-commit@v10
+              if: steps.stage.outputs.has-changes == 'true'
+              uses: apify/workflows/commit@v0.44.0
               with:
-                  author_name: Apify Release Bot
-                  author_email: noreply@apify.com
-                  message: 'chore: update root lock file and changelog [skip ci]'
-                  pull: '--rebase --autostash'
+                  commit-message: 'chore: update root lock file and changelog [skip ci]'
+                  github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
