@@ -44,9 +44,8 @@ jobs:
                   GIT_AUTHOR_EMAIL: noreply@apify.com
                   GIT_COMMITTER_EMAIL: noreply@apify.com
             - name: Commit changes
-              uses: EndBug/add-and-commit@v10
+              uses: apify/actions/signed-commit@v1.0.0
               with:
-                  author_name: Apify Release Bot
-                  author_email: noreply@apify.com
                   message: 'chore: update root lock file and changelog [skip ci]'
                   pull: '--rebase --autostash'
+                  github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
