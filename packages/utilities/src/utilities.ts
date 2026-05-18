@@ -670,6 +670,30 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Username starting with xxx-
     '(xxx-.*)',
 
+    // Usernames containing inappropriate/adult content keywords
+    '(.*porn.*)',
+    '(.*vagina.*)',
+    '(.*dildo.*)',
+    '(.*nsfw.*)',
+    '(.*hentai.*)',
+    '(.*cunt.*)',
+    '(.*fuck.*)',
+    '(.*shit.*)',
+    '(.*bitch.*)',
+    '(.*slut.*)',
+    '(.*whore.*)',
+    '(.*boob.*)',
+    '(.*tits.*)',
+    // Words that require non-letter boundaries to avoid false positives with
+    // legitimate surnames (Dickens, Hancock, Nudelman) and words (Uranus, pussycat, snaked)
+    '((.+[^a-z]|)cock([^a-z].+|))',
+    '((.+[^a-z]|)dick([^a-z].+|))',
+    '((.+[^a-z]|)anus([^a-z].+|))',
+    '((.+[^a-z]|)pussy([^a-z].+|))',
+    '((.+[^a-z]|)nude([^a-z].+|))',
+    '((.+[^a-z]|)penis([^a-z].+|))',
+    '((.+[^a-z]|)naked([^a-z].+|))',
+
     // Username starting with install-cli. (see https://docs.apify.com/cli/docs/installation)
     '(install-cli\\..*)',
 
@@ -1294,6 +1318,11 @@ const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAM
 /**
  * Checks whether username is listed in FORBIDDEN_USERNAMES
  * or matches any root route path.
+ *
+ * NOTE: The forbidden list may expand over time, so a username that was
+ * previously permitted may later become forbidden. Use this function only
+ * when validating a username change, not as part of normal authentication
+ * or authorization flow.
  */
 export function isForbiddenUsername(username: string): boolean {
     return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_REGEXP);
