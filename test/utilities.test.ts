@@ -154,6 +154,14 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
             expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
             expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
+            expect(utils.isForbiddenUsername('cunt123')).toBe(true);
+            expect(utils.isForbiddenUsername('fuckyou')).toBe(true);
+            expect(utils.isForbiddenUsername('bullshit')).toBe(true);
+            expect(utils.isForbiddenUsername('bitch-mode')).toBe(true);
+            expect(utils.isForbiddenUsername('slutty')).toBe(true);
+            expect(utils.isForbiddenUsername('whore-house')).toBe(true);
+            expect(utils.isForbiddenUsername('boobs')).toBe(true);
+            expect(utils.isForbiddenUsername('bigtits')).toBe(true);
 
             // Test valid usernames
             expect(!utils.isForbiddenUsername('apify')).toBe(true);

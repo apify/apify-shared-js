@@ -683,6 +683,14 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '(.*naked.*)',
     '(.*nsfw.*)',
     '(.*hentai.*)',
+    '(.*cunt.*)',
+    '(.*fuck.*)',
+    '(.*shit.*)',
+    '(.*bitch.*)',
+    '(.*slut.*)',
+    '(.*whore.*)',
+    '(.*boob.*)',
+    '(.*tits.*)',
 
     // Username starting with install-cli. (see https://docs.apify.com/cli/docs/installation)
     '(install-cli\\..*)',
