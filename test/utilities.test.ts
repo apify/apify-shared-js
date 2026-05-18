@@ -137,6 +137,13 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karl__yolo')).toBe(true);
             expect(utils.isForbiddenUsername('karl__.yolo')).toBe(true);
 
+            // Usernames containing porn
+            expect(utils.isForbiddenUsername('porn')).toBe(true);
+            expect(utils.isForbiddenUsername('pornvidsdownload')).toBe(true);
+            expect(utils.isForbiddenUsername('top-porner')).toBe(true);
+            expect(utils.isForbiddenUsername('my-porn-site')).toBe(true);
+            expect(utils.isForbiddenUsername('PORN')).toBe(true);
+
             // Test valid usernames
             expect(!utils.isForbiddenUsername('apify')).toBe(true);
             expect(!utils.isForbiddenUsername('APIFY')).toBe(true);
