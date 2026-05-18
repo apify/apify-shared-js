@@ -143,10 +143,8 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('top-porner')).toBe(true);
             expect(utils.isForbiddenUsername('my-porn-site')).toBe(true);
             expect(utils.isForbiddenUsername('PORN')).toBe(true);
-            expect(utils.isForbiddenUsername('penis123')).toBe(true);
             expect(utils.isForbiddenUsername('vagina-lover')).toBe(true);
             expect(utils.isForbiddenUsername('dildo-shop')).toBe(true);
-            expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
             expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
             expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
             expect(utils.isForbiddenUsername('cunt123')).toBe(true);
@@ -167,6 +165,8 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('janus')).toBe(false);
             expect(utils.isForbiddenUsername('pussycat')).toBe(false);
             expect(utils.isForbiddenUsername('nudelman')).toBe(false);
+            expect(utils.isForbiddenUsername('penistone')).toBe(false);
+            expect(utils.isForbiddenUsername('snaked')).toBe(false);
 
             // Test valid usernames
             expect(!utils.isForbiddenUsername('apify')).toBe(true);
