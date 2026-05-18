@@ -1,5 +1,6 @@
 export * from './utilities';
 export * from './utilities.client';
+export * from './forbidden_usernames';
 export * from './exponential_backoff';
 export * from './health_checker';
 export * from './parse_jsonl_stream';
