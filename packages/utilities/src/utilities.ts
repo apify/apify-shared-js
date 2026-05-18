@@ -1297,6 +1297,11 @@ const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAM
 /**
  * Checks whether username is listed in FORBIDDEN_USERNAMES
  * or matches any root route path.
+ *
+ * NOTE: The forbidden list may expand over time, so a username that was
+ * previously permitted may later become forbidden. Use this function only
+ * when validating a username change, not as part of normal authentication
+ * or authorization flow.
  */
 export function isForbiddenUsername(username: string): boolean {
     return !!username.match(APIFY_ID_REGEX) || !!username.match(FORBIDDEN_REGEXP);
