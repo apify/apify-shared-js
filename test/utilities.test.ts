@@ -145,12 +145,7 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('PORN')).toBe(true);
             expect(utils.isForbiddenUsername('penis123')).toBe(true);
             expect(utils.isForbiddenUsername('vagina-lover')).toBe(true);
-            expect(utils.isForbiddenUsername('bigcock')).toBe(true);
-            expect(utils.isForbiddenUsername('anus-man')).toBe(true);
-            expect(utils.isForbiddenUsername('dickpics')).toBe(true);
-            expect(utils.isForbiddenUsername('pussy-cat')).toBe(true);
             expect(utils.isForbiddenUsername('dildo-shop')).toBe(true);
-            expect(utils.isForbiddenUsername('nudemodels')).toBe(true);
             expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
             expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
             expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
@@ -162,6 +157,16 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('whore-house')).toBe(true);
             expect(utils.isForbiddenUsername('boobs')).toBe(true);
             expect(utils.isForbiddenUsername('bigtits')).toBe(true);
+
+            // Verify no false positives for common surnames and legitimate words
+            expect(utils.isForbiddenUsername('dickens')).toBe(false);
+            expect(utils.isForbiddenUsername('dickson')).toBe(false);
+            expect(utils.isForbiddenUsername('hancock')).toBe(false);
+            expect(utils.isForbiddenUsername('peacock')).toBe(false);
+            expect(utils.isForbiddenUsername('uranus')).toBe(false);
+            expect(utils.isForbiddenUsername('janus')).toBe(false);
+            expect(utils.isForbiddenUsername('pussycat')).toBe(false);
+            expect(utils.isForbiddenUsername('nudelman')).toBe(false);
 
             // Test valid usernames
             expect(!utils.isForbiddenUsername('apify')).toBe(true);

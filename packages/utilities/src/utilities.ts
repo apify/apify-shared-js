@@ -671,15 +671,13 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '(xxx-.*)',
 
     // Usernames containing inappropriate/adult content keywords
+    // NOTE: Some obvious words (cock, dick, anus, pussy, nude) are intentionally
+    // omitted due to false positives with surnames (Dickens, Hancock, Dickson)
+    // and legitimate words (Uranus, Janus, pussycat, denude, Nudelman).
     '(.*porn.*)',
     '(.*penis.*)',
     '(.*vagina.*)',
-    '(.*cock.*)',
-    '(.*anus.*)',
-    '(.*dick.*)',
-    '(.*pussy.*)',
     '(.*dildo.*)',
-    '(.*nude.*)',
     '(.*naked.*)',
     '(.*nsfw.*)',
     '(.*hentai.*)',
