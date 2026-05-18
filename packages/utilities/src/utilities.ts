@@ -671,9 +671,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '(xxx-.*)',
 
     // Usernames containing inappropriate/adult content keywords
-    // NOTE: Some obvious words are intentionally omitted due to false positives:
-    // cock, dick, anus, pussy, nude (surnames: Dickens, Hancock; words: Uranus, Janus, pussycat)
-    // penis (Penistone - real UK town/surname), naked (snaked, snakedance)
     '(.*porn.*)',
     '(.*vagina.*)',
     '(.*dildo.*)',
@@ -687,6 +684,15 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '(.*whore.*)',
     '(.*boob.*)',
     '(.*tits.*)',
+    // Words that require non-letter boundaries to avoid false positives with
+    // legitimate surnames (Dickens, Hancock, Nudelman) and words (Uranus, pussycat, snaked)
+    '((.+[^a-z]|)cock([^a-z].+|))',
+    '((.+[^a-z]|)dick([^a-z].+|))',
+    '((.+[^a-z]|)anus([^a-z].+|))',
+    '((.+[^a-z]|)pussy([^a-z].+|))',
+    '((.+[^a-z]|)nude([^a-z].+|))',
+    '((.+[^a-z]|)penis([^a-z].+|))',
+    '((.+[^a-z]|)naked([^a-z].+|))',
 
     // Username starting with install-cli. (see https://docs.apify.com/cli/docs/installation)
     '(install-cli\\..*)',
