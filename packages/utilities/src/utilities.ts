@@ -670,8 +670,19 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Username starting with xxx-
     '(xxx-.*)',
 
-    // Username containing porn
+    // Usernames containing inappropriate/adult content keywords
     '(.*porn.*)',
+    '(.*penis.*)',
+    '(.*vagina.*)',
+    '(.*cock.*)',
+    '(.*anus.*)',
+    '(.*dick.*)',
+    '(.*pussy.*)',
+    '(.*dildo.*)',
+    '(.*nude.*)',
+    '(.*naked.*)',
+    '(.*nsfw.*)',
+    '(.*hentai.*)',
 
     // Username starting with install-cli. (see https://docs.apify.com/cli/docs/installation)
     '(install-cli\\..*)',

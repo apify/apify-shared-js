@@ -137,12 +137,23 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karl__yolo')).toBe(true);
             expect(utils.isForbiddenUsername('karl__.yolo')).toBe(true);
 
-            // Usernames containing porn
+            // Usernames containing inappropriate/adult content keywords
             expect(utils.isForbiddenUsername('porn')).toBe(true);
             expect(utils.isForbiddenUsername('pornvidsdownload')).toBe(true);
             expect(utils.isForbiddenUsername('top-porner')).toBe(true);
             expect(utils.isForbiddenUsername('my-porn-site')).toBe(true);
             expect(utils.isForbiddenUsername('PORN')).toBe(true);
+            expect(utils.isForbiddenUsername('penis123')).toBe(true);
+            expect(utils.isForbiddenUsername('vagina-lover')).toBe(true);
+            expect(utils.isForbiddenUsername('bigcock')).toBe(true);
+            expect(utils.isForbiddenUsername('anus-man')).toBe(true);
+            expect(utils.isForbiddenUsername('dickpics')).toBe(true);
+            expect(utils.isForbiddenUsername('pussy-cat')).toBe(true);
+            expect(utils.isForbiddenUsername('dildo-shop')).toBe(true);
+            expect(utils.isForbiddenUsername('nudemodels')).toBe(true);
+            expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
+            expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
+            expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
 
             // Test valid usernames
             expect(!utils.isForbiddenUsername('apify')).toBe(true);
