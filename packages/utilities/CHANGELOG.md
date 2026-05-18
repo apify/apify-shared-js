@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.31.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.30.0...@apify/utilities@2.31.0) (2026-05-18)
+
+
+### Features
+
+* Add new forbidden username filters ([#637](https://github.com/apify/apify-shared-js/issues/637)) ([08fa33e](https://github.com/apify/apify-shared-js/commit/08fa33e2867fe9d2910c8c3ee31b6355f4b77f52))
+
+
+
+
+
 # [2.30.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.29.4...@apify/utilities@2.30.0) (2026-05-11)
 
 
