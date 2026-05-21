@@ -10,7 +10,9 @@ import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
  * verbatim into `var patterns = [...]` and run something like:
  *
  *     var forbiddenRegex = new RegExp('^(anonymous|' + patterns.join('|') + ')$', 'i');
- *     var apifyIdRegex = /[a-zA-Z0-9]{17}/;
+ *     // Anchored — APIFY_ID_REGEX itself is unanchored as a legacy workaround and
+ *     // matches any 17-char alphanumeric substring (e.g. 'user-nAm2jMsaPwF9BdMi6').
+ *     var apifyIdRegex = /^[a-zA-Z0-9]{17}$/;
  *     db.getCollection('users').find({
  *         $or: [{ username: forbiddenRegex }, { username: apifyIdRegex }],
  *     }, { username: 1, 'profile.isPublic': 1, createdAt: 1, lastActivityAt: 1 })
