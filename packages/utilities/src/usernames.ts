@@ -1108,7 +1108,7 @@ const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAM
 
 /**
  * Checks whether username is listed in the forbidden username list
- * or matches any root route path.
+ * or looks like an Apify ID.
  *
  * NOTE: The forbidden list may expand over time, so a username that was
  * previously permitted may later become forbidden. Use this function only
