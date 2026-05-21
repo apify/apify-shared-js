@@ -2,7 +2,7 @@ import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
 
 /**
  * List of forbidden usernames. Note that usernames can be used as apify.com/username,
- * so we need to prohibit any username that might be part of our website or confusing in anyway.
+ * so we need to prohibit any username that might be part of our website or confusing in any way.
  */
 const FORBIDDEN_USERNAMES_REGEXPS = [
     // App routes
