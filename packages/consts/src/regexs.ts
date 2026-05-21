@@ -160,5 +160,4 @@ export const CONTACT_LINK_REGEX = /^(mailto|tel|sms):.*$/i;
  * because we have user objects with that in database.
  * @type {RegExp}
  */
-// TODO: @fnesveda [2022-08-15] revert to stricter regex /^[a-zA-Z0-9]{17}$/ once we properly delete user yZtyxMUADJHyInTIdl
-export const APIFY_ID_REGEX = /[a-zA-Z0-9]{17}/;
+export const APIFY_ID_REGEX = /^[a-zA-Z0-9]{17}$/;
