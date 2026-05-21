@@ -98,6 +98,10 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('agents')).toBe(true);
             expect(utils.isForbiddenUsername('agentic')).toBe(true);
             expect(utils.isForbiddenUsername('crawlee')).toBe(true);
+            expect(utils.isForbiddenUsername('chatbot')).toBe(true);
+            expect(utils.isForbiddenUsername('chatgpt')).toBe(true);
+            expect(utils.isForbiddenUsername('gemini')).toBe(true);
+            expect(utils.isForbiddenUsername('llama')).toBe(true);
 
             // Apify-specific routes / features
             expect(utils.isForbiddenUsername('contact-sales')).toBe(true);
@@ -105,6 +109,39 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('standby')).toBe(true);
             expect(utils.isForbiddenUsername('pay-per-event')).toBe(true);
             expect(utils.isForbiddenUsername('compute-unit')).toBe(true);
+            expect(utils.isForbiddenUsername('build')).toBe(true);
+            expect(utils.isForbiddenUsername('dataset')).toBe(true);
+            expect(utils.isForbiddenUsername('datasets')).toBe(true);
+
+            // Organizations / workspaces / permissions
+            expect(utils.isForbiddenUsername('org')).toBe(true);
+            expect(utils.isForbiddenUsername('organisation')).toBe(true);
+            expect(utils.isForbiddenUsername('workspace')).toBe(true);
+            expect(utils.isForbiddenUsername('role')).toBe(true);
+            expect(utils.isForbiddenUsername('roles')).toBe(true);
+
+            // Auth / security
+            expect(utils.isForbiddenUsername('apikey')).toBe(true);
+            expect(utils.isForbiddenUsername('keys')).toBe(true);
+            expect(utils.isForbiddenUsername('secret')).toBe(true);
+            expect(utils.isForbiddenUsername('secrets')).toBe(true);
+
+            // Infrastructure / environments
+            expect(utils.isForbiddenUsername('prod')).toBe(true);
+            expect(utils.isForbiddenUsername('internal')).toBe(true);
+
+            // Communication
+            expect(utils.isForbiddenUsername('channel')).toBe(true);
+            expect(utils.isForbiddenUsername('channels')).toBe(true);
+            expect(utils.isForbiddenUsername('inbox')).toBe(true);
+            expect(utils.isForbiddenUsername('no-reply')).toBe(true);
+            expect(utils.isForbiddenUsername('noreply')).toBe(true);
+
+            // Billing / commerce
+            expect(utils.isForbiddenUsername('wallet')).toBe(true);
+
+            // Incidents / updates
+            expect(utils.isForbiddenUsername('whatsnew')).toBe(true);
 
             // All hidden files
             expect(utils.isForbiddenUsername('.hidden')).toBe(true);

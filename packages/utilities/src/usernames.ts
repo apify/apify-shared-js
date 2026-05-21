@@ -227,7 +227,10 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'key-value-store',
     'request-queue',
     'request-queues',
+    'build',
     'builds',
+    'dataset',
+    'datasets',
     'schedule',
     'standby',
     'pay-per-event',
@@ -249,6 +252,10 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'claude',
     'copilot',
     'mistral',
+    'gemini',
+    'llama',
+    'chatbot',
+    'chatgpt',
     'prompt',
     'prompts',
     'embeddings',
@@ -286,6 +293,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'premium-partner',
     'staff',
     'moderator',
+    'apify-admin',
 
     // Apify subdomain / service names (current and future)
     'console',
@@ -330,6 +338,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'payouts',
     'invoice',
     'invoices',
+    'wallet',
 
     // Compliance / certifications
     'soc',
@@ -382,10 +391,15 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'conferences',
 
     // Organizations / workspaces / permissions
+    'org',
     'orgs',
+    'organisation',
+    'workspace',
     'workspaces',
     'tenant',
     'tenants',
+    'role',
+    'roles',
     'permission',
     'permissions',
 
@@ -394,8 +408,12 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'scim',
     'token',
     'tokens',
+    'apikey',
     'api-key',
     'api-keys',
+    'keys',
+    'secret',
+    'secrets',
 
     // Billing / commerce
     'coupon',
@@ -411,13 +429,20 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 
     // Infrastructure / environments
     'production',
+    'prod',
     'canary',
+    'internal',
     'restricted',
 
     // Communication
     'conversations',
     'reactions',
     'mentions',
+    'channel',
+    'channels',
+    'inbox',
+    'no-reply',
+    'noreply',
 
     // Legal / trust / web standards
     'accessibility',
@@ -438,6 +463,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'incident',
     'incidents',
     'what-is-new',
+    'whatsnew',
 
     // Special files
     'index',
