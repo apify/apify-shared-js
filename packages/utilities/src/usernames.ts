@@ -5,16 +5,20 @@ import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
  * so we need to prohibit any username that might be part of our website or confusing in any way.
  *
  * After extending this list, check whether any existing users already hold one of the
- * newly-forbidden usernames. Run this in Robo 3T / mongosh against the users DB:
+ * newly-forbidden usernames. The thorough way is to mirror `isForbiddenUsername` server-side
+ * by rebuilding the same regex inside Robo 3T / mongosh — paste the contents of this array
+ * verbatim into `var patterns = [...]` and run something like:
  *
- *     var candidates = ['agent', 'workspace', 'inbox', 'wallet', 'apify-admin'];
- *     db.getCollection('users').find(
- *         { username: { $in: candidates } },
- *         { username: 1, 'profile.isPublic': 1, createdAt: 1, lastActivityAt: 1 },
- *     ).sort({ username: 1 }).forEach(function (u) {
- *         print(u.username + '\t' + (u.profile && u.profile.isPublic) + '\t'
- *             + (u.createdAt && u.createdAt.toISOString()));
- *     });
+ *     var forbiddenRegex = new RegExp('^(anonymous|' + patterns.join('|') + ')$', 'i');
+ *     var apifyIdRegex = /[a-zA-Z0-9]{17}/;
+ *     db.getCollection('users').find({
+ *         $or: [{ username: forbiddenRegex }, { username: apifyIdRegex }],
+ *     }, { username: 1, 'profile.isPublic': 1, createdAt: 1, lastActivityAt: 1 })
+ *     .sort({ username: 1 })
+ *     .forEach(function (u) { print(u.username + '\t' + !!(u.profile && u.profile.isPublic)); });
+ *
+ * For a quick sanity check (literals only, fast) use `$in` with an exact-string array
+ * of the new additions instead.
  */
 const FORBIDDEN_USERNAMES_REGEXPS = [
     // App routes
