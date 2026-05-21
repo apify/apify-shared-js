@@ -3,6 +3,24 @@ import { ANONYMOUS_USERNAME, APIFY_ID_REGEX } from '@apify/consts';
 /**
  * List of forbidden usernames. Note that usernames can be used as apify.com/username,
  * so we need to prohibit any username that might be part of our website or confusing in any way.
+ *
+ * After extending this list, check whether any existing users already hold one of the
+ * newly-forbidden usernames. The thorough way is to mirror `isForbiddenUsername` server-side
+ * by rebuilding the same regex inside Robo 3T / mongosh — paste the contents of this array
+ * verbatim into `var patterns = [...]` and run something like:
+ *
+ *     var forbiddenRegex = new RegExp('^(anonymous|' + patterns.join('|') + ')$', 'i');
+ *     // Anchored — APIFY_ID_REGEX itself is unanchored as a legacy workaround and
+ *     // matches any 17-char alphanumeric substring (e.g. 'user-nAm2jMsaPwF9BdMi6').
+ *     var apifyIdRegex = /^[a-zA-Z0-9]{17}$/;
+ *     db.getCollection('users').find({
+ *         $or: [{ username: forbiddenRegex }, { username: apifyIdRegex }],
+ *     }, { username: 1, 'profile.isPublic': 1, createdAt: 1, lastActivityAt: 1 })
+ *     .sort({ username: 1 })
+ *     .forEach(function (u) { print(u.username + '\t' + !!(u.profile && u.profile.isPublic)); });
+ *
+ * For a quick sanity check (literals only, fast) use `$in` with an exact-string array
+ * of the new additions instead.
  */
 const FORBIDDEN_USERNAMES_REGEXPS = [
     // App routes
@@ -227,7 +245,10 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'key-value-store',
     'request-queue',
     'request-queues',
+    'build',
     'builds',
+    'dataset',
+    'datasets',
     'schedule',
     'standby',
     'pay-per-event',
@@ -249,6 +270,10 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'claude',
     'copilot',
     'mistral',
+    'gemini',
+    'llama',
+    'chatbot',
+    'chatgpt',
     'prompt',
     'prompts',
     'embeddings',
@@ -286,6 +311,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'premium-partner',
     'staff',
     'moderator',
+    'apify-admin',
 
     // Apify subdomain / service names (current and future)
     'console',
@@ -330,6 +356,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'payouts',
     'invoice',
     'invoices',
+    'wallet',
 
     // Compliance / certifications
     'soc',
@@ -382,10 +409,15 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'conferences',
 
     // Organizations / workspaces / permissions
+    'org',
     'orgs',
+    'organisation',
+    'workspace',
     'workspaces',
     'tenant',
     'tenants',
+    'role',
+    'roles',
     'permission',
     'permissions',
 
@@ -394,8 +426,12 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'scim',
     'token',
     'tokens',
+    'apikey',
     'api-key',
     'api-keys',
+    'keys',
+    'secret',
+    'secrets',
 
     // Billing / commerce
     'coupon',
@@ -411,13 +447,20 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 
     // Infrastructure / environments
     'production',
+    'prod',
     'canary',
+    'internal',
     'restricted',
 
     // Communication
     'conversations',
     'reactions',
     'mentions',
+    'channel',
+    'channels',
+    'inbox',
+    'no-reply',
+    'noreply',
 
     // Legal / trust / web standards
     'accessibility',
@@ -438,6 +481,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'incident',
     'incidents',
     'what-is-new',
+    'whatsnew',
 
     // Special files
     'index',
@@ -461,22 +505,24 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Username starting with xxx-
     '(xxx-.*)',
 
-    // Usernames containing inappropriate/adult content keywords
-    '(.*porn.*)',
-    '(.*vagina.*)',
-    '(.*dildo.*)',
-    '(.*nsfw.*)',
-    '(.*hentai.*)',
-    '(.*cunt.*)',
-    '(.*fuck.*)',
-    '(.*shit.*)',
-    '(.*bitch.*)',
-    '(.*slut.*)',
-    '(.*whore.*)',
-    '(.*boob.*)',
-    '(.*tits.*)',
-    // Words that require non-letter boundaries to avoid false positives with
-    // legitimate surnames (Dickens, Hancock, Nudelman) and words (Uranus, pussycat, snaked)
+    // Usernames containing inappropriate/adult content keywords.
+    // Each entry requires non-letter boundaries on both sides so the keyword only
+    // matches as a whole word — this avoids false positives like Akshit (shit),
+    // Dickens / Hancock (dick / cock), Nudelman (nude), Uranus (anus),
+    // pussycat (pussy), snaked (naked), scunthorpe (cunt), etc.
+    '((.+[^a-z]|)porn([^a-z].+|))',
+    '((.+[^a-z]|)vagina([^a-z].+|))',
+    '((.+[^a-z]|)dildo([^a-z].+|))',
+    '((.+[^a-z]|)nsfw([^a-z].+|))',
+    '((.+[^a-z]|)hentai([^a-z].+|))',
+    '((.+[^a-z]|)cunt([^a-z].+|))',
+    '((.+[^a-z]|)fuck([^a-z].+|))',
+    '((.+[^a-z]|)shit([^a-z].+|))',
+    '((.+[^a-z]|)bitch([^a-z].+|))',
+    '((.+[^a-z]|)slut([^a-z].+|))',
+    '((.+[^a-z]|)whore([^a-z].+|))',
+    '((.+[^a-z]|)boob([^a-z].+|))',
+    '((.+[^a-z]|)tits([^a-z].+|))',
     '((.+[^a-z]|)cock([^a-z].+|))',
     '((.+[^a-z]|)dick([^a-z].+|))',
     '((.+[^a-z]|)anus([^a-z].+|))',

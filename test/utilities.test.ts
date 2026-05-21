@@ -98,6 +98,10 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('agents')).toBe(true);
             expect(utils.isForbiddenUsername('agentic')).toBe(true);
             expect(utils.isForbiddenUsername('crawlee')).toBe(true);
+            expect(utils.isForbiddenUsername('chatbot')).toBe(true);
+            expect(utils.isForbiddenUsername('chatgpt')).toBe(true);
+            expect(utils.isForbiddenUsername('gemini')).toBe(true);
+            expect(utils.isForbiddenUsername('llama')).toBe(true);
 
             // Apify-specific routes / features
             expect(utils.isForbiddenUsername('contact-sales')).toBe(true);
@@ -105,6 +109,39 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('standby')).toBe(true);
             expect(utils.isForbiddenUsername('pay-per-event')).toBe(true);
             expect(utils.isForbiddenUsername('compute-unit')).toBe(true);
+            expect(utils.isForbiddenUsername('build')).toBe(true);
+            expect(utils.isForbiddenUsername('dataset')).toBe(true);
+            expect(utils.isForbiddenUsername('datasets')).toBe(true);
+
+            // Organizations / workspaces / permissions
+            expect(utils.isForbiddenUsername('org')).toBe(true);
+            expect(utils.isForbiddenUsername('organisation')).toBe(true);
+            expect(utils.isForbiddenUsername('workspace')).toBe(true);
+            expect(utils.isForbiddenUsername('role')).toBe(true);
+            expect(utils.isForbiddenUsername('roles')).toBe(true);
+
+            // Auth / security
+            expect(utils.isForbiddenUsername('apikey')).toBe(true);
+            expect(utils.isForbiddenUsername('keys')).toBe(true);
+            expect(utils.isForbiddenUsername('secret')).toBe(true);
+            expect(utils.isForbiddenUsername('secrets')).toBe(true);
+
+            // Infrastructure / environments
+            expect(utils.isForbiddenUsername('prod')).toBe(true);
+            expect(utils.isForbiddenUsername('internal')).toBe(true);
+
+            // Communication
+            expect(utils.isForbiddenUsername('channel')).toBe(true);
+            expect(utils.isForbiddenUsername('channels')).toBe(true);
+            expect(utils.isForbiddenUsername('inbox')).toBe(true);
+            expect(utils.isForbiddenUsername('no-reply')).toBe(true);
+            expect(utils.isForbiddenUsername('noreply')).toBe(true);
+
+            // Billing / commerce
+            expect(utils.isForbiddenUsername('wallet')).toBe(true);
+
+            // Incidents / updates
+            expect(utils.isForbiddenUsername('whatsnew')).toBe(true);
 
             // All hidden files
             expect(utils.isForbiddenUsername('.hidden')).toBe(true);
@@ -137,10 +174,10 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karl__yolo')).toBe(true);
             expect(utils.isForbiddenUsername('karl__.yolo')).toBe(true);
 
-            // Usernames containing inappropriate/adult content keywords
+            // Adult-content keywords are blocked only as whole words (boundary check
+            // on both sides), so the keyword alone or with non-letter separators matches,
+            // but legitimate names that merely contain the keyword as a substring do not.
             expect(utils.isForbiddenUsername('porn')).toBe(true);
-            expect(utils.isForbiddenUsername('pornvidsdownload')).toBe(true);
-            expect(utils.isForbiddenUsername('top-porner')).toBe(true);
             expect(utils.isForbiddenUsername('my-porn-site')).toBe(true);
             expect(utils.isForbiddenUsername('PORN')).toBe(true);
             expect(utils.isForbiddenUsername('vagina-lover')).toBe(true);
@@ -148,15 +185,9 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
             expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
             expect(utils.isForbiddenUsername('cunt123')).toBe(true);
-            expect(utils.isForbiddenUsername('fuckyou')).toBe(true);
-            expect(utils.isForbiddenUsername('bullshit')).toBe(true);
+            expect(utils.isForbiddenUsername('shit-show')).toBe(true);
             expect(utils.isForbiddenUsername('bitch-mode')).toBe(true);
-            expect(utils.isForbiddenUsername('slutty')).toBe(true);
             expect(utils.isForbiddenUsername('whore-house')).toBe(true);
-            expect(utils.isForbiddenUsername('boobs')).toBe(true);
-            expect(utils.isForbiddenUsername('bigtits')).toBe(true);
-
-            // Boundary-based patterns (blocked when not embedded in legitimate words)
             expect(utils.isForbiddenUsername('cock')).toBe(true);
             expect(utils.isForbiddenUsername('big-cock')).toBe(true);
             expect(utils.isForbiddenUsername('cock-lover')).toBe(true);
@@ -173,7 +204,13 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('naked')).toBe(true);
             expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
 
-            // Verify no false positives for common surnames and legitimate words
+            // Verify no false positives for common names and legitimate words.
+            expect(utils.isForbiddenUsername('akshit')).toBe(false);
+            expect(utils.isForbiddenUsername('akshit_trivedi')).toBe(false);
+            expect(utils.isForbiddenUsername('pornography')).toBe(false);
+            expect(utils.isForbiddenUsername('bullshit')).toBe(false);
+            expect(utils.isForbiddenUsername('slutty')).toBe(false);
+            expect(utils.isForbiddenUsername('scunthorpe')).toBe(false);
             expect(utils.isForbiddenUsername('dickens')).toBe(false);
             expect(utils.isForbiddenUsername('dickson')).toBe(false);
             expect(utils.isForbiddenUsername('hancock')).toBe(false);
