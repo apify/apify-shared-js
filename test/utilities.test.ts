@@ -174,10 +174,10 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('karl__yolo')).toBe(true);
             expect(utils.isForbiddenUsername('karl__.yolo')).toBe(true);
 
-            // Usernames containing inappropriate/adult content keywords
+            // Adult-content keywords are blocked only as whole words (boundary check
+            // on both sides), so the keyword alone or with non-letter separators matches,
+            // but legitimate names that merely contain the keyword as a substring do not.
             expect(utils.isForbiddenUsername('porn')).toBe(true);
-            expect(utils.isForbiddenUsername('pornvidsdownload')).toBe(true);
-            expect(utils.isForbiddenUsername('top-porner')).toBe(true);
             expect(utils.isForbiddenUsername('my-porn-site')).toBe(true);
             expect(utils.isForbiddenUsername('PORN')).toBe(true);
             expect(utils.isForbiddenUsername('vagina-lover')).toBe(true);
@@ -185,15 +185,9 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('nsfw-content')).toBe(true);
             expect(utils.isForbiddenUsername('hentai-fan')).toBe(true);
             expect(utils.isForbiddenUsername('cunt123')).toBe(true);
-            expect(utils.isForbiddenUsername('fuckyou')).toBe(true);
-            expect(utils.isForbiddenUsername('bullshit')).toBe(true);
+            expect(utils.isForbiddenUsername('shit-show')).toBe(true);
             expect(utils.isForbiddenUsername('bitch-mode')).toBe(true);
-            expect(utils.isForbiddenUsername('slutty')).toBe(true);
             expect(utils.isForbiddenUsername('whore-house')).toBe(true);
-            expect(utils.isForbiddenUsername('boobs')).toBe(true);
-            expect(utils.isForbiddenUsername('bigtits')).toBe(true);
-
-            // Boundary-based patterns (blocked when not embedded in legitimate words)
             expect(utils.isForbiddenUsername('cock')).toBe(true);
             expect(utils.isForbiddenUsername('big-cock')).toBe(true);
             expect(utils.isForbiddenUsername('cock-lover')).toBe(true);
@@ -210,7 +204,13 @@ describe('utilities', () => {
             expect(utils.isForbiddenUsername('naked')).toBe(true);
             expect(utils.isForbiddenUsername('naked-pics')).toBe(true);
 
-            // Verify no false positives for common surnames and legitimate words
+            // Verify no false positives for common names and legitimate words.
+            expect(utils.isForbiddenUsername('akshit')).toBe(false);
+            expect(utils.isForbiddenUsername('akshit_trivedi')).toBe(false);
+            expect(utils.isForbiddenUsername('pornography')).toBe(false);
+            expect(utils.isForbiddenUsername('bullshit')).toBe(false);
+            expect(utils.isForbiddenUsername('slutty')).toBe(false);
+            expect(utils.isForbiddenUsername('scunthorpe')).toBe(false);
             expect(utils.isForbiddenUsername('dickens')).toBe(false);
             expect(utils.isForbiddenUsername('dickson')).toBe(false);
             expect(utils.isForbiddenUsername('hancock')).toBe(false);

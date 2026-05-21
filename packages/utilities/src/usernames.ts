@@ -503,22 +503,24 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Username starting with xxx-
     '(xxx-.*)',
 
-    // Usernames containing inappropriate/adult content keywords
-    '(.*porn.*)',
-    '(.*vagina.*)',
-    '(.*dildo.*)',
-    '(.*nsfw.*)',
-    '(.*hentai.*)',
-    '(.*cunt.*)',
-    '(.*fuck.*)',
-    '(.*shit.*)',
-    '(.*bitch.*)',
-    '(.*slut.*)',
-    '(.*whore.*)',
-    '(.*boob.*)',
-    '(.*tits.*)',
-    // Words that require non-letter boundaries to avoid false positives with
-    // legitimate surnames (Dickens, Hancock, Nudelman) and words (Uranus, pussycat, snaked)
+    // Usernames containing inappropriate/adult content keywords.
+    // Each entry requires non-letter boundaries on both sides so the keyword only
+    // matches as a whole word — this avoids false positives like Akshit (shit),
+    // Dickens / Hancock (dick / cock), Nudelman (nude), Uranus (anus),
+    // pussycat (pussy), snaked (naked), scunthorpe (cunt), etc.
+    '((.+[^a-z]|)porn([^a-z].+|))',
+    '((.+[^a-z]|)vagina([^a-z].+|))',
+    '((.+[^a-z]|)dildo([^a-z].+|))',
+    '((.+[^a-z]|)nsfw([^a-z].+|))',
+    '((.+[^a-z]|)hentai([^a-z].+|))',
+    '((.+[^a-z]|)cunt([^a-z].+|))',
+    '((.+[^a-z]|)fuck([^a-z].+|))',
+    '((.+[^a-z]|)shit([^a-z].+|))',
+    '((.+[^a-z]|)bitch([^a-z].+|))',
+    '((.+[^a-z]|)slut([^a-z].+|))',
+    '((.+[^a-z]|)whore([^a-z].+|))',
+    '((.+[^a-z]|)boob([^a-z].+|))',
+    '((.+[^a-z]|)tits([^a-z].+|))',
     '((.+[^a-z]|)cock([^a-z].+|))',
     '((.+[^a-z]|)dick([^a-z].+|))',
     '((.+[^a-z]|)anus([^a-z].+|))',
