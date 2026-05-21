@@ -1107,7 +1107,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
 const FORBIDDEN_REGEXP = new RegExp(`^(${ANONYMOUS_USERNAME}|${FORBIDDEN_USERNAMES_REGEXPS.join('|')})$`, 'i');
 
 /**
- * Checks whether username is listed in FORBIDDEN_USERNAMES
+ * Checks whether username is listed in the forbidden username list
  * or matches any root route path.
  *
  * NOTE: The forbidden list may expand over time, so a username that was
