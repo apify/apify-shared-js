@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.53.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.53.1...@apify/consts@2.53.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* enforce strict `APIFY_ID_REGEX` validation with anchors ([#640](https://github.com/apify/apify-shared-js/issues/640)) ([b46f967](https://github.com/apify/apify-shared-js/commit/b46f967e6cb1a863f6747dabb5c5249fe2397828))
+
+
+
+
+
 ## [2.53.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.53.0...@apify/consts@2.53.1) (2026-05-04)
 
 **Note:** Version bump only for package @apify/consts
