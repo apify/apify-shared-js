@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.32.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.31.2...@apify/utilities@2.32.0) (2026-05-22)
+
+
+### Features
+
+* expand forbidden usernames list and improve boundary checking ([#639](https://github.com/apify/apify-shared-js/issues/639)) ([c452c24](https://github.com/apify/apify-shared-js/commit/c452c248f9d54b2cbb2dbc4b0b7154a8b691f6c5))
+
+
+
+
+
 ## [2.31.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.31.1...@apify/utilities@2.31.2) (2026-05-22)
 
 **Note:** Version bump only for package @apify/utilities
