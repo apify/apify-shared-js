@@ -506,8 +506,9 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     // Usernames containing inappropriate/adult content keywords.
     // Each entry requires non-letter boundaries on both sides so the keyword only
     // matches as a whole word — this avoids false positives like Akshit (shit),
-    // Dickens / Hancock (dick / cock), Nudelman (nude), Uranus (anus),
-    // pussycat (pussy), snaked (naked), scunthorpe (cunt), etc.
+    // Hancock (cock), Nudelman (nude), Uranus (anus), pussycat (pussy),
+    // snaked (naked), scunthorpe (cunt), christoph-dick-media (dick — legitimate
+    // German surname, not blocked), etc.
     '((.+[^a-z]|)porn([^a-z].+|))',
     '((.+[^a-z]|)vagina([^a-z].+|))',
     '((.+[^a-z]|)dildo([^a-z].+|))',
@@ -522,7 +523,6 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '((.+[^a-z]|)boob([^a-z].+|))',
     '((.+[^a-z]|)tits([^a-z].+|))',
     '((.+[^a-z]|)cock([^a-z].+|))',
-    '((.+[^a-z]|)dick([^a-z].+|))',
     '((.+[^a-z]|)anus([^a-z].+|))',
     '((.+[^a-z]|)pussy([^a-z].+|))',
     '((.+[^a-z]|)nude([^a-z].+|))',

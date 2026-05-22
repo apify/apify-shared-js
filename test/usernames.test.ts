@@ -137,8 +137,6 @@ describe('isForbiddenUsername()', () => {
         expect(isForbiddenUsername('cock')).toBe(true);
         expect(isForbiddenUsername('big-cock')).toBe(true);
         expect(isForbiddenUsername('cock-lover')).toBe(true);
-        expect(isForbiddenUsername('dick')).toBe(true);
-        expect(isForbiddenUsername('my-dick')).toBe(true);
         expect(isForbiddenUsername('anus')).toBe(true);
         expect(isForbiddenUsername('my-anus')).toBe(true);
         expect(isForbiddenUsername('pussy')).toBe(true);
@@ -157,8 +155,8 @@ describe('isForbiddenUsername()', () => {
         expect(isForbiddenUsername('bullshit')).toBe(false);
         expect(isForbiddenUsername('slutty')).toBe(false);
         expect(isForbiddenUsername('scunthorpe')).toBe(false);
-        expect(isForbiddenUsername('dickens')).toBe(false);
-        expect(isForbiddenUsername('dickson')).toBe(false);
+        expect(isForbiddenUsername('dick')).toBe(false);
+        expect(isForbiddenUsername('christoph-dick-media')).toBe(false);
         expect(isForbiddenUsername('hancock')).toBe(false);
         expect(isForbiddenUsername('peacock')).toBe(false);
         expect(isForbiddenUsername('cockpit')).toBe(false);
