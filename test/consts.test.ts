@@ -58,14 +58,23 @@ describe('consts', () => {
             const testingStrings = {
                 valid: ['S64xo2hmHBFHbqZQq', 'Z7rgePnfc04QHshc2'],
                 invalid: [
-                    // Invalid length
+                    // Too short
                     'Z7rgePnfc04QHshc',
+                    // Too long
+                    'Z7rgePnfc04QHshc2X',
+                    'yZtyxMUADJHyInTIdl',
                     // Invalid chars
                     '_7rgePnfc04QHshc2',
                     '-7rgePnfc04QHshc2',
                     '~7rgePnfc04QHshc2',
                     '}7rgePnfc04QHshc2',
                     '(7rgePnfc04QHshc2',
+                    // Valid 17-char ID embedded in a larger string (must be rejected by the anchored regex)
+                    ' S64xo2hmHBFHbqZQq',
+                    'S64xo2hmHBFHbqZQq ',
+                    'xS64xo2hmHBFHbqZQqx',
+                    // Empty string
+                    '',
                 ],
             };
             testingStrings.valid.forEach((str) => {
