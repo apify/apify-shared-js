@@ -496,6 +496,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'llms-full\\.txt',
     'AGENTS\\.md',
     'CLAUDE\\.md',
+    'auth\\.md',
 
     // All hidden files
     '(\\..*)',

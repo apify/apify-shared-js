@@ -26,6 +26,8 @@ describe('isForbiddenUsername()', () => {
         expect(isForbiddenUsername('agents.MD')).toBe(true);
         expect(isForbiddenUsername('CLAUDE.md')).toBe(true);
         expect(isForbiddenUsername('claude.MD')).toBe(true);
+        expect(isForbiddenUsername('auth.md')).toBe(true);
+        expect(isForbiddenUsername('AUTH.MD')).toBe(true);
 
         // Agentic protocols and payment standards
         expect(isForbiddenUsername('x402')).toBe(true);
