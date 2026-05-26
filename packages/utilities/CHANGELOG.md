@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.32.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.32.0...@apify/utilities@2.32.1) (2026-05-26)
+
+
+### Bug Fixes
+
+* add auth.md to forbidden usernames list ([#641](https://github.com/apify/apify-shared-js/issues/641)) ([347e8b3](https://github.com/apify/apify-shared-js/commit/347e8b30aa44154e057cc70c6ef1307845bb4edc))
+
+
+
+
+
 # [2.32.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.31.2...@apify/utilities@2.32.0) (2026-05-22)
 
 
