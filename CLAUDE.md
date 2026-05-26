@@ -36,3 +36,4 @@ pnpm clean                # Clean all dist/ folders
 - **Conventional commits** required: `fix:` (patch), `feat:` (minor), `BREAKING CHANGE:` in footer (major). Enforced by commitlint + husky hooks. PR titles must also follow this format
 - **Adding a new package:** Copy an existing package directory, update `package.json` name/deps, keep the standard `build`/`clean`/`compile`/`copy` scripts
 - Package dependencies must be declared in `package.json` so Lerna builds in correct topological order
+- **PR descriptions:** Keep them concise — one or two sentences stating what changed and why. Skip Summary/Changes/Details section headers for small changes; only add structure when the change is large enough to warrant it
