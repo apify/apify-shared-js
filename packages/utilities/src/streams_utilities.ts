@@ -26,3 +26,35 @@ export async function readStreamToString(stream: Readable | PassThrough, encodin
     const buffer = await concatStreamToBuffer(stream);
     return buffer.toString(encoding);
 }
+
+function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
+    return typeof value === 'object' && !!value && Symbol.asyncIterator in value;
+}
+
+async function asyncIterableToArray<T>(iterable: AsyncIterable<T>): Promise<T[]> {
+    const out: T[] = [];
+    for await (const item of iterable) {
+        out.push(item);
+    }
+
+    return out;
+}
+
+export function iterableToArray<T>(iterable: AsyncIterable<T>): Promise<T[]>;
+export function iterableToArray<T>(iterable: Iterable<T>): T[];
+
+/**
+ * Collect items from an iterable object or an async iterable into an array.
+ */
+export function iterableToArray<T>(iterable: AsyncIterable<T> | Iterable<T>) {
+    if (isAsyncIterable(iterable)) {
+        return asyncIterableToArray(iterable);
+    }
+
+    const out: T[] = [];
+    for (const item of iterable) {
+        out.push(item);
+    }
+
+    return out;
+}
