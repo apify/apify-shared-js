@@ -75,6 +75,7 @@ export const META_ORIGINS = {
     CLI: 'CLI', // Job started by apify CLI
     STANDBY: 'STANDBY', // Job started by Actor Standby
     CI: 'CI', // Job started from a CI/CD pipeline (e.g. GitHub Actions)
+    MCP: 'MCP', // Job started trough apify client triggered from apify-mcp-server
 } as const;
 
 /**
