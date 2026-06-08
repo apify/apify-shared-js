@@ -53,7 +53,10 @@ describe('isForbiddenUsername()', () => {
 
         // Apify-specific routes / features
         expect(isForbiddenUsername('contact-sales')).toBe(true);
+        expect(isForbiddenUsername('creator')).toBe(true);
+        expect(isForbiddenUsername('creators')).toBe(true);
         expect(isForbiddenUsername('creator-plan')).toBe(true);
+        expect(isForbiddenUsername('community')).toBe(true);
         expect(isForbiddenUsername('standby')).toBe(true);
         expect(isForbiddenUsername('pay-per-event')).toBe(true);
         expect(isForbiddenUsername('compute-unit')).toBe(true);
