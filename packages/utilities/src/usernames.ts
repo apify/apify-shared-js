@@ -231,6 +231,7 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     '1m-usd-challenge',
     'contact-sales',
     'creator',
+    'creators',
     'creator-plan',
     'request-an-integration',
     'whitepaper',
