@@ -63,12 +63,14 @@
                         },
                         "keyPrefix": {
                             "type": "string",
+                            "minLength": 1,
                             "description": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is mutually exclusive with key.",
                             "x-intellij-html-description": "<p>Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with <code>key</code>.</p>",
                             "markdownDescription": "Prefix for all keys in this collection. It's used when a collection contains multiple files. This attribute is\nmutually exclusive with `key`."
                         },
                         "key": {
                             "type": "string",
+                            "minLength": 1,
                             "description": "Exact key for a single file in the collection. This is used when a collection contains only one specific file. This attribute is mutually exclusive with keyPrefix.",
                             "x-intellij-html-description": "<p>Exact key for a single file in the collection. This is used when a collection contains only one specific file.\nThis attribute is mutually exclusive with <code>keyPrefix</code>.</p>",
                             "markdownDescription": "Exact key for a single file in the collection. This is used when a collection contains only one specific file.\nThis attribute is mutually exclusive with `keyPrefix`."
