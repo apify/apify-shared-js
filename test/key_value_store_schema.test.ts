@@ -167,6 +167,52 @@ describe('key_value_store.json', () => {
             );
         });
 
+        it('should not validate when keyPrefix is an empty string', () => {
+            const schema = {
+                actorKeyValueStoreSchemaVersion: 1,
+                title: 'My Key-Value Store',
+                collections: {
+                    myCollection: {
+                        title: 'My Collection',
+                        keyPrefix: '', // empty string is invalid
+                        contentTypes: ['application/json'],
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    keyword: 'minLength',
+                    instancePath: '/collections/myCollection/keyPrefix',
+                }),
+            );
+        });
+
+        it('should not validate when key is an empty string', () => {
+            const schema = {
+                actorKeyValueStoreSchemaVersion: 1,
+                title: 'My Key-Value Store',
+                collections: {
+                    myCollection: {
+                        title: 'My Collection',
+                        key: '', // empty string is invalid
+                        contentTypes: ['application/json'],
+                    },
+                },
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(false);
+            expect(validator.errors).toContainEqual(
+                expect.objectContaining({
+                    keyword: 'minLength',
+                    instancePath: '/collections/myCollection/key',
+                }),
+            );
+        });
+
         it('should not validate with empty contentTypes array', () => {
             const schema = {
                 actorKeyValueStoreSchemaVersion: 1,
