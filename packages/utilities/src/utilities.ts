@@ -41,8 +41,7 @@ export function deterministicUniqueId(key: string, length = 17): string {
 
 /**
  * Returns a random integer between 0 and max (excluded, unless it is also 0).
- * @param {number} maxExcluded
- * @returns {number}
+ * @param maxExcluded - exclusive upper bound; the returned value is always lower than this
  */
 export function getRandomInt(maxExcluded: number) {
     maxExcluded = Math.floor(maxExcluded);
@@ -63,7 +62,7 @@ export function parseDateFromJson(date: string | Date) {
 
 /**
  * Returns a Promise object that will wait a specific number of milliseconds.
- * @param {number} millis Time to wait. If the value is not larger than zero, the promise resolves immediately.
+ * @param millis - time to wait in milliseconds; if not larger than zero, the promise resolves immediately
  */
 export async function delayPromise(millis: number): Promise<void> {
     return new Promise((resolve) => {
