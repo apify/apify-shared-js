@@ -166,9 +166,8 @@ export function encryptInputSecrets<T extends Record<string, any>>({
 
 /**
  * Decrypts actor input secrets
- * @param {Object} input
- * @param {KeyObject} privateKey
- * @returns Object
+ * @param input - actor input object that may contain encrypted secret values
+ * @param privateKey - private key used to decrypt the secret values
  */
 export function decryptInputSecrets<T>({ input, privateKey }: { input: T; privateKey: KeyObject }): T {
     ow(input, ow.object);
