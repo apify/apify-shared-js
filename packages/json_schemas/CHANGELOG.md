@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.10](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.9...@apify/json_schemas@0.16.10) (2026-06-12)
+
+
+### Bug Fixes
+
+* **json_schemas:** reject empty key/keyPrefix in KVS collection schema ([#647](https://github.com/apify/apify-shared-js/issues/647)) ([fc90188](https://github.com/apify/apify-shared-js/commit/fc90188d301d6afe790ba6e56f7143778f1581af))
+
+
+
+
+
 ## [0.16.9](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.8...@apify/json_schemas@0.16.9) (2026-06-03)
 
 **Note:** Version bump only for package @apify/json_schemas
