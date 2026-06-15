@@ -31,11 +31,24 @@ jobs:
               uses: apify/actions/pnpm-install@v1.1.2
             - name: Check for pre-existing NPM drift
               # Fail fast if a previous release tagged a version that never reached npm, before we
-              # publish anything new that could bake `workspace:^` references over the gap.
+              # publish anything new that bakes a `workspace:^` reference over the gap (see #649).
+              # We only check packages this run is NOT releasing: a package we're about to publish
+              # legitimately isn't on npm yet (new version, or one we're re-publishing to recover
+              # from a failed release), so checking it would either be pointless or block recovery.
+              # The drift that actually breaks consumers is an *unreleased* dependency.
               run: |
-                  pnpm exec lerna ls --json \
-                    | jq -r '.[] | "\(.name)@\(.version)"' \
-                    | xargs -I{} npm view {} version
+                  releasing="$(pnpm exec lerna changed --json 2>/dev/null | jq -r '.[].name' || true)"
+                  missing=""
+                  for spec in $(pnpm exec lerna ls --json | jq -r '.[] | "\(.name)@\(.version)"'); do
+                      name="${spec%@*}"
+                      if printf '%s\n' "$releasing" | grep -qxF "$name"; then continue; fi
+                      npm view "$spec" version >/dev/null 2>&1 || missing="$missing $spec"
+                  done
+                  if [ -n "$missing" ]; then
+                      echo "MISSING ON NPM:$missing"
+                      echo "A previous release tagged these versions but never published them. Publish the missing version(s), or revert the unpublished bump, before releasing."
+                      exit 1
+                  fi
             - name: Build module
               run: pnpm build
             - name: Publish to NPM
