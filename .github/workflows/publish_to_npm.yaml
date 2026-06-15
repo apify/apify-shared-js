@@ -29,6 +29,13 @@ jobs:
                   registry-url: 'https://registry.npmjs.org'
             - name: Install pnpm and dependencies
               uses: apify/actions/pnpm-install@v1.1.2
+            - name: Check for pre-existing NPM drift
+              # Fail fast if a previous release tagged a version that never reached npm, before we
+              # publish anything new that could bake `workspace:^` references over the gap.
+              run: |
+                  pnpm exec lerna ls --json \
+                    | jq -r '.[] | "\(.name)@\(.version)"' \
+                    | xargs -I{} npm view {} version
             - name: Build module
               run: pnpm build
             - name: Publish to NPM
