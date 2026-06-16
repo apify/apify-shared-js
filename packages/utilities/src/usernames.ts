@@ -382,6 +382,8 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'core-team',
     'oss',
     'open-source',
+    'opensource',
+    'open-source-software',
 
     // Anti-abuse / scam-bait names (frequently used in account fraud)
     'spam',
