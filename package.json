@@ -81,12 +81,5 @@
             "version": "10.33.4",
             "onFail": "warn"
         }
-    },
-    "pnpm": {
-        "overrides": {
-            "esbuild": "^0.28.1",
-            "tar": "^7.5.16",
-            "js-yaml@4": "^4.2.0"
-        }
     }
 }
