@@ -71,6 +71,7 @@
         "tsup": "^8.3.0",
         "typescript": "^5.8.3",
         "underscore": "^1.13.7",
+        "vite": "^8.0.16",
         "vitest": "^4.1.4"
     },
     "packageManager": "pnpm@10.33.4",
@@ -79,6 +80,13 @@
             "name": "pnpm",
             "version": "10.33.4",
             "onFail": "warn"
+        }
+    },
+    "pnpm": {
+        "overrides": {
+            "esbuild": "^0.28.1",
+            "tar": "^7.5.16",
+            "js-yaml@4": "^4.2.0"
         }
     }
 }
