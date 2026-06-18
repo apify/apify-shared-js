@@ -22,13 +22,16 @@ jobs:
                   ref: ${{ inputs.ref }}
                   token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   fetch-depth: 0 # we need to pull everything to allow lerna to detect what packages changed
+
             - name: Use Node.js 24
               uses: actions/setup-node@v6
               with:
                   node-version: 24
                   registry-url: 'https://registry.npmjs.org'
+
             - name: Install pnpm and dependencies
               uses: apify/actions/pnpm-install@v1.1.2
+
             - name: Check for pre-existing NPM drift
               # Fail fast if a previous release tagged a version that never reached npm, before we
               # publish anything new that bakes a `workspace:^` reference over the gap (see #649).
@@ -49,23 +52,48 @@ jobs:
                       echo "A previous release tagged these versions but never published them. Publish the missing version(s), or revert the unpublished bump, before releasing."
                       exit 1
                   fi
+
             - name: Build module
               run: pnpm build
-            - name: Publish to NPM
+
+            # We publish in a few steps:
+            # 1. Version packages with lerna, but don't push the version commit, we will recreate it later signed.
+            # 2. Sync root changelog with package changelogs, and update the lockfile
+            # 3. Commit and push all the changes via our signed commit action,
+            #    and push tags created in 1. via API to have them signed as well
+            # 4. Publish to NPM based on the versions in package.json
+            - name: Version packages
+              id: version_packages
               run: |
                   git checkout -- .
-                  pnpm exec lerna publish --contents dist --yes
+                  # Version packages, but don't push the version commit, we will recreate it later
+                  pnpm exec lerna version --no-push --yes
+                  # Save created tags to output for use in the next step
+                  echo "tags<<EOF" >> "$GITHUB_OUTPUT"
+                  git tag --points-at HEAD >> "$GITHUB_OUTPUT"
+                  echo "EOF" >> "$GITHUB_OUTPUT"
+                  # Reset the commit but keep the working tree
+                  git reset --soft HEAD~1
+
+            - name: Sync root changelog
+              run: |
                   pnpm install --no-frozen-lockfile # reinstall to have updated lock file
                   pnpm exec lerna ls --json | node scripts/sync-root-changelog.ts
-              env:
-                  GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
-                  GIT_AUTHOR_NAME: Apify Release Bot
-                  GIT_COMMITTER_NAME: Apify Release Bot
-                  GIT_AUTHOR_EMAIL: noreply@apify.com
-                  GIT_COMMITTER_EMAIL: noreply@apify.com
-            - name: Commit changes
-              uses: apify/actions/signed-commit@v1.0.0
+
+            - name: Commit and push changes
+              id: signed_commit
+              uses: apify/actions/signed-commit@v1.2.0
               with:
-                  message: 'chore: update root lock file and changelog [skip ci]'
-                  pull: '--rebase --autostash'
+                  message: 'chore: release new package versions [skip ci]'
                   github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+
+            - name: Push tags via API to have them signed
+              run: |
+                  for tag in ${{ steps.version_packages.outputs.tags }}; do
+                      gh api -X POST /repos/${{ github.repository }}/git/refs \
+                          -f ref="refs/tags/$tag" \
+                          -f sha="${{ steps.signed_commit.outputs.commit_sha }}"
+                  done
+
+            - name: Publish to NPM
+              run: pnpm exec lerna publish from-package --contents dist --yes
