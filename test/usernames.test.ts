@@ -64,6 +64,12 @@ describe('isForbiddenUsername()', () => {
         expect(isForbiddenUsername('dataset')).toBe(true);
         expect(isForbiddenUsername('datasets')).toBe(true);
 
+        // Open-source / community roles
+        expect(isForbiddenUsername('oss')).toBe(true);
+        expect(isForbiddenUsername('open-source')).toBe(true);
+        expect(isForbiddenUsername('opensource')).toBe(true);
+        expect(isForbiddenUsername('open-source-software')).toBe(true);
+
         // Organizations / workspaces / permissions
         expect(isForbiddenUsername('org')).toBe(true);
         expect(isForbiddenUsername('organisation')).toBe(true);

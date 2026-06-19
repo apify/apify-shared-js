@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.46](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.2.45...@apify/input_secrets@1.2.46) (2026-06-16)
+
+**Note:** Version bump only for package @apify/input_secrets
+
+
+
+
+
+## [1.2.45](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.2.44...@apify/input_secrets@1.2.45) (2026-06-12)
+
+
+### Bug Fixes
+
+* correct outdated JSDoc type annotations in utilities and input_secrets ([#648](https://github.com/apify/apify-shared-js/issues/648)) ([2184ee1](https://github.com/apify/apify-shared-js/commit/2184ee118c6dc8e66722817ec58de1392532a24b))
+
+
+
+
+
 ## [1.2.44](https://github.com/apify/apify-shared-js/compare/@apify/input_secrets@1.2.43...@apify/input_secrets@1.2.44) (2026-06-09)
 
 **Note:** Version bump only for package @apify/input_secrets

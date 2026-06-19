@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.34.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.33.1...@apify/utilities@2.34.0) (2026-06-16)
+
+
+### Features
+
+* add forbidden usernames for open-source roles ([#651](https://github.com/apify/apify-shared-js/issues/651)) ([fc00133](https://github.com/apify/apify-shared-js/commit/fc0013309e72e7be398db8d2b93f46992e82c06a))
+
+
+
+
+
+## [2.33.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.33.0...@apify/utilities@2.33.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* correct outdated JSDoc type annotations in utilities and input_secrets ([#648](https://github.com/apify/apify-shared-js/issues/648)) ([2184ee1](https://github.com/apify/apify-shared-js/commit/2184ee118c6dc8e66722817ec58de1392532a24b))
+
+
+
+
+
 # [2.33.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.32.2...@apify/utilities@2.33.0) (2026-06-09)
 
 
