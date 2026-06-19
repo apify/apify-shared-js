@@ -13,10 +13,10 @@ export class RetryableError extends Error {
 
 export async function retryWithExpBackoff<T>(
     params: {
-        func?: (...args: unknown[]) => T | Promise<T>;
-        expBackoffMillis?: number;
-        expBackoffMaxRepeats?: number;
-    } = {},
+        func: (...args: unknown[]) => T | Promise<T>;
+        expBackoffMillis: number;
+        expBackoffMaxRepeats: number;
+    },
 ): Promise<T> {
     const { func, expBackoffMillis, expBackoffMaxRepeats } = params;
 
