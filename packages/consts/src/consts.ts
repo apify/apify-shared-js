@@ -718,3 +718,10 @@ export const STORAGE_OWNERSHIP_FILTER = {
 } as const;
 
 export type STORAGE_OWNERSHIP_FILTER = ValueOf<typeof STORAGE_OWNERSHIP_FILTER>;
+
+/**
+ * The object key name in AWS S3 consists of a sequence of Unicode characters encoded in UTF-8,
+ * with a maximum length of 1,024 bytes or approximately 1,024 Latin characters.
+ * https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html
+ */
+export const AWS_S3_MAX_KEY_BYTES = 1024;
