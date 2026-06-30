@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.34.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.34.0...@apify/utilities@2.34.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* fix incorrect types ([#654](https://github.com/apify/apify-shared-js/issues/654)) ([ff6959c](https://github.com/apify/apify-shared-js/commit/ff6959c866f51b24118cf24820d5e8cd7f9d66c2)), closes [#137](https://github.com/apify/apify-shared-js/issues/137)
+
+
+
+
+
 # [2.34.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.33.1...@apify/utilities@2.34.0) (2026-06-16)
 
 
