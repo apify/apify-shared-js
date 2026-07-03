@@ -99,7 +99,7 @@ jobs:
                   for tag in ${{ steps.version_packages.outputs.tags }}; do
                       gh api -X POST /repos/${{ github.repository }}/git/refs \
                           -f ref="refs/tags/$tag" \
-                          -f sha="${{ steps.signed_commit.outputs.commit_sha }}"
+                          -f sha="${{ steps.signed_commit.outputs.commit_long_sha }}"
                   done
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
