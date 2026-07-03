@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.1.18...@apify/actor-memory-expression@0.2.0) (2026-07-03)
+
+
+### Bug Fixes
+
+* **ci:** Add GH_TOKEN env variable to workflow using the GitHub CLI, revert previous version bump ([#663](https://github.com/apify/apify-shared-js/issues/663)) ([f4315ba](https://github.com/apify/apify-shared-js/commit/f4315ba6bec17fa1a54eaa49a93c89d1500a7ad9))
+* **ci:** Use long commit SHA when creating git tags during new release, revert previous version bump ([#664](https://github.com/apify/apify-shared-js/issues/664)) ([effe553](https://github.com/apify/apify-shared-js/commit/effe553d042cccc26c99b83e2ac15ade1531b865))
+
+
+### Features
+
+* memory expression allow comparing text ([#661](https://github.com/apify/apify-shared-js/issues/661)) ([7cb3fbf](https://github.com/apify/apify-shared-js/commit/7cb3fbffcdb2eb62de47f7d64cbe95f738a81ebb)), closes [#660](https://github.com/apify/apify-shared-js/issues/660)
+
+
+
+
+
 ## [0.1.18](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.1.17...@apify/actor-memory-expression@0.1.18) (2026-06-03)
 
 **Note:** Version bump only for package @apify/actor-memory-expression
