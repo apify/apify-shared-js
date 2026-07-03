@@ -74,6 +74,13 @@ jobs:
                   echo "EOF" >> "$GITHUB_OUTPUT"
                   # Reset the commit but keep the working tree
                   git reset --soft HEAD~1
+              env:
+                  # These will be used only for the temporary commit, which we will reset,
+                  # so their values don't matter much, but they can't be empty
+                  GIT_AUTHOR_NAME: "Apify Release Bot"
+                  GIT_AUTHOR_EMAIL: "noreply@apify.com"
+                  GIT_COMMITTER_NAME: "Apify Release Bot"
+                  GIT_COMMITTER_EMAIL: "noreply@apify.com"
 
             - name: Sync root changelog
               run: |
