@@ -2,9 +2,11 @@
 import {
     addDependencies,
     andDependencies,
+    compareTextDependencies,
     compileDependencies,
     create,
     divideDependencies,
+    equalDependencies,
     evaluateDependencies,
     maxDependencies,
     minDependencies,
@@ -13,6 +15,7 @@ import {
     nullishDependencies,
     orDependencies,
     subtractDependencies,
+    unequalDependencies,
     xorDependencies,
 } from 'mathjs';
 
@@ -66,6 +69,14 @@ const math = create({
     xorDependencies,
     // without that dependency 'null ?? 5', won't work
     nullishDependencies,
+    // comparison dependencies
+    // equal/unequal power the `==`/`!=` operators
+    equalDependencies,
+    unequalDependencies,
+    // compareText does a case-sensitive lexical comparison, returning 0 when strings are equal.
+    // This is what makes matching string enum values reliable, e.g.
+    // compareText(input.dataOutput, 'full detail') == 0 ? 1024 : 512
+    compareTextDependencies,
 });
 const { compile } = math;
 

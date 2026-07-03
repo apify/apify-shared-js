@@ -55,6 +55,25 @@ describe('calculateDefaultMemoryFromExpression', () => {
             expect(result).toBe(512);
         });
 
+        describe('matching string enum values with compareText()', () => {
+            const expr = "compareText(input.dataOutput, 'full detail') == 0 ? 4096 : 1024";
+
+            it('returns the matched value result when the string matches', async () => {
+                const context = { input: { dataOutput: 'full detail' }, runOptions: {} };
+                expect(await calculateRunDynamicMemory(expr, context)).toBe(4096);
+            });
+
+            it('returns the fallback result when the string does not match', async () => {
+                const context = { input: { dataOutput: 'basic' }, runOptions: {} };
+                expect(await calculateRunDynamicMemory(expr, context)).toBe(1024);
+            });
+
+            it('is case sensitive', async () => {
+                const context = { input: { dataOutput: 'Full Detail' }, runOptions: {} };
+                expect(await calculateRunDynamicMemory(expr, context)).toBe(1024);
+            });
+        });
+
         describe('operations supported', () => {
             const context = {
                 input: {},
@@ -75,6 +94,13 @@ describe('calculateDefaultMemoryFromExpression', () => {
                 { expression: 'not(false) ? 128 : 0', result: 128, name: 'not' },
                 { expression: 'null ?? 256', result: 256, name: 'nullish coalescing' },
                 { expression: 'a = 128', result: 128, name: '=' },
+                { expression: '128 == 128 ? 128 : 0', result: 128, name: '==' },
+                { expression: '128 != 256 ? 128 : 0', result: 128, name: '!=' },
+                {
+                    expression: "compareText('full detail', 'full detail') == 0 ? 128 : 0",
+                    result: 128,
+                    name: 'compareText()',
+                },
             ];
 
             it.each(cases)(`supports operation '$name'`, async ({ expression, result }) => {
