@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.1.18...@apify/actor-memory-expression@0.2.0) (2026-07-03)
+
+
+### Features
+
+* memory expression allow comparing text ([#661](https://github.com/apify/apify-shared-js/issues/661)) ([7cb3fbf](https://github.com/apify/apify-shared-js/commit/7cb3fbffcdb2eb62de47f7d64cbe95f738a81ebb)), closes [#660](https://github.com/apify/apify-shared-js/issues/660)
+
+
+
+
+
 ## [0.1.18](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.1.17...@apify/actor-memory-expression@0.1.18) (2026-06-03)
 
 **Note:** Version bump only for package @apify/actor-memory-expression
