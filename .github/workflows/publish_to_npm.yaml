@@ -101,6 +101,8 @@ jobs:
                           -f ref="refs/tags/$tag" \
                           -f sha="${{ steps.signed_commit.outputs.commit_sha }}"
                   done
+              env:
+                  GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
 
             - name: Publish to NPM
               run: pnpm exec lerna publish from-package --contents dist --yes
