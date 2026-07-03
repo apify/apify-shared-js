@@ -89,7 +89,7 @@ jobs:
 
             - name: Commit and push changes
               id: signed_commit
-              uses: apify/actions/signed-commit@v1.2.0
+              uses: apify/actions/signed-commit@v1.4.0
               with:
                   message: 'chore: release new package versions [skip ci]'
                   github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
