@@ -7,13 +7,13 @@ export interface AbortContext {
 /**
  * A single `addTimeoutToPromise` call. Nested calls share the `cancelTask` controller of the
  * enclosing frame (so `tryCancel()` behaves the same at any depth), but each call gets its own
- * frame, which is what lets {@apilink extendTimeout} tell the layers apart.
+ * frame, which is what lets {@link extendTimeout} tell the layers apart.
  */
 interface TimeoutFrame extends AbortContext {
     /** The enclosing frame, when this call is nested inside another `addTimeoutToPromise`. */
     parent?: TimeoutFrame;
-    /** Pushes this frame's deadline back. Becomes a no-op once the frame times out or settles. */
-    extend?: (extraMillis: number) => void;
+    /** Pushes this frame's deadline back. Returns `false` once the frame timed out or settled. */
+    extend?: (extraMillis: number) => boolean;
 }
 
 /**
@@ -119,12 +119,14 @@ export async function addTimeoutToPromise<T>(
         // anything useful, but still keeps the event loop alive
         context.extend = (extraMillis: number) => {
             if (settled) {
-                return;
+                return false;
             }
 
             clearTimeout(timeout);
             deadline += extraMillis;
             timeout = setTimeout(() => fire(), Math.max(deadline - Date.now(), 0));
+
+            return true;
         };
 
         storage.run(context, () => {
@@ -152,7 +154,7 @@ export interface ExtendTimeoutOptions {
 /**
  * Pushes the deadline of the currently running timeout back by `extraMillis`, for cases where the
  * required time is only known once the handler is already running. Call it from inside a handler
- * wrapped in {@apilink addTimeoutToPromise}; outside of one it is a no-op.
+ * wrapped in {@link addTimeoutToPromise}; outside of one it is a no-op.
  *
  * ```ts
  * await addTimeoutToPromise(async () => {
@@ -175,7 +177,11 @@ export function extendTimeout(extraMillis: number, options: ExtendTimeoutOptions
     let frame = storage.getStore() as TimeoutFrame | undefined;
 
     while (frame) {
-        frame.extend?.(extraMillis);
+        // a frame that already timed out means the caller is running past its deadline - it must not
+        // push back the enclosing ones either, those are what still bounds it
+        if (frame.extend?.(extraMillis) === false) {
+            return;
+        }
 
         if (!propagate) {
             return;

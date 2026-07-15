@@ -116,9 +116,7 @@ describe('extendTimeout', () => {
     });
 
     it('keeps the enclosing context readable from a nested one', async () => {
-        // nested calls used to share a single store object, so anything put on the context of an outer
-        // handler was readable from an inner one - each call has its own store now, and this makes sure
-        // it still inherits from the enclosing one
+        // each call has a store of its own, but it must still inherit from the enclosing one
         await addTimeoutToPromise(
             async () => {
                 (storage.getStore() as Record<string, unknown>).marker = 'from-outer';
@@ -157,5 +155,30 @@ describe('extendTimeout', () => {
         // the extension must not resurrect the timer or turn the rejection into a resolution
         await setTimeout(60);
         expect(extended).toBe(true);
+    });
+
+    it('does not extend the enclosing timeouts once the handler timed out', async () => {
+        // no `tryCancel()`, so the inner handler keeps running after it timed out - the extension it
+        // asks for then must not push back the outer timeout that is still bounding it
+        const promise = addTimeoutToPromise(
+            async () => {
+                await addTimeoutToPromise(
+                    async () => {
+                        await setTimeout(60);
+                        extendTimeout(5000);
+                    },
+                    30,
+                    'inner timed out',
+                ).catch(() => {});
+
+                await setTimeout(120);
+
+                return 123;
+            },
+            100,
+            'outer timed out',
+        );
+
+        await expect(promise).rejects.toThrow('outer timed out');
     });
 });
