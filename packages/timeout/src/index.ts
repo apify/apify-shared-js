@@ -12,7 +12,7 @@ export interface AbortContext {
 interface TimeoutFrame extends AbortContext {
     /** The enclosing frame, when this call is nested inside another `addTimeoutToPromise`. */
     parent?: TimeoutFrame;
-    /** Pushes this frame's deadline back. Returns `false` once the frame timed out or settled. */
+    /** Pushes this frame's deadline ahead. Returns `false` if the frame has already timed out or settled. */
     extend?: (extraMillis: number) => boolean;
 }
 
