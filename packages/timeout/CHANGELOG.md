@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/apify/apify-shared-js/compare/@apify/timeout@0.3.5...@apify/timeout@0.4.0) (2026-07-16)
+
+
+### Features
+
+* **timeout:** add `extendTimeout` to push back a running deadline ([#669](https://github.com/apify/apify-shared-js/issues/669)) ([e40b66b](https://github.com/apify/apify-shared-js/commit/e40b66b5bc0ef24616d6007cf0e976b4b2594f4b)), closes [apify/crawlee#1485](https://github.com/apify/crawlee/issues/1485) [apify/crawlee#2951](https://github.com/apify/crawlee/issues/2951)
+
+
+
+
+
 ## [0.3.5](https://github.com/apify/apify-shared-js/compare/@apify/timeout@0.3.4...@apify/timeout@0.3.5) (2026-05-04)
 
 **Note:** Version bump only for package @apify/timeout

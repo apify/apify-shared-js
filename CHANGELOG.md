@@ -8,7 +8,7 @@ See the changelogs of each package:
 
 package | version | changelog
 --------|---------|----------
-`@apify/actor-memory-expression` | 0.2.1 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
+`@apify/actor-memory-expression` | 0.2.2 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
 `@apify/consts` | 2.53.3 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 2.0.6 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/git` | 2.1.6 | [CHANGELOG](./packages/git/CHANGELOG.md)
@@ -20,5 +20,5 @@ package | version | changelog
 `@apify/markdown` | 3.0.71 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 0.2.2 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 2.0.82 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
-`@apify/timeout` | 0.3.5 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
+`@apify/timeout` | 0.4.0 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
 `@apify/utilities` | 2.34.1 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
