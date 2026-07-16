@@ -96,13 +96,16 @@ jobs:
 
             - name: Push tags via API to have them signed
               run: |
-                  for tag in ${{ steps.version_packages.outputs.tags }}; do
+                  while IFS= read -r tag; do
+                      [ -z "$tag" ] && continue
                       gh api -X POST /repos/${{ github.repository }}/git/refs \
                           -f ref="refs/tags/$tag" \
-                          -f sha="${{ steps.signed_commit.outputs.commit_long_sha }}"
-                  done
+                          -f sha="$COMMIT_SHA"
+                  done <<< "$TAGS"
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+                  TAGS: ${{ steps.version_packages.outputs.tags }}
+                  COMMIT_SHA: ${{ steps.signed_commit.outputs.commit_long_sha }}
 
             - name: Publish to NPM
               run: pnpm exec lerna publish from-package --contents dist --yes
