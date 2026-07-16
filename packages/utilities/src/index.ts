@@ -12,3 +12,4 @@ export * from './code_hash_manager';
 export * from './hmac';
 export * from './storages';
 export * from './parse_boolean';
+export * from './kvs_key_validator';
