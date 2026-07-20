@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.54.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.53.3...@apify/consts@2.54.0) (2026-07-20)
+
+
+### Features
+
+* add APIFY_AI to META_ORIGINS ([#671](https://github.com/apify/apify-shared-js/issues/671)) ([6c18a59](https://github.com/apify/apify-shared-js/commit/6c18a591d95c32bf3584ae0691e729ebbc6479d1))
+
+
+
+
+
 ## [2.53.3](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.53.2...@apify/consts@2.53.3) (2026-06-03)
 
 **Note:** Version bump only for package @apify/consts

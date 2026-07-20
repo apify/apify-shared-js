@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.16.11](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.10...@apify/json_schemas@0.16.11) (2026-07-20)
+
+**Note:** Version bump only for package @apify/json_schemas
+
+
+
+
+
 ## [0.16.10](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.9...@apify/json_schemas@0.16.10) (2026-06-12)
 
 
