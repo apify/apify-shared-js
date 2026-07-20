@@ -8,6 +8,7 @@ import {
     LOCAL_ACTOR_ENV_VARS,
     LOCAL_APIFY_ENV_VARS,
     LOCAL_ENV_VARS,
+    META_ORIGINS,
     PROFILE_NAME,
     USERNAME,
 } from '@apify/consts';
@@ -147,6 +148,18 @@ describe('consts', () => {
             Object.keys(LOCAL_APIFY_ENV_VARS).forEach((k) => {
                 expect(k.startsWith('APIFY_')).toBe(true);
             });
+        });
+    });
+
+    describe('META_ORIGINS', () => {
+        it('every value is the same as its key', () => {
+            Object.entries(META_ORIGINS).forEach(([k, v]) => {
+                expect(v).toBe(k);
+            });
+        });
+
+        it('includes APIFY_AI', () => {
+            expect(META_ORIGINS.APIFY_AI).toBe('APIFY_AI');
         });
     });
 });
