@@ -114,7 +114,15 @@ export class HealthChecker {
     }
 
     async _testMongoDbPing({ client }: CheckType) {
-        const response = await client.command({ ping: 1 });
+        const response = await client.command(
+            { ping: 1 },
+            {
+                readPreference: {
+                    readPreference: 'nearest',
+                    readPreferenceTags: [{ nodeType: 'ELECTABLE' }],
+                },
+            },
+        );
         if (response.ok !== 1) throw new Error(`Got ${response.ok} instead of 1!`);
     }
 
