@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.35.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.34.2...@apify/utilities@2.35.0) (2026-07-21)
+
+
+### Features
+
+*  do not connect to analytics node in healthchecks ([#672](https://github.com/apify/apify-shared-js/issues/672)) ([8b59417](https://github.com/apify/apify-shared-js/commit/8b59417444754c59475889e2d30b299a0b545cf5))
+
+
+
+
+
 ## [2.34.2](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.34.1...@apify/utilities@2.34.2) (2026-07-20)
 
 **Note:** Version bump only for package @apify/utilities

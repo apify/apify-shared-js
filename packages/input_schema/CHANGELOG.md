@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.28.20](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.28.19...@apify/input_schema@3.28.20) (2026-07-21)
+
+**Note:** Version bump only for package @apify/input_schema
+
+
+
+
+
 ## [3.28.19](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.28.18...@apify/input_schema@3.28.19) (2026-07-20)
 
 **Note:** Version bump only for package @apify/input_schema
