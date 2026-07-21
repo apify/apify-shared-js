@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.35.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.35.0...@apify/utilities@2.35.1) (2026-07-21)
+
+
+### Bug Fixes
+
+* reverted the read preference switch in healthcheck ([#673](https://github.com/apify/apify-shared-js/issues/673)) ([d44ad23](https://github.com/apify/apify-shared-js/commit/d44ad23debb495e3e6d017e1ecfd2667104d3510))
+
+
+
+
+
 # [2.35.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@2.34.2...@apify/utilities@2.35.0) (2026-07-21)
 
 
