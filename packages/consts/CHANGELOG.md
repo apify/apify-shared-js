@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.55.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.54.2...@apify/consts@2.55.0) (2026-07-29)
+
+
+### Features
+
+* changed APIFY_MCP_PROXY_URL to ACTOR_MCP_PROXY_URL ([#674](https://github.com/apify/apify-shared-js/issues/674)) ([78fba9e](https://github.com/apify/apify-shared-js/commit/78fba9e33e0d8f7acff34f8a61eb8871090c61fe))
+
+
+
+
+
 ## [2.54.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.54.1...@apify/consts@2.54.2) (2026-07-21)
 
 **Note:** Version bump only for package @apify/consts
