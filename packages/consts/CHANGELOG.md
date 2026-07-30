@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.56.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.55.0...@apify/consts@2.56.0) (2026-07-30)
+
+
+### Features
+
+* **consts/exit-codes:** add exit codes enum ([#675](https://github.com/apify/apify-shared-js/issues/675)) ([c127980](https://github.com/apify/apify-shared-js/commit/c127980812b5a075bea4a4cab7d09e181241989d))
+
+
+
+
+
 # [2.55.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.54.2...@apify/consts@2.55.0) (2026-07-29)
 
 
