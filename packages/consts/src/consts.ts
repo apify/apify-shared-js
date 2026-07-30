@@ -723,3 +723,18 @@ export const STORAGE_OWNERSHIP_FILTER = {
 } as const;
 
 export type STORAGE_OWNERSHIP_FILTER = ValueOf<typeof STORAGE_OWNERSHIP_FILTER>;
+
+/**
+ * Exit codes used by an Actor process to signal the outcome of its run.
+ * @see {@link https://whitepaper.actor/#exit-actor}
+ */
+export const ACTOR_EXIT_CODE = {
+    /** The Actor run finished successfully. */
+    SUCCESS: 0,
+    /** The Actor run failed due to an error. */
+    FAILURE: 1,
+    /** The Actor run failed because the provided input was invalid.*/
+    INVALID_INPUT: 2,
+} as const;
+
+export type ACTOR_EXIT_CODE = ValueOf<typeof ACTOR_EXIT_CODE>;
