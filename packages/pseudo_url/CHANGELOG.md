@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.90](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.89...@apify/pseudo_url@2.0.90) (2026-08-18)
+
+**Note:** Version bump only for package @apify/pseudo_url
+
+
+
+
+
 ## [2.0.89](https://github.com/apify/apify-shared-js/compare/@apify/pseudo_url@2.0.88...@apify/pseudo_url@2.0.89) (2026-08-03)
 
 **Note:** Version bump only for package @apify/pseudo_url
