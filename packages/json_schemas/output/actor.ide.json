@@ -984,12 +984,6 @@
                             "placeholderValue": {
                                 "type": "string"
                             },
-                            "patternKey": {
-                                "type": "string"
-                            },
-                            "patternValue": {
-                                "type": "string"
-                            },
                             "isSecret": {
                                 "enum": [
                                     false
@@ -1355,12 +1349,6 @@
                                 "x-intellij-html-description": "<p>Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.</p>",
                                 "markdownDescription": "Sample value of this field for the Actor to be displayed when Actor is published in Apify Store."
                             },
-                            "patternKey": {
-                                "type": "string"
-                            },
-                            "patternValue": {
-                                "type": "string"
-                            },
                             "nullable": {
                                 "type": "boolean",
                                 "description": "Specifies whether null is an allowed value.",
@@ -1513,12 +1501,6 @@
                                 "description": "Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.",
                                 "x-intellij-html-description": "<p>Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.</p>",
                                 "markdownDescription": "Sample value of this field for the Actor to be displayed when Actor is published in Apify Store."
-                            },
-                            "patternKey": {
-                                "type": "string"
-                            },
-                            "patternValue": {
-                                "type": "string"
                             },
                             "nullable": {
                                 "type": "boolean",
@@ -2904,12 +2886,6 @@
                         "placeholderValue": {
                             "type": "string"
                         },
-                        "patternKey": {
-                            "type": "string"
-                        },
-                        "patternValue": {
-                            "type": "string"
-                        },
                         "errorMessage": {
                             "$ref": "#/definitions/input-ide-json-2212166aa408babb6120b85f1282521a/definitions/errorMessage"
                         }
@@ -3420,12 +3396,6 @@
                             "description": "Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.",
                             "x-intellij-html-description": "<p>Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.</p>",
                             "markdownDescription": "Sample value of this field for the Actor to be displayed when Actor is published in Apify Store."
-                        },
-                        "patternKey": {
-                            "type": "string"
-                        },
-                        "patternValue": {
-                            "type": "string"
                         },
                         "nullable": {
                             "type": "boolean",
@@ -4994,12 +4964,6 @@
                             "type": "string"
                         },
                         "maxProperties": {
-                            "type": "string"
-                        },
-                        "patternKey": {
-                            "type": "string"
-                        },
-                        "patternValue": {
                             "type": "string"
                         }
                     },

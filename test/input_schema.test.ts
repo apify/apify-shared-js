@@ -1677,22 +1677,6 @@ describe('input_schema.json', () => {
                             editor: 'textfield',
                             pattern: '^[A-Z]{3}$',
                         },
-                        objectField: {
-                            title: 'Object field',
-                            type: 'object',
-                            description: 'Some description ...',
-                            editor: 'json',
-                            patternKey: '^[a-z]+$',
-                            patternValue: '^[0-9]+$',
-                        },
-                        arrayField: {
-                            title: 'Array field',
-                            type: 'array',
-                            description: 'Some description ...',
-                            editor: 'json',
-                            patternKey: '^[a-z]+$',
-                            patternValue: '^[0-9]+$',
-                        },
                     },
                 };
 
@@ -1719,30 +1703,15 @@ describe('input_schema.json', () => {
                     'Input schema is not valid (The regular expression "[A-Z{3}" in field schema.properties.myField.pattern must be valid.)',
                 );
             });
+        });
 
-            it('should throw error on invalid patternKey regexp', () => {
-                const schema = {
-                    title: 'Test input schema',
-                    type: 'object',
-                    schemaVersion: 1,
-                    properties: {
-                        objectField: {
-                            title: 'Object field',
-                            type: 'object',
-                            description: 'Some description ...',
-                            editor: 'json',
-                            patternKey: '[a-z+$', // invalid regexp
-                            patternValue: '^[0-9]+$',
-                        },
-                    },
-                };
+        describe('deprecated patternKey/patternValue', () => {
+            const deprecationMessage = (fieldKey: string, property: string) =>
+                `Input schema is not valid (Property schema.properties.${fieldKey}.${property} is deprecated and no longer supported. ` +
+                'Please remove it from the input schema. ' +
+                'See https://docs.apify.com/platform/actors/development/actor-definition/input-schema/specification/v1#deprecation-of-patternkey-and-patternvalue for migration instructions.)';
 
-                expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (The regular expression "[a-z+$" in field schema.properties.objectField.patternKey must be valid.)',
-                );
-            });
-
-            it('should throw error on invalid patternValue regexp', () => {
+            it('should throw error on patternKey in an object field', () => {
                 const schema = {
                     title: 'Test input schema',
                     type: 'object',
@@ -1754,13 +1723,62 @@ describe('input_schema.json', () => {
                             description: 'Some description ...',
                             editor: 'json',
                             patternKey: '^[a-z]+$',
-                            patternValue: '^[0-9+$', // invalid regexp
                         },
                     },
                 };
 
                 expect(() => validateInputSchema(validator, schema)).toThrow(
-                    'Input schema is not valid (The regular expression "^[0-9+$" in field schema.properties.objectField.patternValue must be valid.)',
+                    deprecationMessage('objectField', 'patternKey'),
+                );
+            });
+
+            it('should throw error on patternValue in an array field', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        arrayField: {
+                            title: 'Array field',
+                            type: 'array',
+                            description: 'Some description ...',
+                            editor: 'stringList',
+                            patternValue: '^[0-9]+$',
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    deprecationMessage('arrayField', 'patternValue'),
+                );
+            });
+
+            it('should throw error on patternKey in a sub-field', () => {
+                const schema = {
+                    title: 'Test input schema',
+                    type: 'object',
+                    schemaVersion: 1,
+                    properties: {
+                        objectField: {
+                            title: 'Object field',
+                            type: 'object',
+                            description: 'Some description ...',
+                            editor: 'schemaBased',
+                            properties: {
+                                subObject: {
+                                    title: 'Sub-object',
+                                    type: 'object',
+                                    description: 'Some description ...',
+                                    editor: 'json',
+                                    patternValue: '^[a-z]+$',
+                                },
+                            },
+                        },
+                    },
+                };
+
+                expect(() => validateInputSchema(validator, schema)).toThrow(
+                    deprecationMessage('objectField.subObject', 'patternValue'),
                 );
             });
         });

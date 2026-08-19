@@ -227,8 +227,6 @@
                     "sectionDescription": { "type": "string" },
                     "placeholderKey": { "type": "string" },
                     "placeholderValue": { "type": "string" },
-                    "patternKey": { "type": "string" },
-                    "patternValue": { "type": "string" },
                     "isSecret": { "enum": [false] },
                     "errorMessage": { "$ref": "#/definitions/errorMessage" }
                 },
@@ -355,8 +353,6 @@
                     "description": { "type": "string" },
                     "prefill": { "type": "object" },
                     "example": { "type": "object" },
-                    "patternKey": { "type": "string" },
-                    "patternValue": { "type": "string" },
                     "nullable": { "type": "boolean" },
                     "minProperties": { "type": "integer" },
                     "maxProperties": { "type": "integer" },
@@ -410,8 +406,6 @@
                     "description": { "type": "string" },
                     "prefill": { "type": "object" },
                     "example": { "type": "object" },
-                    "patternKey": { "type": "string" },
-                    "patternValue": { "type": "string" },
                     "nullable": { "type": "boolean" },
                     "minProperties": { "type": "integer" },
                     "maxProperties": { "type": "integer" },
@@ -864,8 +858,6 @@
                 "uniqueItems": { "type": "boolean" },
                 "placeholderKey": { "type": "string" },
                 "placeholderValue": { "type": "string" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" },
                 "errorMessage": { "$ref": "#/definitions/errorMessage" }
             },
             "required": ["type", "title", "description"],
@@ -1041,8 +1033,6 @@
                 "description": { "type": "string" },
                 "prefill": { "type": "object" },
                 "example": { "type": "object" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" },
                 "nullable": { "type": "boolean" },
                 "minProperties": { "type": "integer" },
                 "maxProperties": { "type": "integer" },
@@ -1725,9 +1715,7 @@
                 "maxItems": { "type": "string" },
                 "uniqueItems": { "type": "string" },
                 "minProperties": { "type": "string" },
-                "maxProperties": { "type": "string" },
-                "patternKey": { "type": "string" },
-                "patternValue": { "type": "string" }
+                "maxProperties": { "type": "string" }
             },
             "additionalProperties": false
         }

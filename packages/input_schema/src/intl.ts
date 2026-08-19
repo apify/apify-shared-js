@@ -31,6 +31,9 @@ const intlStrings = {
         'Field {rootName}.{fieldKey}.apifyProxyGroups must be an array of strings.',
     'inputSchema.validation.secretFieldSchemaChanged':
         'The field schema.properties.{fieldKey} is a secret field, but its schema has changed. Please update the value in the input editor.',
+    'inputSchema.validation.deprecatedProperty':
+        'Property schema.properties.{fieldKey}.{property} is deprecated and no longer supported. Please remove it from the input schema. ' +
+        'See https://docs.apify.com/platform/actors/development/actor-definition/input-schema/specification/v1#deprecation-of-patternkey-and-patternvalue for migration instructions.',
     'inputSchema.validation.regexpNotValid':
         'The regular expression "{pattern}" in field schema.properties.{fieldKey} must be valid.',
     'inputSchema.validation.regexpNotSafe':

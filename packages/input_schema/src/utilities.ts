@@ -122,7 +122,10 @@ function validateProxyField(
 
 /**
  * Uses AJV validator to validate input with input schema and then
- * does custom validation for our own properties (nullable, patternKey, patternValue)
+ * does custom validation for our own properties (nullable, patternKey, patternValue).
+ *
+ * Note: patternKey/patternValue are deprecated and rejected by `validateInputSchema`,
+ * but they are still validated here so that inputs of existing builds keep working.
  * @param validator Initialized AJV validator
  * @param inputSchema Valid input schema in object
  * @param input Input object to be validated

@@ -58,8 +58,6 @@ export type NumberFieldDefinition = CommonFieldDefinition<number> & {
 export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     type: 'object';
     editor: 'json' | 'proxy' | 'schemaBased' | 'hidden';
-    patternKey?: string;
-    patternValue?: string;
     maxProperties?: number;
     minProperties?: number;
     properties?: Record<string, unknown>;
@@ -81,8 +79,6 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
         | 'hidden';
     placeholderKey?: string;
     placeholderValue?: string;
-    patternKey?: string;
-    patternValue?: string;
     maxItems?: number;
     minItems?: number;
     uniqueItems?: boolean;

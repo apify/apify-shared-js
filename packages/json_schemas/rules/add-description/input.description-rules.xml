@@ -398,14 +398,6 @@
         Placeholder displayed in value field when no value is provided. Works only with `keyValue` and `stringList`
         editors.
     </AddDescription>
-    <AddDescription json-path="/definitions/arrayProperty/else/properties/patternKey" format="markdown">
-        Regular expression that will be used to validate the keys of items in the array. Works only with `keyValue`
-        editor.
-    </AddDescription>
-    <AddDescription json-path="/definitions/arrayProperty/else/properties/patternValue" format="markdown">
-        Regular expression that will be used to validate the values of items in the array. Works only with `keyValue`
-        and `stringList` editors.
-    </AddDescription>
     <AddDescription json-path="/definitions/objectProperty/properties/type" format="markdown">
         Allowed type for the input value. Cannot be mixed.
     </AddDescription>
@@ -423,12 +415,6 @@
     </AddDescription>
     <AddDescription json-path="/definitions/objectProperty/properties/example" format="markdown">
         Sample value of this field for the Actor to be displayed when Actor is published in Apify Store.
-    </AddDescription>
-    <AddDescription json-path="/definitions/objectProperty/properties/patternKey" format="markdown">
-        Regular expression that will be used to validate the keys of the object.
-    </AddDescription>
-    <AddDescription json-path="/definitions/objectProperty/properties/patternValue" format="markdown">
-        Regular expression that will be used to validate the values of object.
     </AddDescription>
     <AddDescription json-path="/definitions/objectProperty/properties/nullable" format="markdown">
         Specifies whether null is an allowed value.
