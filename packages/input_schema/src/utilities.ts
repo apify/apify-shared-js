@@ -126,6 +126,7 @@ function validateProxyField(
  *
  * Note: patternKey/patternValue are deprecated and rejected by `validateInputSchema`,
  * but they are still validated here so that inputs of existing builds keep working.
+ * TODO: Remove their validation once stored schemas of existing builds no longer need to be supported.
  * @param validator Initialized AJV validator
  * @param inputSchema Valid input schema in object
  * @param input Input object to be validated
