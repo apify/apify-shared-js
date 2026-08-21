@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.57.3](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.57.2...@apify/consts@2.57.3) (2026-08-21)
+
+**Note:** Version bump only for package @apify/consts
+
+
+
+
+
 ## [2.57.2](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.57.1...@apify/consts@2.57.2) (2026-08-20)
 
 **Note:** Version bump only for package @apify/consts
