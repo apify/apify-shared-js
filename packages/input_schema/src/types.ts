@@ -58,7 +58,9 @@ export type NumberFieldDefinition = CommonFieldDefinition<number> & {
 export type ObjectFieldDefinition = CommonFieldDefinition<object> & {
     type: 'object';
     editor: 'json' | 'proxy' | 'schemaBased' | 'hidden';
+    /** @deprecated Rejected in new input schemas, but may still be present in stored schemas of existing builds. TODO: Remove once those no longer need to be supported. */
     patternKey?: string;
+    /** @deprecated Rejected in new input schemas, but may still be present in stored schemas of existing builds. TODO: Remove once those no longer need to be supported. */
     patternValue?: string;
     maxProperties?: number;
     minProperties?: number;
@@ -81,7 +83,9 @@ export type ArrayFieldDefinition = CommonFieldDefinition<unknown[]> & {
         | 'hidden';
     placeholderKey?: string;
     placeholderValue?: string;
+    /** @deprecated Rejected in new input schemas, but may still be present in stored schemas of existing builds. TODO: Remove once those no longer need to be supported. */
     patternKey?: string;
+    /** @deprecated Rejected in new input schemas, but may still be present in stored schemas of existing builds. TODO: Remove once those no longer need to be supported. */
     patternValue?: string;
     maxItems?: number;
     minItems?: number;

@@ -5,12 +5,10 @@ import { inputSchema as schema } from '@apify/json_schemas';
 
 import { m } from './intl';
 import type {
-    ArrayFieldDefinition,
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
     InputSchemaBaseChecked,
-    ObjectFieldDefinition,
     StringFieldDefinition,
 } from './types';
 import { ensureAjvSupportsDraft2019, validateRegexpPattern } from './utilities';
@@ -313,16 +311,24 @@ function validateField(
     fieldKey: string,
     isSubField = false,
 ): asserts fieldSchema is FieldDefinition {
+    // The deprecated patternKey/patternValue properties are no longer supported. They would fail
+    // the schema definition validation below anyway, but this check gives a clear error message
+    // with a link to migration instructions.
+    // TODO: Remove this check (and the deprecatedProperty message) once schemas have had enough
+    // time to migrate and the generic "property is not allowed" error is a good enough response.
+    for (const property of ['patternKey', 'patternValue']) {
+        if (property in fieldSchema) {
+            const message = m('inputSchema.validation.deprecatedProperty', { fieldKey, property });
+            throw new Error(`Input schema is not valid (${message})`);
+        }
+    }
+
     // Validate against schema definition first.
     validateFieldAgainstSchemaDefinition(validator, fieldSchema, fieldKey, isSubField);
 
-    // Validate regex patterns if defined.
+    // Validate regex pattern if defined.
     const { pattern } = fieldSchema as Partial<StringFieldDefinition>;
-    const { patternKey, patternValue } = fieldSchema as Partial<ObjectFieldDefinition & ArrayFieldDefinition>;
-
     if (pattern) validateRegexpPattern(pattern, `${fieldKey}.pattern`);
-    if (patternKey) validateRegexpPattern(patternKey, `${fieldKey}.patternKey`);
-    if (patternValue) validateRegexpPattern(patternValue, `${fieldKey}.patternValue`);
 }
 
 /**

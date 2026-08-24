@@ -388,7 +388,7 @@ describe('input_schema.json', () => {
                 ['minProperties', 'maxProperties'].forEach((intField) => {
                     expect(isSchemaValid({ [intField]: 10 }, true)).toBe(false);
                 });
-                ['patternKey', 'patternValue', 'prefill', 'example'].forEach((stringField) => {
+                ['prefill', 'example'].forEach((stringField) => {
                     expect(isSchemaValid({ [stringField]: 'bla' }, true)).toBe(false);
                 });
             });
