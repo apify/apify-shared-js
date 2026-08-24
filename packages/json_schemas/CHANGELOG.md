@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.20...@apify/json_schemas@0.17.0) (2026-08-24)
+
+
+### Features
+
+* **input_schema:** remove support for deprecated patternKey and patternValue ([#680](https://github.com/apify/apify-shared-js/issues/680)) ([1f16c19](https://github.com/apify/apify-shared-js/commit/1f16c19d51553235703b3d3781758e92dbe472f5))
+
+
+
+
+
 ## [0.16.20](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.16.19...@apify/json_schemas@0.16.20) (2026-08-21)
 
 **Note:** Version bump only for package @apify/json_schemas

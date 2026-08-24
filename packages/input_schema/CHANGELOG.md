@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.29.0](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.28.28...@apify/input_schema@3.29.0) (2026-08-24)
+
+
+### Features
+
+* **input_schema:** remove support for deprecated patternKey and patternValue ([#680](https://github.com/apify/apify-shared-js/issues/680)) ([1f16c19](https://github.com/apify/apify-shared-js/commit/1f16c19d51553235703b3d3781758e92dbe472f5))
+
+
+
+
+
 ## [3.28.28](https://github.com/apify/apify-shared-js/compare/@apify/input_schema@3.28.27...@apify/input_schema@3.28.28) (2026-08-21)
 
 **Note:** Version bump only for package @apify/input_schema
