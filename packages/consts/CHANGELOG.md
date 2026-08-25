@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.58.0](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.57.4...@apify/consts@2.58.0) (2026-08-25)
+
+
+### Features
+
+* lower max concurrent runs for free users to 5 ([#682](https://github.com/apify/apify-shared-js/issues/682)) ([957e568](https://github.com/apify/apify-shared-js/commit/957e56808833e52dbccb0fc1eef7b8a0fcdecc31))
+
+
+
+
+
 ## [2.57.4](https://github.com/apify/apify-shared-js/compare/@apify/consts@2.57.3...@apify/consts@2.57.4) (2026-08-24)
 
 **Note:** Version bump only for package @apify/consts
