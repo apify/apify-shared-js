@@ -1,4 +1,4 @@
-import qrcode from 'qrcode';
+import { renderSVG } from 'uqr';
 
 interface CzkQRCodeInputData {
     iban: string;
@@ -19,8 +19,10 @@ export function encodeInputDataToRawQrCodeInputString(data: CzkQRCodeInputData):
 
 /**
  * This function generates CZK QR code that can be used for domestic QR code payment.
- * It returns the QR code encoded as data URL that can be directly viewed in browser or used in <img> tag.
+ * It returns the QR code encoded as an SVG data URL that can be directly viewed in browser or used in <img> tag.
  */
 export async function generateCzkPaymentQrCodeDataUrl(data: CzkQRCodeInputData): Promise<string> {
-    return qrcode.toDataURL(encodeInputDataToRawQrCodeInputString(data));
+    // `ecc` and `border` match the defaults of the previously used `qrcode` package
+    const svg = renderSVG(encodeInputDataToRawQrCodeInputString(data), { ecc: 'M', border: 4 });
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }

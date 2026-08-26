@@ -42,7 +42,7 @@
         "access": "public"
     },
     "dependencies": {
-        "qrcode": "1.5.3"
+        "uqr": "^0.1.3"
     },
     "devDependencies": {
         "@types/qrcode": "^1.5.5"
