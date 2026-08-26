@@ -24,5 +24,5 @@ export function encodeInputDataToRawQrCodeInputString(data: CzkQRCodeInputData):
 export async function generateCzkPaymentQrCodeDataUrl(data: CzkQRCodeInputData): Promise<string> {
     // `ecc` and `border` match the defaults of the previously used `qrcode` package
     const svg = renderSVG(encodeInputDataToRawQrCodeInputString(data), { ecc: 'M', border: 4 });
-    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
