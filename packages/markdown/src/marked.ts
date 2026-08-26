@@ -39,14 +39,10 @@ const LANGUAGE_TO_TAB_TITLE = {
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
-interface Match {
-    groups: { header: string; lang: string; code: string };
-}
-
 const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string; code: string }> => {
-    const matches = [
-        ...markdown.matchAll(/<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs),
-    ] as unknown as Match[];
+    const matches = markdown.matchAll(
+        /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs,
+    );
 
     const tabs: Record<string, { language: string; code: string }> = {};
 
