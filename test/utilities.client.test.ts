@@ -19,8 +19,6 @@ import {
     unescapeFromBson,
 } from '@apify/utilities';
 
-// @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
-
 const clone = function (obj: any): any {
     if (obj === null || typeof obj !== 'object') return obj;
     if (obj instanceof Date) return new Date(obj.getTime());
@@ -148,7 +146,7 @@ const BAD_IRREVERSIBLE_OBJECTS = [
     },
 ] as any;
 
-const BAD_OBJECTS = [...new Set([...BAD_REVERSIBLE_OBJECTS, ...BAD_IRREVERSIBLE_OBJECTS])];
+const BAD_OBJECTS = [...BAD_REVERSIBLE_OBJECTS, ...BAD_IRREVERSIBLE_OBJECTS];
 
 // this effectively tests _escapePropertyName() and _unescapePropertyName()
 const KNOWN_ESCAPES: { irreversible?: boolean; src: any; trg: any }[] = [
