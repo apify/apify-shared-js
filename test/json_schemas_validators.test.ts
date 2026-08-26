@@ -8,8 +8,7 @@ import {
     getOutputSchemaValidator,
 } from '@apify/json_schemas';
 
-// Regression test: `getInputSchemaValidator()` used to throw on first call, because ajv's strict
-// mode rejects the dead `additionalItems` keyword the input schema carried next to a non-tuple `items`.
+// Regression test: ajv's strict mode rejects `additionalItems` next to a non-tuple `items`, which made `getInputSchemaValidator()` throw.
 describe('json_schemas validators', () => {
     it.each([
         ['actor', getActorSchemaValidator],
