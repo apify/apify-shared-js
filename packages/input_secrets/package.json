@@ -41,7 +41,7 @@
     "dependencies": {
         "@apify/log": "workspace:^",
         "@apify/utilities": "workspace:^",
-        "ow": "^0.28.2"
+        "zod": "^4.0.0"
     },
     "engines": {
         "node": ">=22"

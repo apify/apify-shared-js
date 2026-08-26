@@ -1,9 +1,3 @@
-import { createTsupConfig } from '../../scripts/tsup.config.ts';
+import { createTsupConfig } from '../../scripts/tsup.config.js';
 
-export default createTsupConfig({
-    // `ow` is CJS with a `default` export; make sure we grab the callable function in ESM output
-    banner: {
-        js: `import __ow_import from 'ow';
-const __injectedOw = __ow_import.default || __ow_import;`,
-    },
-});
+export default createTsupConfig({});

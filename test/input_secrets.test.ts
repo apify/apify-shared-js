@@ -2,7 +2,7 @@ import { createPrivateKey, createPublicKey } from 'node:crypto';
 
 import { describe, expect, it } from 'vitest';
 
-import { decryptInputSecrets, encryptInputSecrets } from '@apify/input_secrets';
+import { ArgumentValidationError, decryptInputSecrets, encryptInputSecrets } from '@apify/input_secrets';
 
 const publicKey = createPublicKey({
     // eslint-disable-next-line max-len
@@ -120,6 +120,18 @@ describe('input secrets', () => {
         };
         expect(() => decryptInputSecrets({ input: encryptedInput, privateKey })).toThrow(
             `The input field "secureObject" could not be decrypted.`,
+        );
+    });
+
+    it('should throw ArgumentValidationError on invalid arguments', () => {
+        expect(() => encryptInputSecrets({ input: 'nope' as any, inputSchema, publicKey })).toThrow(
+            ArgumentValidationError,
+        );
+        expect(() => encryptInputSecrets({ input: 'nope' as any, inputSchema, publicKey })).toThrow(
+            'Invalid input: expected object, received the string `nope` in `encryptInputSecrets`',
+        );
+        expect(() => encryptInputSecrets({ input: {}, inputSchema, publicKey: 'no key' as any })).toThrow(
+            'Invalid input: expected an instance of KeyObject, got `no key` in `encryptInputSecrets`',
         );
     });
 });
