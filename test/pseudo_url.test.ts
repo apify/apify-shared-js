@@ -22,11 +22,11 @@ describe('PseudoUrl', () => {
         );
         // @ts-expect-error
         expect(() => new PseudoUrl(['foo'])).toThrow(
-            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `[ 'foo' ]` of type 'array' instead",
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `[\"foo\"]` of type 'array' instead",
         );
         // @ts-expect-error
         expect(() => new PseudoUrl({ foo: 'bar' })).toThrow(
-            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `{ foo: 'bar' }` of type 'object' instead",
+            "Invalid PseudoUrl format, 'string' or 'RegExp' required, got `{\"foo\":\"bar\"}` of type 'object' instead",
         );
     });
 

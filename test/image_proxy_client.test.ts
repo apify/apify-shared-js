@@ -32,20 +32,20 @@ const getComplicatedHtml = (imageUrl: string) => {
 };
 
 describe('proxy image client', () => {
-    it('generateUrlWithParam() works', () => {
+    it('generateUrlWithParam() works', async () => {
         const testImageUrl = 'http://example.com/image.gif';
-        const proxyUrl = imageProxyClient.generateUrlWithParam(testImageUrl);
+        const proxyUrl = await imageProxyClient.generateUrlWithParam(testImageUrl);
         expect(
             'https://localhost:3000/14110f5a2b817884066da289ce004803b35cfefc/?url=http%3A%2F%2Fexample.com%2Fimage.gif',
         ).toBe(proxyUrl);
     });
 
-    it('generateUrl() works', () => {
-        const proxyUrl = imageProxyClient.generateUrl(TEST_IMAGE_URL);
+    it('generateUrl() works', async () => {
+        const proxyUrl = await imageProxyClient.generateUrl(TEST_IMAGE_URL);
         expect(EXPECTED_IMAGE_URL).toBe(proxyUrl);
     });
 
-    it('updateImagesInHtml() works', () => {
+    it('updateImagesInHtml() works', async () => {
         const html = (imageUrl: string) => {
             return (
                 '<div class="test-class">' +
@@ -55,32 +55,32 @@ describe('proxy image client', () => {
             );
         };
         const testHtml = html(TEST_IMAGE_URL);
-        const updatedHtml = imageProxyClient.updateImagesInHtml(testHtml);
+        const updatedHtml = await imageProxyClient.updateImagesInHtml(testHtml);
         expect(updatedHtml).toBe(html(EXPECTED_IMAGE_URL));
     });
 
-    it('updateImagesInHtml() works with just image in HTML', () => {
+    it('updateImagesInHtml() works with just image in HTML', async () => {
         const testHtml = getComplicatedHtml(TEST_IMAGE_URL);
-        const updatedHtml = imageProxyClient.updateImagesInHtml(testHtml);
+        const updatedHtml = await imageProxyClient.updateImagesInHtml(testHtml);
         expect(updatedHtml).toBe(getComplicatedHtml(EXPECTED_IMAGE_URL));
     });
 
-    it('updateImagesInHtml() works with URL with upper case protocol', () => {
+    it('updateImagesInHtml() works with URL with upper case protocol', async () => {
         const testHtml = getComplicatedHtml(TEST_IMAGE_URL_2);
-        const updatedHtml = imageProxyClient.updateImagesInHtml(testHtml);
+        const updatedHtml = await imageProxyClient.updateImagesInHtml(testHtml);
         expect(updatedHtml).toBe(getComplicatedHtml(EXPECTED_IMAGE_URL_2));
     });
 
-    it('updateImagesInHtml() does not break HTML comment', () => {
+    it('updateImagesInHtml() does not break HTML comment', async () => {
         const html = '<!-- toc -->';
-        const updatedHtml = imageProxyClient.updateImagesInHtml(html);
+        const updatedHtml = await imageProxyClient.updateImagesInHtml(html);
         expect(updatedHtml).toBe(html);
     });
 
-    it('createImageHtml() works', () => {
+    it('createImageHtml() works', async () => {
         const testTitle = 'test title';
         const testAlt = 'test alt';
-        const imageHtml = imageProxyClient.createImageHtml(TEST_IMAGE_URL, testTitle, testAlt);
+        const imageHtml = await imageProxyClient.createImageHtml(TEST_IMAGE_URL, testTitle, testAlt);
         expect(imageHtml).toBe(`<img src="${EXPECTED_IMAGE_URL}" alt="${testAlt}" title="${testTitle}">`);
     });
 });

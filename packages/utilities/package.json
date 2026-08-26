@@ -46,9 +46,6 @@
         "@apify/consts": "workspace:^",
         "@apify/log": "workspace:^"
     },
-    "devDependencies": {
-        "@types/create-hmac": "^1.1.0"
-    },
     "engines": {
         "node": ">=22"
     }
