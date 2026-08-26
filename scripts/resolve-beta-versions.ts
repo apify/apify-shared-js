@@ -43,8 +43,8 @@ for (const dir of readdirSync(packagesDir)) {
 
     const version = `${base}-beta.${next}`;
     console.info(`${pkg.name}: ${pkg.version} -> ${version}`);
-    writeFileSync(
-        pkgPath,
-        readFileSync(pkgPath, 'utf8').replace(`"version": "${pkg.version}"`, `"version": "${version}"`),
-    );
+    const source = readFileSync(pkgPath, 'utf8');
+    const updated = source.replace(`"version": "${pkg.version}"`, `"version": "${version}"`);
+    if (updated === source) throw new Error(`${pkg.name}: failed to rewrite the version in ${pkgPath}`);
+    writeFileSync(pkgPath, updated);
 }

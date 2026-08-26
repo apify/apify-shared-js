@@ -17,6 +17,10 @@ permissions:
     id-token: write # Required for OIDC
     contents: write # Required to push changelog/lock file updates
 
+# Serialize publishes: concurrent runs would compute the same beta prerelease numbers from the registry
+concurrency:
+    group: publish_to_npm
+
 jobs:
     publish_to_npm:
         name: Publish to NPM
