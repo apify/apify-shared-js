@@ -1,5 +1,3 @@
-import gitUrlParse from 'git-url-parse';
-
 interface ConvertOptions {
     /** whole readme file stored as a single string */
     readme: string;
@@ -9,9 +7,41 @@ interface ConvertOptions {
     gitBranchName?: string;
 }
 
-interface ParseGitUrl extends gitUrlParse.GitUrl {
+interface ParsedGitUrl {
+    /** host of the repo, e.g. `github.com` */
+    resource: string;
+    /** `owner/repo` part of the URL, without the `.git` suffix or any deeper path */
+    fullName: string;
     branchName?: string;
 }
+
+/**
+ * Parses the host and `owner/repo` pair from a git repo URL, either in the scp-like form
+ * (`git@github.com:owner/repo.git`) or any URL form (`https://github.com/owner/repo.git`,
+ * `ssh://git@github.com/owner/repo.git`, ...). Deeper path segments (e.g. Bitbucket's `/src/...`
+ * suffix) are ignored.
+ */
+const parseGitUrl = (gitRepoUrl: string): { resource: string; fullName: string } => {
+    let resource: string;
+    let path: string;
+
+    const scpLikeMatch = /^(?:[^@/]+@)?([^:/@]+):(.+)$/.exec(gitRepoUrl);
+    if (scpLikeMatch && !gitRepoUrl.includes('://')) {
+        [, resource, path] = scpLikeMatch;
+    } else {
+        const url = new URL(gitRepoUrl);
+        resource = url.hostname;
+        path = url.pathname;
+    }
+
+    const pathParts = path.replace(/^\/+/, '').split('/');
+    const fullName = pathParts
+        .slice(0, 2)
+        .join('/')
+        .replace(/\.git$/, '');
+
+    return { resource, fullName };
+};
 
 /**
  * Apify uses an extended git URL format with branch and directory as hash parameters:
@@ -20,24 +50,13 @@ interface ParseGitUrl extends gitUrlParse.GitUrl {
  * - myrepo.git#branch:folder
  * see https://github.com/apify/apify-worker/blob/8a667b3b5879a78ec2ce6a06e4953ad174b47cf2/src/actor/act2_build_job.js#L1258
  * @param gitRepoUrl
- * @return {ParseGitUrl}
+ * @return {ParsedGitUrl}
  */
-const parseApifyGitUrl = (gitRepoUrl: string): ParseGitUrl => {
-    if (gitRepoUrl.includes('#')) {
-        const repoFullUrlParsed = gitRepoUrl.split('#');
-        const repoUrl = repoFullUrlParsed[0];
-        const branchDirPart = repoFullUrlParsed[1];
-        const parsedRepoUrl = gitUrlParse(repoUrl);
-        let branchName;
-        if (branchDirPart && branchDirPart.includes(':')) {
-            const [branchPart] = branchDirPart.split(':');
-            branchName = branchPart;
-        } else if (branchDirPart) {
-            branchName = branchDirPart;
-        }
-        return { ...parsedRepoUrl, branchName };
-    }
-    return gitUrlParse(gitRepoUrl);
+const parseApifyGitUrl = (gitRepoUrl: string): ParsedGitUrl => {
+    const [repoUrl, branchDirPart] = gitRepoUrl.split('#');
+    // the part before `:` is the branch name; `#:folder` and a plain `#` carry no branch
+    const branchName = branchDirPart?.split(':')[0] || undefined;
+    return { ...parseGitUrl(repoUrl), branchName };
 };
 
 /**
@@ -53,10 +72,7 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({
     gitBranchName,
 }: ConvertOptions): string => {
     const parsedRepoUrl = parseApifyGitUrl(gitRepoUrl);
-
-    // Can't use parsedRepoUrl.full_name on it's own as Bitbucket adds irrelevant path suffix to the end of it
-    const repoNameParts = parsedRepoUrl.full_name.split('/');
-    const repoFullName = `${repoNameParts[0]}/${repoNameParts[1]}`;
+    const repoFullName = parsedRepoUrl.fullName;
 
     // We need to parse the branch there hence gitUrlParse is not detected this format of git URL.
     // Otherwise, we try to use the branch name from the build object. It should exist for all builds since roughly mid October 2020.

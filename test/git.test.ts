@@ -259,4 +259,38 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             }),
         ).toEqual(testMarkdown);
     });
+
+    it('works with https repo URLs', () => {
+        const testMarkdown = '![img](./img.jpg)';
+
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'https://github.com/apify/test-repo.git',
+            }),
+        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/master/img.jpg)');
+
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'https://github.com/apify/test-repo.git#dev',
+            }),
+        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/dev/img.jpg)');
+
+        // Bitbucket web URLs carry a path suffix after owner/repo, which must be ignored
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'https://user@bitbucket.org/apify/test-repo/src/main/',
+                gitBranchName: 'main',
+            }),
+        ).toEqual('![img](https://bytebucket.org/apify/test-repo/raw/main/img.jpg)');
+
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'ssh://git@gitlab.com/apify/test-repo.git',
+            }),
+        ).toEqual('![img](https://gitlab.com/apify/test-repo/-/raw/master/img.jpg)');
+    });
 });
