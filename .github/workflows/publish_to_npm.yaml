@@ -7,6 +7,11 @@ on:
                 description: Git ref to publish (branch, tag, or commit SHA)
                 required: true
                 type: string
+            prerelease:
+                description: Publish as a beta prerelease (versions like X.Y.Z-beta.N, npm dist-tag `next`, no tags/commits/releases)
+                required: false
+                default: false
+                type: boolean
 
 permissions:
     id-token: write # Required for OIDC
@@ -62,7 +67,20 @@ jobs:
             # 3. Commit and push all the changes via our signed commit action,
             #    and push tags created in 1. via API to have them signed as well
             # 4. Publish to NPM based on the versions in package.json
+            # Beta prereleases leave no trace in git: no tags, no pushed commits, no GitHub releases.
+            # The bump level comes from conventional commits since the last stable tag, and the
+            # prerelease number from the npm registry (see scripts/resolve-beta-versions.ts). The
+            # local commit below is a throwaway lerna needs to see a clean tree; it is never pushed.
+            - name: Version packages (beta prerelease)
+              if: ${{ inputs.prerelease }}
+              run: |
+                  git checkout -- .
+                  pnpm exec lerna version --conventional-prerelease --preid beta --no-push --no-git-tag-version --no-changelog --yes
+                  node scripts/resolve-beta-versions.ts
+                  git -c user.name="Apify Release Bot" -c user.email="noreply@apify.com" commit -am "chore: beta versions [local only]"
+
             - name: Version packages
+              if: ${{ !inputs.prerelease }}
               id: version_packages
               run: |
                   git checkout -- .
@@ -83,11 +101,13 @@ jobs:
                   GIT_COMMITTER_EMAIL: "noreply@apify.com"
 
             - name: Sync root changelog
+              if: ${{ !inputs.prerelease }}
               run: |
                   pnpm install --no-frozen-lockfile # reinstall to have updated lock file
                   pnpm exec lerna ls --json | node scripts/sync-root-changelog.ts
 
             - name: Commit and push changes
+              if: ${{ !inputs.prerelease }}
               id: signed_commit
               uses: apify/actions/signed-commit@v1.4.0
               with:
@@ -95,6 +115,7 @@ jobs:
                   github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
 
             - name: Push tags via API to have them signed
+              if: ${{ !inputs.prerelease }}
               run: |
                   while IFS= read -r tag; do
                       [ -z "$tag" ] && continue
@@ -108,4 +129,4 @@ jobs:
                   COMMIT_SHA: ${{ steps.signed_commit.outputs.commit_long_sha }}
 
             - name: Publish to NPM
-              run: pnpm exec lerna publish from-package --contents dist --yes
+              run: pnpm exec lerna publish from-package --contents dist --yes ${{ inputs.prerelease && '--dist-tag next' || '' }}

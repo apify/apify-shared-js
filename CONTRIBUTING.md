@@ -50,6 +50,22 @@ Commit message itself should always be imperative (e.g. `add new logger`), and w
 Keep message clean, simple and short. When needed, use extended description on new line (keep one
 empty line to separate subject and body).
 
+## Beta releases from the `next` branch
+
+Stable releases are published automatically from `master`. The `next` branch is a long-lived prerelease
+channel: every push to it (any bump size — `fix`, `feat` or breaking) automatically publishes the changed
+packages as beta versions under the `next` npm dist-tag, installable with `npm install @apify/<pkg>@next`.
+
+Unlike stable releases, betas leave no trace in the repository: no version commits, no tags, no GitHub
+releases and no changelog updates. The bump level is computed from conventional commits since the last
+stable release (so accumulated breaking changes produce e.g. `3.0.0-beta.N`), and the prerelease number
+comes from what is already published on npm (see `scripts/resolve-beta-versions.ts`). Because nothing is
+recorded in git, versions in `package.json` stay at the last stable release.
+
+To release the accumulated changes as stable, merge (or fast-forward) `next` into `master` — the regular
+`master` publish then computes the stable versions from the same conventional commits. The **Publish to
+NPM** workflow can also be dispatched manually with the `prerelease` flag for betas from any other branch.
+
 ## Adding new package
 
 This repository is managed via `lerna` and pnpm workspaces. When adding new package, be sure to include all
