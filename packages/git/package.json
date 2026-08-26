@@ -36,7 +36,7 @@
     "scripts": {
         "build": "pnpm clean && pnpm compile && pnpm copy",
         "clean": "rimraf ./dist",
-        "compile": "tsup",
+        "compile": "tsc -p tsconfig.build.json",
         "copy": "node ../../scripts/copy.ts"
     },
     "publishConfig": {

@@ -24,8 +24,8 @@ pnpm clean                # Clean all dist/ folders
 
 - **`packages/`** — Each subdirectory is a standalone npm package (`@apify/<name>`) with its own `package.json`, `tsconfig.json`, and `tsconfig.build.json`
 - **`test/`** — All tests live in the root `test/` directory (not inside packages). Files named `*.test.ts`
-- **`scripts/`** — Shared build tooling: tsup config, copy script, changelog sync
-- Build produces dual CJS/ESM output via **tsup** into each package's `dist/`
+- **`scripts/`** — Shared build tooling: copy script, changelog sync, beta version resolution
+- Build produces ESM-only output via **tsc** into each package's `dist/`
 
 ## Key Conventions
 

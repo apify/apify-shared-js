@@ -3,12 +3,12 @@
     "version": "0.17.1",
     "description": "Publicly available JSON schemas for Apify platform",
     "type": "module",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "main": "./dist/src/index.js",
+    "types": "./dist/src/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
+            "types": "./dist/src/index.d.ts",
+            "default": "./dist/src/index.js"
         },
         "./package.json": "./package.json"
     },
@@ -33,7 +33,7 @@
     "scripts": {
         "build": "pnpm clean && pnpm process-schemas && pnpm compile && pnpm copy",
         "clean": "rimraf ./dist",
-        "compile": "tsup",
+        "compile": "tsc -p tsconfig.build.json",
         "build-schemas": "node scripts/build-schemas.ts",
         "copy": "node ../../scripts/copy.ts",
         "describe-schemas": "node scripts/describe-schemas.ts",
