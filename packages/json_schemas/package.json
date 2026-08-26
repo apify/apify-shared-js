@@ -32,7 +32,7 @@
     "homepage": "https://apify.com",
     "scripts": {
         "build": "pnpm clean && pnpm process-schemas && pnpm compile && pnpm copy",
-        "clean": "rimraf ./dist",
+        "clean": "node ../../scripts/clean.ts",
         "compile": "tsc -p tsconfig.build.json",
         "build-schemas": "node scripts/build-schemas.ts",
         "copy": "node ../../scripts/copy.ts",

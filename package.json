@@ -51,12 +51,9 @@
     "devDependencies": {
         "@apify/oxlint-config": "^0.3.0",
         "@commitlint/config-conventional": "^21.0.0",
-        "@types/clone-deep": "^4.0.4",
         "@types/node": "^22.0.0",
-        "@types/underscore": "^1.11.15",
         "@vitest/coverage-v8": "^4.1.4",
         "ajv": "^8.17.1",
-        "clone-deep": "^4.0.1",
         "commitlint": "^21.0.0",
         "husky": "^9.1.4",
         "lerna": "^10.0.0",
@@ -65,10 +62,7 @@
         "oxfmt": "0.65.0",
         "oxlint": "1.80.0",
         "oxlint-tsgolint": "7.0.2001",
-        "rimraf": "^6.0.1",
-        "strip-ansi": "^7.0.0",
         "typescript": "^7.0.0",
-        "underscore": "^1.13.7",
         "vite": "^8.0.16",
         "vitest": "^4.1.4"
     },

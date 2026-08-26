@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import stripAnsi from 'strip-ansi';
+import { stripVTControlCharacters as stripAnsi } from 'node:util';
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 
 import { APIFY_ENV_VARS } from '@apify/consts';

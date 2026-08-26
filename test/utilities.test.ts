@@ -1,6 +1,5 @@
 import * as http from 'node:http';
 
-import _ from 'underscore';
 import { describe, expect, it, vi } from 'vitest';
 
 import { makeInputJsFieldsReadable } from '@apify/input_schema';
@@ -57,7 +56,7 @@ describe('utilities', () => {
     });
 
     it('sequentializePromises()', async () => {
-        const range = _.range(21, 33);
+        const range = Array.from({ length: 12 }, (_, i) => 21 + i);
         const promises = range.map(async (index) => {
             return new Promise((resolve) => {
                 setTimeout(() => resolve(index), Math.round(Math.random() * 100));
