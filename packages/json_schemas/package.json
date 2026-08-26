@@ -33,10 +33,10 @@
         "build": "pnpm clean && pnpm process-schemas && pnpm compile && pnpm copy",
         "clean": "rimraf ./dist",
         "compile": "tsup",
-        "build-schemas": "tsx scripts/build-schemas.ts",
+        "build-schemas": "node scripts/build-schemas.ts",
         "copy": "node ../../scripts/copy.ts",
-        "describe-schemas": "tsx scripts/describe-schemas.ts",
-        "build-ide-schemas": "tsx scripts/build-ide-schemas.ts",
+        "describe-schemas": "node scripts/describe-schemas.ts",
+        "build-ide-schemas": "node scripts/build-ide-schemas.ts",
         "process-schemas": "pnpm build-schemas && pnpm describe-schemas && pnpm build-ide-schemas"
     },
     "publishConfig": {
@@ -45,8 +45,7 @@
     "devDependencies": {
         "@types/showdown": "^2.0.6",
         "cheerio": "1.2.0",
-        "showdown": "^2.1.0",
-        "tsx": "^4.6.2"
+        "showdown": "^2.1.0"
     },
     "dependencies": {
         "@apify/consts": "workspace:^",

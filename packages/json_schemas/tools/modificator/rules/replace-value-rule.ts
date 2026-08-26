@@ -2,8 +2,8 @@ import vm from 'node:vm';
 
 import type { CheerioAPI, Node } from 'cheerio';
 
-import type { AbstractRule, JsonObject, ObjectPropertyInfo } from '../types';
-import { getJsonValue } from '../utils';
+import type { AbstractRule, JsonObject, ObjectPropertyInfo } from '../types.ts';
+import { getJsonValue } from '../utils.ts';
 
 export const RULE_NAME = 'ReplaceValue' as const;
 

@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import type { JsonSchemaObject, JsonSchemaValue } from './types';
+import type { JsonSchemaObject, JsonSchemaValue } from './types.ts';
 
 function isPlainJsonObject(input: unknown): boolean {
     return (

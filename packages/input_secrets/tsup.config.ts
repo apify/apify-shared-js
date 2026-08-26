@@ -1,4 +1,4 @@
-import { createTsupConfig } from '../../scripts/tsup.config';
+import { createTsupConfig } from '../../scripts/tsup.config.ts';
 
 export default createTsupConfig({
     // `ow` is CJS with a `default` export; make sure we grab the callable function in ESM output

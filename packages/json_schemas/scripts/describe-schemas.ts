@@ -2,8 +2,8 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-import { parseRuleFile } from '../tools/modificator/description-file-utils';
-import { enchantJsonSchema, parseJsonContent } from '../tools/modificator/utils';
+import { parseRuleFile } from '../tools/modificator/description-file-utils.ts';
+import { enchantJsonSchema, parseJsonContent } from '../tools/modificator/utils.ts';
 
 const PACKAGE_DIR = path.resolve(import.meta.dirname, '..');
 

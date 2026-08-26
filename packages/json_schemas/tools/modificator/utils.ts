@@ -1,4 +1,4 @@
-import type { JsonObject, JsonValue, ObjectPropertyInfo, Rule } from './types';
+import type { JsonObject, JsonValue, ObjectPropertyInfo, Rule } from './types.ts';
 
 /**
  * Parses a JSON Pointer into its constituent parts, decoding escape sequences per RFC 6901.

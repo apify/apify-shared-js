@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    // build scripts run directly via `node`, whose type stripping requires literal `.ts` specifiers
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "paths": {
       "@apify/*": ["./packages/*/src/index.ts"]
     }
