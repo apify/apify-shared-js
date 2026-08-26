@@ -277,6 +277,14 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             }),
         ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/dev/img.jpg)');
 
+        // `#:folder` carries only a folder, no branch, so the default branch is used
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({
+                readme: testMarkdown,
+                gitRepoUrl: 'https://github.com/apify/test-repo.git#:folder',
+            }),
+        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/master/img.jpg)');
+
         // Bitbucket web URLs carry a path suffix after owner/repo, which must be ignored
         expect(
             convertRelativeImagePathsToAbsoluteInReadme({

@@ -21,7 +21,7 @@ interface ParsedGitUrl {
  * `ssh://git@github.com/owner/repo.git`, ...). Deeper path segments (e.g. Bitbucket's `/src/...`
  * suffix) are ignored.
  */
-const parseGitUrl = (gitRepoUrl: string): { resource: string; fullName: string } => {
+const parseGitUrl = (gitRepoUrl: string): Omit<ParsedGitUrl, 'branchName'> => {
     let resource: string;
     let path: string;
 
@@ -74,8 +74,8 @@ export const convertRelativeImagePathsToAbsoluteInReadme = ({
     const parsedRepoUrl = parseApifyGitUrl(gitRepoUrl);
     const repoFullName = parsedRepoUrl.fullName;
 
-    // We need to parse the branch there hence gitUrlParse is not detected this format of git URL.
-    // Otherwise, we try to use the branch name from the build object. It should exist for all builds since roughly mid October 2020.
+    // The branch from the URL hash takes precedence over the branch name from the build object.
+    // The latter should exist for all builds since roughly mid October 2020.
     // Prior to that, all default branches were 'master', hence we default to that as a backup.
     const branchName = parsedRepoUrl.branchName || gitBranchName || 'master';
 
