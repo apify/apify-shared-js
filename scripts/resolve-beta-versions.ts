@@ -26,8 +26,9 @@ for (const dir of readdirSync(packagesDir)) {
 
     try {
         published = JSON.parse(execSync(`npm show ${pkg.name} versions --json`, { encoding: 'utf8', stdio: 'pipe' }));
-    } catch {
-        // the package might not have been published yet
+    } catch (err) {
+        // E404 means the package was never published; anything else must not silently disable the guard below
+        if (!String((err as { stderr?: unknown }).stderr ?? '').includes('E404')) throw err;
     }
 
     if (published.includes(base)) {
