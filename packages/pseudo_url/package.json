@@ -2,19 +2,13 @@
     "name": "@apify/pseudo_url",
     "version": "2.0.94",
     "description": "Tool to find the matching URLs on a page (or html document) by providing a URL pattern.",
-    "main": "./dist/cjs/index.cjs",
-    "module": "./dist/esm/index.mjs",
-    "typings": "./dist/cjs/index.d.ts",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.cjs"
-            }
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
         }
     },
     "keywords": [
@@ -45,5 +39,8 @@
     },
     "dependencies": {
         "@apify/log": "workspace:^"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }

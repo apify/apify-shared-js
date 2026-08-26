@@ -2,7 +2,7 @@ import type { Tokens } from 'marked';
 import { lexer, parser, Renderer } from 'marked';
 import matchAll from 'match-all';
 
-import { customHeadingRenderer } from './markdown_renderers';
+import { customHeadingRenderer } from './markdown_renderers.js';
 
 /**
  * Map from the language of a fenced code block to the title of corresponding tab.

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { EventEmitter } from 'node:events';
 
-import { LogLevel } from './log_consts';
+import { LogLevel } from './log_consts.js';
 
 /**
  * This is an abstract class that should

@@ -1,6 +1,6 @@
 import log from '@apify/log';
 
-import { delayPromise } from './utilities';
+import { delayPromise } from './utilities.js';
 
 export class RetryableError extends Error {
     readonly error: Error;

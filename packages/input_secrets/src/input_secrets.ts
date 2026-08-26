@@ -1,13 +1,16 @@
 import { KeyObject } from 'node:crypto';
 
-import _testOw, { type Ow } from 'ow';
+import _testOwImport, { type Ow } from 'ow';
 
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
 
-import { getFieldSchemaHash } from './field_schema_utils';
+import { getFieldSchemaHash } from './field_schema_utils.js';
 
 // eslint-disable-next-line no-underscore-dangle
 declare const __injectedOw: Ow;
+
+// `ow` is CJS; depending on the interop of the current runtime, the callable can be on `.default`
+const _testOw = ((_testOwImport as { default?: Ow }).default ?? _testOwImport) as Ow;
 
 const ow: Ow = typeof __injectedOw === 'undefined' ? _testOw : __injectedOw || _testOw;
 

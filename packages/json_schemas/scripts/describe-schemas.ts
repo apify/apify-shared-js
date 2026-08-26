@@ -5,7 +5,7 @@ import path from 'node:path';
 import { parseRuleFile } from '../tools/modificator/description-file-utils';
 import { enchantJsonSchema, parseJsonContent } from '../tools/modificator/utils';
 
-const PACKAGE_DIR = path.resolve(__dirname, '..');
+const PACKAGE_DIR = path.resolve(import.meta.dirname, '..');
 
 const SCHEMA_MAPPING: { source: string; outputName: string }[] = [
     { source: 'actor.schema.json', outputName: 'actor' },

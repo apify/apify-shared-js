@@ -1,4 +1,4 @@
-import { jsonStringifyExtended, JsonVariable } from './utilities.client';
+import { jsonStringifyExtended, JsonVariable } from './utilities.client.js';
 
 class WebhookPayloadTemplateError extends Error {
     constructor(message?: string) {

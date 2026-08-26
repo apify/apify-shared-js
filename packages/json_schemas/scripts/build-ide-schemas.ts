@@ -6,7 +6,7 @@ import { bundleJsonSchema } from '../tools/bundler/utils';
 import { parseRuleFile } from '../tools/modificator/description-file-utils';
 import { enchantJsonSchema, parseJsonContent } from '../tools/modificator/utils';
 
-const PACKAGE_DIR = path.resolve(__dirname, '..');
+const PACKAGE_DIR = path.resolve(import.meta.dirname, '..');
 
 const SCHEMA_NAMES = ['actor', 'dataset', 'input', 'key-value-store', 'output', 'draft-07-schema'];
 

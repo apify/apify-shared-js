@@ -1,17 +1,17 @@
 import type { ErrorObject, Schema } from 'ajv';
-import type Ajv from 'ajv';
+import type { Ajv } from 'ajv';
 
 import { inputSchema as schema } from '@apify/json_schemas';
 
-import { m } from './intl';
+import { m } from './intl.js';
 import type {
     CommonResourceFieldDefinition,
     FieldDefinition,
     InputSchema,
     InputSchemaBaseChecked,
     StringFieldDefinition,
-} from './types';
-import { ensureAjvSupportsDraft2019, validateRegexpPattern } from './utilities';
+} from './types.js';
+import { ensureAjvSupportsDraft2019, validateRegexpPattern } from './utilities.js';
 
 export { schema as inputSchema };
 

@@ -1,4 +1,4 @@
-import { createHmacSignature, createHmacSignatureAsync } from './hmac';
+import { createHmacSignature, createHmacSignatureAsync } from './hmac.js';
 
 /**
  * Creates a secure signature for a resource like a dataset or key-value store.

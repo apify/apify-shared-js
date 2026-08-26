@@ -1,7 +1,7 @@
 import type { KeyObject } from 'node:crypto';
 import crypto from 'node:crypto';
 
-import { cryptoRandomObjectId } from './utilities';
+import { cryptoRandomObjectId } from './utilities.js';
 
 const ENCRYPTION_ALGORITHM = 'aes-256-gcm';
 const ENCRYPTION_KEY_LENGTH = 32;
