@@ -1,4 +1,4 @@
-import Ajv from 'ajv/dist/2019';
+import { Ajv2019 as Ajv } from 'ajv/dist/2019.js';
 import { describe, expect, it } from 'vitest';
 
 import { validateInputSchema } from '@apify/input_schema';

@@ -6,5 +6,4 @@ export default createTsupConfig({
         js: `import __ow_import from 'ow';
 const __injectedOw = __ow_import.default || __ow_import;`,
     },
-    shims: true,
 });
