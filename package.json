@@ -1,6 +1,7 @@
 {
     "name": "apify-shared",
     "private": true,
+    "type": "module",
     "description": "Tools and constants shared across Apify projects.",
     "keywords": [
         "apify"
@@ -67,7 +68,6 @@
         "oxlint-tsgolint": "0.22.0",
         "rimraf": "^6.0.1",
         "strip-ansi": "^6.0.0",
-        "ts-node": "^10.9.2",
         "tsup": "^8.3.0",
         "typescript": "^5.8.3",
         "underscore": "^1.13.7",

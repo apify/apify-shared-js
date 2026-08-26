@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // this script should be called with output from `lerna ls --json`, like:
-// `lerna ls --json | ts-node -T scripts/sync-root-changelog.ts`
+// `lerna ls --json | node scripts/sync-root-changelog.ts`
 const stdin = process.openStdin();
 let data = '';
 
