@@ -44,6 +44,8 @@ for (const dir of readdirSync(packagesDir)) {
 
     const version = `${base}-beta.${next}`;
     console.info(`${pkg.name}: ${pkg.version} -> ${version}`);
+    // nothing published for this base yet, so lerna's beta.0 is already the right version
+    if (version === pkg.version) continue;
     const source = readFileSync(pkgPath, 'utf8');
     const updated = source.replace(`"version": "${pkg.version}"`, `"version": "${version}"`);
     if (updated === source) throw new Error(`${pkg.name}: failed to rewrite the version in ${pkgPath}`);
