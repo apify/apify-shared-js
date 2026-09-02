@@ -1,18 +1,16 @@
 import { KeyObject } from 'node:crypto';
 
-import _testOwImport, { type Ow } from 'ow';
+import { z } from 'zod';
 
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
 
 import { getFieldSchemaHash } from './field_schema_utils.js';
+import { objectSchema, parseArgument } from '@apify/validations';
 
-// eslint-disable-next-line no-underscore-dangle
-declare const __injectedOw: Ow;
-
-// `ow` is CJS; depending on the interop of the current runtime, the callable can be on `.default`
-const _testOw = ((_testOwImport as { default?: Ow }).default ?? _testOwImport) as Ow;
-
-const ow: Ow = typeof __injectedOw === 'undefined' ? _testOw : __injectedOw || _testOw;
+// `z.instanceof()` rejects `KeyObject` because its constructor is not public in @types/node
+const keyObjectSchema = z.custom<KeyObject>((value) => value instanceof KeyObject, {
+    error: 'Invalid input: expected an instance of KeyObject',
+});
 
 const BASE64_REGEXP = /[-A-Za-z0-9+/]*={0,3}/;
 
@@ -52,9 +50,9 @@ export function encryptInputSecretValue<T extends string | object>({
     publicKey: KeyObject;
     schema?: Record<string, any>;
 }): string {
-    ow(value, ow.any(ow.string, ow.object));
-    ow(publicKey, ow.object.instanceOf(KeyObject));
-    ow(schema, ow.optional.object);
+    parseArgument(value, z.union([z.string(), objectSchema]), 'encryptInputSecretValue');
+    parseArgument(publicKey, keyObjectSchema, 'encryptInputSecretValue');
+    parseArgument(schema, objectSchema.optional(), 'encryptInputSecretValue');
 
     // TODO to make string encryption compatible with current SDK, we need to use the old form.
     //  Remove this once SDK is updated to use the new form
@@ -84,8 +82,8 @@ export function encryptInputSecretValue<T extends string | object>({
  * @param fieldType - type of the field, can be 'string', 'object' or 'array'
  */
 export function isEncryptedValueForFieldType(value: string, fieldType: 'string' | 'object' | 'array') {
-    ow(value, ow.string);
-    ow(fieldType, ow.string.oneOf(['string', 'object', 'array']));
+    parseArgument(value, z.string(), 'isEncryptedValueForFieldType');
+    parseArgument(fieldType, z.enum(['string', 'object', 'array']), 'isEncryptedValueForFieldType');
 
     const match = value.match(ENCRYPTED_VALUE_REGEXP);
     if (!match) return false;
@@ -106,8 +104,8 @@ export function isEncryptedValueForFieldType(value: string, fieldType: 'string' 
  * @param fieldSchema - schema of the field, used to get the hash
  */
 export function isEncryptedValueForFieldSchema(value: string, fieldSchema: Record<string, any>) {
-    ow(value, ow.string);
-    ow(fieldSchema, ow.object);
+    parseArgument(value, z.string(), 'isEncryptedValueForFieldSchema');
+    parseArgument(fieldSchema, objectSchema, 'isEncryptedValueForFieldSchema');
 
     const match = value.match(ENCRYPTED_VALUE_REGEXP);
     if (!match) return false;
@@ -136,9 +134,9 @@ export function encryptInputSecrets<T extends Record<string, any>>({
     inputSchema: object;
     publicKey: KeyObject;
 }): T {
-    ow(input, ow.object);
-    ow(inputSchema, ow.object);
-    ow(publicKey, ow.object.instanceOf(KeyObject));
+    parseArgument(input, objectSchema, 'encryptInputSecrets');
+    parseArgument(inputSchema, objectSchema, 'encryptInputSecrets');
+    parseArgument(publicKey, keyObjectSchema, 'encryptInputSecrets');
 
     const secretsInInputKeys = getInputSchemaSecretFieldKeys(inputSchema);
     if (secretsInInputKeys.length === 0) return input;
@@ -148,7 +146,7 @@ export function encryptInputSecrets<T extends Record<string, any>>({
         const value = input[key];
         // NOTE: Skips already encrypted values. It can happens in case client already encrypted values, before
         // sending them using API. Or input was takes from task, run console or scheduler, where input is stored encrypted.
-        if (value && !(ow.isValid(value, ow.string) && ENCRYPTED_VALUE_REGEXP.test(value))) {
+        if (value && !(typeof value === 'string' && ENCRYPTED_VALUE_REGEXP.test(value))) {
             try {
                 encryptedInput[key] = encryptInputSecretValue({
                     value: input[key],
@@ -173,11 +171,11 @@ export function encryptInputSecrets<T extends Record<string, any>>({
  * @param privateKey - private key used to decrypt the secret values
  */
 export function decryptInputSecrets<T>({ input, privateKey }: { input: T; privateKey: KeyObject }): T {
-    ow(input, ow.object);
-    ow(privateKey, ow.object.instanceOf(KeyObject));
+    const validatedInput = parseArgument(input, objectSchema, 'decryptInputSecrets');
+    parseArgument(privateKey, keyObjectSchema, 'decryptInputSecrets');
 
     const decryptedInput = {} as Record<string, any>;
-    for (const [key, value] of Object.entries(input)) {
+    for (const [key, value] of Object.entries(validatedInput)) {
         if (typeof value === 'string' && ENCRYPTED_VALUE_REGEXP.test(value)) {
             const match = value.match(ENCRYPTED_VALUE_REGEXP);
             if (!match) continue;
