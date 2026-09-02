@@ -51,6 +51,6 @@
         "create-hmac": "^1.1.7"
     },
     "devDependencies": {
-        "@types/create-hmac": "^1.1.0"
+        "@types/create-hmac": "^1.1.3"
     }
 }

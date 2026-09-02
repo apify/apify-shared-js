@@ -51,8 +51,8 @@
         "@apify/consts": "workspace:^",
         "@apify/input_secrets": "workspace:^",
         "@apify/json_schemas": "workspace:^",
-        "acorn-loose": "^8.4.0",
-        "countries-list": "^3.0.0"
+        "acorn-loose": "^8.5.2",
+        "countries-list": "^3.4.1"
     },
     "peerDependencies": {
         "ajv": "^8.0.0"
