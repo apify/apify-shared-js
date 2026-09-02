@@ -49,6 +49,6 @@
     },
     "dependencies": {
         "@apify/consts": "workspace:^",
-        "ansi-colors": "^4.1.1"
+        "ansi-colors": "^4.1.3"
     }
 }
