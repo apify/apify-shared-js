@@ -187,9 +187,9 @@ importers:
 
   packages/payment_qr_codes:
     dependencies:
-      uqr:
-        specifier: ^0.1.3
-        version: 0.1.3
+      etiket:
+        specifier: ^0.12.0
+        version: 0.12.0
 
   packages/pseudo_url:
     dependencies:
@@ -1995,6 +1995,11 @@ packages:
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
 
+  etiket@0.12.0:
+    resolution: {integrity: sha512-7Scp9/LoxYcGPSEimn38cObmSDn+vtuFXKBXe21aD+AMUu6JvAtP2lsQ8vs2OVTrc/+0KzfkR/CAcoWgTAXLrw==}
+    engines: {node: '>=24'}
+    hasBin: true
+
   eventemitter3@4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
@@ -3249,9 +3254,6 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-
-  uqr@0.1.3:
-    resolution: {integrity: sha512-0rjE8iEJe4YmT9TOhwsZtqCMRLc5DXZUI2UEYUUg63ikBkqqE5EYWaI0etFe/5KUcmcYwLih2RND1kq+hrUJXA==}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -5020,6 +5022,8 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
 
+  etiket@0.12.0: {}
+
   eventemitter3@4.0.7: {}
 
   execa@5.0.0:
@@ -6506,8 +6510,6 @@ snapshots:
   universal-user-agent@6.0.1: {}
 
   universalify@2.0.1: {}
-
-  uqr@0.1.3: {}
 
   util-deprecate@1.0.2: {}
 

@@ -42,7 +42,7 @@
         "access": "public"
     },
     "dependencies": {
-        "uqr": "^0.1.3"
+        "etiket": "^0.12.0"
     },
     "engines": {
         "node": ">=22"
