@@ -1,8 +1,6 @@
 import { createPublicKey } from 'node:crypto';
 
 import Ajv from 'ajv';
-import brokenClone from 'clone-deep';
-import _ from 'underscore';
 import { describe, expect, it } from 'vitest';
 
 import { validateInputUsingValidator } from '@apify/input_schema';
@@ -21,10 +19,12 @@ import {
     unescapeFromBson,
 } from '@apify/utilities';
 
-// @ts-ignore This clone doesn't work for array of NULLs (returns an empty array).
-
-const clone = function (obj: any) {
-    return Array.isArray(obj) ? obj.slice(0) : brokenClone(obj);
+const clone = function (obj: any): any {
+    if (obj === null || typeof obj !== 'object') return obj;
+    if (obj instanceof Date) return new Date(obj.getTime());
+    if (Buffer.isBuffer(obj)) return Buffer.from(obj);
+    if (Array.isArray(obj)) return obj.map((item) => clone(item));
+    return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, clone(value)]));
 };
 
 const GOOD_OBJECTS = [
@@ -146,7 +146,7 @@ const BAD_IRREVERSIBLE_OBJECTS = [
     },
 ] as any;
 
-const BAD_OBJECTS = _.union(BAD_REVERSIBLE_OBJECTS, BAD_IRREVERSIBLE_OBJECTS);
+const BAD_OBJECTS = [...BAD_REVERSIBLE_OBJECTS, ...BAD_IRREVERSIBLE_OBJECTS];
 
 // this effectively tests _escapePropertyName() and _unescapePropertyName()
 const KNOWN_ESCAPES: { irreversible?: boolean; src: any; trg: any }[] = [
@@ -302,7 +302,7 @@ describe('utilities.client', () => {
 
         it('works with transformation', () => {
             const incrementDates = <T>(key: string, value: T): [string, T] => {
-                if (key.endsWith('At') && _.isDate(value)) {
+                if (key.endsWith('At') && value instanceof Date) {
                     return [key, new Date(value.getTime() + 1) as unknown as T];
                 }
                 return [key, value];
@@ -1928,7 +1928,7 @@ describe('utilities.client', () => {
 
             // Replacer removes number properties.
             const replacer = (key: string, val: any) => {
-                return _.isNumber(val) ? undefined : val;
+                return typeof val === 'number' ? undefined : val;
             };
 
             expect(jsonStringifyExtended(value, replacer, 2)).toBe(expected);

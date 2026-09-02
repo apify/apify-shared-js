@@ -1,4 +1,4 @@
-import stripAnsi from 'strip-ansi';
+import { stripVTControlCharacters as stripAnsi } from 'node:util';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { IS_APIFY_LOGGER_EXCEPTION, LoggerText, LogLevel, PREFIX_DELIMITER } from '@apify/log';

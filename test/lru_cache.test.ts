@@ -1,7 +1,8 @@
-import _ from 'underscore';
 import { describe, expect, it } from 'vitest';
 
 import { LruCache } from '@apify/datastructures';
+
+const shuffledRange = (n: number) => Array.from({ length: n }, (_, i) => i).sort(() => Math.random() - 0.5);
 
 // asserts that linked list and dictionary is equivalent to an array of [{key: Object, value: Object}] objects
 const assertSame = function (lru: LruCache, array: any[]) {
@@ -167,7 +168,7 @@ describe('lru_cache', () => {
             // try get existing items
             expect(lru.get('null')).toBe(null);
             expect(lru.get('')).toBe('empty');
-            const indexes = _.shuffle(_.range(50));
+            const indexes = shuffledRange(50);
             indexes.forEach((i) => {
                 expect(lru.get(`key${i}`)).toBe(`val${i}`);
             });
@@ -251,7 +252,7 @@ describe('lru_cache', () => {
             expect(lru.remove('')).toBe(null);
             assertSame(lru, array);
 
-            const indexes = _.shuffle(_.range(50));
+            const indexes = shuffledRange(50);
             indexes.forEach((i) => {
                 expect(lru.remove(`key${i}`)).toBe(`val${i}`);
                 array = array.filter((elem) => elem.key !== `key${i}`);

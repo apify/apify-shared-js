@@ -1,7 +1,8 @@
-import _ from 'underscore';
 import { describe, expect, it } from 'vitest';
 
 import { ListDictionary } from '@apify/datastructures';
+
+const shuffledRange = (n: number) => Array.from({ length: n }, (_, i) => i).sort(() => Math.random() - 0.5);
 
 // asserts that linked list is equivalent to an array of [{key: Object, value: Object}] objects
 const assertSame = function (ld: any, array: any) {
@@ -149,7 +150,7 @@ describe('list_dictionary', () => {
             // try get existing items
             expect(ld.get('null')).toBe(null);
             expect(ld.get('')).toBe('empty');
-            const indexes = _.shuffle(_.range(50));
+            const indexes = shuffledRange(50);
             indexes.forEach((i) => {
                 expect(ld.get(`key${i}`)).toBe(`val${i}`);
                 assertSame(ld, array);
@@ -223,7 +224,7 @@ describe('list_dictionary', () => {
             expect(ld.remove('')).toBe(null);
             assertSame(ld, array);
 
-            const indexes = _.shuffle(_.range(50));
+            const indexes = shuffledRange(50);
             indexes.forEach((i) => {
                 expect(ld.remove(`key${i}`)).toBe(`val${i}`);
                 array = array.filter((elem) => {
