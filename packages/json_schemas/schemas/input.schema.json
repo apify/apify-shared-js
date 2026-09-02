@@ -708,7 +708,6 @@
                         "enum": ["object", "array", "string", "integer", "number", "boolean"]
                     },
                     "uniqueItems": true,
-                    "additionalItems": false,
                     "minItems": 1
                 },
                 "title": { "type": "string" },
