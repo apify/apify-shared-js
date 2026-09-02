@@ -67,7 +67,6 @@
         "oxlint-tsgolint": "0.22.0",
         "rimraf": "^6.1.3",
         "strip-ansi": "^6.0.1",
-        "tsup": "^8.5.1",
         "typescript": "^5.9.3",
         "underscore": "^1.13.8",
         "vite": "^8.2.2",

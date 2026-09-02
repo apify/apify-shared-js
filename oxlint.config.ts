@@ -8,7 +8,7 @@ export default defineConfig({
     },
     overrides: [
         {
-            files: ['*.config.ts', '*.config.mts', 'packages/*/tsup.config.ts'],
+            files: ['*.config.ts', '*.config.mts'],
             rules: {
                 'no-console': 'off',
                 'import/no-default-export': 'off',
