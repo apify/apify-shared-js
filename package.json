@@ -52,7 +52,6 @@
         "@apify/oxlint-config": "^0.2.10",
         "@commitlint/config-conventional": "^20.5.3",
         "@types/clone-deep": "^4.0.4",
-        "@types/git-url-parse": "^16.0.2",
         "@types/node": "^24.13.3",
         "@types/underscore": "^1.13.0",
         "@vitest/coverage-v8": "^4.1.11",

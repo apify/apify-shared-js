@@ -18,6 +18,8 @@ export default defineConfig({
             files: ['test/**'],
             rules: {
                 'no-console': 'off',
+                // data-driven tests access imported namespaces with computed keys
+                'import/namespace': 'off',
                 'no-useless-constructor': 'off',
                 'typescript/ban-ts-comment': 'off',
                 'jest/no-conditional-expect': 'off',
