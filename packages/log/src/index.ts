@@ -1,11 +1,11 @@
-import { Log } from './log';
+import { Log } from './log.js';
 
-export * from './log';
-export * from './log_consts';
-export * from './log_helpers';
-export * from './logger';
-export * from './logger_json';
-export * from './logger_text';
+export * from './log.js';
+export * from './log_consts.js';
+export * from './log_helpers.js';
+export * from './logger.js';
+export * from './logger_json.js';
+export * from './logger_text.js';
 
 // Default export is an initialized instance of logger.
 const log = new Log();

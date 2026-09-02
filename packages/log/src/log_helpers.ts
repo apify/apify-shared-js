@@ -1,6 +1,12 @@
 import { APIFY_ENV_VARS } from '@apify/consts';
 
-import { IS_APIFY_LOGGER_EXCEPTION, LogFormat, LogLevel, TRUNCATION_FLAG_KEY, TRUNCATION_SUFFIX } from './log_consts';
+import {
+    IS_APIFY_LOGGER_EXCEPTION,
+    LogFormat,
+    LogLevel,
+    TRUNCATION_FLAG_KEY,
+    TRUNCATION_SUFFIX,
+} from './log_consts.js';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.

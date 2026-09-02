@@ -1,9 +1,9 @@
 import c from 'ansi-colors';
 
-import { IS_APIFY_LOGGER_EXCEPTION, LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts';
-import type { LimitedError } from './log_helpers';
-import { Logger } from './logger';
-import { getStackFrames } from './node_internals';
+import { IS_APIFY_LOGGER_EXCEPTION, LEVEL_TO_STRING, LogLevel, PREFIX_DELIMITER } from './log_consts.js';
+import type { LimitedError } from './log_helpers.js';
+import { Logger } from './logger.js';
+import { getStackFrames } from './node_internals.js';
 
 const SHORTEN_LEVELS = {
     SOFT_FAIL: 'SFAIL',

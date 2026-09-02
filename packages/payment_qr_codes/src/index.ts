@@ -1,1 +1,1 @@
-export * from './czk_payment_qr_codes';
+export * from './czk_payment_qr_codes.js';

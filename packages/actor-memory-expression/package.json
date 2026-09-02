@@ -2,20 +2,15 @@
     "name": "@apify/actor-memory-expression",
     "version": "0.2.16",
     "description": "Utility to evaluate dynamic memory expressions for Apify actors.",
-    "main": "./dist/cjs/index.cjs",
-    "module": "./dist/esm/index.mjs",
-    "typings": "./dist/cjs/index.d.ts",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.cjs"
-            }
-        }
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
     },
     "keywords": [
         "apify"
@@ -51,5 +46,8 @@
         "@apify/consts": "workspace:^",
         "@apify/log": "workspace:^",
         "mathjs": "^15.2.0"
+    },
+    "engines": {
+        "node": ">=22"
     }
 }

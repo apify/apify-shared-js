@@ -5,11 +5,11 @@ import {
     PREFIX_DELIMITER,
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
-} from './log_consts';
-import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers';
-import type { Logger } from './logger';
-import { LoggerJson } from './logger_json';
-import { LoggerText } from './logger_text';
+} from './log_consts.js';
+import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers.js';
+import type { Logger } from './logger.js';
+import { LoggerJson } from './logger_json.js';
+import { LoggerText } from './logger_text.js';
 
 export interface LoggerOptions {
     /**

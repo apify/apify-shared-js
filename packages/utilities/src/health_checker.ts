@@ -1,4 +1,4 @@
-import { cryptoRandomObjectId, timeoutPromise } from './utilities';
+import { cryptoRandomObjectId, timeoutPromise } from './utilities.js';
 
 export enum CHECK_TYPES {
     MONGODB_PING = 'MONGODB_PING',

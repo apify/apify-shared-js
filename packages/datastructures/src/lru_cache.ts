@@ -1,4 +1,4 @@
-import { ListDictionary } from './list_dictionary';
+import { ListDictionary } from './list_dictionary.js';
 
 export interface LruCacheOptions {
     maxLength: number;

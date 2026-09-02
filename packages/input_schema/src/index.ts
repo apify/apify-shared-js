@@ -1,5 +1,5 @@
-export * from './intl';
-export * from './input_schema';
+export * from './intl.js';
+export * from './input_schema.js';
 export {
     StringFieldDefinition,
     BooleanFieldDefinition,
@@ -12,5 +12,5 @@ export {
     MixedFieldDefinition,
     FieldDefinition,
     InputSchema,
-} from './types';
-export * from './utilities';
+} from './types.js';
+export * from './utilities.js';

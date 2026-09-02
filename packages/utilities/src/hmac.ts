@@ -34,29 +34,13 @@ export function createHmacSignature(secretKey: string, message: string): string 
     return encodeBase62(BigInt(`0x${signature}`));
 }
 
-let subtleCrypto = globalThis.crypto?.subtle;
+const subtleCrypto = globalThis.crypto?.subtle;
 
-async function ensureSubtleCryptoExists() {
+function ensureSubtleCryptoExists() {
     if (!subtleCrypto) {
-        try {
-            // eslint-disable-next-line typescript/no-require-imports -- Backward compatibility for Node.js versions < 19
-            subtleCrypto = require('node:crypto')?.webcrypto?.subtle;
-            if (subtleCrypto) return;
-        } catch {
-            // Ignore require error
-        }
-
-        try {
-            subtleCrypto = (await import('node:crypto'))?.webcrypto?.subtle as SubtleCrypto;
-        } catch {
-            // Ignore import error
-        }
-
-        if (!subtleCrypto) {
-            throw new Error(`SubtleCrypto is not available in this environment.
+        throw new Error(`SubtleCrypto is not available in this environment.
 Please ensure you're running in an environment that supports Web Crypto API,
 or submit an issue to https://github.com/apify/apify-shared-js so we can help you further.`);
-        }
     }
 }
 
@@ -69,7 +53,7 @@ or submit an issue to https://github.com/apify/apify-shared-js so we can help yo
  * @returns Promise<string>
  */
 export async function createHmacSignatureAsync(secretKey: string, message: string): Promise<string> {
-    await ensureSubtleCryptoExists();
+    ensureSubtleCryptoExists();
     const encoder = new TextEncoder();
 
     const key = await subtleCrypto.importKey(

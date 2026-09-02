@@ -1,5 +1,5 @@
-import { LogLevel, PREFIX_DELIMITER } from './log_consts';
-import { Logger } from './logger';
+import { LogLevel, PREFIX_DELIMITER } from './log_consts.js';
+import { Logger } from './logger.js';
 
 const DEFAULT_OPTIONS = {
     skipLevelInfo: false,

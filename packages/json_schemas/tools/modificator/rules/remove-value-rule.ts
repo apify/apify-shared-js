@@ -1,7 +1,7 @@
 import type { CheerioAPI, Node } from 'cheerio';
 
-import type { AbstractRule, JsonObject, ObjectPropertyInfo } from '../types';
-import { parseJsonPointer } from '../utils';
+import type { AbstractRule, JsonObject, ObjectPropertyInfo } from '../types.ts';
+import { parseJsonPointer } from '../utils.ts';
 
 export const RULE_NAME = 'RemoveValue' as const;
 

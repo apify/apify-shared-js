@@ -7,8 +7,8 @@
  *
  */
 
-import type { LinkedListNode } from './linked_list';
-import { LinkedList } from './linked_list';
+import type { LinkedListNode } from './linked_list.js';
+import { LinkedList } from './linked_list.js';
 
 /**
  * The main ListDictionary class.

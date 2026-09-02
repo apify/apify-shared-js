@@ -2,8 +2,8 @@ import type { CheerioAPI, Node } from 'cheerio';
 import * as cheerio from 'cheerio';
 import showdown from 'showdown';
 
-import type { AbstractRule, JsonObject, JsonValue, ObjectPropertyInfo } from '../types';
-import { getJsonValue, isPlainJsonObject } from '../utils';
+import type { AbstractRule, JsonObject, JsonValue, ObjectPropertyInfo } from '../types.ts';
+import { getJsonValue, isPlainJsonObject } from '../utils.ts';
 
 export const RULE_NAME = 'AddDescription' as const;
 

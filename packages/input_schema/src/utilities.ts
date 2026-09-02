@@ -1,13 +1,13 @@
 import { parse } from 'acorn-loose';
 import type { ValidateFunction } from 'ajv';
-import type Ajv from 'ajv/dist/2019';
+import type { Ajv2019 as Ajv } from 'ajv/dist/2019.js';
 import { countries } from 'countries-list';
 
 import { PROXY_URL_REGEX, URL_REGEX } from '@apify/consts';
 import { isEncryptedValueForFieldSchema, isEncryptedValueForFieldType } from '@apify/input_secrets';
 
-import { getCustomErrorMessage, parseAjvError } from './input_schema';
-import { m } from './intl';
+import { getCustomErrorMessage, parseAjvError } from './input_schema.js';
+import { m } from './intl.js';
 
 /**
  * Validates input field configured with proxy editor

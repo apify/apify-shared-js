@@ -1,10 +1,11 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    // build scripts run directly via `node`, whose type stripping requires literal `.ts` specifiers
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "paths": {
-      "@apify/*": ["./packages/*/src"]
+      "@apify/*": ["./packages/*/src/index.ts"]
     }
   }
 }
