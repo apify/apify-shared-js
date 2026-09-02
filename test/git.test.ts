@@ -260,45 +260,33 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
         ).toEqual(testMarkdown);
     });
 
-    it('works with https repo URLs', () => {
-        const testMarkdown = '![img](./img.jpg)';
-
-        expect(
-            convertRelativeImagePathsToAbsoluteInReadme({
-                readme: testMarkdown,
-                gitRepoUrl: 'https://github.com/apify/test-repo.git',
-            }),
-        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/master/img.jpg)');
-
-        expect(
-            convertRelativeImagePathsToAbsoluteInReadme({
-                readme: testMarkdown,
-                gitRepoUrl: 'https://github.com/apify/test-repo.git#dev',
-            }),
-        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/dev/img.jpg)');
-
+    it.each([
+        [
+            'https://github.com/apify/test-repo.git',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/master',
+        ],
+        [
+            'https://github.com/apify/test-repo.git#dev',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/dev',
+        ],
         // `#:folder` carries only a folder, no branch, so the default branch is used
-        expect(
-            convertRelativeImagePathsToAbsoluteInReadme({
-                readme: testMarkdown,
-                gitRepoUrl: 'https://github.com/apify/test-repo.git#:folder',
-            }),
-        ).toEqual('![img](https://raw.githubusercontent.com/apify/test-repo/master/img.jpg)');
-
+        [
+            'https://github.com/apify/test-repo.git#:folder',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/master',
+        ],
         // Bitbucket web URLs carry a path suffix after owner/repo, which must be ignored
+        [
+            'https://user@bitbucket.org/apify/test-repo/src/main/',
+            'main',
+            'https://bytebucket.org/apify/test-repo/raw/main',
+        ],
+        ['ssh://git@gitlab.com/apify/test-repo.git', undefined, 'https://gitlab.com/apify/test-repo/-/raw/master'],
+    ])('works with URL-style repo URL %s', (gitRepoUrl, gitBranchName, expectedPrefix) => {
         expect(
-            convertRelativeImagePathsToAbsoluteInReadme({
-                readme: testMarkdown,
-                gitRepoUrl: 'https://user@bitbucket.org/apify/test-repo/src/main/',
-                gitBranchName: 'main',
-            }),
-        ).toEqual('![img](https://bytebucket.org/apify/test-repo/raw/main/img.jpg)');
-
-        expect(
-            convertRelativeImagePathsToAbsoluteInReadme({
-                readme: testMarkdown,
-                gitRepoUrl: 'ssh://git@gitlab.com/apify/test-repo.git',
-            }),
-        ).toEqual('![img](https://gitlab.com/apify/test-repo/-/raw/master/img.jpg)');
+            convertRelativeImagePathsToAbsoluteInReadme({ readme: '![img](./img.jpg)', gitRepoUrl, gitBranchName }),
+        ).toEqual(`![img](${expectedPrefix}/img.jpg)`);
     });
 });
