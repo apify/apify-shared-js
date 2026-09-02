@@ -152,6 +152,9 @@ importers:
       '@apify/utilities':
         specifier: workspace:^
         version: link:../utilities
+      '@apify/validations':
+        specifier: workspace:^
+        version: link:../validations
       zod:
         specifier: ^4.0.0
         version: 4.4.3
@@ -229,6 +232,12 @@ importers:
       '@types/create-hmac':
         specifier: ^1.1.0
         version: 1.1.3
+
+  packages/validations:
+    dependencies:
+      zod:
+        specifier: ^4.0.0
+        version: 4.4.3
 
 packages:
 

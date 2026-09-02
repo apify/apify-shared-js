@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { privateDecrypt, publicEncrypt } from '@apify/utilities';
 
 import { getFieldSchemaHash } from './field_schema_utils.js';
-import { objectSchema, parseArgument } from './validation.js';
+import { objectSchema, parseArgument } from '@apify/validations';
 
 // `z.instanceof()` rejects `KeyObject` because its constructor is not public in @types/node
 const keyObjectSchema = z.custom<KeyObject>((value) => value instanceof KeyObject, {
