@@ -1,7 +1,3 @@
-import querystring from 'node:querystring';
-
-import createHmac from 'create-hmac';
-
 /**
  * This client can be used to generate URLs for Apify image proxy server.
  * Usage:
@@ -9,7 +5,7 @@ import createHmac from 'create-hmac';
  *   hmacKey: process.env.CAMO_KEY,
  *   domain: 'apifyusercontent.com',
  * });
- * const imageUrl = imageProxyClient.generateUrl('http://example.com/example.gif');
+ * const imageUrl = await imageProxyClient.generateUrl('http://example.com/example.gif');
  */
 export class ImageProxyClient {
     private readonly domain: string;
@@ -17,6 +13,8 @@ export class ImageProxyClient {
     private readonly hmacKey: string;
 
     private readonly protocol: string;
+
+    private hmacCryptoKey?: CryptoKey;
 
     /**
      * @param options
@@ -33,22 +31,37 @@ export class ImageProxyClient {
         this.domain = domain;
     }
 
-    _createDigest(string: string): string {
-        const hmac = createHmac('sha1', this.hmacKey).update(string);
-        return hmac.digest('hex');
+    async _createDigest(string: string): Promise<string> {
+        this.hmacCryptoKey ??= await globalThis.crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(this.hmacKey),
+            { name: 'HMAC', hash: 'SHA-1' },
+            false,
+            ['sign'],
+        );
+        const signature = await globalThis.crypto.subtle.sign(
+            'HMAC',
+            this.hmacCryptoKey,
+            new TextEncoder().encode(string),
+        );
+        return this._toHex(new Uint8Array(signature));
     }
 
     _createHex(string: string): string {
-        return Buffer.from(string, 'utf8').toString('hex');
+        return this._toHex(new TextEncoder().encode(string));
+    }
+
+    private _toHex(bytes: Uint8Array): string {
+        return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
     }
 
     /**
      * Generates image URL in format:
      * `http://example.com/<digest of image url>?url=<url encoded image url>`
      */
-    generateUrlWithParam(url: string): string {
-        const digest = this._createDigest(url);
-        const escapedUrl = querystring.escape(url);
+    async generateUrlWithParam(url: string): Promise<string> {
+        const digest = await this._createDigest(url);
+        const escapedUrl = encodeURIComponent(url);
         return `${this.protocol}://${this.domain}/${digest}/?url=${escapedUrl}`;
     }
 
@@ -56,8 +69,8 @@ export class ImageProxyClient {
      * Generates image URL in format:
      * `http://example.com/<digest of image url>/<hex string of image url>`
      */
-    generateUrl(url: string): string {
-        const digest = this._createDigest(url);
+    async generateUrl(url: string): Promise<string> {
+        const digest = await this._createDigest(url);
         const hexUrl = this._createHex(url);
         return `${this.protocol}://${this.domain}/${digest}/${hexUrl}`;
     }
@@ -65,19 +78,19 @@ export class ImageProxyClient {
     /**
      * Finds all images in HTML and updates src attributes with image proxy URL
      */
-    updateImagesInHtml(html: string): string {
+    async updateImagesInHtml(html: string): Promise<string> {
         const allImgElements = html.match(/<\s*img[^>]*>/gi);
         if (!allImgElements) return html;
 
-        allImgElements.forEach((img) => {
+        for (const img of allImgElements) {
             const srcMatch = img.match(/src=["|']([^'">]+)['|"]/);
             if (srcMatch && srcMatch[1] && srcMatch[1].toLowerCase().startsWith('http')) {
                 const imageUrl = srcMatch[1];
-                const updatedImageUrl = this.generateUrl(imageUrl);
+                const updatedImageUrl = await this.generateUrl(imageUrl);
                 const updatedImg = img.replace(imageUrl, updatedImageUrl);
                 html = html.replace(img, updatedImg);
             }
-        });
+        }
 
         return html;
     }
@@ -89,7 +102,7 @@ export class ImageProxyClient {
      * @param {string} alt Used for alt attribute
      * @return {string} Image element
      */
-    createImageHtml(src: string, title: string, alt: string): string {
-        return `<img src="${this.generateUrl(src)}" alt="${alt}" title="${title}">`;
+    async createImageHtml(src: string, title: string, alt: string): Promise<string> {
+        return `<img src="${await this.generateUrl(src)}" alt="${alt}" title="${title}">`;
     }
 }

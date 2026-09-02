@@ -1,6 +1,5 @@
 import type { Tokens } from 'marked';
 import { lexer, parser, Renderer } from 'marked';
-import matchAll from 'match-all';
 
 import { customHeadingRenderer } from './markdown_renderers.js';
 
@@ -40,21 +39,10 @@ const LANGUAGE_TO_TAB_TITLE = {
 const APIFY_CODE_TABS = 'apify-code-tabs';
 const DEFAULT_MARKED_RENDERER = new Renderer();
 
-interface Match {
-    groups: { header: string; lang: string; code: string };
-}
-
 const codeTabObjectFromCodeTabMarkdown = (markdown: string): Record<string, { language: string; code: string }> => {
-    const matchesIterator = matchAll(
-        markdown,
+    const matches = markdown.matchAll(
         /<marked-tab header="(?<header>.*?)" lang="(?<lang>.*?)">(?<code>.*?)<\/marked-tab>/gs,
     );
-    const matches: Match[] = [];
-    let nextMatch = matchesIterator.nextRaw();
-    while (nextMatch) {
-        matches.push(nextMatch as unknown as Match);
-        nextMatch = matchesIterator.nextRaw();
-    }
 
     const tabs: Record<string, { language: string; code: string }> = {};
 
