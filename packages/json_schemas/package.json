@@ -40,7 +40,7 @@
         "clean": "rimraf ./dist",
         "compile": "tsup",
         "build-schemas": "tsx scripts/build-schemas.ts",
-        "copy": "tsx ../../scripts/copy.ts",
+        "copy": "node ../../scripts/copy.ts",
         "describe-schemas": "tsx scripts/describe-schemas.ts",
         "build-ide-schemas": "tsx scripts/build-ide-schemas.ts",
         "process-schemas": "pnpm build-schemas && pnpm describe-schemas && pnpm build-ide-schemas"
