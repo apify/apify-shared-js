@@ -26,6 +26,5 @@
             "minimumReleaseAge": "0 days"
         }
     ],
-    "schedule": ["every weekday"],
-    "ignoreDeps": ["qrcode"]
+    "schedule": ["every weekday"]
 }

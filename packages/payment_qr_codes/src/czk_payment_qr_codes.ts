@@ -1,4 +1,4 @@
-import qrcode from 'qrcode';
+import { qrcodePNGDataURI } from 'etiket';
 
 interface CzkQRCodeInputData {
     iban: string;
@@ -19,8 +19,9 @@ export function encodeInputDataToRawQrCodeInputString(data: CzkQRCodeInputData):
 
 /**
  * This function generates CZK QR code that can be used for domestic QR code payment.
- * It returns the QR code encoded as data URL that can be directly viewed in browser or used in <img> tag.
+ * It returns the QR code encoded as a PNG data URL that can be directly viewed in browser or used in <img> tag.
  */
 export async function generateCzkPaymentQrCodeDataUrl(data: CzkQRCodeInputData): Promise<string> {
-    return qrcode.toDataURL(encodeInputDataToRawQrCodeInputString(data));
+    // the options match the output of the previously used `qrcode` package pixel for pixel
+    return qrcodePNGDataURI(encodeInputDataToRawQrCodeInputString(data), { ecLevel: 'M', moduleSize: 4, margin: 4 });
 }
