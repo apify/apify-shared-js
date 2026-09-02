@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.16](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.2.15...@apify/actor-memory-expression@0.2.16) (2026-09-02)
+
+**Note:** Version bump only for package @apify/actor-memory-expression
+
+
+
+
+
 ## [0.2.15](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.2.14...@apify/actor-memory-expression@0.2.15) (2026-08-25)
 
 **Note:** Version bump only for package @apify/actor-memory-expression
