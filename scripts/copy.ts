@@ -13,7 +13,7 @@ function rewrite(path: string, replacer: (from: string) => string): void {
 
 // as we publish only the dist folder, we need to copy some meta files inside (readme/license/package.json)
 // also changes paths inside the copied `package.json` (`dist/index.js` -> `index.js`)
-const root = resolve(__dirname, '..');
+const root = resolve(import.meta.dirname, '..');
 const target = resolve(process.cwd(), 'dist');
 
 copy('README.md', root, target);
