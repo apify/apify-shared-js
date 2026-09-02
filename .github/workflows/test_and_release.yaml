@@ -79,7 +79,7 @@ jobs:
 
     publish:
         name: Publish to NPM
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next'
         needs: [ test, build, lint, format-check ]
         runs-on: ubuntu-latest
         steps:
@@ -102,5 +102,6 @@ jobs:
                     workflow: publish_to_npm.yaml
                     inputs: >
                         {
-                            "ref": "master"
+                            "ref": "${{ github.ref_name }}",
+                            "prerelease": "${{ github.ref == 'refs/heads/next' }}"
                         }
