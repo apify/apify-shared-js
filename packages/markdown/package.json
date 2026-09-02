@@ -45,8 +45,7 @@
     "dependencies": {
         "@apify/consts": "workspace:^",
         "@apify/utilities": "workspace:^",
-        "marked": "^15.0.12",
-        "match-all": "^1.2.7"
+        "marked": "^15.0.12"
     },
     "engines": {
         "node": ">=22"

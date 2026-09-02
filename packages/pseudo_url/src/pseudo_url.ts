@@ -1,6 +1,12 @@
-import { inspect } from 'node:util';
-
 import log from '@apify/log';
+
+function stringifyForError(value: unknown): string {
+    try {
+        return JSON.stringify(value) ?? String(value);
+    } catch {
+        return String(value);
+    }
+}
 
 /**
  * Represents a pseudo-URL (PURL) - a URL pattern used to find
@@ -69,7 +75,7 @@ export class PseudoUrl {
         } else {
             const type = Array.isArray(purl) ? 'array' : typeof purl;
             throw new Error(
-                `Invalid PseudoUrl format, 'string' or 'RegExp' required, got \`${inspect(purl)}\` of type '${type}' instead`,
+                `Invalid PseudoUrl format, 'string' or 'RegExp' required, got \`${stringifyForError(purl)}\` of type '${type}' instead`,
             );
         }
     }
