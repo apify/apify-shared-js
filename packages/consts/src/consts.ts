@@ -1,5 +1,5 @@
-import type { ValueOf } from './helpers';
-import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs';
+import type { ValueOf } from './helpers.js';
+import { DNS_SAFE_NAME_REGEX, EMAIL_REGEX } from './regexs.js';
 
 export const FREE_SUBSCRIPTION_PLAN_CODE = 'DEV';
 

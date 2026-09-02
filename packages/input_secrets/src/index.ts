@@ -1,1 +1,1 @@
-export * from './input_secrets';
+export * from './input_secrets.js';

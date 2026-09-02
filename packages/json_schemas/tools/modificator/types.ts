@@ -1,6 +1,6 @@
-import type { AddDescriptionRule } from './rules/add-description-rule';
-import type { RemoveValueRule } from './rules/remove-value-rule';
-import type { ReplaceValueRule } from './rules/replace-value-rule';
+import type { AddDescriptionRule } from './rules/add-description-rule.ts';
+import type { RemoveValueRule } from './rules/remove-value-rule.ts';
+import type { ReplaceValueRule } from './rules/replace-value-rule.ts';
 
 type Primitive = string | number | boolean | null | undefined;
 

@@ -1,9 +1,9 @@
 import { load as cheerioLoad } from 'cheerio';
 
-import * as addDescriptionRule from './rules/add-description-rule';
-import * as removeValueRule from './rules/remove-value-rule';
-import * as replaceValueRule from './rules/replace-value-rule';
-import type { Rule } from './types';
+import * as addDescriptionRule from './rules/add-description-rule.ts';
+import * as removeValueRule from './rules/remove-value-rule.ts';
+import * as replaceValueRule from './rules/replace-value-rule.ts';
+import type { Rule } from './types.ts';
 
 /**
  * Parses an XML rules file and returns a list of supported rules.

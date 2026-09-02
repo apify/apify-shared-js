@@ -1,1 +1,1 @@
-export * from './pseudo_url';
+export * from './pseudo_url.js';

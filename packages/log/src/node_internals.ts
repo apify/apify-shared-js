@@ -25,7 +25,7 @@ IN THE SOFTWARE.
 
 import c from 'ansi-colors';
 
-import { IS_APIFY_LOGGER_EXCEPTION } from './log_consts';
+import { IS_APIFY_LOGGER_EXCEPTION } from './log_consts.js';
 
 function identicalSequenceRange(a: any[], b: any[]) {
     for (let i = 0; i < a.length - 3; i++) {

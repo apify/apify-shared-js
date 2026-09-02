@@ -1,9 +1,9 @@
 // We're using the 2019, because input schema requires it (it uses "unevaluatedProperties" keyword)
-import Ajv from 'ajv/dist/2019.js';
+import { Ajv2019 as Ajv } from 'ajv/dist/2019.js';
 
 // TODO: it might be better to import this from ajv package
-import draft7MetaSchema from '../schemas/json-schema-draft-07.json';
-import { actorSchema, datasetSchema, inputSchema, keyValueStoreSchema, outputSchema } from './schemas';
+import draft7MetaSchema from '../schemas/json-schema-draft-07.json' with { type: 'json' };
+import { actorSchema, datasetSchema, inputSchema, keyValueStoreSchema, outputSchema } from './schemas.js';
 
 const ajv = new Ajv({
     schemas: [

@@ -1,3 +1,3 @@
-export * from './linked_list';
-export * from './list_dictionary';
-export * from './lru_cache';
+export * from './linked_list.js';
+export * from './list_dictionary.js';
+export * from './lru_cache.js';

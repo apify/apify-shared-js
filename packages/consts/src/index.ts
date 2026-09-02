@@ -1,3 +1,3 @@
-export * from './consts';
-export * from './helpers';
-export * from './regexs';
+export * from './consts.js';
+export * from './helpers.js';
+export * from './regexs.js';
