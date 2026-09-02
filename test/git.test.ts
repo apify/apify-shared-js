@@ -259,4 +259,34 @@ describe('convertRelativeImagePathsToAbsoluteInReadme()', () => {
             }),
         ).toEqual(testMarkdown);
     });
+
+    it.each([
+        [
+            'https://github.com/apify/test-repo.git',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/master',
+        ],
+        [
+            'https://github.com/apify/test-repo.git#dev',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/dev',
+        ],
+        // `#:folder` carries only a folder, no branch, so the default branch is used
+        [
+            'https://github.com/apify/test-repo.git#:folder',
+            undefined,
+            'https://raw.githubusercontent.com/apify/test-repo/master',
+        ],
+        // Bitbucket web URLs carry a path suffix after owner/repo, which must be ignored
+        [
+            'https://user@bitbucket.org/apify/test-repo/src/main/',
+            'main',
+            'https://bytebucket.org/apify/test-repo/raw/main',
+        ],
+        ['ssh://git@gitlab.com/apify/test-repo.git', undefined, 'https://gitlab.com/apify/test-repo/-/raw/master'],
+    ])('works with URL-style repo URL %s', (gitRepoUrl, gitBranchName, expectedPrefix) => {
+        expect(
+            convertRelativeImagePathsToAbsoluteInReadme({ readme: '![img](./img.jpg)', gitRepoUrl, gitBranchName }),
+        ).toEqual(`![img](${expectedPrefix}/img.jpg)`);
+    });
 });

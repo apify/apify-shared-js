@@ -42,9 +42,6 @@
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {
-        "git-url-parse": "^16.1.0"
-    },
     "engines": {
         "node": ">=22"
     }
