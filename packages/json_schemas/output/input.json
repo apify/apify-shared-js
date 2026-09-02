@@ -2107,7 +2107,6 @@
                         ]
                     },
                     "uniqueItems": true,
-                    "additionalItems": false,
                     "minItems": 1,
                     "description": "Allowed type for the input value. Cannot be mixed.",
                     "x-intellij-html-description": "<p>Allowed type for the input value. Cannot be mixed.</p>",
