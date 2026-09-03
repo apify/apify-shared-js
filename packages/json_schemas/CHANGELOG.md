@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.17.2...@apify/json_schemas@0.18.0) (2026-09-03)
+
+
+### Bug Fixes
+
+* **json_schemas:** make the input schema validator compile under ajv strict mode ([#687](https://github.com/apify/apify-shared-js/issues/687)) ([dd0a261](https://github.com/apify/apify-shared-js/commit/dd0a26184f672e519a2bd83e23cf0702a57792ca))
+
+
+### Features
+
+* **input_secrets:** replace ow with zod validation ([#685](https://github.com/apify/apify-shared-js/issues/685)) ([38a6890](https://github.com/apify/apify-shared-js/commit/38a6890fd724743b7c07c752766c69f47a1f7694))
+* publish ESM-only packages and require Node.js 22+ ([#684](https://github.com/apify/apify-shared-js/issues/684)) ([338dbac](https://github.com/apify/apify-shared-js/commit/338dbac5df0cd7a991e06c747bb82af9aec562a6))
+
+
+### BREAKING CHANGES
+
+* **input_secrets:** Invalid arguments throw ArgumentValidationError instead of ow's ArgumentError, with differently formatted messages.
+* All packages are ESM-only and require Node.js 22 or higher. CommonJS consumers on Node.js 22+ can still require() them thanks to native require(esm) support.
+
+
+
+
+
 ## [0.17.2](https://github.com/apify/apify-shared-js/compare/@apify/json_schemas@0.17.1...@apify/json_schemas@0.17.2) (2026-09-02)
 
 **Note:** Version bump only for package @apify/json_schemas

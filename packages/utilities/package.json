@@ -1,6 +1,6 @@
 {
     "name": "@apify/utilities",
-    "version": "2.35.11",
+    "version": "3.0.0",
     "description": "Tools and constants shared across Apify projects.",
     "type": "module",
     "main": "./dist/index.js",

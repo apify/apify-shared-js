@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/apify/apify-shared-js/compare/@apify/datastructures@2.0.6...@apify/datastructures@3.0.0) (2026-09-03)
+
+
+### Features
+
+* **input_secrets:** replace ow with zod validation ([#685](https://github.com/apify/apify-shared-js/issues/685)) ([38a6890](https://github.com/apify/apify-shared-js/commit/38a6890fd724743b7c07c752766c69f47a1f7694))
+* publish ESM-only packages and require Node.js 22+ ([#684](https://github.com/apify/apify-shared-js/issues/684)) ([338dbac](https://github.com/apify/apify-shared-js/commit/338dbac5df0cd7a991e06c747bb82af9aec562a6))
+
+
+### BREAKING CHANGES
+
+* **input_secrets:** Invalid arguments throw ArgumentValidationError instead of ow's ArgumentError, with differently formatted messages.
+* All packages are ESM-only and require Node.js 22 or higher. CommonJS consumers on Node.js 22+ can still require() them thanks to native require(esm) support.
+
+
+
+
+
 ## [2.0.6](https://github.com/apify/apify-shared-js/compare/@apify/datastructures@2.0.5...@apify/datastructures@2.0.6) (2026-05-04)
 
 **Note:** Version bump only for package @apify/datastructures

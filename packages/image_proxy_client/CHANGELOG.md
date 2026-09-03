@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/apify/apify-shared-js/compare/@apify/image_proxy_client@2.0.5...@apify/image_proxy_client@3.0.0) (2026-09-03)
+
+
+### Features
+
+* **input_secrets:** replace ow with zod validation ([#685](https://github.com/apify/apify-shared-js/issues/685)) ([38a6890](https://github.com/apify/apify-shared-js/commit/38a6890fd724743b7c07c752766c69f47a1f7694))
+* publish ESM-only packages and require Node.js 22+ ([#684](https://github.com/apify/apify-shared-js/issues/684)) ([338dbac](https://github.com/apify/apify-shared-js/commit/338dbac5df0cd7a991e06c747bb82af9aec562a6))
+* replace legacy dependencies with platform builtins ([#689](https://github.com/apify/apify-shared-js/issues/689)) ([fcb8fa7](https://github.com/apify/apify-shared-js/commit/fcb8fa769330b7bd7cd300905c27c30dcdd11eb2)), closes [#537](https://github.com/apify/apify-shared-js/issues/537)
+
+
+### BREAKING CHANGES
+
+* ImageProxyClient methods (generateUrl, generateUrlWithParam, updateImagesInHtml, createImageHtml) are now async and return promises. Generated URLs and digests are unchanged.
+* **input_secrets:** Invalid arguments throw ArgumentValidationError instead of ow's ArgumentError, with differently formatted messages.
+* All packages are ESM-only and require Node.js 22 or higher. CommonJS consumers on Node.js 22+ can still require() them thanks to native require(esm) support.
+
+
+
+
+
 ## [2.0.5](https://github.com/apify/apify-shared-js/compare/@apify/image_proxy_client@2.0.4...@apify/image_proxy_client@2.0.5) (2026-09-02)
 
 **Note:** Version bump only for package @apify/image_proxy_client

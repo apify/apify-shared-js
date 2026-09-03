@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_secrets",
-    "version": "1.2.60",
+    "version": "2.0.0",
     "description": "Package to encrypt and decrypt apify actor input secrets.",
     "type": "module",
     "main": "./dist/index.js",
