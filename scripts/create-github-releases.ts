@@ -6,7 +6,10 @@ import { resolve } from 'node:path';
 // Creates a GitHub release for every tag produced by `lerna version`, with the matching section
 // of the package changelog as the body. Lerna's own `createRelease` is disabled by `--no-push`
 // (the release commit and tags are recreated signed via the API), so releases are made here.
-const tags = (process.env.TAGS ?? '').split('\n').map((t) => t.trim()).filter(Boolean);
+const tags = (process.env.TAGS ?? '')
+    .split('\n')
+    .map((t) => t.trim())
+    .filter(Boolean);
 const packagesDir = resolve(import.meta.dirname, '..', 'packages');
 
 const dirByName = new Map<string, string>();
