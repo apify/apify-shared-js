@@ -13,7 +13,10 @@
         "./package.json": "./package.json"
     },
     "keywords": [
-        "apify"
+        "apify",
+        "input",
+        "secrets",
+        "encryption"
     ],
     "author": {
         "name": "Apify",
