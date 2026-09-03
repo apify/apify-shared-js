@@ -1,6 +1,6 @@
 {
     "name": "@apify/pseudo_url",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "Tool to find the matching URLs on a page (or html document) by providing a URL pattern.",
     "type": "module",
     "main": "./dist/index.js",
