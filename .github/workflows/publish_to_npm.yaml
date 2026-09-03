@@ -62,7 +62,18 @@ jobs:
                       exit 1
                   fi
 
+            # A push that touches no package (workflow or docs changes) must skip the whole release:
+            # with nothing to version, lerna makes no commit and the reset/signed-commit steps below
+            # would mangle the checked-out commit instead.
+            - name: Check for changed packages
+              id: changed
+              run: |
+                  count=$(pnpm exec lerna changed -p 2>/dev/null | wc -l | xargs)
+                  echo "count=$count" | tee -a "$GITHUB_OUTPUT"
+                  if [ "$count" = "0" ]; then echo "No changed packages, nothing to release."; fi
+
             - name: Build module
+              if: ${{ steps.changed.outputs.count != '0' }}
               run: pnpm build
 
             # We publish in a few steps:
@@ -76,7 +87,7 @@ jobs:
             # prerelease number from the npm registry (see scripts/resolve-beta-versions.ts). The
             # local commit below is a throwaway lerna needs to see a clean tree; it is never pushed.
             - name: Version packages (beta prerelease)
-              if: ${{ inputs.prerelease }}
+              if: ${{ inputs.prerelease && steps.changed.outputs.count != '0' }}
               run: |
                   git checkout -- .
                   pnpm exec lerna version --conventional-prerelease --preid beta --no-push --no-git-tag-version --no-changelog --yes
@@ -84,7 +95,7 @@ jobs:
                   git -c user.name="Apify Release Bot" -c user.email="noreply@apify.com" commit -am "chore: beta versions [local only]"
 
             - name: Version packages
-              if: ${{ !inputs.prerelease }}
+              if: ${{ !inputs.prerelease && steps.changed.outputs.count != '0' }}
               id: version_packages
               run: |
                   git checkout -- .
@@ -105,13 +116,13 @@ jobs:
                   GIT_COMMITTER_EMAIL: "noreply@apify.com"
 
             - name: Sync root changelog
-              if: ${{ !inputs.prerelease }}
+              if: ${{ !inputs.prerelease && steps.changed.outputs.count != '0' }}
               run: |
                   pnpm install --no-frozen-lockfile # reinstall to have updated lock file
                   pnpm exec lerna ls --json | node scripts/sync-root-changelog.ts
 
             - name: Commit and push changes
-              if: ${{ !inputs.prerelease }}
+              if: ${{ !inputs.prerelease && steps.changed.outputs.count != '0' }}
               id: signed_commit
               uses: apify/actions/signed-commit@v1.4.0
               with:
@@ -119,7 +130,7 @@ jobs:
                   github-token: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
 
             - name: Push tags via API to have them signed
-              if: ${{ !inputs.prerelease }}
+              if: ${{ !inputs.prerelease && steps.changed.outputs.count != '0' }}
               # Tags must be annotated (tag objects, not plain refs): lerna anchors "changed since"
               # detection on `git describe`, which ignores lightweight tags, so plain refs make
               # every release re-publish all packages.
@@ -141,11 +152,12 @@ jobs:
                   COMMIT_SHA: ${{ steps.signed_commit.outputs.commit_long_sha }}
 
             - name: Create GitHub releases
-              if: ${{ !inputs.prerelease }}
+              if: ${{ !inputs.prerelease && steps.changed.outputs.count != '0' }}
               run: node scripts/create-github-releases.ts
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   TAGS: ${{ steps.version_packages.outputs.tags }}
 
             - name: Publish to NPM
+              if: ${{ steps.changed.outputs.count != '0' }}
               run: pnpm exec lerna publish from-package --contents dist --yes ${{ inputs.prerelease && '--dist-tag next' || '' }}
