@@ -140,5 +140,12 @@ jobs:
                   TAGS: ${{ steps.version_packages.outputs.tags }}
                   COMMIT_SHA: ${{ steps.signed_commit.outputs.commit_long_sha }}
 
+            - name: Create GitHub releases
+              if: ${{ !inputs.prerelease }}
+              run: node scripts/create-github-releases.ts
+              env:
+                  GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
+                  TAGS: ${{ steps.version_packages.outputs.tags }}
+
             - name: Publish to NPM
               run: pnpm exec lerna publish from-package --contents dist --yes ${{ inputs.prerelease && '--dist-tag next' || '' }}
