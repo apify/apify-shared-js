@@ -1,6 +1,6 @@
 {
     "name": "@apify/timeout",
-    "version": "0.5.0",
+    "version": "1.0.0",
     "description": "Helper for adding timeouts to promises that support easy cancellation.",
     "type": "module",
     "main": "./dist/index.js",

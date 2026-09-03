@@ -1,6 +1,6 @@
 {
     "name": "@apify/json_schemas",
-    "version": "0.18.0",
+    "version": "1.0.0",
     "description": "Publicly available JSON schemas for Apify platform",
     "type": "module",
     "main": "./dist/src/index.js",

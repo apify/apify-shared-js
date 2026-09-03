@@ -1,6 +1,6 @@
 {
     "name": "@apify/validations",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "Zod-based argument validation with human-readable errors, shared across Apify projects.",
     "type": "module",
     "main": "./dist/index.js",
