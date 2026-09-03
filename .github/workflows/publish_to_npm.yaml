@@ -120,12 +120,20 @@ jobs:
 
             - name: Push tags via API to have them signed
               if: ${{ !inputs.prerelease }}
+              # Tags must be annotated (tag objects, not plain refs): lerna anchors "changed since"
+              # detection on `git describe`, which ignores lightweight tags, so plain refs make
+              # every release re-publish all packages.
               run: |
                   while IFS= read -r tag; do
                       [ -z "$tag" ] && continue
+                      tag_sha=$(gh api -X POST /repos/${{ github.repository }}/git/tags \
+                          -f tag="$tag" \
+                          -f message="$tag" \
+                          -f object="$COMMIT_SHA" \
+                          -f type=commit --jq .sha)
                       gh api -X POST /repos/${{ github.repository }}/git/refs \
                           -f ref="refs/tags/$tag" \
-                          -f sha="$COMMIT_SHA"
+                          -f sha="$tag_sha"
                   done <<< "$TAGS"
               env:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
