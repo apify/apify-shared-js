@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+// Messages are formatted (and asserted on by consumers) in English, regardless of any global locale.
+const { localeError } = z.locales.en();
+
 /** Formats a zod issue path like `groups[0]` or `countryCode`. */
 function formatIssuePath(path: readonly PropertyKey[]): string {
     let out = '';
@@ -31,7 +34,10 @@ function describeType(value: unknown): string {
 const BARE_EXPECTED_TYPE_MESSAGE =
     /^Invalid input: expected (an array of .+|a typed array|an object|object|array|function|number|string|boolean)$/;
 
-/** Longest received string rendered in an error; the rest is elided. */
+/**
+ * How much of a received string the message renders. A rejected argument can be arbitrarily large - a
+ * whole JSON payload passed where an object was expected - and its full text would swamp the message.
+ */
 const MAX_RENDERED_STRING_LENGTH = 200;
 
 /** Renders a primitive received value for an error; skips objects/Dates (noisy). */
@@ -45,8 +51,10 @@ function describeReceived(value: unknown): string | undefined {
                 : value;
         case 'number':
         case 'boolean':
-        case 'bigint':
             return String(value);
+        case 'bigint':
+            // Keep the `n` suffix, so a rejected bigint is not mistaken for a number.
+            return `${value}n`;
         default:
             return undefined;
     }
@@ -62,14 +70,77 @@ function describeReceivedClause(value: unknown): string {
         : `received the ${describeType(value)} \`${rendered}\``;
 }
 
-/** Renders one issue as a line each; a union expands into a line per failed arm. */
-function formatIssue(issue: z.ZodError['issues'][number], root: unknown, basePath: readonly PropertyKey[]): string[] {
+/**
+ * Renders the issue's own sentence, except where zod's contradicts itself: a value of the expected type
+ * that fails that type's implicit constraint is still reported as the wrong *type*, giving "expected
+ * number, received number" for `Infinity` / `NaN` and "expected date, received Date" for an invalid
+ * `Date`. Name the constraint that actually failed instead.
+ */
+function describeIssue(issue: z.ZodError['issues'][number], value: unknown): string {
+    if (issue.code === 'invalid_type') {
+        if (issue.expected === 'number' && typeof value === 'number') {
+            return 'Invalid input: expected a finite number';
+        }
+        // A tag check, not `instanceof`, so a `Date` from another realm is named too.
+        if (issue.expected === 'date' && Object.prototype.toString.call(value) === '[object Date]') {
+            return 'Invalid input: expected a valid date';
+        }
+    }
+    return issue.message;
+}
+
+/**
+ * How many issue lines the message renders, before a closing "... and N more" line. Validating a
+ * large array - a dataset push, a request batch - can fail on every element, and rendering all of
+ * them would make the message megabytes long. The full set stays on `issues` either way.
+ */
+const MAX_RENDERED_LINES = 10;
+
+/**
+ * How deep into the value the lines for `issue` would sit, as a path length. Computed without
+ * rendering anything, so a union can weigh its arms before any string is built.
+ */
+function deepestIssueDepth(issue: z.ZodError['issues'][number], baseDepth: number): number {
+    const depth = baseDepth + issue.path.length;
+    if (issue.code === 'invalid_union') {
+        let deepest = -1;
+        for (const arm of issue.errors) {
+            for (const nested of arm) deepest = Math.max(deepest, deepestIssueDepth(nested, depth));
+        }
+        return deepest;
+    }
+    return depth;
+}
+
+/** Collects one line per issue into `lines`; a union expands into a line per deepest-failing arm. */
+function collectIssueLines(
+    issue: z.ZodError['issues'][number],
+    root: unknown,
+    basePath: readonly PropertyKey[],
+    lines: string[],
+    counter: { total: number },
+): void {
     const path = [...basePath, ...issue.path];
-    // A union's own message is a bare "Invalid input" — the useful part is in `errors`,
+    // A union's own message is a bare "Invalid input" - the useful part is in `errors`,
     // whose paths are relative to the union, hence passing `path` down as the base.
     if (issue.code === 'invalid_union') {
-        return issue.errors.flatMap((arm) => arm.flatMap((nested) => formatIssue(nested, root, path)));
+        // Only the arms that reached deepest are reported. An arm that failed nearer the root rejected a
+        // shape the value never had - for `[{ ok: 1 }, 2]` against `object | string | array`, the object
+        // and string arms fail on the whole array, and only the array arm can point at `[1]`. When every
+        // arm fails at the same depth, as for an argument of an outright wrong type, they are all kept.
+        const armDepths = issue.errors.map((arm) =>
+            arm.reduce((deepest, nested) => Math.max(deepest, deepestIssueDepth(nested, path.length)), -1),
+        );
+        const deepest = Math.max(...armDepths);
+        for (const [index, arm] of issue.errors.entries()) {
+            if (armDepths[index] !== deepest) continue;
+            for (const nested of arm) collectIssueLines(nested, root, path, lines, counter);
+        }
+        return;
     }
+
+    counter.total += 1;
+    if (lines.length >= MAX_RENDERED_LINES) return;
 
     const location = path.length ? ` at \`${formatIssuePath(path)}\`` : '';
     const value = valueAtPath(root, path);
@@ -79,7 +150,7 @@ function formatIssue(issue: z.ZodError['issues'][number], root: unknown, basePat
     // folded into that clause (``received the string `3` ``) rather than dangling after the location: our
     // custom schemas stop at the expected type, so the clause is appended; zod's built-in messages already
     // end with `, received <type>`, so that tail is replaced with the enriched one.
-    let { message } = issue;
+    let message = describeIssue(issue, value);
     let got = '';
     const bareExpected = BARE_EXPECTED_TYPE_MESSAGE.exec(message);
     const zodReceived = /, received (\S+)$/.exec(message);
@@ -94,7 +165,7 @@ function formatIssue(issue: z.ZodError['issues'][number], root: unknown, basePat
         got = `, got \`${rendered}\``;
     }
 
-    return [`${message}${location}${got}`];
+    lines.push(`${message}${location}${got}`);
 }
 
 /**
@@ -104,9 +175,15 @@ function formatIssue(issue: z.ZodError['issues'][number], root: unknown, basePat
  * than zod's default, which omits the received value.
  */
 function formatZodError(error: z.ZodError, root: unknown, label?: string): string {
-    const lines = error.issues.flatMap((issue) => formatIssue(issue, root, []));
+    const lines: string[] = [];
+    const counter = { total: 0 };
+    for (const issue of error.issues) collectIssueLines(issue, root, [], lines, counter);
+
     // The label names the validated interface, the way ow's errors ended with "in object `X`".
-    return (label ? lines.map((line) => `${line} in \`${label}\``) : lines).join('\n');
+    const rendered = label ? lines.map((line) => `${line} in \`${label}\``) : [...lines];
+    const hidden = counter.total - lines.length;
+    if (hidden > 0) rendered.push(`... and ${hidden} more problem${hidden === 1 ? '' : 's'}`);
+    return rendered.join('\n');
 }
 
 /**
@@ -145,7 +222,7 @@ export function parseArgument<TValue, TSchema extends z.ZodType>(
     schema: TSchema,
     label?: string,
 ): TValue & z.output<TSchema> {
-    const result = schema.safeParse(value);
+    const result = schema.safeParse(value, { error: localeError });
     if (!result.success) throw new ArgumentValidationError(result.error, value, label);
     return result.data as TValue & z.output<TSchema>;
 }
