@@ -1,6 +1,6 @@
 {
     "name": "@apify/validations",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Zod-based argument validation with human-readable errors, shared across Apify projects.",
     "type": "module",
     "main": "./dist/index.js",
@@ -39,7 +39,7 @@
         "access": "public"
     },
     "dependencies": {
-        "zod": "^4.0.0"
+        "zod": "^4.5.4"
     },
     "engines": {
         "node": ">=22"
