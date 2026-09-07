@@ -1,6 +1,6 @@
 {
     "name": "@apify/input_schema",
-    "version": "4.0.2",
+    "version": "4.0.3",
     "description": "Validation and utilities for Apify actor input schemas.",
     "type": "module",
     "main": "./dist/index.js",

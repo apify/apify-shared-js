@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/apify/apify-shared-js/compare/@apify/validations@1.0.2...@apify/validations@1.1.0) (2026-09-07)
+
+
+### Features
+
+* **validations:** adopt the richer error formatting from apify-client ([#703](https://github.com/apify/apify-shared-js/issues/703)) ([cf69060](https://github.com/apify/apify-shared-js/commit/cf69060105edd62edd49acc61388a295ef1a5d65))
+
+
+
+
+
 ## [1.0.2](https://github.com/apify/apify-shared-js/compare/@apify/validations@1.0.1...@apify/validations@1.0.2) (2026-09-07)
 
 **Note:** Version bump only for package @apify/validations
