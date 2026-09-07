@@ -39,7 +39,7 @@
         "access": "public"
     },
     "dependencies": {
-        "zod": "^4.0.0"
+        "zod": "^4.5.4"
     },
     "engines": {
         "node": ">=22"
