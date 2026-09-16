@@ -22,12 +22,17 @@ describe('isForbiddenUsername()', () => {
         expect(isForbiddenUsername('BingSiteAuth.XML')).toBe(true);
         expect(isForbiddenUsername('llms.txt')).toBe(true);
         expect(isForbiddenUsername('llms-full.txt')).toBe(true);
+
+        // Any username ending in ".md" collides with the markdown twin of the page
         expect(isForbiddenUsername('AGENTS.md')).toBe(true);
-        expect(isForbiddenUsername('agents.MD')).toBe(true);
         expect(isForbiddenUsername('CLAUDE.md')).toBe(true);
-        expect(isForbiddenUsername('claude.MD')).toBe(true);
         expect(isForbiddenUsername('auth.md')).toBe(true);
-        expect(isForbiddenUsername('AUTH.MD')).toBe(true);
+        expect(isForbiddenUsername('foo.md')).toBe(true);
+        expect(isForbiddenUsername('foo.MD')).toBe(true);
+        expect(isForbiddenUsername('.md')).toBe(true);
+        expect(isForbiddenUsername('foo.mdx')).toBe(false);
+        expect(isForbiddenUsername('foo.markdown')).toBe(false);
+        expect(isForbiddenUsername('md.foo')).toBe(false);
 
         // Agentic protocols and payment standards
         expect(isForbiddenUsername('x402')).toBe(true);

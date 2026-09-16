@@ -497,9 +497,10 @@ const FORBIDDEN_USERNAMES_REGEXPS = [
     'security\\.txt',
     'llms\\.txt',
     'llms-full\\.txt',
-    'AGENTS\\.md',
-    'CLAUDE\\.md',
-    'auth\\.md',
+    // apify.com serves a markdown twin of each page at <path>.md, so any username ending
+    // in ".md" collides with that route. Blocked here rather than in USERNAME.REGEX so that
+    // existing holders keep their username; the regex runs on every user-record write.
+    '(.*\\.md)',
 
     // All hidden files
     '(\\..*)',
