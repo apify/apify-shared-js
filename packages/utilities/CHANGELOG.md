@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/apify/apify-shared-js/compare/@apify/utilities@3.0.1...@apify/utilities@3.1.0) (2026-09-16)
+
+
+### Features
+
+* **utilities:** forbid usernames ending in .md ([#706](https://github.com/apify/apify-shared-js/issues/706)) ([36978f3](https://github.com/apify/apify-shared-js/commit/36978f3155bff413135283bc74cc35ca56524233)), closes [apify/apify-web#6604](https://github.com/apify/apify-web/issues/6604)
+
+
+
+
+
 ## [3.0.1](https://github.com/apify/apify-shared-js/compare/@apify/utilities@3.0.0...@apify/utilities@3.0.1) (2026-09-03)
 
 **Note:** Version bump only for package @apify/utilities
