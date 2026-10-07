@@ -50,11 +50,11 @@
     },
     "devDependencies": {
         "@apify/oxlint-config": "^0.2.10",
-        "@commitlint/config-conventional": "^20.5.3",
+        "@commitlint/config-conventional": "^21.2.3",
         "@types/node": "^24.19.1",
         "@vitest/coverage-v8": "^4.1.11",
         "ajv": "^8.20.0",
-        "commitlint": "^20.5.3",
+        "commitlint": "^21.2.3",
         "husky": "^9.1.7",
         "lerna": "^10.0.1",
         "lint-staged": "^16.4.0",
