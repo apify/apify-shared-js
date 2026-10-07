@@ -59,7 +59,7 @@
         "lerna": "^10.0.1",
         "lint-staged": "^16.4.0",
         "nock": "^14.0.17",
-        "oxfmt": "0.46.0",
+        "oxfmt": "0.72.0",
         "oxlint": "1.62.0",
         "oxlint-tsgolint": "0.22.0",
         "typescript": "^5.9.3",
