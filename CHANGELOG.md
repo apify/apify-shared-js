@@ -8,13 +8,14 @@ See the changelogs of each package:
 
 package | version | changelog
 --------|---------|----------
+`@apify/actor-categories` | 1.1.0 | [CHANGELOG](./packages/actor-categories/CHANGELOG.md)
 `@apify/actor-memory-expression` | 1.0.1 | [CHANGELOG](./packages/actor-memory-expression/CHANGELOG.md)
 `@apify/consts` | 3.0.1 | [CHANGELOG](./packages/consts/CHANGELOG.md)
 `@apify/datastructures` | 3.0.1 | [CHANGELOG](./packages/datastructures/CHANGELOG.md)
 `@apify/git` | 3.0.1 | [CHANGELOG](./packages/git/CHANGELOG.md)
 `@apify/image_proxy_client` | 3.0.1 | [CHANGELOG](./packages/image_proxy_client/CHANGELOG.md)
-`@apify/input_schema` | 4.0.5 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
-`@apify/input_secrets` | 2.0.5 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
+`@apify/input_schema` | 4.0.6 | [CHANGELOG](./packages/input_schema/CHANGELOG.md)
+`@apify/input_secrets` | 2.0.6 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/json_schemas` | 1.0.1 | [CHANGELOG](./packages/json_schemas/CHANGELOG.md)
 `@apify/log` | 3.0.1 | [CHANGELOG](./packages/log/CHANGELOG.md)
 `@apify/markdown` | 4.0.2 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
@@ -22,4 +23,4 @@ package | version | changelog
 `@apify/pseudo_url` | 3.0.1 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
 `@apify/timeout` | 1.0.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
 `@apify/utilities` | 3.1.0 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
-`@apify/validations` | 1.1.1 | [CHANGELOG](./packages/validations/CHANGELOG.md)
+`@apify/validations` | 1.1.2 | [CHANGELOG](./packages/validations/CHANGELOG.md)

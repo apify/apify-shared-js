@@ -1,6 +1,6 @@
 {
     "name": "@apify/actor-categories",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Apify Store Actor category definitions and hierarchy helpers.",
     "type": "module",
     "main": "./dist/index.js",
