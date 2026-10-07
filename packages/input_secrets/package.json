@@ -45,7 +45,7 @@
         "@apify/log": "workspace:^",
         "@apify/utilities": "workspace:^",
         "@apify/validations": "workspace:^",
-        "zod": "^4.6.4"
+        "zod": "^4.6.5"
     },
     "engines": {
         "node": ">=22"
