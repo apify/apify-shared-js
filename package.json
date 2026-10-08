@@ -57,7 +57,7 @@
         "commitlint": "^21.2.3",
         "husky": "^9.1.7",
         "lerna": "^10.0.1",
-        "lint-staged": "^16.4.0",
+        "lint-staged": "^17.6.0",
         "nock": "^14.0.17",
         "oxfmt": "0.46.0",
         "oxlint": "1.62.0",
