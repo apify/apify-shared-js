@@ -1143,9 +1143,36 @@ export const LABEL_CATEGORIES = [
         depth: null,
     },
 ] as const satisfies readonly ActorCategoryShape[];
+
+/** How an Actor can be used: Run only, or as a Standby server. Labels kept apart from the Actor type ones. */
+export const INTERFACE_CATEGORIES = [
+    {
+        id: 'RUN',
+        name: 'Run',
+        parentCategoryId: null,
+        group: CATEGORY_GROUP.LABEL,
+        depth: null,
+    },
+    {
+        id: 'MULTI_TENANT_SERVER',
+        name: 'Multi-tenant Server',
+        parentCategoryId: null,
+        group: CATEGORY_GROUP.LABEL,
+        depth: null,
+    },
+    {
+        id: 'SINGLE_TENANT_SERVER',
+        name: 'Single-tenant Server',
+        parentCategoryId: null,
+        group: CATEGORY_GROUP.LABEL,
+        depth: null,
+    },
+] as const satisfies readonly ActorCategoryShape[];
+
 export const ALL_CATEGORIES = [
     ...USE_CASE_CATEGORIES,
     ...LABEL_CATEGORIES,
+    ...INTERFACE_CATEGORIES,
     ...INDUSTRY_CATEGORIES,
     ...DOMAIN_CATEGORIES,
     ...OUTPUT_CATEGORIES,
