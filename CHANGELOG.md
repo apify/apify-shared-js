@@ -18,7 +18,7 @@ package | version | changelog
 `@apify/input_secrets` | 2.0.6 | [CHANGELOG](./packages/input_secrets/CHANGELOG.md)
 `@apify/json_schemas` | 1.0.1 | [CHANGELOG](./packages/json_schemas/CHANGELOG.md)
 `@apify/log` | 3.0.1 | [CHANGELOG](./packages/log/CHANGELOG.md)
-`@apify/markdown` | 4.0.2 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
+`@apify/markdown` | 4.1.0 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 1.0.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 3.0.1 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
 `@apify/timeout` | 1.0.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)

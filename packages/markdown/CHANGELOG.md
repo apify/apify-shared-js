@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Fmarkdown%404.0.2...%40apify%2Fmarkdown%404.1.0) (2026-10-08)
+
+### Features
+
+* **markdown:** update marked to v18 ([#714](https://github.com/apify/apify-shared-js/issues/714)) ([c7af76b](https://github.com/apify/apify-shared-js/commit/c7af76bdf42d30571ebd029a8ee43834b5d2bfee)), closes [#688](https://github.com/apify/apify-shared-js/issues/688)
+
+
 ## [4.0.2](https://github.com/apify/apify-shared-js/compare/@apify/markdown@4.0.1...@apify/markdown@4.0.2) (2026-09-16)
 
 **Note:** Version bump only for package @apify/markdown
