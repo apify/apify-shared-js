@@ -14,8 +14,8 @@ importers:
   .:
     devDependencies:
       '@apify/oxlint-config':
-        specifier: ^0.2.10
-        version: 0.2.10(oxlint@1.62.0(oxlint-tsgolint@7.0.2003))
+        specifier: ^0.3.0
+        version: 0.3.0(oxlint@1.62.0(oxlint-tsgolint@7.0.2003))
       '@commitlint/config-conventional':
         specifier: ^21.2.3
         version: 21.2.3
@@ -195,8 +195,8 @@ importers:
 
 packages:
 
-  '@apify/oxlint-config@0.2.10':
-    resolution: {integrity: sha512-7wyaumtytCiKqqd/ILgDAmlqNpBCZ+xXi2j8JfY3Uanxciz18C18kG3+sLdPbm4efkuskH5dhEdmjDC/UHaG+w==}
+  '@apify/oxlint-config@0.3.0':
+    resolution: {integrity: sha512-njNpYIfowurrM3+TDhhb/LLADAPzozs9+hTTMB/OiRAKrUHOqF6KIsUCYI8IGZAB1hl9vXQnFmKQzTysbAJ7mA==}
     peerDependencies:
       oxlint: ^1.61.0
 
@@ -3341,7 +3341,7 @@ packages:
 
 snapshots:
 
-  '@apify/oxlint-config@0.2.10(oxlint@1.62.0(oxlint-tsgolint@7.0.2003))':
+  '@apify/oxlint-config@0.3.0(oxlint@1.62.0(oxlint-tsgolint@7.0.2003))':
     dependencies:
       oxlint: 1.62.0(oxlint-tsgolint@7.0.2003)
 
