@@ -51,7 +51,7 @@
     "devDependencies": {
         "@apify/oxlint-config": "^0.2.10",
         "@commitlint/config-conventional": "^20.5.3",
-        "@types/node": "^24.19.1",
+        "@types/node": "^26.6.4",
         "@vitest/coverage-v8": "^5.0.3",
         "ajv": "^8.20.0",
         "commitlint": "^20.5.3",
