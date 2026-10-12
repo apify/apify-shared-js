@@ -3,8 +3,6 @@ packages:
 
 overrides:
   esbuild: ^0.28.1
-  tar: ^7.5.16
-  js-yaml@4: ^4.2.0
 
 minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
