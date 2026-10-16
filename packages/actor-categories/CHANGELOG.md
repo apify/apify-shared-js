@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-categories%401.1.0...%40apify%2Factor-categories%401.3.0) (2026-10-16)
+
+### Features
+
+* **actor-categories:** add Interface categories ([#723](https://github.com/apify/apify-shared-js/issues/723)) ([2a48a65](https://github.com/apify/apify-shared-js/commit/2a48a65771e05b15079436a28a1d7aed6d332241)), closes [apify/apify-core#31127](https://github.com/apify/apify-core/issues/31127) [apify/apify-core#31127](https://github.com/apify/apify-core/issues/31127)
+
+
 # [1.2.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-categories%401.1.0...%40apify%2Factor-categories%401.2.0) (2026-10-15)
 
 ### Features
