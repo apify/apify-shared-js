@@ -50,21 +50,21 @@
     },
     "devDependencies": {
         "@apify/oxlint-config": "^0.3.0",
-        "@commitlint/config-conventional": "^21.2.3",
+        "@commitlint/config-conventional": "^21.2.4",
         "@types/node": "^26.6.5",
-        "@vitest/coverage-v8": "^5.0.3",
+        "@vitest/coverage-v8": "^5.0.5",
         "ajv": "^8.20.0",
-        "commitlint": "^21.2.3",
+        "commitlint": "^21.2.4",
         "husky": "^9.1.7",
-        "lerna": "^10.1.0",
+        "lerna": "^10.1.1",
         "lint-staged": "^17.6.0",
         "nock": "^14.0.17",
         "oxfmt": "0.72.0",
         "oxlint": "1.62.0",
         "oxlint-tsgolint": "7.0.2003",
         "typescript": "^7.0.2",
-        "vite": "^8.3.4",
-        "vitest": "^5.0.3"
+        "vite": "^8.3.5",
+        "vitest": "^5.0.5"
     },
     "packageManager": "pnpm@10.33.4+sha512.1c67b3b359b2d408119ba1ed289f34b8fc3c6873412bec6fd264fbdc82489e510fcbecb9ce9d22dae7f3b76269d8441046014bdca53b9979cd7a561ad631b800",
     "devEngines": {
