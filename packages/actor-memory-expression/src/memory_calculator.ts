@@ -104,6 +104,7 @@ math.import(
  *
  * This is custom function designed to be injected into the math expression evaluator,
  * allowing expressions like `get(input, 'user.settings.memory', 512)` or `get(input, 'startUrls.length', 10)` to get array length.
+ * Only own properties are followed, so inherited members like `toString` resolve to `defaultVal`.
  *
  * @param obj The source object to search within.
  * @param path A dot-separated string representing the nested path (e.g., "input.payload.size").
@@ -111,7 +112,14 @@ math.import(
  * @returns The retrieved value, or `defaultVal` if the path is unreachable.
  */
 const customGetFunc = (obj: any, path: string, defaultVal?: number) => {
-    return path.split('.').reduce((current, key) => current?.[key], obj) ?? defaultVal;
+    return (
+        path
+            .split('.')
+            .reduce(
+                (current, key) => (current != null && Object.hasOwn(current, key) ? current[key] : undefined),
+                obj,
+            ) ?? defaultVal
+    );
 };
 
 /**
