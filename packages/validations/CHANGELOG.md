@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/apify/apify-shared-js/compare/%40apify%2Fvalidations%401.1.2...%40apify%2Fvalidations%401.1.4) (2026-11-06)
+
+**Note:** Version bump only for package @apify/validations
+
+
+
+
+
 ## [1.1.3](https://github.com/apify/apify-shared-js/compare/%40apify%2Fvalidations%401.1.2...%40apify%2Fvalidations%401.1.3) (2026-10-29)
 
 **Note:** Version bump only for package @apify/validations
