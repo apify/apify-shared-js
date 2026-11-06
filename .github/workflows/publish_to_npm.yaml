@@ -158,6 +158,13 @@ jobs:
                   GH_TOKEN: ${{ secrets.APIFY_SERVICE_ACCOUNT_GITHUB_TOKEN }}
                   TAGS: ${{ steps.version_packages.outputs.tags }}
 
+            # Rekor outages last minutes; the sigstore patch (30s Rekor timeout + fetch the existing entry on 409) covers the per-call side.
+            # Retrying is safe because `from-package` skips versions that already made it to npm.
             - name: Publish to NPM
               if: ${{ steps.changed.outputs.count != '0' }}
-              run: pnpm exec lerna publish from-package --contents dist --yes ${{ inputs.prerelease && '--dist-tag next' || '' }}
+              uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+              with:
+                  timeout_minutes: 10
+                  max_attempts: 5
+                  retry_wait_seconds: 60
+                  command: pnpm exec lerna publish from-package --contents dist --yes ${{ inputs.prerelease && '--dist-tag next' || '' }}
