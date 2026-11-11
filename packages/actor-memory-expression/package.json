@@ -1,6 +1,6 @@
 {
     "name": "@apify/actor-memory-expression",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Utility to evaluate dynamic memory expressions for Apify actors.",
     "type": "module",
     "main": "./dist/index.js",
