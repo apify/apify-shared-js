@@ -55,6 +55,25 @@ describe('calculateDefaultMemoryFromExpression', () => {
             expect(result).toBe(512);
         });
 
+        it('should resolve array and string length with get()', async () => {
+            const context = { input: { startUrls: ['a', 'b', 'c', 'd'], name: 'abcdefgh' }, runOptions: {} };
+            expect(await calculateRunDynamicMemory("get(input, 'startUrls.length', 1) * 256", context)).toBe(1024);
+            expect(await calculateRunDynamicMemory("get(input, 'name.length', 1) * 256", context)).toBe(2048);
+        });
+
+        it.each([
+            'constructor',
+            'constructor.constructor',
+            '__proto__',
+            'toString',
+            'nested.hasOwnProperty',
+            'count.toFixed',
+        ])('should use get() default value for inherited property %s', async (path) => {
+            const context = { input: { nested: {}, count: 5 }, runOptions: {} };
+            const result = await calculateRunDynamicMemory(`get(input, '${path}', 512)`, context);
+            expect(result).toBe(512);
+        });
+
         describe('matching string enum values with compareText()', () => {
             const expr = "compareText(input.dataOutput, 'full detail') == 0 ? 4096 : 1024";
 

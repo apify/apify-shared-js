@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.3](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-memory-expression%401.0.2...%40apify%2Factor-memory-expression%401.0.3) (2026-11-11)
+
+**Note:** Version bump only for package @apify/actor-memory-expression
+
+
+
+
+
+## [1.0.2](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-memory-expression%401.0.1...%40apify%2Factor-memory-expression%401.0.2) (2026-11-06)
+
+### Bug Fixes
+
+* **actor-memory-expression:** only resolve own properties in `get()` ([#730](https://github.com/apify/apify-shared-js/issues/730)) ([82ccd53](https://github.com/apify/apify-shared-js/commit/82ccd53b0cd301297fb59f89b0d1392f6fe5cc37))
+
+
 ## [1.0.1](https://github.com/apify/apify-shared-js/compare/@apify/actor-memory-expression@0.3.0...@apify/actor-memory-expression@1.0.1) (2026-09-03)
 
 

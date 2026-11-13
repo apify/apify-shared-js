@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Fconsts%403.0.1...%40apify%2Fconsts%403.1.0) (2026-11-11)
+
+### Features
+
+* **consts:** add `APIFY_USER_IS_ACTOR_OWNER` env var ([#735](https://github.com/apify/apify-shared-js/issues/735)) ([1df4cd7](https://github.com/apify/apify-shared-js/commit/1df4cd7a3e83ec10e24b63a517f4101d062b307b))
+
+
 ## [3.0.1](https://github.com/apify/apify-shared-js/compare/@apify/consts@3.0.0...@apify/consts@3.0.1) (2026-09-03)
 
 **Note:** Version bump only for package @apify/consts

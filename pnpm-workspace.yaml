@@ -14,3 +14,6 @@ minimumReleaseAgeExclude:
   - "got-scraping"
 
 nodeLinker: hoisted
+
+patchedDependencies:
+  sigstore@5.0.1: patches/sigstore@5.0.1.patch
