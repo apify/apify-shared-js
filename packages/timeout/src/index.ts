@@ -114,7 +114,9 @@ export async function addTimeoutToPromise<T>(
 
         const fire = () => {
             settled = true;
-            context.cancelTask.abort();
+            cancelTask.abort();
+            // the handler may never settle, so the cleanup below can't be relied on here
+            parentSignal?.removeEventListener('abort', onParentAbort);
             const error = errorMessage instanceof Error ? errorMessage : new TimeoutError(errorMessage);
             reject(error);
         };

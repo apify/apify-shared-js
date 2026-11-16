@@ -1,3 +1,4 @@
+import { getEventListeners } from 'node:events';
 import { setTimeout } from 'node:timers/promises';
 
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -135,6 +136,40 @@ describe('timeout with abort controller', () => {
         await expect(promise).rejects.toThrow('outer timed out');
         await background!.catch(() => {});
         expect(finished).toBe(false);
+    });
+
+    it('releases the enclosing signal once a nested handler settles', async () => {
+        await addTimeoutToPromise(
+            async () => {
+                const outerSignal = storage.getStore()!.cancelTask.signal;
+
+                for (let i = 0; i < 5; i++) {
+                    await addTimeoutToPromise(async () => setTimeout(1), 1000, 'inner timed out');
+                }
+
+                // the cleanup runs a few microtasks after the nested call resolves
+                await setTimeout(0);
+                expect(getEventListeners(outerSignal, 'abort')).toHaveLength(0);
+            },
+            1000,
+            'outer timed out',
+        );
+    });
+
+    it('releases the enclosing signal once a nested handler that never settles timed out', async () => {
+        await addTimeoutToPromise(
+            async () => {
+                const outerSignal = storage.getStore()!.cancelTask.signal;
+
+                for (let i = 0; i < 5; i++) {
+                    await addTimeoutToPromise(async () => new Promise(() => {}), 5, 'inner timed out').catch(() => {});
+                }
+
+                expect(getEventListeners(outerSignal, 'abort')).toHaveLength(0);
+            },
+            1000,
+            'outer timed out',
+        );
     });
 });
 
