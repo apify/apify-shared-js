@@ -66,6 +66,76 @@ describe('timeout with abort controller', () => {
         await expect(addTimeoutToPromise(async () => handler2(), 200, 'err 2')).rejects.toThrow('err 1');
         expect(position).toBe(3);
     });
+
+    it('does not cancel the enclosing handler when a nested one times out', async () => {
+        let outerSignal: AbortSignal | undefined;
+
+        const res = await addTimeoutToPromise(
+            async () => {
+                outerSignal = storage.getStore()!.cancelTask.signal;
+                await addTimeoutToPromise(async () => setTimeout(100), 20, 'inner timed out').catch(() => {});
+                tryCancel();
+
+                return 123;
+            },
+            200,
+            'outer timed out',
+        );
+
+        expect(res).toBe(123);
+        expect(outerSignal!.aborted).toBe(false);
+    });
+
+    it('cancels the nested handlers when the enclosing one times out', async () => {
+        let innerSignal: AbortSignal | undefined;
+
+        const promise = addTimeoutToPromise(
+            async () =>
+                addTimeoutToPromise(
+                    async () => {
+                        innerSignal = storage.getStore()!.cancelTask.signal;
+                        await handler();
+                    },
+                    1000,
+                    'inner timed out',
+                ),
+            100,
+            'outer timed out',
+        );
+
+        await expect(promise).rejects.toThrow('outer timed out');
+        expect(innerSignal!.aborted).toBe(true);
+        await setTimeout(60);
+        expect(position).toBe(3);
+    });
+
+    it('cancels work left behind by an already finished nested handler', async () => {
+        let background: Promise<void> | undefined;
+        let finished = false;
+
+        const promise = addTimeoutToPromise(
+            async () => {
+                await addTimeoutToPromise(
+                    async () => {
+                        background = (async () => {
+                            await setTimeout(80);
+                            tryCancel();
+                            finished = true;
+                        })();
+                    },
+                    1000,
+                    'inner timed out',
+                );
+                await setTimeout(200);
+            },
+            40,
+            'outer timed out',
+        );
+
+        await expect(promise).rejects.toThrow('outer timed out');
+        await background!.catch(() => {});
+        expect(finished).toBe(false);
+    });
 });
 
 describe('extendTimeout', () => {

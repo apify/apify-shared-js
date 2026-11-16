@@ -5,9 +5,9 @@ export interface AbortContext {
 }
 
 /**
- * A single `addTimeoutToPromise` call. Nested calls share the `cancelTask` controller of the
- * enclosing frame (so `tryCancel()` behaves the same at any depth), but each call gets its own
- * frame, which is what lets {@link extendTimeout} tell the layers apart.
+ * A single `addTimeoutToPromise` call. Each call gets a frame and a `cancelTask` controller of its
+ * own: a timeout cancels the frames nested in it, but never the enclosing ones. The frames are also
+ * what lets {@link extendTimeout} tell the layers apart.
  */
 interface TimeoutFrame extends AbortContext {
     /** The enclosing frame, when this call is nested inside another `addTimeoutToPromise`. */
@@ -51,10 +51,11 @@ class InternalTimeoutError extends TimeoutError {}
  * ```
  */
 export function tryCancel(): void {
-    const signal = storage.getStore()?.cancelTask.signal;
-
-    if (signal?.aborted) {
-        throw new InternalTimeoutError('Promise handler has been canceled due to a timeout');
+    // the enclosing frames are checked too, for work that outlived the nested frame it was started in
+    for (let frame = storage.getStore() as TimeoutFrame | undefined; frame; frame = frame.parent) {
+        if (frame.cancelTask.signal.aborted) {
+            throw new InternalTimeoutError('Promise handler has been canceled due to a timeout');
+        }
     }
 }
 
@@ -82,9 +83,17 @@ export async function addTimeoutToPromise<T>(
     // the enclosing one, so that reads of anything stashed on an outer context still resolve
     const parent = storage.getStore() as TimeoutFrame | undefined;
     const context: TimeoutFrame = Object.create(parent ?? Object.prototype);
-    // shared with the enclosing frame, so cancellation still propagates across the whole chain at once
-    context.cancelTask = parent?.cancelTask ?? new AbortController();
+    const cancelTask = new AbortController();
+    context.cancelTask = cancelTask;
     context.parent = parent;
+    // cancellation only propagates downwards - a nested timeout must not cancel the enclosing handler
+    const parentSignal = parent?.cancelTask.signal;
+    const onParentAbort = () => cancelTask.abort();
+    parentSignal?.addEventListener('abort', onParentAbort, { once: true });
+
+    if (parentSignal?.aborted) {
+        cancelTask.abort();
+    }
     let returnValue: T;
 
     // calls handler, skips internal `TimeoutError`s that might have been thrown
@@ -136,6 +145,7 @@ export async function addTimeoutToPromise<T>(
                 .finally(() => {
                     settled = true;
                     clearTimeout(timeout);
+                    parentSignal?.removeEventListener('abort', onParentAbort);
                 });
         });
     });
