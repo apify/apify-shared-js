@@ -28,8 +28,6 @@ jobs:
     # Paths never auto-approved here, on top of the pipeline's defaults. Proposed from the
     # repository's layout when this workflow was added; edit them like any other code.
     with:
-      # Commit of apify/ai-developer the pipeline runs from. Renovate does not update it.
-      ai-developer-ref: c91f807858eccabfd9e49623c6696c3707d075e7
       policy: |
         {
           "denyGlobs": [
