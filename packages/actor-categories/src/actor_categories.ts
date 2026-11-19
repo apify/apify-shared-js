@@ -1136,6 +1136,13 @@ export const LABEL_CATEGORIES = [
         depth: null,
     },
     {
+        id: 'MCP_CONNECTOR',
+        name: 'MCP connector',
+        parentCategoryId: null,
+        group: CATEGORY_GROUP.LABEL,
+        depth: null,
+    },
+    {
         id: 'AI_TOOLS',
         name: 'AI tools',
         parentCategoryId: null,
