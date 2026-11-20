@@ -21,6 +21,6 @@ package | version | changelog
 `@apify/markdown` | 4.1.4 | [CHANGELOG](./packages/markdown/CHANGELOG.md)
 `@apify/payment_qr_codes` | 1.0.1 | [CHANGELOG](./packages/payment_qr_codes/CHANGELOG.md)
 `@apify/pseudo_url` | 3.0.2 | [CHANGELOG](./packages/pseudo_url/CHANGELOG.md)
-`@apify/timeout` | 1.0.1 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
+`@apify/timeout` | 1.0.2 | [CHANGELOG](./packages/timeout/CHANGELOG.md)
 `@apify/utilities` | 3.1.1 | [CHANGELOG](./packages/utilities/CHANGELOG.md)
 `@apify/validations` | 1.1.4 | [CHANGELOG](./packages/validations/CHANGELOG.md)

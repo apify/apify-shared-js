@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/apify/apify-shared-js/compare/%40apify%2Ftimeout%401.0.1...%40apify%2Ftimeout%401.0.2) (2026-11-20)
+
+### Bug Fixes
+
+* **timeout:** stop a nested timeout from cancelling the enclosing handler ([#737](https://github.com/apify/apify-shared-js/issues/737)) ([d15f55c](https://github.com/apify/apify-shared-js/commit/d15f55c9874dde1a857e38e2d7b59b2e1ce39c0e)), closes [#736](https://github.com/apify/apify-shared-js/issues/736)
+
+
 ## [1.0.1](https://github.com/apify/apify-shared-js/compare/@apify/timeout@0.5.0...@apify/timeout@1.0.1) (2026-09-03)
 
 
