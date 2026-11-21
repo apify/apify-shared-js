@@ -443,6 +443,24 @@ describe('suspendTimeout', () => {
         await expect(suspendTimeout(async () => 123)).resolves.toBe(123);
     });
 
+    it('does not start the clock again once the handler finished', async () => {
+        let signal!: AbortSignal;
+
+        await addTimeoutToPromise(
+            async () => {
+                signal = storage.getStore()!.cancelTask.signal;
+                // not awaited, so the suspension outlives the handler
+                void suspendTimeout(async () => setTimeout(30));
+            },
+            60,
+            'timed out',
+        );
+
+        // a restarted timer would abort the signal once the deadline passes
+        await setTimeout(120);
+        expect(signal.aborted).toBe(false);
+    });
+
     it('does not suspend the enclosing timeouts once the handler timed out', async () => {
         // no `tryCancel()`, so the inner handler keeps running after it timed out
         const promise = addTimeoutToPromise(
