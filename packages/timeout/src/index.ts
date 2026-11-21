@@ -14,6 +14,8 @@ interface TimeoutFrame extends AbortContext {
     parent?: TimeoutFrame;
     /** Pushes this frame's deadline ahead. Returns `false` if the frame has already timed out or settled. */
     extend?: (extraMillis: number) => boolean;
+    /** Stops this frame's clock until the returned callback is called. Returns `undefined` if the frame has already timed out or settled. */
+    suspend?: () => (() => void) | undefined;
 }
 
 /**
@@ -124,6 +126,12 @@ export async function addTimeoutToPromise<T>(
         // the callback is kept anonymous on purpose - a named one would show up in the stack trace of
         // the `TimeoutError` instead of the `Timeout._onTimeout` frame consumers match against
         let timeout = setTimeout(() => fire(), timeoutMillis);
+        const restart = () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fire(), Math.max(deadline - Date.now(), 0));
+        };
+        let suspensions = 0;
+        let suspendedAt = 0;
 
         // the `settled` guard matters for handlers that keep running after they timed out (i.e. those
         // that don't call `tryCancel()`) - without it they could schedule a timer that never fires
@@ -133,11 +141,32 @@ export async function addTimeoutToPromise<T>(
                 return false;
             }
 
-            clearTimeout(timeout);
             deadline += extraMillis;
-            timeout = setTimeout(() => fire(), Math.max(deadline - Date.now(), 0));
+
+            // a suspended clock picks the new deadline up once it runs again
+            if (suspensions === 0) {
+                restart();
+            }
 
             return true;
+        };
+
+        context.suspend = () => {
+            if (settled) {
+                return undefined;
+            }
+
+            if (suspensions++ === 0) {
+                clearTimeout(timeout);
+                suspendedAt = Date.now();
+            }
+
+            return () => {
+                if (--suspensions === 0 && !settled) {
+                    deadline += Date.now() - suspendedAt;
+                    restart();
+                }
+            };
         };
 
         storage.run(context, () => {
@@ -200,5 +229,65 @@ export function extendTimeout(extraMillis: number, options: ExtendTimeoutOptions
         }
 
         frame = frame.parent;
+    }
+}
+
+export interface SuspendTimeoutOptions {
+    /**
+     * Whether to suspend the enclosing timeouts as well. Keep this enabled (the default) unless an
+     * enclosing timeout is meant to be a hard limit on the total time - with it disabled, the handler
+     * can be killed by an outer timeout while its own is suspended.
+     * @default true
+     */
+    propagate?: boolean;
+}
+
+/**
+ * Runs `handler` with the clock of the currently running timeout stopped, and starts it again once
+ * the handler finishes, so the time it takes does not count towards the timeout. Use it for a step
+ * that is bounded on its own - timeouts started inside `handler` run as usual. Call it from inside
+ * a handler wrapped in {@link addTimeoutToPromise}; outside of one it just runs `handler`.
+ *
+ * ```ts
+ * await addTimeoutToPromise(async () => {
+ *     try {
+ *         await processRequest();
+ *     } catch (error) {
+ *         // has a timeout of its own, and must not be cut short by the one around the whole request
+ *         await suspendTimeout(async () => addTimeoutToPromise(() => handleFailure(error), 10_000, 'Failure handler timed out!'));
+ *     }
+ * }, 30_000, 'Request timed out!');
+ * ```
+ *
+ * Enclosing timeouts are suspended as well by default. Pass `propagate: false` to suspend only the
+ * innermost timeout, leaving any enclosing ones as a hard limit on the total time.
+ *
+ * Inside an already timed out (or already finished) handler it just runs `handler` as well.
+ */
+export async function suspendTimeout<T>(handler: () => Promise<T>, options: SuspendTimeoutOptions = {}): Promise<T> {
+    const { propagate = true } = options;
+    const resumes: (() => void)[] = [];
+
+    for (let frame = storage.getStore() as TimeoutFrame | undefined; frame; frame = frame.parent) {
+        if (frame.suspend) {
+            const resume = frame.suspend();
+
+            // a timed out frame runs past its deadline - the enclosing ones still bound it, so keep them running
+            if (!resume) {
+                break;
+            }
+
+            resumes.push(resume);
+        }
+
+        if (!propagate) {
+            break;
+        }
+    }
+
+    try {
+        return await handler();
+    } finally {
+        resumes.forEach((resume) => resume());
     }
 }
