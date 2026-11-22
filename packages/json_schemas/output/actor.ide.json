@@ -29,11 +29,15 @@
         },
         "environmentVariables": {
             "type": "object",
+            "deprecated": true,
             "patternProperties": {
                 "^": {
                     "type": "string"
                 }
-            }
+            },
+            "description": "Deprecated. Don't put environment variables in actor.json. For local runs, use a .env file. For the platform, use apify env push or Apify Console. To move existing values, run apify env migrate.",
+            "x-intellij-html-description": "<p><strong>Deprecated.</strong> Don't put environment variables in <code>actor.json</code>. For local runs, use a <code>.env</code> file. For the platform, use <code>apify env push</code> or Apify Console. To move existing values, run <code>apify env migrate</code>.</p>",
+            "markdownDescription": "**Deprecated.** Don't put environment variables in `actor.json`. For local runs, use a `.env` file. For the platform, use `apify env push` or Apify Console. To move existing values, run `apify env migrate`."
         },
         "dockerfile": {
             "type": "string",

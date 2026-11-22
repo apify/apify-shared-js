@@ -35,6 +35,7 @@ export const actorSchema = {
         },
         environmentVariables: {
             type: 'object',
+            deprecated: true,
             patternProperties: {
                 '^': {
                     type: 'string',

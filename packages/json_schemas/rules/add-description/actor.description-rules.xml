@@ -11,6 +11,9 @@
     <AddDescription json-path="/properties/maxMemoryMbytes" format="markdown">
         An integer between `128` and `32768` specifying the maximum memory in megabytes allowed.
     </AddDescription>
+    <AddDescription json-path="/properties/environmentVariables" format="markdown">
+        **Deprecated.** Don't put environment variables in `actor.json`. For local runs, use a `.env` file. For the platform, use `apify env push` or Apify Console. To move existing values, run `apify env migrate`.
+    </AddDescription>
     <AddDescription json-path="/properties/input" format="markdown">
         **Deprecated: Please use `inputSchema` instead.**
     </AddDescription>
