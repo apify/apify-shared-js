@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-categories%401.3.0...%40apify%2Factor-categories%401.4.0) (2026-11-24)
+
+### Features
+
+* **actor-categories:** add MCP connector label category ([#729](https://github.com/apify/apify-shared-js/issues/729)) ([69e2beb](https://github.com/apify/apify-shared-js/commit/69e2beb17433dc5b01d271741f5565289953d993)), closes [apify/apify-core#27832](https://github.com/apify/apify-core/issues/27832)
+
+
 # [1.3.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Factor-categories%401.1.0...%40apify%2Factor-categories%401.3.0) (2026-10-16)
 
 ### Features
