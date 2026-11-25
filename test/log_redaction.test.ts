@@ -54,25 +54,37 @@ describe('log secret redaction', () => {
     const expectNoSecrets = () =>
         lines.forEach((line) => SECRETS.forEach((secret) => expect(line).not.toContain(secret)));
 
-    it('drops the request of an Axios error and keeps its response', () => {
+    it('masks the request parts of an Axios error and keeps the rest', () => {
         const log = jsonLog();
         log.exception(makeAxiosError(), 'API call failed');
-        log.softFail('Lookup failed', { err: new Error('network error', { cause: makeAxiosError() }) });
+        log.softFail('Lookup failed', {
+            err: makeAxiosError(),
+            wrapped: new Error('failed', { cause: makeAxiosError() }),
+        });
         new Log({ logger: new LoggerText() }).exception(makeAxiosError(), 'Call failed', { err: makeAxiosError() });
 
         expectNoSecrets();
-        const { exception } = JSON.parse(lines[0]);
-        expect(exception).toMatchObject({
+        expect(JSON.parse(lines[0]).exception).toMatchObject({
             message: 'Request failed with status code 503',
             code: 'ERR_BAD_RESPONSE',
-            method: 'post',
-            url: '/items/list',
-            baseURL: 'https://api.example.com',
-            response: { status: 503, headers: { 'set-cookie': ['***'] }, data: { error: 'Service is unavailable' } },
+            config: {
+                method: 'post',
+                baseURL: 'https://api.example.com',
+                url: '/items/list?***',
+                headers: '***',
+                data: '***',
+            },
+            request: '***',
+            response: {
+                status: 503,
+                headers: { 'set-cookie': ['***'] },
+                data: { error: 'Service is unavailable' },
+                config: '***',
+                request: '***',
+            },
         });
-        expect(Object.keys(exception)).not.toEqual(expect.arrayContaining(['config', 'request']));
-        expect(Object.keys(exception.response).sort()).toEqual(['data', 'headers', 'status', 'statusText']);
-        expect(JSON.parse(lines[1]).err.cause.url).toBe('/items/list');
+        expect(JSON.parse(lines[0]).exception.config).not.toHaveProperty('params');
+        expect(JSON.parse(lines[1]).err.config.url).toBe('/items/list?***');
     });
 
     it('masks every string under a field with a sensitive name', () => {
@@ -102,13 +114,14 @@ describe('log secret redaction', () => {
     it.each([
         ...['password', 'proxyPassword', 'passwd', 'MYSQL_PWD', 'passphrase', 'client_secret', 'refreshToken'],
         ...['api-key', 'API_KEY', 'encryptionKey', 'privateKey', 'connectionString', 'Proxy-Authorization'],
-        ...['bearer', 'cookie', 'credentials', 'signature', 'auth'],
+        ...['bearer', 'cookie', 'credentials', 'signature', 'auth', 'passwordValid', 'id_token', 'tokenToReset'],
     ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: '***' }));
 
-    it.each(['key', 'author', 'authType', 'userId', 'url', 'message', Symbol('token')])(
-        'does not treat the field %s as sensitive',
-        (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }),
-    );
+    it.each([
+        ...['key', 'author', 'authType', 'userId', 'url', 'message', Symbol('token')],
+        ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'signatureVersion'],
+        ...['tokenCount', 'tokenExpiresAt', 'tokenEndpoint', 'cookieConsent', 'nextPageToken', 'continuation_token'],
+    ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
 
     it.each([
         [`token ${APIFY_TOKEN} is invalid`, 'token apify_api_*** is invalid'],
@@ -123,6 +136,10 @@ describe('log secret redaction', () => {
         ],
         [`/v2/logs/abc?token=${QUERY_SECRET}&download=true#top`, '/v2/logs/abc?token=***&download=true#top'],
         [`/v2/datasets/abc/items%3Ftoken=${QUERY_SECRET}/`, '/v2/datasets/abc/items%3Ftoken=***'],
+        [
+            `/items?tokenCount=5&nextPageToken=abc&secret=${QUERY_SECRET}`,
+            '/items?tokenCount=5&nextPageToken=abc&secret=***',
+        ],
         [
             `/confirm?a=1&confirmToken=${QUERY_SECRET}&amp;signature=${QUERY_SECRET}`,
             '/confirm?a=1&confirmToken=***&amp;signature=***',

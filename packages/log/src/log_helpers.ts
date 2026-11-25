@@ -7,7 +7,7 @@ import {
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
 } from './log_consts.js';
-import { isSensitiveKey, omitAxiosRequest, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
+import { isSensitiveKey, maskAxiosRequest, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -112,7 +112,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     if (data instanceof Error) {
         const isAxiosError = redactSecrets && (data as { isAxiosError?: unknown }).isAxiosError === true;
         const { name, message, stack, cause, ...rest } = data;
-        const safeRest = isAxiosError ? omitAxiosRequest(rest) : rest;
+        const safeRest = isAxiosError ? maskAxiosRequest(rest) : rest;
         data = { name, message, stack, cause, ...safeRest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
