@@ -53,14 +53,9 @@ export interface LoggerOptions {
     /** Additional data to be added to each log line. */
     data?: Record<string, unknown>;
     /**
-     * Replaces secrets in the message, data and exception with `***`. Enabled by default.
-     *
-     * Redacted are:
-     * - string values of fields with a sensitive name, e.g. `password`, `apiToken`, `Authorization` or `cookie`,
-     * - Apify tokens, JWTs, `Bearer` and `Basic` credentials, URL passwords and sensitive query parameters in any string,
-     * - Axios errors, which are reduced to their safe fields (no headers, credentials or request body).
-     *
-     * This is a safety net, it only finds secrets that can be told by a field name or by their format.
+     * Masks secrets in the message, data and exception with `***`: strings under a field with a sensitive name
+     * (e.g. `password`, `apiToken`), secrets with a known format (e.g. Apify tokens, `Bearer` credentials)
+     * and the request part of Axios errors. It is a safety net, on unless set to `false`.
      */
     redactSecrets?: boolean;
 }
@@ -173,12 +168,7 @@ export class Log {
     private readonly warningsOnceLogged: Set<string> = new Set();
 
     constructor(options: Partial<LoggerOptions> = {}) {
-        const defaultOptions = getDefaultOptions();
-        this.options = {
-            ...defaultOptions,
-            ...options,
-            redactSecrets: options.redactSecrets ?? defaultOptions.redactSecrets,
-        };
+        this.options = { ...getDefaultOptions(), ...options };
 
         if (!LogLevel[this.options.level]) throw new Error('Options "level" must be one of log.LEVELS enum!');
         if (typeof this.options.maxDepth !== 'number') throw new Error('Options "maxDepth" must be a number!');
@@ -201,8 +191,6 @@ export class Log {
             throw new Error('Options "truncationFlagKey" must be a string!');
         if (typeof this.options.logger !== 'object') throw new Error('Options "logger" must be an object!');
         if (typeof this.options.data !== 'object') throw new Error('Options "data" must be an object!');
-        if (typeof this.options.redactSecrets !== 'boolean')
-            throw new Error('Options "redactSecrets" must be a boolean!');
 
         this.preferredFieldsMap = Object.fromEntries(
             this.options.preferredFields.map((field, index) => [field, index]),
@@ -219,7 +207,7 @@ export class Log {
             preferredFieldsMap: this.preferredFieldsMap,
             truncationSuffix: this.options.truncationSuffix,
             truncationFlagKey: this.options.truncationFlagKey,
-            redactSecrets: this.options.redactSecrets,
+            redactSecrets: this.options.redactSecrets !== false,
         });
     }
 
@@ -255,7 +243,7 @@ export class Log {
         data = { ...this.options.data, ...data };
         data = Reflect.ownKeys(data).length > 0 ? this._sanitizeData(data) : undefined;
         exception = this._sanitizeData(exception);
-        if (this.options.redactSecrets && typeof message === 'string') message = redactString(message);
+        if (this.options.redactSecrets !== false && typeof message === 'string') message = redactString(message);
 
         this.options.logger.log(level, message, data, exception, {
             prefix: this.options.prefix,
@@ -267,12 +255,7 @@ export class Log {
      * Configures logger.
      */
     setOptions(options: Partial<LoggerOptions>) {
-        // An undefined `redactSecrets`, e.g. from a spread config, must not turn the redaction off
-        this.options = {
-            ...this.options,
-            ...options,
-            redactSecrets: options.redactSecrets ?? this.options.redactSecrets,
-        };
+        this.options = { ...this.options, ...options };
     }
 
     /**
@@ -299,7 +282,6 @@ export class Log {
             ...options,
             prefix,
             data,
-            redactSecrets: options.redactSecrets ?? this.options.redactSecrets,
         };
 
         return new Log(newOptions);
