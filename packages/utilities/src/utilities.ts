@@ -122,7 +122,11 @@ export function expressErrorHandler(
     res.send('Internal server error');
 }
 
-export type BetterIntervalID = { _betterClearInterval: () => void };
+export type BetterIntervalID = {
+    _betterClearInterval: () => void;
+    /** Stops the interval from keeping the Node.js process alive, like `Timeout.unref()`. */
+    unref: () => BetterIntervalID;
+};
 
 /**
  * Similar to setInterval() but with two important differences:
@@ -131,15 +135,16 @@ export type BetterIntervalID = { _betterClearInterval: () => void };
  * @param func Function to be periodically executed.
  * For backwards compatibility reasons, it is passed a callback as its first argument during invocation, however that callback has no effect.
  * @param delay The number of milliseconds to wait to next invocation of the function after the current invocation finishes.
- * @returns Object that can be passed to betterClearInterval()
+ * @returns Object that can be passed to betterClearInterval(). Call its `unref()` to not keep the process alive.
  */
 export function betterSetInterval(
     func: ((a: (...args: unknown[]) => unknown) => void) | ((...args: unknown[]) => unknown),
     delay: number,
 ): BetterIntervalID {
     let scheduleNextRun: () => void;
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | undefined;
     let isRunning = true;
+    let isUnreferenced = false;
 
     const funcWrapper = function () {
         // Historically, the function was passed a callback that it needed to call to signal it was done.
@@ -149,7 +154,9 @@ export function betterSetInterval(
         }).finally(scheduleNextRun);
     };
     scheduleNextRun = function () {
-        if (isRunning) timeoutId = setTimeout(funcWrapper, delay);
+        if (!isRunning) return;
+        timeoutId = setTimeout(funcWrapper, delay);
+        if (isUnreferenced) timeoutId.unref();
     };
     funcWrapper();
 
@@ -157,6 +164,11 @@ export function betterSetInterval(
         _betterClearInterval() {
             isRunning = false;
             clearTimeout(timeoutId);
+        },
+        unref() {
+            isUnreferenced = true;
+            timeoutId?.unref();
+            return this;
         },
     };
 }
