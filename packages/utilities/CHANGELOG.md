@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/apify/apify-shared-js/compare/%40apify%2Futilities%403.1.1...%40apify%2Futilities%403.2.0) (2026-11-25)
+
+### Features
+
+* **utilities:** support `unref()` on `betterSetInterval` ([#746](https://github.com/apify/apify-shared-js/issues/746)) ([a3bd274](https://github.com/apify/apify-shared-js/commit/a3bd274b4a262094c1be366102d892fd005a39fa))
+
+
 ## [3.1.1](https://github.com/apify/apify-shared-js/compare/%40apify%2Futilities%403.1.0...%40apify%2Futilities%403.1.1) (2026-11-11)
 
 **Note:** Version bump only for package @apify/utilities
