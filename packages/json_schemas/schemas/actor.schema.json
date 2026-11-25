@@ -30,6 +30,7 @@
     },
     "environmentVariables": {
       "type": "object",
+      "deprecated": true,
       "patternProperties": {
         "^": {
           "type": "string"

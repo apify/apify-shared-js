@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getActorSchemaValidator } from '@apify/json_schemas';
+import { actorSchema, getActorSchemaValidator } from '@apify/json_schemas';
 
 describe('actor.json', () => {
     const validator = getActorSchemaValidator();
@@ -122,6 +122,22 @@ describe('actor.json', () => {
                     dataset: 'dataset.json',
                 },
                 webServerSchema: 'web-server-schema.json',
+            };
+
+            const isValid = validator(schema);
+            expect(isValid).toBe(true);
+        });
+
+        it('should still accept the deprecated environmentVariables', () => {
+            expect(actorSchema.properties.environmentVariables.deprecated).toBe(true);
+
+            const schema = {
+                actorSpecification: 1,
+                name: 'my-actor',
+                version: '1.0.0',
+                environmentVariables: {
+                    API_KEY: 'my-api-key',
+                },
             };
 
             const isValid = validator(schema);
