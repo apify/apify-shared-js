@@ -10,7 +10,6 @@ import {
 import {
     getLoggableAxiosError,
     isAxiosErrorLike,
-    isMaskedValue,
     isSensitiveKey,
     REDACTED_PLACEHOLDER,
     REDACTION_LOOKAHEAD_LENGTH,
@@ -107,7 +106,7 @@ function sanitize(data: unknown, options: SanitizeDataOptions, isSensitive: bool
 
     // handle common cases quickly
     if (typeof data === 'string') {
-        if (redactSecrets && isSensitive && data) return isMaskedValue(data) ? data : REDACTED_PLACEHOLDER;
+        if (redactSecrets && isSensitive && data) return REDACTED_PLACEHOLDER;
         // Redact before truncating, otherwise a secret cut by the truncation would not be recognized
         const text = redactSecrets ? redactString(data.slice(0, maxStringLength + REDACTION_LOOKAHEAD_LENGTH)) : data;
         return text.length > maxStringLength ? truncate(text, maxStringLength, truncationSuffix) : text;
