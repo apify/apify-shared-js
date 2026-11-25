@@ -739,3 +739,32 @@ export const ACTOR_EXIT_CODE = {
 } as const;
 
 export type ACTOR_EXIT_CODE = ValueOf<typeof ACTOR_EXIT_CODE>;
+
+/** Request headers available to Actors on incoming requests on the Server interface. */
+export const SERVER_ACTOR_INCOMING_REQUEST_HEADER_NAMES = {
+    /**
+     * A unique identifier of the request. The same value will be also returned to the user in the response.
+     */
+    REQUEST_ID: 'X-Actor-Request-ID',
+} as const;
+
+/** Apify-specific request headers available to Actors on incoming requests on the Server interface. */
+export const APIFY_SERVER_ACTOR_INCOMING_REQUEST_HEADER_NAMES = {
+    USER_ID: 'X-Apify-User-ID',
+    /**
+     * Basic information about the user calling this Actor. Only available on requests
+     * authenticated via Apify Console SSO.
+     * @deprecated internal, do not use this, this will probably be changed
+     */
+    BASIC_USER_INFO: 'X-Apify-Basic-User-Info',
+    /**
+     * Whether the request was sent by user directly, or by another Actor.
+     * @deprecated internal, do not use this, this will probably be changed
+     */
+    CALLER_TYPE: 'X-Apify-Standby-Caller-Type',
+} as const;
+
+/** Headers that can be provided when sending a request to the Server interface of an Actor. */
+export const SERVER_ACTOR_REQUEST_HEADER_NAMES = {
+    ACTOR_BUILD: 'X-Actor-Build',
+} as const;
