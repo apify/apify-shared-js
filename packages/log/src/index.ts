@@ -6,6 +6,7 @@ export * from './log_helpers.js';
 export * from './logger.js';
 export * from './logger_json.js';
 export * from './logger_text.js';
+export { isSensitiveKey, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
 
 // Default export is an initialized instance of logger.
 const log = new Log();
