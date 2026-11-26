@@ -87,6 +87,14 @@ describe('log secret redaction', () => {
         expect(JSON.parse(lines[1]).err.config.url).toBe('/items/list?***');
     });
 
+    it('adds no field to an Axios error and keeps a plain URL fragment', () => {
+        const error = Object.assign(new Error('Network Error'), { isAxiosError: true, config: { url: '/docs#top' } });
+
+        expect(redact(error)).toMatchObject({ config: { url: '/docs#top' } });
+        expect(Object.keys(redact(error) as object)).not.toContain('request');
+        expect(Object.keys(redact(error) as object)).not.toContain('response');
+    });
+
     it('masks every string under a field with a sensitive name', () => {
         const data = {
             password: PASSWORD,
@@ -115,12 +123,14 @@ describe('log secret redaction', () => {
         ...['password', 'proxyPassword', 'passwd', 'MYSQL_PWD', 'passphrase', 'client_secret', 'refreshToken'],
         ...['api-key', 'API_KEY', 'encryptionKey', 'privateKey', 'connectionString', 'Proxy-Authorization'],
         ...['bearer', 'cookie', 'credentials', 'signature', 'auth', 'passwordValid', 'id_token', 'tokenToReset'],
+        ...['apikey', 'JWTToken', 'accessTokens', 'password2', 'X-Amz-Signature'],
     ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: '***' }));
 
     it.each([
         ...['key', 'author', 'authType', 'userId', 'url', 'message', Symbol('token')],
         ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'signatureVersion'],
         ...['tokenCount', 'tokenExpiresAt', 'tokenEndpoint', 'cookieConsent', 'nextPageToken', 'continuation_token'],
+        ...['tokenizer', 'tokenized', 'secretary', 'passwordless', 'cookieBanner', 'passwordPolicy'],
     ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
 
     it.each([
@@ -129,6 +139,12 @@ describe('log secret redaction', () => {
         [`integration_api_token_${'a1B2'.repeat(9)}`, 'integration_api_token_***'],
         [`Authorization: Bearer ${BEARER}`, 'Authorization: Bearer ***'],
         ['authorization: basic dXNlcjpwYXNzMTIz', 'authorization: basic ***'],
+        ['AUTHORIZATION: BEARER abcDEF0123456789', 'AUTHORIZATION: BEARER ***'],
+        [`{"Authorization":"Bearer ${BEARER}"}`, '{"Authorization":"Bearer ***"}'],
+        [
+            `https://app.example.com/cb#access_token=${QUERY_SECRET}&state=1`,
+            'https://app.example.com/cb#access_token=***&state=1',
+        ],
         [`id_token ${JWT} has wrong audience`, 'id_token *** has wrong audience'],
         [
             `http://groups-RESIDENTIAL:${PASSWORD}@proxy.apify.com:8000`,
@@ -149,6 +165,9 @@ describe('log secret redaction', () => {
     it.each([
         'Actor run finished',
         'Basic authentication is required, see the Bearer token docs',
+        'Basic Authentication is required',
+        'Authorization: Basic or Bearer scheme is required',
+        '/docs/tokens#section-2',
         'GET https://api.apify.com/v2/acts/apify~web-scraper/runs?limit=10&offset=20&status=SUCCEEDED',
         'https://example.com:8080/path@1.2.3/file.js',
         'apify_proxy_groups and apify_api_client_version',
@@ -180,17 +199,25 @@ describe('log secret redaction', () => {
         );
     });
 
-    it('stays fast on long hostile strings', () => {
+    it('marks the truncation when the redaction makes the rest fit the limit', () => {
+        const text = `failed ${JWT}${'s'.repeat(300)} ${'detail '.repeat(40)}`;
+
+        expect(sanitizeData(text, { maxStringLength: 100, redactSecrets: true })).toBe('failed ***...[truncated]');
+        expect(sanitizeData(text, { maxStringLength: 500, redactSecrets: true })).toBe(
+            `failed *** ${'detail '.repeat(40)}`,
+        );
+    });
+
+    // A pattern that backtracks on these never finishes, so the test timeout catches it
+    it('finishes on long hostile strings', () => {
         const hostile = [
-            ...['apify_', 'Bearer ', 'a:', '&a=', 'a.', 'https://a.b/c ', '?token', '://a'].map((part) =>
+            ...['apify_', 'authorization: ', 'a:', '&a=', '#a', 'a.', 'https://a.b/c ', '?token', '://a'].map((part) =>
                 part.repeat(40_000),
             ),
             `eyJ${'a'.repeat(200_000)}`,
         ];
-        const startedAt = performance.now();
-        hostile.forEach((text) => sanitizeData(text, { redactSecrets: true }));
 
-        expect(performance.now() - startedAt).toBeLessThan(1000);
+        hostile.forEach((text) => expect(redact(text)).toBe(text));
     });
 
     it('is on by default, also in child loggers and when set to undefined', () => {

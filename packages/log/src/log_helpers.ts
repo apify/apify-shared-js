@@ -99,8 +99,11 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     if (typeof data === 'string') {
         if (isSensitive && data) return REDACTED_PLACEHOLDER;
         // Redact before truncating and read past the limit, so that a secret cut by it is still recognized
-        const text = redactSecrets ? redactString(data.slice(0, maxStringLength + 256)) : data;
-        return text.length > maxStringLength ? truncate(text, maxStringLength, truncationSuffix) : text;
+        const readLength = maxStringLength + 256;
+        const text = redactSecrets ? redactString(data.slice(0, readLength)) : data;
+        // The tail that was not read is marked too, also when the redaction made the rest fit the limit
+        const marked = redactSecrets && data.length > readLength ? `${text}${truncationSuffix}` : text;
+        return marked.length > maxStringLength ? truncate(marked, maxStringLength, truncationSuffix) : marked;
     }
 
     if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof data) || data == null || data instanceof Date) {
