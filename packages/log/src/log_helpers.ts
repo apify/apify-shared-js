@@ -7,7 +7,7 @@ import {
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
 } from './log_consts.js';
-import { isSensitiveKey, maskAxiosRequest, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
+import { isSecret, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -71,8 +71,6 @@ type SanitizeDataOptions = {
     truncationFlagKey?: string;
     /** Masks secrets, see `LoggerOptions.redactSecrets`. */
     redactSecrets?: boolean;
-    /** @internal The data sits under a field with a sensitive name. */
-    isSensitive?: boolean;
 };
 
 /**
@@ -92,12 +90,10 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         truncationSuffix = TRUNCATION_SUFFIX,
         truncationFlagKey = TRUNCATION_FLAG_KEY,
         redactSecrets = false,
-        isSensitive = false,
     } = options;
 
     // handle common cases quickly
     if (typeof data === 'string') {
-        if (isSensitive && data) return REDACTED_PLACEHOLDER;
         // Redact before truncating and read past the limit, so that a secret cut by it is still recognized
         const readLength = maxStringLength + 256;
         const text = redactSecrets ? redactString(data.slice(0, readLength)) : data;
@@ -113,16 +109,13 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     // WORKAROUND: Error's properties are not iterable, convert it to a simple object and preserve custom properties
     // NOTE: _.isError() doesn't work on Match.Error
     if (data instanceof Error) {
-        const isAxiosError = redactSecrets && (data as { isAxiosError?: unknown }).isAxiosError === true;
         const { name, message, stack, cause, ...rest } = data;
-        const safeRest = isAxiosError ? maskAxiosRequest(rest) : rest;
-        data = { name, message, stack, cause, ...safeRest, [IS_APIFY_LOGGER_EXCEPTION]: true };
+        data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
-    const nextCall = (dat: unknown, isDatSensitive = isSensitive) =>
+    const nextCall = (dat: unknown) =>
         sanitizeData(dat, {
             ...options,
-            isSensitive: isDatSensitive,
             maxDepth: maxDepth - 1,
             maxStringLength: Math.max(
                 Math.floor(maxStringLength * gradualLimitFactor),
@@ -135,7 +128,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
     if (Array.isArray(data)) {
         if (maxDepth <= 0) return '[array]';
 
-        const sanitized = data.slice(0, maxArrayLength).map((item) => nextCall(item));
+        const sanitized = data.slice(0, maxArrayLength).map(nextCall);
 
         if (data.length > maxArrayLength) {
             sanitized.push(truncationSuffix);
@@ -162,8 +155,8 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         // Sanitize only up to maxFields fields (keeping preferred ones first)
         const sanitized: Record<PropertyKey, unknown> = {};
         allKeys.slice(0, maxFields).forEach((key) => {
-            const isValueSensitive = isSensitive || (redactSecrets && isSensitiveKey(key));
-            sanitized[key] = nextCall(data[key as keyof typeof data], isValueSensitive);
+            const value = data[key as keyof typeof data];
+            sanitized[key] = redactSecrets && isSecret(key, value) ? REDACTED_PLACEHOLDER : nextCall(value);
         });
 
         if (allKeys.length > maxFields) {

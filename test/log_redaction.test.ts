@@ -12,31 +12,6 @@ const SECRETS = [APIFY_TOKEN, BEARER, PASSWORD, QUERY_SECRET, JWT];
 
 const redact = (data: unknown) => sanitizeData(data, { redactSecrets: true });
 
-/** Mimics the shape of an AxiosError without depending on axios. */
-const makeAxiosError = () => {
-    const config = {
-        method: 'post',
-        baseURL: 'https://api.example.com',
-        url: `/items/list?key=${QUERY_SECRET}`,
-        headers: { Authorization: `Bearer ${BEARER}` },
-        data: JSON.stringify({ pin: PASSWORD }),
-    };
-    return Object.assign(new Error('Request failed with status code 503'), {
-        isAxiosError: true,
-        code: 'ERR_BAD_RESPONSE',
-        config,
-        request: { _header: `Authorization: Bearer ${BEARER}` },
-        response: {
-            status: 503,
-            statusText: 'Service Unavailable',
-            config,
-            request: { _header: `Authorization: Bearer ${BEARER}` },
-            headers: { 'set-cookie': [`sid=${PASSWORD}`] },
-            data: { error: 'Service is unavailable' },
-        },
-    });
-};
-
 describe('log secret redaction', () => {
     let lines: string[];
 
@@ -54,86 +29,47 @@ describe('log secret redaction', () => {
     const expectNoSecrets = () =>
         lines.forEach((line) => SECRETS.forEach((secret) => expect(line).not.toContain(secret)));
 
-    it('masks the request parts of an Axios error and keeps the rest', () => {
-        const log = jsonLog();
-        log.exception(makeAxiosError(), 'API call failed');
-        log.softFail('Lookup failed', {
-            err: makeAxiosError(),
-            wrapped: new Error('failed', { cause: makeAxiosError() }),
-        });
-        new Log({ logger: new LoggerText() }).exception(makeAxiosError(), 'Call failed', { err: makeAxiosError() });
-
-        expectNoSecrets();
-        expect(JSON.parse(lines[0]).exception).toMatchObject({
-            message: 'Request failed with status code 503',
-            code: 'ERR_BAD_RESPONSE',
-            config: {
-                method: 'post',
-                baseURL: 'https://api.example.com',
-                url: '/items/list?***',
-                headers: '***',
-                data: '***',
-            },
-            request: '***',
-            response: {
-                status: 503,
-                headers: { 'set-cookie': ['***'] },
-                data: { error: 'Service is unavailable' },
-                config: '***',
-                request: '***',
-            },
-        });
-        expect(JSON.parse(lines[0]).exception.config).not.toHaveProperty('params');
-        expect(JSON.parse(lines[1]).err.config.url).toBe('/items/list?***');
-    });
-
-    it('adds no field to an Axios error and keeps a plain URL fragment', () => {
-        const error = Object.assign(new Error('Network Error'), { isAxiosError: true, config: { url: '/docs#top' } });
-
-        expect(redact(error)).toMatchObject({ config: { url: '/docs#top' } });
-        expect(Object.keys(redact(error) as object)).not.toContain('request');
-        expect(Object.keys(redact(error) as object)).not.toContain('response');
-    });
-
-    it('masks every string under a field with a sensitive name', () => {
+    it('masks a string under a field with a sensitive name and nothing below it', () => {
         const data = {
             password: PASSWORD,
             query: { accessToken: PASSWORD, limit: '10' },
-            headers: { Authorization: BEARER, 'set-cookie': [PASSWORD], 'X-Api-Key': PASSWORD },
-            cookies: [{ name: 'sid', value: PASSWORD, httpOnly: true }],
-            token: { nested: { raw: PASSWORD }, issuedAt: 1795529568 },
+            headers: { Authorization: BEARER, 'X-Api-Key': PASSWORD },
+            token: { issuedAt: 1795529568, source: 'console' },
         };
 
         expect(redact(data)).toEqual({
             password: '***',
             query: { accessToken: '***', limit: '10' },
-            headers: { Authorization: '***', 'set-cookie': ['***'], 'X-Api-Key': '***' },
-            cookies: [{ name: '***', value: '***', httpOnly: true }],
-            token: { nested: { raw: '***' }, issuedAt: 1795529568 },
+            headers: { Authorization: '***', 'X-Api-Key': '***' },
+            token: { issuedAt: 1795529568, source: 'console' },
         });
     });
 
-    it('keeps non-string and empty values under a sensitive name', () => {
-        const data = { maxTokens: 4096, hasPassword: true, token: '', secret: null };
+    it('keeps flags, empty and non-string values under a sensitive name', () => {
+        const data = {
+            maxToken: 4096,
+            hasPassword: true,
+            includeToken: 'true',
+            useCookies: '0',
+            token: '',
+            secret: null,
+        };
 
         expect(redact(data)).toEqual(data);
     });
 
     it.each([
-        ...['password', 'proxyPassword', 'passwd', 'MYSQL_PWD', 'passphrase', 'client_secret', 'refreshToken'],
-        ...['api-key', 'API_KEY', 'encryptionKey', 'privateKey', 'connectionString', 'Proxy-Authorization'],
-        ...['bearer', 'cookie', 'credentials', 'signature', 'auth', 'passwordValid', 'id_token', 'tokenToReset'],
-        ...['apikey', 'JWTToken', 'accessTokens', 'password2', 'X-Amz-Signature'],
-        ...['unsubscribetoken', 'adminpassword', 'memberPassWord', 'tsignature', 'passwordHash'],
+        ...['password', 'proxyPassword', 'passwd', 'MYSQL_PWD', 'client_secret', 'refreshToken', 'id_token'],
+        ...['api-key', 'API_KEY', 'apikey', 'privateKey', 'secretKey', 'Proxy-Authorization', 'cookie', 'set-cookie'],
+        ...['JWTToken', 'unsubscribetoken', 'adminpassword', 'memberPassWord'],
     ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: '***' }));
 
     it.each([
-        ...['key', 'author', 'authType', 'userId', 'url', 'message', Symbol('token')],
-        ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'signatureVersion'],
-        ...['tokenCount', 'tokenExpiresAt', 'tokenEndpoint', 'cookieConsent', 'nextPageToken', 'continuation_token'],
-        ...['tokenizer', 'tokenized', 'secretary', 'passwordless', 'cookieBanner', 'passwordPolicy'],
-        ...['tokenPreview', 'token_scopes', 'removeCookieWarnings', 'closeCookieModals', 'noPasswordRecovery'],
-        ...['strictTokenFilter', 'tokenSource', 'token_endpoint_auth_method'],
+        ...['key', 'author', 'auth', 'userId', 'url', 'message', Symbol('token')],
+        ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'tokenHash', 'tokenSource'],
+        ...['tokenCount', 'tokenExpiresAt', 'cookieConsent', 'cookieBanner', 'passwordPolicy', 'passwordValid'],
+        ...['nextPageToken', 'continuation_token', 'tokenizer', 'secretary', 'passwordless', 'maxTokens'],
+        ...['token_endpoint_auth_method', 'tokenToReset', 'signature', 'credentials'],
     ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
 
     it.each([
@@ -160,8 +96,8 @@ describe('log secret redaction', () => {
             '/items?tokenCount=5&nextPageToken=abc&secret=***',
         ],
         [
-            `/confirm?a=1&confirmToken=${QUERY_SECRET}&amp;signature=${QUERY_SECRET}`,
-            '/confirm?a=1&confirmToken=***&amp;signature=***',
+            `/confirm?a=1&confirmToken=${QUERY_SECRET}&amp;apiKey=${QUERY_SECRET}`,
+            '/confirm?a=1&confirmToken=***&amp;apiKey=***',
         ],
     ])('masks the secret in %s', (text, expected) => expect(redact(text)).toBe(expected));
 
@@ -171,6 +107,7 @@ describe('log secret redaction', () => {
         'Basic Authentication is required',
         'Authorization: Basic or Bearer scheme is required',
         '/docs/tokens#section-2',
+        '/v2/acts?includeToken=true&signature=abc&tokenType=bearer',
         'Use the format http[s]://[username[:password]@]host[:port]',
         'GET https://api.apify.com/v2/acts/apify~web-scraper/runs?limit=10&offset=20&status=SUCCEEDED',
         'https://example.com:8080/path@1.2.3/file.js',
@@ -183,6 +120,7 @@ describe('log secret redaction', () => {
             new Error(`Token ${APIFY_TOKEN} was rejected`),
             `Request to /v2/acts?token=${QUERY_SECRET} failed`,
         );
+        new Log({ logger: new LoggerText() }).info(`Token ${APIFY_TOKEN} was rejected`, { password: PASSWORD });
 
         expectNoSecrets();
         expect(JSON.parse(lines[0])).toMatchObject({

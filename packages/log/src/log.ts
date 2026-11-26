@@ -53,9 +53,9 @@ export interface LoggerOptions {
     /** Additional data to be added to each log line. */
     data?: Record<string, unknown>;
     /**
-     * Masks secrets in the message, data and exception with `***`: strings under a field with a sensitive name
-     * (e.g. `password`, `apiToken`), secrets with a known format (e.g. Apify tokens, `Bearer` credentials)
-     * and the request part of Axios errors. It is a safety net, on unless set to `false`.
+     * Masks secrets in the message, data and exception with `***`: a string in a field whose name ends with
+     * a sensitive word (e.g. `password`, `apiToken`) and secrets with a known format (e.g. Apify tokens,
+     * `Authorization` credentials). It is a safety net, on unless set to `false`.
      */
     redactSecrets?: boolean;
 }
