@@ -124,6 +124,7 @@ describe('log secret redaction', () => {
         ...['api-key', 'API_KEY', 'encryptionKey', 'privateKey', 'connectionString', 'Proxy-Authorization'],
         ...['bearer', 'cookie', 'credentials', 'signature', 'auth', 'passwordValid', 'id_token', 'tokenToReset'],
         ...['apikey', 'JWTToken', 'accessTokens', 'password2', 'X-Amz-Signature'],
+        ...['unsubscribetoken', 'adminpassword', 'memberPassWord', 'tsignature', 'passwordHash'],
     ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: '***' }));
 
     it.each([
@@ -131,6 +132,8 @@ describe('log secret redaction', () => {
         ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'signatureVersion'],
         ...['tokenCount', 'tokenExpiresAt', 'tokenEndpoint', 'cookieConsent', 'nextPageToken', 'continuation_token'],
         ...['tokenizer', 'tokenized', 'secretary', 'passwordless', 'cookieBanner', 'passwordPolicy'],
+        ...['tokenPreview', 'token_scopes', 'removeCookieWarnings', 'closeCookieModals', 'noPasswordRecovery'],
+        ...['strictTokenFilter', 'tokenSource'],
     ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
 
     it.each([

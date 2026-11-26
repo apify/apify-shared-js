@@ -4,11 +4,11 @@ export const REDACTED_PLACEHOLDER = '***';
 const SENSITIVE_WORDS =
     'passw(?:or)?ds?|pwd|passphrase|secrets?|tokens?|authorization|bearer|cookies?|credentials?|signature' +
     '|connection[-_]?string|(?:api|private|encryption)[-_]?keys?';
-// A whole word of the name has to match, so that `tokenizer` or `secretary` is kept.
-const SENSITIVE_KEY_REGEX = new RegExp(`(?<![a-z])(?:${SENSITIVE_WORDS})(?![a-z])|^auth$`, 'i');
+// The word has to end there, so that `tokenizer` or `secretary` is kept. It may start anywhere: `unsubscribetoken`.
+const SENSITIVE_KEY_REGEX = new RegExp(`(?:${SENSITIVE_WORDS})(?![a-z])|^auth$`, 'i');
 // Names that describe a secret instead of holding one, e.g. `tokenUrl`, `token_type`, `secretName`, `nextPageToken`.
 const DESCRIPTIVE_KEY_REGEX =
-    /[-_](?:ids?|name|type|ur[li]|endpoint|version|count|length|limit|expir\w*|consent|banner|policy)$|(?:page|pagination|continuation|cancellation|next)[-_]?token$/i;
+    /[-_](?:ids?|name|type|ur[li]|endpoint|version|count|length|limit|expir\w*|consent|banners?|policy|preview|scopes?|source|warnings?|modals?|recovery|filter)$|(?:page|pagination|continuation|cancellation|next)[-_]?token$/i;
 const QUERY_PARAMETER_REGEX = new RegExp(
     `((?:[?&;#]|%3F|%26)((?=[\\w.[\\]-]{0,64}?(?:${SENSITIVE_WORDS}))[\\w.[\\]-]{1,64}|auth)=)[^&\\s"'<>#]+`,
     'gi',
@@ -39,7 +39,8 @@ export const isSensitiveKey = (key: PropertyKey) => {
 
     // The words are split first: `passwordValid` is not `..._id`, and `JWTToken` holds the word `token`
     const words = key.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/([A-Z])([A-Z][a-z])/g, '$1_$2');
-    const isSensitive = SENSITIVE_KEY_REGEX.test(words) && !DESCRIPTIVE_KEY_REGEX.test(words);
+    const isSensitive =
+        [key, words].some((name) => SENSITIVE_KEY_REGEX.test(name)) && !DESCRIPTIVE_KEY_REGEX.test(words);
     // Names can be generated, e.g. IDs used as keys, so the cache is emptied before it grows without limit
     if (sensitiveKeys.size >= MAX_CACHED_KEYS) sensitiveKeys.clear();
     sensitiveKeys.set(key, isSensitive);
