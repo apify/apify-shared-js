@@ -133,7 +133,7 @@ describe('log secret redaction', () => {
         ...['tokenCount', 'tokenExpiresAt', 'tokenEndpoint', 'cookieConsent', 'nextPageToken', 'continuation_token'],
         ...['tokenizer', 'tokenized', 'secretary', 'passwordless', 'cookieBanner', 'passwordPolicy'],
         ...['tokenPreview', 'token_scopes', 'removeCookieWarnings', 'closeCookieModals', 'noPasswordRecovery'],
-        ...['strictTokenFilter', 'tokenSource'],
+        ...['strictTokenFilter', 'tokenSource', 'token_endpoint_auth_method'],
     ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
 
     it.each([
@@ -171,6 +171,7 @@ describe('log secret redaction', () => {
         'Basic Authentication is required',
         'Authorization: Basic or Bearer scheme is required',
         '/docs/tokens#section-2',
+        'Use the format http[s]://[username[:password]@]host[:port]',
         'GET https://api.apify.com/v2/acts/apify~web-scraper/runs?limit=10&offset=20&status=SUCCEEDED',
         'https://example.com:8080/path@1.2.3/file.js',
         'apify_proxy_groups and apify_api_client_version',

@@ -8,7 +8,7 @@ const SENSITIVE_WORDS =
 const SENSITIVE_KEY_REGEX = new RegExp(`(?:${SENSITIVE_WORDS})(?![a-z])|^auth$`, 'i');
 // Names that describe a secret instead of holding one, e.g. `tokenUrl`, `token_type`, `secretName`, `nextPageToken`.
 const DESCRIPTIVE_KEY_REGEX =
-    /[-_](?:ids?|name|type|ur[li]|endpoint|version|count|length|limit|expir\w*|consent|banners?|policy|preview|scopes?|source|warnings?|modals?|recovery|filter)$|(?:page|pagination|continuation|cancellation|next)[-_]?token$/i;
+    /[-_](?:ids?|name|type|ur[li]|endpoint|version|count|length|limit|expir\w*|consent|banners?|policy|preview|scopes?|source|warnings?|modals?|recovery|filter|method)$|(?:page|pagination|continuation|cancellation|next)[-_]?token$/i;
 const QUERY_PARAMETER_REGEX = new RegExp(
     `((?:[?&;#]|%3F|%26)((?=[\\w.[\\]-]{0,64}?(?:${SENSITIVE_WORDS}))[\\w.[\\]-]{1,64}|auth)=)[^&\\s"'<>#]+`,
     'gi',
@@ -25,7 +25,7 @@ const FORMATS: [marker: string, pattern: RegExp, replacement: string][] = [
         `$1${REDACTED_PLACEHOLDER}`,
     ],
     // Starts at the literal `://`: with a scheme in front, the engine would retry at every word of the text.
-    ['@', /(:\/\/[^\s/:@]{0,256}):[^\s/@]{1,256}@/g, `$1:${REDACTED_PLACEHOLDER}@`],
+    ['@', /(:\/\/[^\s/:@]{0,256}):[^\s/@[\]]{1,256}@/g, `$1:${REDACTED_PLACEHOLDER}@`],
 ];
 
 const sensitiveKeys = new Map<string, boolean>();
