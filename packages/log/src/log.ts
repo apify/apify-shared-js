@@ -53,7 +53,7 @@ export interface LoggerOptions {
     /** Additional data to be added to each log line. */
     data?: Record<string, unknown>;
     /**
-     * Masks secrets in the message, data and exception with `***`: a string in a field whose name ends with
+     * Masks secrets in the message, data and exception with `[redacted]`: a string in a field whose name ends with
      * a sensitive word (e.g. `password`, `apiToken`), also inside an array, and secrets with a known format (e.g. Apify tokens,
      * `Authorization` credentials). It is a safety net, on unless set to `false`.
      */

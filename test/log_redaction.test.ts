@@ -39,9 +39,9 @@ describe('log secret redaction', () => {
         };
 
         expect(redact(data)).toEqual({
-            password: '***',
-            query: { accessToken: '***', limit: '10' },
-            headers: { Authorization: '***', 'X-Api-Key': '***', 'set-cookie': ['***', 'a=1'] },
+            password: '[redacted]',
+            query: { accessToken: '[redacted]', limit: '10' },
+            headers: { Authorization: '[redacted]', 'X-Api-Key': '[redacted]', 'set-cookie': ['[redacted]', 'a=1'] },
             cookies: [{ name: 'sid', value: 'abcdefgh' }],
             token: { issuedAt: 1795529568, source: 'console' },
         });
@@ -69,7 +69,9 @@ describe('log secret redaction', () => {
         ...['password', 'proxyPassword', 'passwd', 'client_secret', 'refreshToken', 'id_token'],
         ...['api-key', 'API_KEY', 'apikey', 'privateKey', 'secretKey', 'Proxy-Authorization', 'cookie', 'set-cookie'],
         ...['JWTToken', 'unsubscribetoken', 'adminpassword', 'memberPassWord'],
-    ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: PASSWORD })).toEqual({ [key]: '***' }));
+    ])('treats the field %s as sensitive', (key) =>
+        expect(redact({ [key]: PASSWORD })).toEqual({ [key]: '[redacted]' }),
+    );
 
     it.each([
         ...['key', 'author', 'auth', 'userId', 'url', 'message', Symbol('token')],
@@ -83,31 +85,31 @@ describe('log secret redaction', () => {
     );
 
     it.each([
-        [`token ${APIFY_TOKEN} is invalid`, 'token apify_api_*** is invalid'],
-        [`["items","apify_some_kind_${'a1B2'.repeat(9)}"]`, '["items","apify_some_kind_***"]'],
-        [`integration_api_token_${'a1B2'.repeat(9)}`, 'integration_api_token_***'],
-        [`Authorization: Bearer ${BEARER}`, 'Authorization: Bearer ***'],
-        ['authorization: basic dXNlcjpwYXNzMTIz', 'authorization: basic ***'],
-        ['AUTHORIZATION: BEARER abcDEF0123456789', 'AUTHORIZATION: BEARER ***'],
-        [`{"Authorization":"Bearer ${BEARER}"}`, '{"Authorization":"Bearer ***"}'],
+        [`token ${APIFY_TOKEN} is invalid`, 'token apify_api_[redacted] is invalid'],
+        [`["items","apify_some_kind_${'a1B2'.repeat(9)}"]`, '["items","apify_some_kind_[redacted]"]'],
+        [`integration_api_token_${'a1B2'.repeat(9)}`, 'integration_api_token_[redacted]'],
+        [`Authorization: Bearer ${BEARER}`, 'Authorization: Bearer [redacted]'],
+        ['authorization: basic dXNlcjpwYXNzMTIz', 'authorization: basic [redacted]'],
+        ['AUTHORIZATION: BEARER abcDEF0123456789', 'AUTHORIZATION: BEARER [redacted]'],
+        [`{"Authorization":"Bearer ${BEARER}"}`, '{"Authorization":"Bearer [redacted]"}'],
         [
             `https://app.example.com/cb#access_token=${QUERY_SECRET}&state=1`,
-            'https://app.example.com/cb#access_token=***&state=1',
+            'https://app.example.com/cb#access_token=[redacted]&state=1',
         ],
-        [`id_token ${JWT} has wrong audience`, 'id_token *** has wrong audience'],
+        [`id_token ${JWT} has wrong audience`, 'id_token [redacted] has wrong audience'],
         [
             `http://groups-RESIDENTIAL:${PASSWORD}@proxy.apify.com:8000`,
-            'http://groups-RESIDENTIAL:***@proxy.apify.com:8000',
+            'http://groups-RESIDENTIAL:[redacted]@proxy.apify.com:8000',
         ],
-        [`/v2/logs/abc?token=${QUERY_SECRET}&download=true#top`, '/v2/logs/abc?token=***&download=true#top'],
-        [`/v2/datasets/abc/items%3Ftoken=${QUERY_SECRET}/`, '/v2/datasets/abc/items%3Ftoken=***'],
+        [`/v2/logs/abc?token=${QUERY_SECRET}&download=true#top`, '/v2/logs/abc?token=[redacted]&download=true#top'],
+        [`/v2/datasets/abc/items%3Ftoken=${QUERY_SECRET}/`, '/v2/datasets/abc/items%3Ftoken=[redacted]'],
         [
             `/items?tokenCount=5&nextPageToken=abc&secret=${QUERY_SECRET}`,
-            '/items?tokenCount=5&nextPageToken=abc&secret=***',
+            '/items?tokenCount=5&nextPageToken=abc&secret=[redacted]',
         ],
         [
             `/confirm?a=1&confirmToken=${QUERY_SECRET}&amp;apiKey=${QUERY_SECRET}`,
-            '/confirm?a=1&confirmToken=***&amp;apiKey=***',
+            '/confirm?a=1&confirmToken=[redacted]&amp;apiKey=[redacted]',
         ],
     ])('masks the secret in %s', (text, expected) => expect(redact(text)).toBe(expected));
 
@@ -139,17 +141,17 @@ describe('log secret redaction', () => {
 
         expectNoSecrets();
         expect(JSON.parse(lines[0])).toMatchObject({
-            msg: 'Request to /v2/acts?token=*** failed',
-            exception: { message: 'Token apify_api_*** was rejected' },
+            msg: 'Request to /v2/acts?token=[redacted] failed',
+            exception: { message: 'Token apify_api_[redacted] was rejected' },
         });
     });
 
     it('masks a secret that is cut by the truncation', () => {
         const text = `${'x'.repeat(95)} ${APIFY_TOKEN}`;
 
-        // The limit falls inside the token: without reading past it, the first 14 characters would stay
-        expect(sanitizeData(text, { maxStringLength: 110, redactSecrets: true })).toBe(
-            `${'x'.repeat(95)} apify_api_***`,
+        // The limit falls inside the token: without reading past it, the first 24 characters would stay
+        expect(sanitizeData(text, { maxStringLength: 120, redactSecrets: true })).toBe(
+            `${'x'.repeat(95)} apify_api_[redacted]`,
         );
         expect(sanitizeData(text, { maxStringLength: 100, redactSecrets: true })).toBe(
             `${'x'.repeat(86)}...[truncated]`,
@@ -157,15 +159,19 @@ describe('log secret redaction', () => {
     });
 
     it('does not cut a string that fits the limit when the mask makes it longer', () => {
-        expect(sanitizeData('http://u:p@host', { maxStringLength: 15, redactSecrets: true })).toBe('http://u:***@host');
+        expect(sanitizeData('http://u:p@host', { maxStringLength: 15, redactSecrets: true })).toBe(
+            'http://u:[redacted]@host',
+        );
     });
 
     it('marks the truncation when the redaction makes the rest fit the limit', () => {
         const text = `failed ${JWT}${'s'.repeat(300)} ${'detail '.repeat(40)}`;
 
-        expect(sanitizeData(text, { maxStringLength: 100, redactSecrets: true })).toBe('failed ***...[truncated]');
+        expect(sanitizeData(text, { maxStringLength: 100, redactSecrets: true })).toBe(
+            'failed [redacted]...[truncated]',
+        );
         expect(sanitizeData(text, { maxStringLength: 500, redactSecrets: true })).toBe(
-            `failed *** ${'detail '.repeat(40)}`,
+            `failed [redacted] ${'detail '.repeat(40)}`,
         );
     });
 

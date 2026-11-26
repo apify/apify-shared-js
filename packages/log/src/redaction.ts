@@ -1,4 +1,4 @@
-export const REDACTED_PLACEHOLDER = '***';
+export const REDACTED_PLACEHOLDER = '[redacted]';
 
 // The name has to end with the word: `tokenUrl`, `cookieBanner` or `passwordPolicy` describe a secret and do not hold one.
 const SENSITIVE_WORDS = 'passw(?:or)?d|secret|token|(?:api|private|secret)[-_]?key|authorization|cookies?';
