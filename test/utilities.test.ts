@@ -272,6 +272,25 @@ console.log('end');\`
 });
 
 describe('BetterSetInterval', () => {
+    it('does not keep the process alive once unreferenced', async () => {
+        const setTimeoutSpy = vi.spyOn(globalThis, 'setTimeout');
+        const fn = vi.fn();
+
+        const interval = utils.betterSetInterval(fn, 37).unref();
+
+        await vi.waitFor(() => expect(fn).toHaveBeenCalledTimes(3));
+        utils.betterClearInterval(interval);
+
+        // Only the timers of the interval, recognized by their delay.
+        const timers = setTimeoutSpy.mock.results
+            .filter((_, i) => setTimeoutSpy.mock.calls[i][1] === 37)
+            .map(({ value }) => value as NodeJS.Timeout);
+        setTimeoutSpy.mockRestore();
+
+        expect(timers.length).toBeGreaterThanOrEqual(2);
+        expect(timers.every((timer) => !timer.hasRef())).toBe(true);
+    });
+
     it('works with normal function', async () => {
         const fn = vi.fn();
 
