@@ -20,22 +20,26 @@ const isSecret = (key: string, value: unknown) =>
     !PLAIN_VALUE_REGEX.test(value) &&
     (value.length >= MIN_SECRET_LENGTH || PASSWORD_KEY_REGEX.test(key));
 
-/** Masks a string, or the strings of an array, in a field with a sensitive name, e.g. `password`, `apiToken` or `x-api-key`. */
-export const redactField = (key: PropertyKey, value: unknown) => {
+/**
+ * Masks a string, or the strings of an array, in a field with a sensitive name, e.g. `password`, `apiToken` or `x-api-key`.
+ * An array is cut to one item over `maxArrayLength`, so that the caller still sees that it is too long.
+ */
+export const redactField = (key: PropertyKey, value: unknown, maxArrayLength: number) => {
     if (!isSensitiveKey(key)) return value;
     const mask = (item: unknown) => (isSecret(key, item) ? REDACTED_PLACEHOLDER : item);
-    return Array.isArray(value) ? value.map(mask) : mask(value);
+    return Array.isArray(value) ? value.slice(0, maxArrayLength + 1).map(mask) : mask(value);
 };
 
 // All patterns run in time linear in the string length.
 const QUERY_PARAMETER_REGEX = new RegExp(
-    `((?:[?&;#]|%3F|%26)([\\w.[\\]-]{0,64}?(?:${SENSITIVE_WORDS}))=)([^&\\s"'<>#]+)`,
+    `((?:[?&;#]|%3F|%26)([\\w.-]{0,64}?(?:${SENSITIVE_WORDS}))=)([^&\\s"'<>#)]+)`,
     'gi',
 );
 // A pattern runs only on a string that holds its marker, so a plain string costs a few `includes()` calls.
 // Each marker is one character: a search for a longer one is slower than the pattern itself on a long string.
 const FORMATS: [marker: string, pattern: RegExp, replacement: string][] = [
-    ['J', /(?<![\w-])eyJ[\w-]{8,}\.eyJ[\w-]{8,}\.[\w-]*/g, REDACTED_PLACEHOLDER],
+    // The signature is optional: the truncation can cut a long token before it.
+    ['J', /(?<![\w-])eyJ[\w-]{8,}\.eyJ[\w-]{8,}(?:\.[\w-]*)?/g, REDACTED_PLACEHOLDER],
     ['_', /\b((?:apify_(?:[a-z]{1,16}_){1,4}|integration_api_token_))[A-Za-z0-9]{20,}/g, `$1${REDACTED_PLACEHOLDER}`],
     // Only after the header name: a bare `Basic ...` or `Bearer ...` is too often plain prose.
     [

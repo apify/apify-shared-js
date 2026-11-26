@@ -115,6 +115,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
+    const nextMaxArrayLength = Math.floor(maxArrayLength * gradualLimitFactor);
     const nextCall = (dat: unknown) =>
         sanitizeData(dat, {
             ...options,
@@ -123,7 +124,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
                 Math.floor(maxStringLength * gradualLimitFactor),
                 truncationSuffix.length, // always at least the length of the truncation suffix
             ),
-            maxArrayLength: Math.floor(maxArrayLength * gradualLimitFactor),
+            maxArrayLength: nextMaxArrayLength,
             maxFields: Math.floor(maxFields * gradualLimitFactor),
         });
 
@@ -158,7 +159,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         const sanitized: Record<PropertyKey, unknown> = {};
         allKeys.slice(0, maxFields).forEach((key) => {
             const value = data[key as keyof typeof data];
-            sanitized[key] = nextCall(redactSecrets ? redactField(key, value) : value);
+            sanitized[key] = nextCall(redactSecrets ? redactField(key, value, nextMaxArrayLength) : value);
         });
 
         if (allKeys.length > maxFields) {

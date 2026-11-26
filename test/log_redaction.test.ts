@@ -104,6 +104,10 @@ describe('log secret redaction', () => {
         [`/v2/logs/abc?token=${QUERY_SECRET}&download=true#top`, '/v2/logs/abc?token=[redacted]&download=true#top'],
         [`/v2/datasets/abc/items%3Ftoken=${QUERY_SECRET}/`, '/v2/datasets/abc/items%3Ftoken=[redacted]'],
         [
+            `see [the log](https://example.com/log?token=${QUERY_SECRET}) for details`,
+            'see [the log](https://example.com/log?token=[redacted]) for details',
+        ],
+        [
             `/items?tokenCount=5&nextPageToken=abc&secret=${QUERY_SECRET}`,
             '/items?tokenCount=5&nextPageToken=abc&secret=[redacted]',
         ],
@@ -119,6 +123,7 @@ describe('log secret redaction', () => {
         'Basic Authentication is required',
         'Authorization: Basic or Bearer scheme is required',
         '/docs/tokens#section-2',
+        '/items?filter[token]=abcdefgh12',
         'Authorization: Bearer undefined',
         '/v2/acts?token=none&syncToken=CAESBggBEAEYAQ',
         '{"url":"https://example.com","email":"joe@example.com"}',
@@ -158,6 +163,22 @@ describe('log secret redaction', () => {
         );
     });
 
+    it('masks a JWT that is longer than what is read past the limit', () => {
+        const text = `${'x'.repeat(90)} eyJhbGciOiJIUzI1NiJ9.eyJ${'p'.repeat(600)}.${'s'.repeat(43)}`;
+
+        expect(sanitizeData(text, { maxStringLength: 120, redactSecrets: true })).toBe(
+            `${'x'.repeat(90)} [redacted]...[truncated]`,
+        );
+    });
+
+    it('masks only the items of an array that are within the limit', () => {
+        const cookies = [`sid=${PASSWORD}`, `sid=${PASSWORD}`, `sid=${PASSWORD}`];
+
+        expect(sanitizeData({ cookies }, { maxArrayLength: 2, redactSecrets: true })).toEqual({
+            cookies: ['[redacted]', '[redacted]', '...[truncated]'],
+        });
+    });
+
     it('does not cut a string that fits the limit when the mask makes it longer', () => {
         expect(sanitizeData('http://u:p@host', { maxStringLength: 15, redactSecrets: true })).toBe(
             'http://u:[redacted]@host',
@@ -175,8 +196,8 @@ describe('log secret redaction', () => {
         );
     });
 
-    // A pattern that backtracks on these never finishes, so the test timeout catches it
-    it('finishes on long hostile strings', () => {
+    // The patterns need a few milliseconds here. One that backtracks needs seconds, so the timeout catches it
+    it('finishes on long hostile strings', { timeout: 1000 }, () => {
         const hostile = [
             ...['apify_', 'authorization: ', 'a:', '&a=', '#a', 'a.', 'https://a.b/c ', '?token', '://a'].map((part) =>
                 part.repeat(40_000),
