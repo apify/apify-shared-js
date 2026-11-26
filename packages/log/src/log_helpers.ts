@@ -7,7 +7,7 @@ import {
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
 } from './log_consts.js';
-import { isSecret, REDACTED_PLACEHOLDER, redactString } from './redaction.js';
+import { redactField, redactString } from './redaction.js';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -97,6 +97,8 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         // Redact before truncating and read past the limit, so that a secret cut by it is still recognized
         const readLength = maxStringLength + 256;
         const text = redactSecrets ? redactString(data.slice(0, readLength)) : data;
+        // A string that fits the limit is not cut, also when a mask made it longer
+        if (data.length <= maxStringLength) return text;
         // The tail that was not read is marked too, also when the redaction made the rest fit the limit
         const marked = redactSecrets && data.length > readLength ? `${text}${truncationSuffix}` : text;
         return marked.length > maxStringLength ? truncate(marked, maxStringLength, truncationSuffix) : marked;
@@ -156,7 +158,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         const sanitized: Record<PropertyKey, unknown> = {};
         allKeys.slice(0, maxFields).forEach((key) => {
             const value = data[key as keyof typeof data];
-            sanitized[key] = redactSecrets && isSecret(key, value) ? REDACTED_PLACEHOLDER : nextCall(value);
+            sanitized[key] = nextCall(redactSecrets ? redactField(key, value) : value);
         });
 
         if (allKeys.length > maxFields) {

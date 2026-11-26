@@ -31,21 +31,23 @@ describe('log secret redaction', () => {
 
     it('masks a string under a field with a sensitive name and nothing below it', () => {
         const data = {
-            password: PASSWORD,
+            password: 'abc',
             query: { accessToken: PASSWORD, limit: '10' },
-            headers: { Authorization: BEARER, 'X-Api-Key': PASSWORD },
+            headers: { Authorization: BEARER, 'X-Api-Key': PASSWORD, 'set-cookie': [`sid=${PASSWORD}`, 'a=1'] },
+            cookies: [{ name: 'sid', value: 'abcdefgh' }],
             token: { issuedAt: 1795529568, source: 'console' },
         };
 
         expect(redact(data)).toEqual({
             password: '***',
             query: { accessToken: '***', limit: '10' },
-            headers: { Authorization: '***', 'X-Api-Key': '***' },
+            headers: { Authorization: '***', 'X-Api-Key': '***', 'set-cookie': ['***', 'a=1'] },
+            cookies: [{ name: 'sid', value: 'abcdefgh' }],
             token: { issuedAt: 1795529568, source: 'console' },
         });
     });
 
-    it('keeps flags, empty and non-string values under a sensitive name', () => {
+    it('keeps flags, sentences, short, empty and non-string values under a sensitive name', () => {
         const data = {
             maxToken: 4096,
             hasPassword: true,
@@ -53,24 +55,32 @@ describe('log secret redaction', () => {
             useCookies: '0',
             token: '',
             secret: null,
+            hasToken: 'yes',
+            apiKey: 'not-set',
+            stopToken: '</s>',
+            cookies: 'accept',
+            errors: { password: 'Password is too short' },
         };
 
         expect(redact(data)).toEqual(data);
     });
 
     it.each([
-        ...['password', 'proxyPassword', 'passwd', 'MYSQL_PWD', 'client_secret', 'refreshToken', 'id_token'],
+        ...['password', 'proxyPassword', 'passwd', 'client_secret', 'refreshToken', 'id_token'],
         ...['api-key', 'API_KEY', 'apikey', 'privateKey', 'secretKey', 'Proxy-Authorization', 'cookie', 'set-cookie'],
         ...['JWTToken', 'unsubscribetoken', 'adminpassword', 'memberPassWord'],
-    ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: '***' }));
+    ])('treats the field %s as sensitive', (key) => expect(redact({ [key]: PASSWORD })).toEqual({ [key]: '***' }));
 
     it.each([
         ...['key', 'author', 'auth', 'userId', 'url', 'message', Symbol('token')],
         ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'tokenHash', 'tokenSource'],
         ...['tokenCount', 'tokenExpiresAt', 'cookieConsent', 'cookieBanner', 'passwordPolicy', 'passwordValid'],
         ...['nextPageToken', 'continuation_token', 'tokenizer', 'secretary', 'passwordless', 'maxTokens'],
-        ...['token_endpoint_auth_method', 'tokenToReset', 'signature', 'credentials'],
-    ])('does not treat the field %s as sensitive', (key) => expect(redact({ [key]: 'x' })).toEqual({ [key]: 'x' }));
+        ...['token_endpoint_auth_method', 'tokenToReset', 'signature', 'credentials', 'PWD'],
+        ...['syncToken', 'skiptoken', 'deltaToken', 'resumeToken', 'cursor_token', '__paging_token'],
+    ])('does not treat the field %s as sensitive', (key) =>
+        expect(redact({ [key]: PASSWORD })).toEqual({ [key]: PASSWORD }),
+    );
 
     it.each([
         [`token ${APIFY_TOKEN} is invalid`, 'token apify_api_*** is invalid'],
@@ -107,6 +117,11 @@ describe('log secret redaction', () => {
         'Basic Authentication is required',
         'Authorization: Basic or Bearer scheme is required',
         '/docs/tokens#section-2',
+        'Authorization: Bearer undefined',
+        '/v2/acts?token=none&syncToken=CAESBggBEAEYAQ',
+        '{"url":"https://example.com","email":"joe@example.com"}',
+        '{"homepage":"https://apify.com","dependencies":{"@apify/log":"^3.0.0"}}',
+        'Request to http://localhost:3000?email=joe@example.com failed',
         '/v2/acts?includeToken=true&signature=abc&tokenType=bearer',
         'Use the format http[s]://[username[:password]@]host[:port]',
         'GET https://api.apify.com/v2/acts/apify~web-scraper/runs?limit=10&offset=20&status=SUCCEEDED',
@@ -141,6 +156,10 @@ describe('log secret redaction', () => {
         );
     });
 
+    it('does not cut a string that fits the limit when the mask makes it longer', () => {
+        expect(sanitizeData('http://u:p@host', { maxStringLength: 15, redactSecrets: true })).toBe('http://u:***@host');
+    });
+
     it('marks the truncation when the redaction makes the rest fit the limit', () => {
         const text = `failed ${JWT}${'s'.repeat(300)} ${'detail '.repeat(40)}`;
 
@@ -157,6 +176,7 @@ describe('log secret redaction', () => {
                 part.repeat(40_000),
             ),
             `eyJ${'a'.repeat(200_000)}`,
+            'eyJaaaaaaaa-'.repeat(40_000),
         ];
 
         hostile.forEach((text) => expect(redact(text)).toBe(text));
