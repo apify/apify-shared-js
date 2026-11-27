@@ -33,6 +33,7 @@ describe('log secret redaction', () => {
         const data = {
             password: 'abc',
             proxyPassword: 'correct horse battery',
+            connectionString: 'Server=db.example.com;User Id=admin;Password=abc',
             query: { accessToken: PASSWORD, limit: '10' },
             headers: {
                 Authorization: `Bearer ${BEARER}`,
@@ -47,6 +48,7 @@ describe('log secret redaction', () => {
         expect(redact(data)).toEqual({
             password: '[redacted]',
             proxyPassword: '[redacted]',
+            connectionString: '[redacted]',
             query: { accessToken: '[redacted]', limit: '10' },
             headers: {
                 Authorization: '[redacted]',
@@ -71,6 +73,7 @@ describe('log secret redaction', () => {
             apiKey: 'not-set',
             stopToken: '</s>',
             cookies: 'accept',
+            credentials: 'same-origin',
             errors: { token: 'Token has expired' },
         };
 
@@ -81,6 +84,7 @@ describe('log secret redaction', () => {
         ...['password', 'proxyPassword', 'passwd', 'client_secret', 'refreshToken', 'id_token'],
         ...['api-key', 'API_KEY', 'apikey', 'privateKey', 'secretKey', 'Proxy-Authorization', 'cookie', 'set-cookie'],
         ...['JWTToken', 'unsubscribetoken', 'adminpassword', 'memberPassWord'],
+        ...['signature', 'X-Amz-Signature', 'credentials', 'clientCredential', 'connectionString', 'connection_string'],
     ])('treats the field %s as sensitive', (key) =>
         expect(redact({ [key]: PASSWORD })).toEqual({ [key]: '[redacted]' }),
     );
@@ -90,7 +94,7 @@ describe('log secret redaction', () => {
         ...['tokenUrl', 'TOKEN_URL', 'token_type', 'tokenIds', 'secretName', 'apiKeyId', 'tokenHash', 'tokenSource'],
         ...['tokenCount', 'tokenExpiresAt', 'cookieConsent', 'cookieBanner', 'passwordPolicy', 'passwordValid'],
         ...['nextPageToken', 'continuation_token', 'tokenizer', 'secretary', 'passwordless', 'maxTokens'],
-        ...['token_endpoint_auth_method', 'tokenToReset', 'signature', 'credentials', 'PWD'],
+        ...['token_endpoint_auth_method', 'tokenToReset', 'signatureAlgorithm', 'credentialsProvider', 'PWD'],
         ...['syncToken', 'skiptoken', 'deltaToken', 'resumeToken', 'cursor_token', '__paging_token'],
     ])('does not treat the field %s as sensitive', (key) =>
         expect(redact({ [key]: PASSWORD })).toEqual({ [key]: PASSWORD }),
@@ -117,6 +121,7 @@ describe('log secret redaction', () => {
             'http://groups-RESIDENTIAL:[redacted]@proxy.apify.com:8000',
         ],
         [`/v2/logs/abc?token=${QUERY_SECRET}&download=true#top`, '/v2/logs/abc?token=[redacted]&download=true#top'],
+        [`/v2/records/OUTPUT?signature=${QUERY_SECRET}`, '/v2/records/OUTPUT?signature=[redacted]'],
         [`/v2/datasets/abc/items%3Ftoken=${QUERY_SECRET}/`, '/v2/datasets/abc/items%3Ftoken=[redacted]'],
         [
             `see [the log](https://example.com/log?token=${QUERY_SECRET}) for details`,

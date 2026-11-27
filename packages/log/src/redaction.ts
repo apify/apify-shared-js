@@ -1,15 +1,17 @@
 export const REDACTED_PLACEHOLDER = '[redacted]';
 
 // The name has to end with the word: `tokenUrl`, `cookieBanner` or `passwordPolicy` describe a secret and do not hold one.
-const SENSITIVE_WORDS = 'passw(?:or)?d|secret|token|(?:api|private|secret)[-_]?key|authorization|cookies?';
+const SENSITIVE_WORDS =
+    'passw(?:or)?d|secret|token|(?:api|private|secret)[-_]?key|authorization|cookies?' +
+    '|signature|credentials?|connection[-_]?string';
 const SENSITIVE_KEY_REGEX = new RegExp(`(?:${SENSITIVE_WORDS})$`, 'i');
 const PAGINATION_KEY_REGEX =
     /(?:page|pagination|paging|continuation|cancellation|next|sync|skip|delta|resume|cursor)[-_]?token$/i;
 const PASSWORD_KEY_REGEX = /passw(?:or)?d$/i;
-// Their values can hold spaces, e.g. `Bearer <token>`, `sid=<id>; theme=dark` or a passphrase
-const SPACED_KEY_REGEX = /(?:authorization|cookies?|passw(?:or)?d)$/i;
-// e.g. `includeToken: 'true'`
-const FLAG_VALUE_REGEX = /^(?:true|false|yes|no|[01yn])$/i;
+// Their values can hold spaces, e.g. `Bearer <token>`, `sid=<id>; theme=dark`, a passphrase or `User Id=<name>;...`
+const SPACED_KEY_REGEX = /(?:authorization|cookies?|passw(?:or)?d|connection[-_]?string)$/i;
+// e.g. `includeToken: 'true'` or the fetch option `credentials: 'same-origin'`
+const FLAG_VALUE_REGEX = /^(?:true|false|yes|no|[01yn]|same-origin|include|omit)$/i;
 const MIN_SECRET_LENGTH = 8;
 
 const isSensitiveKey = (key: PropertyKey): key is string =>
