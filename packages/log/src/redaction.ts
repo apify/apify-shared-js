@@ -6,8 +6,8 @@ const SENSITIVE_KEY_REGEX = new RegExp(`(?:${SENSITIVE_WORDS})$`, 'i');
 const PAGINATION_KEY_REGEX =
     /(?:page|pagination|paging|continuation|cancellation|next|sync|skip|delta|resume|cursor)[-_]?token$/i;
 const PASSWORD_KEY_REGEX = /passw(?:or)?d$/i;
-// A header value holds spaces, e.g. `Bearer <token>` or `sid=<id>; theme=dark`
-const HEADER_KEY_REGEX = /(?:authorization|cookies?)$/i;
+// Their values can hold spaces, e.g. `Bearer <token>`, `sid=<id>; theme=dark` or a passphrase
+const SPACED_KEY_REGEX = /(?:authorization|cookies?|passw(?:or)?d)$/i;
 // e.g. `includeToken: 'true'`
 const FLAG_VALUE_REGEX = /^(?:true|false|yes|no|[01yn])$/i;
 const MIN_SECRET_LENGTH = 8;
@@ -15,13 +15,13 @@ const MIN_SECRET_LENGTH = 8;
 const isSensitiveKey = (key: PropertyKey): key is string =>
     typeof key === 'string' && SENSITIVE_KEY_REGEX.test(key) && !PAGINATION_KEY_REGEX.test(key);
 
-// A value with a space is a sentence such as `Password is too short`, except for a header.
+// A value with a space is a sentence such as `Token has expired`, except for a header or a password.
 // A short value is a status such as `none`, except for a password.
 const isSecret = (key: string, value: unknown) =>
     typeof value === 'string' &&
     value !== '' &&
     !FLAG_VALUE_REGEX.test(value) &&
-    (!/\s/.test(value) || HEADER_KEY_REGEX.test(key)) &&
+    (!/\s/.test(value) || SPACED_KEY_REGEX.test(key)) &&
     (value.length >= MIN_SECRET_LENGTH || PASSWORD_KEY_REGEX.test(key));
 
 /**

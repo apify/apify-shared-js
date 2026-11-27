@@ -32,6 +32,7 @@ describe('log secret redaction', () => {
     it('masks a string under a field with a sensitive name and nothing below it', () => {
         const data = {
             password: 'abc',
+            proxyPassword: 'correct horse battery',
             query: { accessToken: PASSWORD, limit: '10' },
             headers: {
                 Authorization: `Bearer ${BEARER}`,
@@ -45,6 +46,7 @@ describe('log secret redaction', () => {
 
         expect(redact(data)).toEqual({
             password: '[redacted]',
+            proxyPassword: '[redacted]',
             query: { accessToken: '[redacted]', limit: '10' },
             headers: {
                 Authorization: '[redacted]',
@@ -69,7 +71,7 @@ describe('log secret redaction', () => {
             apiKey: 'not-set',
             stopToken: '</s>',
             cookies: 'accept',
-            errors: { password: 'Password is too short', token: 'Token has expired' },
+            errors: { token: 'Token has expired' },
         };
 
         expect(redact(data)).toEqual(data);
