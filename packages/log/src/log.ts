@@ -7,6 +7,7 @@ import {
     TRUNCATION_SUFFIX,
 } from './log_consts.js';
 import { getFormatFromEnv, getLevelFromEnv, sanitizeData } from './log_helpers.js';
+import { redactString } from './redaction.js';
 import type { Logger } from './logger.js';
 import { LoggerJson } from './logger_json.js';
 import { LoggerText } from './logger_text.js';
@@ -51,6 +52,12 @@ export interface LoggerOptions {
     logger?: Logger;
     /** Additional data to be added to each log line. */
     data?: Record<string, unknown>;
+    /**
+     * Masks secrets in the message, data and exception with `[redacted]`: a string in a field whose name ends with
+     * a sensitive word (e.g. `password`, `apiToken`), also inside an array, and secrets with a known format (e.g. Apify tokens,
+     * `Authorization` credentials). It is a safety net, on unless set to `false`.
+     */
+    redactSecrets?: boolean;
 }
 
 type AdditionalData = Record<string, any> | null;
@@ -79,6 +86,7 @@ const getDefaultOptions = () => ({
     truncationFlagKey: TRUNCATION_FLAG_KEY,
     logger: getLoggerForFormat(getFormatFromEnv()),
     data: {},
+    redactSecrets: true,
 });
 
 /**
@@ -199,6 +207,7 @@ export class Log {
             preferredFieldsMap: this.preferredFieldsMap,
             truncationSuffix: this.options.truncationSuffix,
             truncationFlagKey: this.options.truncationFlagKey,
+            redactSecrets: this.options.redactSecrets !== false,
         });
     }
 
@@ -234,6 +243,7 @@ export class Log {
         data = { ...this.options.data, ...data };
         data = Reflect.ownKeys(data).length > 0 ? this._sanitizeData(data) : undefined;
         exception = this._sanitizeData(exception);
+        if (this.options.redactSecrets !== false && typeof message === 'string') message = redactString(message);
 
         this.options.logger.log(level, message, data, exception, {
             prefix: this.options.prefix,

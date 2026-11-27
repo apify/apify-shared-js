@@ -7,6 +7,7 @@ import {
     TRUNCATION_FLAG_KEY,
     TRUNCATION_SUFFIX,
 } from './log_consts.js';
+import { redactField, redactString } from './redaction.js';
 
 /**
  * Ensures a string is shorter than a specified number of character, and truncates it if not, appending a specific suffix to it.
@@ -68,6 +69,8 @@ type SanitizeDataOptions = {
     preferredFieldsMap?: Record<PropertyKey, number>;
     truncationSuffix?: string;
     truncationFlagKey?: string;
+    /** Masks secrets, see `LoggerOptions.redactSecrets`. */
+    redactSecrets?: boolean;
 };
 
 /**
@@ -86,11 +89,19 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         preferredFieldsMap = {},
         truncationSuffix = TRUNCATION_SUFFIX,
         truncationFlagKey = TRUNCATION_FLAG_KEY,
+        redactSecrets = false,
     } = options;
 
     // handle common cases quickly
     if (typeof data === 'string') {
-        return data.length > maxStringLength ? truncate(data, maxStringLength, truncationSuffix) : data;
+        // Redact before truncating and read past the limit, so that a secret cut by it is still recognized
+        const readLength = maxStringLength + 256;
+        const text = redactSecrets ? redactString(data.slice(0, readLength)) : data;
+        // A string that fits the limit is not cut, also when a mask made it longer
+        if (data.length <= maxStringLength) return text;
+        // The tail that was not read is marked too, also when the redaction made the rest fit the limit
+        const marked = redactSecrets && data.length > readLength ? `${text}${truncationSuffix}` : text;
+        return marked.length > maxStringLength ? truncate(marked, maxStringLength, truncationSuffix) : marked;
     }
 
     if (['number', 'boolean', 'symbol', 'bigint'].includes(typeof data) || data == null || data instanceof Date) {
@@ -104,6 +115,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         data = { name, message, stack, cause, ...rest, [IS_APIFY_LOGGER_EXCEPTION]: true };
     }
 
+    const nextMaxArrayLength = Math.floor(maxArrayLength * gradualLimitFactor);
     const nextCall = (dat: unknown) =>
         sanitizeData(dat, {
             ...options,
@@ -112,7 +124,7 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
                 Math.floor(maxStringLength * gradualLimitFactor),
                 truncationSuffix.length, // always at least the length of the truncation suffix
             ),
-            maxArrayLength: Math.floor(maxArrayLength * gradualLimitFactor),
+            maxArrayLength: nextMaxArrayLength,
             maxFields: Math.floor(maxFields * gradualLimitFactor),
         });
 
@@ -146,7 +158,8 @@ export function sanitizeData(data: unknown, options: SanitizeDataOptions): unkno
         // Sanitize only up to maxFields fields (keeping preferred ones first)
         const sanitized: Record<PropertyKey, unknown> = {};
         allKeys.slice(0, maxFields).forEach((key) => {
-            sanitized[key] = nextCall(data[key as keyof typeof data]);
+            const value = data[key as keyof typeof data];
+            sanitized[key] = nextCall(redactSecrets ? redactField(key, value, nextMaxArrayLength) : value);
         });
 
         if (allKeys.length > maxFields) {
