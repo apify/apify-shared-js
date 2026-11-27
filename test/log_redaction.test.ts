@@ -33,7 +33,12 @@ describe('log secret redaction', () => {
         const data = {
             password: 'abc',
             query: { accessToken: PASSWORD, limit: '10' },
-            headers: { Authorization: BEARER, 'X-Api-Key': PASSWORD, 'set-cookie': [`sid=${PASSWORD}`, 'a=1'] },
+            headers: {
+                Authorization: `Bearer ${BEARER}`,
+                cookie: `sid=${PASSWORD}; theme=dark`,
+                'X-Api-Key': PASSWORD,
+                'set-cookie': [`sid=${PASSWORD}; Path=/; HttpOnly`, 'a=1'],
+            },
             cookies: [{ name: 'sid', value: 'abcdefgh' }],
             token: { issuedAt: 1795529568, source: 'console' },
         };
@@ -41,7 +46,12 @@ describe('log secret redaction', () => {
         expect(redact(data)).toEqual({
             password: '[redacted]',
             query: { accessToken: '[redacted]', limit: '10' },
-            headers: { Authorization: '[redacted]', 'X-Api-Key': '[redacted]', 'set-cookie': ['[redacted]', 'a=1'] },
+            headers: {
+                Authorization: '[redacted]',
+                cookie: '[redacted]',
+                'X-Api-Key': '[redacted]',
+                'set-cookie': ['[redacted]', 'a=1'],
+            },
             cookies: [{ name: 'sid', value: 'abcdefgh' }],
             token: { issuedAt: 1795529568, source: 'console' },
         });
@@ -59,7 +69,7 @@ describe('log secret redaction', () => {
             apiKey: 'not-set',
             stopToken: '</s>',
             cookies: 'accept',
-            errors: { password: 'Password is too short' },
+            errors: { password: 'Password is too short', token: 'Token has expired' },
         };
 
         expect(redact(data)).toEqual(data);
