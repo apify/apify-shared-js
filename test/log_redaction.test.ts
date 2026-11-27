@@ -103,7 +103,10 @@ describe('log secret redaction', () => {
         [`Authorization: Bearer ${BEARER}`, 'Authorization: Bearer [redacted]'],
         ['authorization: basic dXNlcjpwYXNzMTIz', 'authorization: basic [redacted]'],
         ['AUTHORIZATION: BEARER abcDEF0123456789', 'AUTHORIZATION: BEARER [redacted]'],
-        [`{"Authorization":"Bearer ${BEARER}"}`, '{"Authorization":"Bearer [redacted]"}'],
+        [`{"Authorization":"Bearer ${BEARER}"}`, '{"Authorization":"[redacted]"}'],
+        [`{"email":"joe@example.com","password":"${PASSWORD}"}`, '{"email":"joe@example.com","password":"[redacted]"}'],
+        [`{"body":"{\\"apiToken\\": \\"${PASSWORD}\\"}"}`, '{"body":"{\\"apiToken\\": \\"[redacted]\\"}"}'],
+        [`password=${PASSWORD}&email=joe@example.com`, 'password=[redacted]&email=joe@example.com'],
         [
             `https://app.example.com/cb#access_token=${QUERY_SECRET}&state=1`,
             'https://app.example.com/cb#access_token=[redacted]&state=1',
@@ -140,6 +143,8 @@ describe('log secret redaction', () => {
         '/v2/acts?token=none&syncToken=CAESBggBEAEYAQ',
         '{"url":"https://example.com","email":"joe@example.com"}',
         '{"homepage":"https://apify.com","dependencies":{"@apify/log":"^3.0.0"}}',
+        '{"token":"none","tokenType":"bearer","nextPageToken":"CAESBggBEAEYAQ","error":{"token":"Token has expired"}}',
+        'token=none&includeToken=true',
         'Request to http://localhost:3000?email=joe@example.com failed',
         '/v2/acts?includeToken=true&signature=abc&tokenType=bearer',
         'Use the format http[s]://[username[:password]@]host[:port]',
@@ -211,9 +216,19 @@ describe('log secret redaction', () => {
     // The patterns need a few milliseconds here. One that backtracks needs seconds, so the timeout catches it
     it('finishes on long hostile strings', { timeout: 1000 }, () => {
         const hostile = [
-            ...['apify_', 'authorization: ', 'a:', '&a=', '#a', 'a.', 'https://a.b/c ', '?token', '://a'].map((part) =>
-                part.repeat(40_000),
-            ),
+            ...[
+                'apify_',
+                'authorization: ',
+                'a:',
+                '&a=',
+                '#a',
+                'a.',
+                'https://a.b/c ',
+                '?token',
+                '://a',
+                '"a',
+                '"token":',
+            ].map((part) => part.repeat(40_000)),
             `eyJ${'a'.repeat(200_000)}`,
             'eyJaaaaaaaa-'.repeat(40_000),
         ];

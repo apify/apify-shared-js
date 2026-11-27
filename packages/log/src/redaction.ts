@@ -36,9 +36,16 @@ export const redactField = (key: PropertyKey, value: unknown, maxArrayLength: nu
 
 // All patterns run in time linear in the string length.
 const QUERY_PARAMETER_REGEX = new RegExp(
-    `((?:[?&;#]|%3F|%26)([\\w.-]{0,64}?(?:${SENSITIVE_WORDS}))=)([^&\\s"'<>#)]+)`,
+    `((?:^|[?&;#]|%3F|%26)([\\w.-]{0,64}?(?:${SENSITIVE_WORDS}))=)([^&\\s"'<>#)]+)`,
     'gi',
 );
+// A field of a JSON body logged as a string, also when the JSON is escaped inside another one
+const JSON_FIELD_REGEX = new RegExp(
+    `("([\\w.-]{0,64}?(?:${SENSITIVE_WORDS}))\\\\{0,3}"\\s{0,8}:\\s{0,8}\\\\{0,3}")([^"\\\\]+)`,
+    'gi',
+);
+const maskPair = (match: string, prefix: string, name: string, value: string) =>
+    isSensitiveKey(name) && isSecret(name, value) ? `${prefix}${REDACTED_PLACEHOLDER}` : match;
 // A pattern runs only on a string that holds its marker, so a plain string costs a few `includes()` calls.
 // Each marker is one character: a search for a longer one is slower than the pattern itself on a long string.
 const FORMATS: [marker: string, pattern: RegExp, replacement: string][] = [
@@ -56,15 +63,16 @@ const FORMATS: [marker: string, pattern: RegExp, replacement: string][] = [
     ['@', /(:\/\/[^\s/:@?#"'<>]{0,256}):[^\s/@[\]?#"'<>,;]{1,256}@/g, `$1:${REDACTED_PLACEHOLDER}@`],
 ];
 
-/** Masks secrets with a known format: Apify tokens, JWTs, `Authorization` credentials, URL passwords, query parameters. */
+/**
+ * Masks secrets with a known format: Apify tokens, JWTs, `Authorization` credentials, URL passwords,
+ * query parameters and JSON fields with a sensitive name.
+ */
 export const redactString = (text: string) => {
-    const masked = FORMATS.reduce(
+    let masked = FORMATS.reduce(
         (result, [marker, pattern, replacement]) =>
             result.includes(marker) ? result.replace(pattern, replacement) : result,
         text,
     );
-    if (!masked.includes('=')) return masked;
-    return masked.replace(QUERY_PARAMETER_REGEX, (match, prefix: string, name: string, value: string) =>
-        isSensitiveKey(name) && isSecret(name, value) ? `${prefix}${REDACTED_PLACEHOLDER}` : match,
-    );
+    if (masked.includes('"')) masked = masked.replace(JSON_FIELD_REGEX, maskPair);
+    return masked.includes('=') ? masked.replace(QUERY_PARAMETER_REGEX, maskPair) : masked;
 };
